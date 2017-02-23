@@ -17,13 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StartTaskInformation {
     /**
      * The state of the start task on the compute node.
-     * Possible values are: running – The start task is currently running.
-     * completed – The start task has exited with exit code 0, or the start
-     * task has failed and the retry limit has reached, or the start task
-     * process did not run due to scheduling errors. Possible values include:
-     * 'running', 'completed'.
+     * running - The start task is currently running. completed - The start
+     * task has exited with exit code 0, or the start task has failed and the
+     * retry limit has reached, or the start task process did not run due to
+     * scheduling errors. Possible values include: 'running', 'completed'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "state", required = true)
     private StartTaskState state;
 
     /**
@@ -32,33 +31,36 @@ public class StartTaskInformation {
      * is, this is the most recent time at which the start task started
      * running).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the start task stopped running.
      * This is the end time of the most recent run of the start task, if that
-     * run has completed (even if that run failed and a retry is pending).
-     * This element is not present if the start task is currently running.
+     * run has completed (even if that run failed and a retry is pending). This
+     * element is not present if the start task is currently running.
      */
+    @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**
      * The exit code of the program specified on the start task command line.
      * This property is set only if the start task is in the completed state.
-     * In general, the exit code for a process reflects the specific
-     * convention implemented by the application developer for that process.
-     * If you use the exit code value to make decisions in your code, be sure
-     * that you know the exit code convention used by the application
-     * process. However, if the Batch service terminates the start task (due
-     * to timeout, or user termination via the API) you may see an operating
-     * system-defined exit code.
+     * In general, the exit code for a process reflects the specific convention
+     * implemented by the application developer for that process. If you use
+     * the exit code value to make decisions in your code, be sure that you
+     * know the exit code convention used by the application process. However,
+     * if the Batch service terminates the start task (due to timeout, or user
+     * termination via the API) you may see an operating system-defined exit
+     * code.
      */
+    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /**
      * Any error encountered scheduling the start task.
      */
+    @JsonProperty(value = "schedulingError")
     private TaskSchedulingError schedulingError;
 
     /**
@@ -66,17 +68,18 @@ public class StartTaskInformation {
      * The task is retried if it exits with a nonzero exit code, up to the
      * specified MaxTaskRetryCount.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "retryCount", required = true)
     private int retryCount;
 
     /**
      * The most recent time at which a retry of the task started running.
-     * This element is present only if the task was retried (i.e. retryCount
-     * is nonzero). If present, this is typically the same as startTime, but
-     * may be different if the task has been restarted for reasons other than
+     * This element is present only if the task was retried (i.e. retryCount is
+     * nonzero). If present, this is typically the same as startTime, but may
+     * be different if the task has been restarted for reasons other than
      * retry; for example, if the compute node was rebooted during a retry,
      * then the startTime is updated but the lastRetryTime is not.
      */
+    @JsonProperty(value = "lastRetryTime")
     private DateTime lastRetryTime;
 
     /**

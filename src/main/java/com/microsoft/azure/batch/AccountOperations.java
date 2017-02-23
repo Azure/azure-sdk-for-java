@@ -6,12 +6,9 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusOptions;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.NodeAgentSku;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,7 +28,7 @@ public class AccountOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch service.
@@ -93,8 +90,6 @@ public class AccountOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
     }
 }

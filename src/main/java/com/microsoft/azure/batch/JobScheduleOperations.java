@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -21,7 +19,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     JobScheduleOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
         _parentBatchClient = batchClient;
@@ -78,9 +76,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().exists(jobScheduleId, options);
     }
 
     /**
@@ -151,9 +147,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().get(jobScheduleId, options);
     }
 
     /**
@@ -439,9 +433,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.protocolLayer().jobSchedules().list(options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().jobSchedules().list(options);
     }
 
 }

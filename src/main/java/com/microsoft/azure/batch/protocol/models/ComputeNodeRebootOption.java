@@ -21,11 +21,11 @@ public enum ComputeNodeRebootOption {
     /** Enum value terminate. */
     TERMINATE("terminate"),
 
-    /** Enum value taskcompletion. */
-    TASKCOMPLETION("taskcompletion"),
+    /** Enum value taskCompletion. */
+    TASK_COMPLETION("taskCompletion"),
 
-    /** Enum value retaineddata. */
-    RETAINEDDATA("retaineddata");
+    /** Enum value retainedData. */
+    RETAINED_DATA("retainedData");
 
     /** The actual serialized value for a ComputeNodeRebootOption instance. */
     private String value;

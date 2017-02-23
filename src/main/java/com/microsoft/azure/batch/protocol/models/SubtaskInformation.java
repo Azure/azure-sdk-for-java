@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information about an Azure Batch subtask.
@@ -17,24 +18,28 @@ public class SubtaskInformation {
     /**
      * The ID of the subtask.
      */
+    @JsonProperty(value = "id")
     private Integer id;
 
     /**
      * Information about the compute node on which the subtask ran.
      */
+    @JsonProperty(value = "nodeInfo")
     private ComputeNodeInformation nodeInfo;
 
     /**
      * The time at which the subtask started running. If the subtask has been
-     * restarted or retried, this is the most recent time at which the
-     * subtask started running.
+     * restarted or retried, this is the most recent time at which the subtask
+     * started running.
      */
+    @JsonProperty(value = "startTime")
     private DateTime startTime;
 
     /**
      * The time at which the subtask completed.
      * This property is set only if the subtask is in the Completed state.
      */
+    @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**
@@ -43,41 +48,46 @@ public class SubtaskInformation {
      * general, the exit code for a process reflects the specific convention
      * implemented by the application developer for that process. If you use
      * the exit code value to make decisions in your code, be sure that you
-     * know the exit code convention used by the application process.
-     * However, if the Batch service terminates the subtask (due to timeout,
-     * or user termination via the API) you may see an operating
-     * system-defined exit code.
+     * know the exit code convention used by the application process. However,
+     * if the Batch service terminates the subtask (due to timeout, or user
+     * termination via the API) you may see an operating system-defined exit
+     * code.
      */
+    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /**
      * Details of any error encountered scheduling the subtask.
      */
+    @JsonProperty(value = "schedulingError")
     private TaskSchedulingError schedulingError;
 
     /**
      * The current state of the subtask.
-     * Possible values include: 'active', 'preparing', 'running', 'completed'.
+     * Possible values include: 'preparing', 'running', 'completed'.
      */
-    private TaskState state;
+    @JsonProperty(value = "state")
+    private SubtaskState state;
 
     /**
      * The time at which the subtask entered its current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
      * The previous state of the subtask.
-     * This property is not set if the subtask is in its initial running
-     * state. Possible values include: 'active', 'preparing', 'running',
-     * 'completed'.
+     * This property is not set if the subtask is in its initial running state.
+     * Possible values include: 'preparing', 'running', 'completed'.
      */
-    private TaskState previousState;
+    @JsonProperty(value = "previousState")
+    private SubtaskState previousState;
 
     /**
      * The time at which the subtask entered its previous state.
      * This property is not set if the subtask is in its initial running state.
      */
+    @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
 
     /**
@@ -205,7 +215,7 @@ public class SubtaskInformation {
      *
      * @return the state value
      */
-    public TaskState state() {
+    public SubtaskState state() {
         return this.state;
     }
 
@@ -215,7 +225,7 @@ public class SubtaskInformation {
      * @param state the state value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation withState(TaskState state) {
+    public SubtaskInformation withState(SubtaskState state) {
         this.state = state;
         return this;
     }
@@ -245,7 +255,7 @@ public class SubtaskInformation {
      *
      * @return the previousState value
      */
-    public TaskState previousState() {
+    public SubtaskState previousState() {
         return this.previousState;
     }
 
@@ -255,7 +265,7 @@ public class SubtaskInformation {
      * @param previousState the previousState value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation withPreviousState(TaskState previousState) {
+    public SubtaskInformation withPreviousState(SubtaskState previousState) {
         this.previousState = previousState;
         return this;
     }

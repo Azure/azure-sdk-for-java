@@ -27,16 +27,16 @@ import java.util.TreeMap;
 /**
  * The interceptor class to insert Shared Key credential information to request HEADER.
  */
-class BatchCredentialsInterceptor implements Interceptor {
+class BatchSharedKeyCredentialsInterceptor implements Interceptor {
 
-    private BatchSharedKeyCredentials credentials;
+    private final BatchSharedKeyCredentials credentials;
 
     /**
-     * Constructor for BatchCredentialsInterceptor
+     * Constructor for BatchSharedKeyCredentialsInterceptor
      *
      * @param batchCredentials The account name/key credential
      */
-    public BatchCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
+    BatchSharedKeyCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
         this.credentials = batchCredentials;
     }
 
@@ -125,7 +125,7 @@ class BatchCredentialsInterceptor implements Interceptor {
                 + "\n";
         signature = signature + headerValue(request, "Range") + "\n";
 
-        ArrayList<String> customHeaders = new ArrayList<String>();
+        ArrayList<String> customHeaders = new ArrayList<>();
         for (String name : request.headers().names()) {
             if (name.toLowerCase().startsWith("ocp-")) {
                 customHeaders.add(name.toLowerCase());
@@ -148,7 +148,7 @@ class BatchCredentialsInterceptor implements Interceptor {
 
         String query = request.url().query();
         if (query != null) {
-            Map<String, String> queryComponents = new TreeMap<String, String>();
+            Map<String, String> queryComponents = new TreeMap<>();
             String[] pairs = query.split("&");
             for (String pair : pairs) {
                 int idx = pair.indexOf("=");

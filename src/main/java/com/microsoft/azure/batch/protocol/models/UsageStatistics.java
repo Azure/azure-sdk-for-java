@@ -19,21 +19,21 @@ public class UsageStatistics {
     /**
      * The start time of the time range covered by the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the statistics were last updated. All statistics are
      * limited to the range between startTime and lastUpdateTime.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true)
     private DateTime lastUpdateTime;
 
     /**
-     * The aggregated wall-clock time of the dedicated compute node cores
-     * being part of the pool.
+     * The aggregated wall-clock time of the dedicated compute node cores being
+     * part of the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dedicatedCoreTime", required = true)
     private Period dedicatedCoreTime;
 
     /**

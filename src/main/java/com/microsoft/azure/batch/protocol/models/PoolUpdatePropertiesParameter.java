@@ -21,21 +21,22 @@ public class PoolUpdatePropertiesParameter {
      * If this element is present, it overwrites any existing start task. If
      * omitted, any existing start task is removed from the pool.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
      * A list of certificates to be installed on each compute node in the pool.
      * If you specify an empty collection, any existing certificate references
-     * are removed from the pool. For Windows compute nodes, the Batch
-     * service installs the certificates to the specified certificate store
-     * and location. For Linux compute nodes, the certificates are stored in
-     * a directory inside the task working directory and an environment
-     * variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query
-     * for this location. For certificates with visibility of remoteuser, a
-     * certs directory is created in the user's home directory (e.g.,
-     * /home/&lt;user-name&gt;/certs) where certificates are placed.
+     * are removed from the pool. For Windows compute nodes, the Batch service
+     * installs the certificates to the specified certificate store and
+     * location. For Linux compute nodes, the certificates are stored in a
+     * directory inside the task working directory and an environment variable
+     * AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+     * location. For certificates with visibility of 'remoteUser', a 'certs'
+     * directory is created in the user's home directory (e.g.,
+     * /home/{user-name}/certs) and certificates are placed in that directory.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "certificateReferences", required = true)
     private List<CertificateReference> certificateReferences;
 
     /**
@@ -48,16 +49,16 @@ public class PoolUpdatePropertiesParameter {
      * an empty collection, any existing application packages references are
      * removed from the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "applicationPackageReferences", required = true)
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
      * This list replaces any existing metadata configured on the pool. If
-     * omitted, or if you specify an empty collection, any existing metadata
-     * is removed from the pool.
+     * omitted, or if you specify an empty collection, any existing metadata is
+     * removed from the pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "metadata", required = true)
     private List<MetadataItem> metadata;
 
     /**

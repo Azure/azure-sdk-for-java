@@ -6,10 +6,8 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
 import java.util.*;
@@ -29,7 +27,7 @@ public class TaskOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * Gets a collection of behaviors that modify or customize requests to the Batch service.
@@ -145,12 +143,12 @@ public class TaskOperations implements IInheritedBehaviors {
                 this.bhMgr.applyRequestBehaviors(options);
 
                 try {
-                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
+                    TaskAddCollectionResult response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
 
-                    if (response.getBody() != null && response.getBody().value() != null) {
-                        for (TaskAddResult result : response.getBody().value()) {
+                    if (response != null && response.value() != null) {
+                        for (TaskAddResult result : response.value()) {
                             if (result.error() != null) {
-                                if (result.status() == TaskAddStatus.SERVERERROR) {
+                                if (result.status() == TaskAddStatus.SERVER_ERROR) {
                                     // Server error will be retried
                                     for (TaskAddParameter addParameter : taskList) {
                                         if (addParameter.id().equals(result.taskId())) {
@@ -158,14 +156,14 @@ public class TaskOperations implements IInheritedBehaviors {
                                             break;
                                         }
                                     }
-                                } else if (result.status() == TaskAddStatus.CLIENTERROR && !result.error().code().equals(BatchErrorCodeStrings.TaskExists)) {
+                                } else if (result.status() == TaskAddStatus.CLIENT_ERROR && !result.error().code().equals(BatchErrorCodeStrings.TaskExists)) {
                                     // Client error will be recorded
                                     failures.add(result);
                                 }
                             }
                         }
                     }
-                } catch (BatchErrorException | IOException e) {
+                } catch (BatchErrorException e) {
                     // Any exception will stop further call
                     exception = e;
                     pendingList.addAll(taskList);
@@ -200,7 +198,6 @@ public class TaskOperations implements IInheritedBehaviors {
         for (BatchClientBehavior op : bhMgr.getMasterListOfBehaviors()) {
             if (op instanceof BatchClientParallelOptions) {
                 threadNumber = ((BatchClientParallelOptions)op).maxDegreeOfParallelism();
-                break;
             }
         }
 
@@ -280,7 +277,7 @@ public class TaskOperations implements IInheritedBehaviors {
             for (TaskAddParameter param : pendingList) {
                 notFinished.add(param);
             }
-            throw new CreateTasksTerminatedException("At least one task failed to be added.", failures, notFinished);
+            throw new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished);
         }
 
         // We succeed here
@@ -327,9 +324,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> response = this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
     }
 
     /**
@@ -376,10 +371,10 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId, taskId, options);
+        CloudTaskListSubtasksResult response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId, taskId, options);
 
-        if (response.getBody() != null) {
-            return response.getBody().value();
+        if (response != null) {
+            return response.value();
         }
         else {
             return null;
@@ -459,9 +454,7 @@ public class TaskOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> response = this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
     }
 
     /**

@@ -20,7 +20,7 @@ public class JobScheduleUpdateParameter {
      * If you do not specify this element, it is equivalent to passing the
      * default schedule: that is, a single job scheduled to run immediately.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "schedule", required = true)
     private Schedule schedule;
 
     /**
@@ -28,7 +28,7 @@ public class JobScheduleUpdateParameter {
      * Updates affect only jobs that are started after the update has taken
      * place. Any currently active job continues with the older specification.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "jobSpecification", required = true)
     private JobSpecification jobSpecification;
 
     /**
@@ -36,6 +36,7 @@ public class JobScheduleUpdateParameter {
      * If you do not specify this element, it takes the default value of an
      * empty list; in effect, any existing metadata is deleted.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

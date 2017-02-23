@@ -12,19 +12,20 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An user account on a compute node.
+ * A user account on a compute node.
  */
 public class ComputeNodeUser {
     /**
      * The user name of the account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Whether the account should be an administrator on the compute node.
      * The default value is false.
      */
+    @JsonProperty(value = "isAdmin")
     private Boolean isAdmin;
 
     /**
@@ -32,6 +33,7 @@ public class ComputeNodeUser {
      * If omitted, the default is 1 day from the current time. For Linux
      * compute nodes, the expiryTime has a precision up to a day.
      */
+    @JsonProperty(value = "expiryTime")
     private DateTime expiryTime;
 
     /**
@@ -39,20 +41,22 @@ public class ComputeNodeUser {
      * The password is required for Windows nodes (those created with
      * 'cloudServiceConfiguration', or created with
      * 'virtualMachineConfiguration' using a Windows image reference). For
-     * Linux compute nodes, the password can optionally be specified along
-     * with the sshPublicKey property.
+     * Linux compute nodes, the password can optionally be specified along with
+     * the sshPublicKey property.
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /**
      * The SSH public key that can be used for remote login to the compute
      * node.
      * The public key should be compatible with OpenSSH encoding and should be
-     * base 64 encoded. This property can be specified only for Linux nodes.
-     * If this is specified for a Windows node, then the Batch service
-     * rejects the request; if you are calling the REST API directly, the
-     * HTTP status code is 400 (Bad Request).
+     * base 64 encoded. This property can be specified only for Linux nodes. If
+     * this is specified for a Windows node, then the Batch service rejects the
+     * request; if you are calling the REST API directly, the HTTP status code
+     * is 400 (Bad Request).
      */
+    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**

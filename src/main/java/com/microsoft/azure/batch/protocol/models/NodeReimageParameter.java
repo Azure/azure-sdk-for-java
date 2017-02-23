@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Options for reimaging a compute node.
@@ -17,8 +18,9 @@ public class NodeReimageParameter {
      * When to reimage the compute node and what to do with currently running
      * tasks.
      * The default value is requeue. Possible values include: 'requeue',
-     * 'terminate', 'taskcompletion', 'retaineddata'.
+     * 'terminate', 'taskCompletion', 'retainedData'.
      */
+    @JsonProperty(value = "nodeReimageOption")
     private ComputeNodeReimageOption nodeReimageOption;
 
     /**

@@ -18,11 +18,11 @@ public enum TaskAddStatus {
     /** Enum value success. */
     SUCCESS("success"),
 
-    /** Enum value clienterror. */
-    CLIENTERROR("clienterror"),
+    /** Enum value clientError. */
+    CLIENT_ERROR("clientError"),
 
-    /** Enum value servererror. */
-    SERVERERROR("servererror"),
+    /** Enum value serverError. */
+    SERVER_ERROR("serverError"),
 
     /** Enum value unmapped. */
     UNMAPPED("unmapped");

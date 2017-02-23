@@ -12,18 +12,18 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A job schedule that allows recurring jobs by specifying when to run jobs
- * and a specification used to create each job.
+ * A job schedule that allows recurring jobs by specifying when to run jobs and
+ * a specification used to create each job.
  */
 public class JobScheduleAddParameter {
     /**
      * A string that uniquely identifies the schedule within the account.
      * The ID can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters.
-     * The id is case-preserving and case-insensitive (that is, you may not
-     * have two ids within an account that differ only by case).
+     * hyphens and underscores, and cannot contain more than 64 characters. The
+     * id is case-preserving and case-insensitive (that is, you may not have
+     * two ids within an account that differ only by case).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -31,18 +31,19 @@ public class JobScheduleAddParameter {
      * The display name need not be unique and can contain any Unicode
      * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The schedule according to which jobs will be created.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "schedule", required = true)
     private Schedule schedule;
 
     /**
      * The details of the jobs to be created on this schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "jobSpecification", required = true)
     private JobSpecification jobSpecification;
 
     /**
@@ -50,6 +51,7 @@ public class JobScheduleAddParameter {
      * The Batch service does not assign any meaning to metadata; it is solely
      * for the use of user code.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

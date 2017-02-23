@@ -19,7 +19,7 @@ public class MultiInstanceSettings {
     /**
      * The number of compute nodes required by the task.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "numberOfInstances", required = true)
     private int numberOfInstances;
 
     /**
@@ -28,16 +28,18 @@ public class MultiInstanceSettings {
      * A typical coordination command line launches a background service and
      * verifies that the service is ready to process inter-node messages.
      */
+    @JsonProperty(value = "coordinationCommandLine")
     private String coordinationCommandLine;
 
     /**
      * A list of files that the Batch service will download before running the
      * coordination command line.
      * The difference between common resource files and task resource files is
-     * that common resource files are downloaded for all subtasks including
-     * the primary, whereas task resource files are downloaded only for the
+     * that common resource files are downloaded for all subtasks including the
+     * primary, whereas task resource files are downloaded only for the
      * primary.
      */
+    @JsonProperty(value = "commonResourceFiles")
     private List<ResourceFile> commonResourceFiles;
 
     /**

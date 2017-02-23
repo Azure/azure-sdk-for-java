@@ -19,26 +19,27 @@ public class CertificateAddParameter {
      * The X.509 thumbprint of the certificate. This is a sequence of up to 40
      * hex digits (it may include spaces but these are removed).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
     /**
      * The algorithm used to derive the thumbprint. This must be sha1.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "thumbprintAlgorithm", required = true)
     private String thumbprintAlgorithm;
 
     /**
      * The base64-encoded contents of the certificate. The maximum size is
      * 10KB.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "data", required = true)
     private String data;
 
     /**
      * The format of the certificate data.
      * Possible values include: 'pfx', 'cer', 'unmapped'.
      */
+    @JsonProperty(value = "certificateFormat")
     private CertificateFormat certificateFormat;
 
     /**
@@ -46,6 +47,7 @@ public class CertificateAddParameter {
      * This is required if the certificate format is pfx. It should be omitted
      * if the certificate format is cer.
      */
+    @JsonProperty(value = "password")
     private String password;
 
     /**

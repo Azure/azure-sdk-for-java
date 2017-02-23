@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
 import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
@@ -14,11 +13,8 @@ import com.microsoft.azure.batch.protocol.models.CertificateAddParameter;
 import com.microsoft.azure.batch.protocol.models.CertificateCancelDeletionOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateDeleteOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateFormat;
-import com.microsoft.azure.batch.protocol.models.CertificateGetHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
@@ -39,7 +35,7 @@ public class CertificateOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
-    private BatchClient _parentBatchClient;
+    private final BatchClient _parentBatchClient;
 
     /**
      * The SHA certificate algorithm.
@@ -86,11 +82,11 @@ public class CertificateOperations implements IInheritedBehaviors {
     private static String hexify (byte bytes[]) {
         char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-        StringBuffer buf = new StringBuffer(bytes.length * 2);
+        StringBuilder buf = new StringBuilder(bytes.length * 2);
 
-        for (int i = 0; i < bytes.length; ++i) {
-            buf.append(hexDigits[(bytes[i] & 0xf0) >> 4]);
-            buf.append(hexDigits[bytes[i] & 0x0f]);
+        for (byte b : bytes) {
+            buf.append(hexDigits[(b & 0xf0) >> 4]);
+            buf.append(hexDigits[b & 0x0f]);
         }
 
         return buf.toString();
@@ -161,7 +157,7 @@ public class CertificateOperations implements IInheritedBehaviors {
 
     /**
      * Cancels a failed deletion of the specified certificate. This operation can be performed only when
-     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED Delete Failed} state, and restores 
+     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETE_FAILED Delete Failed} state, and restores
      * the certificate to the {@link com.microsoft.azure.batch.protocol.models.CertificateState#ACTIVE Active} state.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
@@ -175,7 +171,7 @@ public class CertificateOperations implements IInheritedBehaviors {
 
     /**
      * Cancels a failed deletion of the specified certificate. This operation can be performed only when
-     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED Delete Failed} state, and restores 
+     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETE_FAILED Delete Failed} state, and restores
      * the certificate to the {@link com.microsoft.azure.batch.protocol.models.CertificateState#ACTIVE Active} state.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
@@ -201,7 +197,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      *  <li>The certificate is not associated with any pools.</li>
      *  <li>The certificate is not installed on any compute nodes. (Even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart.)</li>
      * </ul>
-     * <p>If you try to delete a certificate that is in use, the deletion fails. The certificate state changes to {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED Delete Failed}.
+     * <p>If you try to delete a certificate that is in use, the deletion fails. The certificate state changes to {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETE_FAILED Delete Failed}.
      * You can use {@link #cancelDeleteCertificate(String, String)} to set the status back to Active if you decide that you want to continue using the certificate.</p>
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
@@ -222,7 +218,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      *  <li>The certificate is not associated with any pools.</li>
      *  <li>The certificate is not installed on any compute nodes. (Even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart.)</li>
      * </ul>
-     * <p>If you try to delete a certificate that is in use, the deletion fails. The certificate state changes to {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED Delete Failed}.
+     * <p>If you try to delete a certificate that is in use, the deletion fails. The certificate state changes to {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETE_FAILED Delete Failed}.
      *
      * You can use {@link #cancelDeleteCertificate(String, String)} to set the status back to Active if you decide that you want to continue using the certificate.</p>
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
@@ -283,8 +279,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getCertificateOptions);
 
-        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response = this._parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
     }
 
     /**
@@ -326,8 +321,6 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(certificateListOptions);
 
-        ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> response = this._parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
     }
 }

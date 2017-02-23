@@ -18,11 +18,11 @@ public class TaskAddParameter {
     /**
      * A string that uniquely identifies the task within the job.
      * The ID can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters.
-     * The ID is case-preserving and case-insensitive (that is, you may not
-     * have two IDs within a job that differ only by case).
+     * hyphens and underscores, and cannot contain more than 64 characters. The
+     * ID is case-preserving and case-insensitive (that is, you may not have
+     * two IDs within a job that differ only by case).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -30,6 +30,7 @@ public class TaskAddParameter {
      * The display name need not be unique and can contain any Unicode
      * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
@@ -42,31 +43,35 @@ public class TaskAddParameter {
      * features, you should invoke the shell in the command line, for example
      * using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "commandLine", required = true)
     private String commandLine;
 
     /**
      * How the Batch service should respond when the task completes.
      */
+    @JsonProperty(value = "exitConditions")
     private ExitConditions exitConditions;
 
     /**
-     * A list of files that the Batch service will download to the compute
-     * node before running the command line.
+     * A list of files that the Batch service will download to the compute node
+     * before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
      * the compute node on which the primary task is executed.
      */
+    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /**
      * A list of environment variable settings for the task.
      */
+    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /**
      * A locality hint that can be used by the Batch service to select a
      * compute node on which to start the new task.
      */
+    @JsonProperty(value = "affinityInfo")
     private AffinityInformation affinityInfo;
 
     /**
@@ -75,36 +80,56 @@ public class TaskAddParameter {
      * maxTaskRetryCount specified for the job, and the maxWallClockTime and
      * retentionTime are infinite.
      */
+    @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
 
     /**
-     * Whether to run the task in elevated mode.
-     * The default value is false.
+     * The user identity under which the task runs.
+     * If omitted, the task runs as a non-administrative user unique to the
+     * task.
      */
-    private Boolean runElevated;
+    @JsonProperty(value = "userIdentity")
+    private UserIdentity userIdentity;
 
     /**
      * An object that indicates that the task is a multi-instance task, and
      * contains information about how to run the multi-instance task.
      */
+    @JsonProperty(value = "multiInstanceSettings")
     private MultiInstanceSettings multiInstanceSettings;
 
     /**
      * The tasks that this task depends on.
-     * The task will not be scheduled until all depended-on tasks have
-     * completed successfully. (If any depended-on tasks fail and exhaust
-     * their retry counts, the task will never be scheduled.) If the job does
-     * not have usesTaskDependencies set to true, and this element is
-     * present, the request fails with error code
-     * TaskDependenciesNotSpecifiedOnJob.
+     * This task will not be scheduled until all tasks that it depends on have
+     * completed successfully. If any of those tasks fail and exhaust their
+     * retry counts, this task will never be scheduled. If the job does not
+     * have usesTaskDependencies set to true, and this element is present, the
+     * request fails with error code TaskDependenciesNotSpecifiedOnJob.
      */
+    @JsonProperty(value = "dependsOn")
     private TaskDependencies dependsOn;
 
     /**
-     * A list of application packages that the Batch service will deploy to
-     * the compute node before running the command line.
+     * A list of application packages that the Batch service will deploy to the
+     * compute node before running the command line.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
+
+    /**
+     * The settings for an authentication token that the task can use to
+     * perform Batch service operations.
+     * If this property is set, the Batch service provides the task with an
+     * authentication token which can be used to authenticate Batch service
+     * operations without requiring an account access key. The token is
+     * provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The
+     * operations that the task can carry out using the token depend on the
+     * settings. For example, a task can request job permissions in order to
+     * add other tasks to the job, or check the status of the job or of other
+     * tasks under the job.
+     */
+    @JsonProperty(value = "authenticationTokenSettings")
+    private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
      * Get the id value.
@@ -267,22 +292,22 @@ public class TaskAddParameter {
     }
 
     /**
-     * Get the runElevated value.
+     * Get the userIdentity value.
      *
-     * @return the runElevated value
+     * @return the userIdentity value
      */
-    public Boolean runElevated() {
-        return this.runElevated;
+    public UserIdentity userIdentity() {
+        return this.userIdentity;
     }
 
     /**
-     * Set the runElevated value.
+     * Set the userIdentity value.
      *
-     * @param runElevated the runElevated value to set
+     * @param userIdentity the userIdentity value to set
      * @return the TaskAddParameter object itself.
      */
-    public TaskAddParameter withRunElevated(Boolean runElevated) {
-        this.runElevated = runElevated;
+    public TaskAddParameter withUserIdentity(UserIdentity userIdentity) {
+        this.userIdentity = userIdentity;
         return this;
     }
 
@@ -343,6 +368,26 @@ public class TaskAddParameter {
      */
     public TaskAddParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the authenticationTokenSettings value.
+     *
+     * @return the authenticationTokenSettings value
+     */
+    public AuthenticationTokenSettings authenticationTokenSettings() {
+        return this.authenticationTokenSettings;
+    }
+
+    /**
+     * Set the authenticationTokenSettings value.
+     *
+     * @param authenticationTokenSettings the authenticationTokenSettings value to set
+     * @return the TaskAddParameter object itself.
+     */
+    public TaskAddParameter withAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
+        this.authenticationTokenSettings = authenticationTokenSettings;
         return this;
     }
 

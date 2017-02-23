@@ -19,109 +19,109 @@ public class JobScheduleStatistics {
     /**
      * The URL of the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
      * The start time of the time range covered by the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the statistics were last updated. All statistics are
      * limited to the range between startTime and lastUpdateTime.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true)
     private DateTime lastUpdateTime;
 
     /**
      * The total user mode CPU time (summed across all cores and all compute
      * nodes) consumed by all tasks in all jobs created under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "userCPUTime", required = true)
     private Period userCPUTime;
 
     /**
      * The total kernel mode CPU time (summed across all cores and all compute
      * nodes) consumed by all tasks in all jobs created under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "kernelCPUTime", required = true)
     private Period kernelCPUTime;
 
     /**
-     * The total wall clock time of all the tasks in all the jobs created
-     * under the schedule.
+     * The total wall clock time of all the tasks in all the jobs created under
+     * the schedule.
      * The wall clock time is the elapsed time from when the task started
      * running on a compute node to when it finished (or to the last time the
      * statistics were updated, if the task had not finished by then). If a
      * task was retried, this includes the wall clock time of all the task
      * retries.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "wallClockTime", required = true)
     private Period wallClockTime;
 
     /**
      * The total number of disk read operations made by all tasks in all jobs
      * created under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "readIOps", required = true)
     private long readIOps;
 
     /**
      * The total number of disk write operations made by all tasks in all jobs
      * created under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "writeIOps", required = true)
     private long writeIOps;
 
     /**
      * The total gibibytes read from disk by all tasks in all jobs created
      * under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "readIOGiB", required = true)
     private double readIOGiB;
 
     /**
      * The total gibibytes written to disk by all tasks in all jobs created
      * under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "writeIOGiB", required = true)
     private double writeIOGiB;
 
     /**
      * The total number of tasks successfully completed during the given time
-     * range in jobs created under the schedule. A task completes
-     * successfully if it returns exit code 0.
+     * range in jobs created under the schedule. A task completes successfully
+     * if it returns exit code 0.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "numSucceededTasks", required = true)
     private long numSucceededTasks;
 
     /**
      * The total number of tasks that failed during the given time range in
-     * jobs created under the schedule. A task fails if it exhausts its
-     * maximum retry count without returning exit code 0.
+     * jobs created under the schedule. A task fails if it exhausts its maximum
+     * retry count without returning exit code 0.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "numFailedTasks", required = true)
     private long numFailedTasks;
 
     /**
      * The total number of retries during the given time range on all tasks in
      * all jobs created under the schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "numTaskRetries", required = true)
     private long numTaskRetries;
 
     /**
-     * The total wait time of all tasks in all jobs created under the
-     * schedule. The wait time for a task is defined as the elapsed time
-     * between the creation of the task and the start of task execution. (If
-     * the task is retried due to failures, the wait time is the time to the
-     * most recent task execution.).
+     * The total wait time of all tasks in all jobs created under the schedule.
+     * The wait time for a task is defined as the elapsed time between the
+     * creation of the task and the start of task execution. (If the task is
+     * retried due to failures, the wait time is the time to the most recent
+     * task execution.).
      * This value is only reported in the account lifetime statistics; it is
      * not included in the job statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "waitTime", required = true)
     private Period waitTime;
 
     /**

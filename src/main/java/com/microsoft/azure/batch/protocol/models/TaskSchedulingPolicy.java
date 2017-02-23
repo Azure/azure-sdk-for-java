@@ -18,7 +18,7 @@ public class TaskSchedulingPolicy {
      * How tasks should be distributed across compute nodes.
      * Possible values include: 'spread', 'pack', 'unmapped'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "nodeFillType", required = true)
     private ComputeNodeFillType nodeFillType;
 
     /**

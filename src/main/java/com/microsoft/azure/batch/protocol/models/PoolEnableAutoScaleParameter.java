@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.Period;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Options for enabling automatic scaling on a pool.
@@ -16,13 +17,13 @@ import org.joda.time.Period;
 public class PoolEnableAutoScaleParameter {
     /**
      * The formula for the desired number of compute nodes in the pool.
-     * The formula is checked for validity before it is applied to the pool.
-     * If the formula is not valid, the Batch service rejects the request
-     * with detailed error information. For more information about specifying
-     * this formula, see Automatically scale compute nodes in an Azure Batch
-     * pool
+     * The formula is checked for validity before it is applied to the pool. If
+     * the formula is not valid, the Batch service rejects the request with
+     * detailed error information. For more information about specifying this
+     * formula, see Automatically scale compute nodes in an Azure Batch pool
      * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      */
+    @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
 
     /**
@@ -30,14 +31,14 @@ public class PoolEnableAutoScaleParameter {
      * according to the autoscale formula.
      * The default value is 15 minutes. The minimum and maximum value are 5
      * minutes and 168 hours respectively. If you specify a value less than 5
-     * minutes or greater than 168 hours, the Batch service rejects the
-     * request with an invalid property value error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request). If you
-     * specify a new interval, then the existing autoscale evaluation
-     * schedule will be stopped and a new autoscale evaluation schedule will
-     * be started, with its starting time being the time when this request
-     * was issued.
+     * minutes or greater than 168 hours, the Batch service rejects the request
+     * with an invalid property value error; if you are calling the REST API
+     * directly, the HTTP status code is 400 (Bad Request). If you specify a
+     * new interval, then the existing autoscale evaluation schedule will be
+     * stopped and a new autoscale evaluation schedule will be started, with
+     * its starting time being the time when this request was issued.
      */
+    @JsonProperty(value = "autoScaleEvaluationInterval")
     private Period autoScaleEvaluationInterval;
 
     /**

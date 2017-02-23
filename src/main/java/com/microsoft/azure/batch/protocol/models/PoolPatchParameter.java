@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The set of changes to be made to a pool.
@@ -19,6 +20,7 @@ public class PoolPatchParameter {
      * when the node is added to the pool or when the node is restarted.
      * If omitted, any existing start task is left unchanged.
      */
+    @JsonProperty(value = "startTask")
     private StartTask startTask;
 
     /**
@@ -29,10 +31,11 @@ public class PoolPatchParameter {
      * the certificates are stored in a directory inside the task working
      * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is
      * supplied to the task to query for this location. For certificates with
-     * visibility of remoteuser, a certs directory is created in the user's
-     * home directory (e.g., /home/&lt;user-name&gt;/certs) where
-     * certificates are placed.
+     * visibility of 'remoteUser', a 'certs' directory is created in the user's
+     * home directory (e.g., /home/{user-name}/certs) and certificates are
+     * placed in that directory.
      */
+    @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
 
     /**
@@ -41,20 +44,21 @@ public class PoolPatchParameter {
      * Changes to application package references affect all new compute nodes
      * joining the pool, but do not affect compute nodes that are already in
      * the pool until they are rebooted or reimaged. If this element is
-     * present, it replaces any existing application package references. If
-     * you specify an empty collection, then all application package
-     * references are removed from the pool. If omitted, any existing
-     * application package references are left unchanged.
+     * present, it replaces any existing application package references. If you
+     * specify an empty collection, then all application package references are
+     * removed from the pool. If omitted, any existing application package
+     * references are left unchanged.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * A list of name-value pairs associated with the pool as metadata.
-     * If this element is present, it replaces any existing metadata
-     * configured on the pool. If you specify an empty collection, any
-     * metadata is removed from the pool. If omitted, any existing metadata
-     * is left unchanged.
+     * If this element is present, it replaces any existing metadata configured
+     * on the pool. If you specify an empty collection, any metadata is removed
+     * from the pool. If omitted, any existing metadata is left unchanged.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

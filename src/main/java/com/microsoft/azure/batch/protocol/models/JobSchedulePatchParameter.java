@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The set of changes to be made to a job schedule.
@@ -19,6 +20,7 @@ public class JobSchedulePatchParameter {
      * If you do not specify this element, the existing schedule is left
      * unchanged.
      */
+    @JsonProperty(value = "schedule")
     private Schedule schedule;
 
     /**
@@ -26,12 +28,14 @@ public class JobSchedulePatchParameter {
      * Updates affect only jobs that are started after the update has taken
      * place. Any currently active job continues with the older specification.
      */
+    @JsonProperty(value = "jobSpecification")
     private JobSpecification jobSpecification;
 
     /**
      * A list of name-value pairs associated with the job schedule as metadata.
      * If you do not specify this element, existing metadata is left unchanged.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

@@ -19,30 +19,32 @@ public class PoolStatistics {
     /**
      * The URL for the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
      * The start time of the time range covered by the statistics.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The time at which the statistics were last updated. All statistics are
      * limited to the range between startTime and lastUpdateTime.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lastUpdateTime", required = true)
     private DateTime lastUpdateTime;
 
     /**
      * Statistics related to pool usage, such as the amount of core-time used.
      */
+    @JsonProperty(value = "usageStats")
     private UsageStatistics usageStats;
 
     /**
      * Statistics related to resource consumption by compute nodes in the pool.
      */
+    @JsonProperty(value = "resourceStats")
     private ResourceStatistics resourceStats;
 
     /**

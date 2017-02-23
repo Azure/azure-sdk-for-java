@@ -16,20 +16,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class FileDeleteFromTaskHeaders {
     /**
      * The client-request-id provided by the client during the request. This
-     * will be returned only if the return-client-request-id parameter was
-     * set to true.
+     * will be returned only if the return-client-request-id parameter was set
+     * to true.
      */
     @JsonProperty(value = "client-request-id")
     private String clientRequestId;
 
     /**
-     * This header uniquely identifies the request that was made and can be
-     * used for troubleshooting the request. If a request is consistently
-     * failing and you have verified that the request is properly formulated,
-     * you may use this value to report the error to Microsoft. In your
-     * report, include the value of this header, the approximate time that
-     * the request was made, the Batch account against which the request was
-     * made, and the region that account resides in.
+     * A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the
+     * request is properly formulated, you may use this value to report the
+     * error to Microsoft. In your report, include the value of this request
+     * ID, the approximate time that the request was made, the Batch account
+     * against which the request was made, and the region that account resides
+     * in.
      */
     @JsonProperty(value = "request-id")
     private String requestId;

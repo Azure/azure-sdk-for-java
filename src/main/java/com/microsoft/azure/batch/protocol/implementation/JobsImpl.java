@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Jobs;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudJob;
 import com.microsoft.azure.batch.protocol.models.DisableJobOption;
@@ -25,8 +25,8 @@ import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
 import com.microsoft.azure.batch.protocol.models.JobDisableParameter;
 import com.microsoft.azure.batch.protocol.models.JobEnableHeaders;
 import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
-import com.microsoft.azure.batch.protocol.models.JobGetAllJobsLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.JobGetAllJobsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsHeaders;
+import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetHeaders;
 import com.microsoft.azure.batch.protocol.models.JobGetOptions;
 import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleHeaders;
@@ -54,16 +54,15 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponseCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -76,12 +75,14 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Jobs.
  */
-public final class JobsImpl implements Jobs {
+public class JobsImpl implements Jobs {
     /** The Retrofit service to perform REST calls. */
     private JobsService service;
     /** The service client containing this operation class. */
@@ -103,65 +104,65 @@ public final class JobsImpl implements Jobs {
      * used by Retrofit to perform actually REST calls.
      */
     interface JobsService {
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs getAllLifetimeStatistics" })
         @GET("lifetimejobstats")
-        Call<ResponseBody> getAllJobsLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs delete" })
         @HTTP(path = "jobs/{jobId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs get" })
         @GET("jobs/{jobId}")
-        Call<ResponseBody> get(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs patch" })
         @PATCH("jobs/{jobId}")
-        Call<ResponseBody> patch(@Path("jobId") String jobId, @Body JobPatchParameter jobPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("jobId") String jobId, @Body JobPatchParameter jobPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs update" })
         @PUT("jobs/{jobId}")
-        Call<ResponseBody> update(@Path("jobId") String jobId, @Body JobUpdateParameter jobUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("jobId") String jobId, @Body JobUpdateParameter jobUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs disable" })
         @POST("jobs/{jobId}/disable")
-        Call<ResponseBody> disable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobDisableParameter jobDisableParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobDisableParameter jobDisableParameter, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs enable" })
         @POST("jobs/{jobId}/enable")
-        Call<ResponseBody> enable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs terminate" })
         @POST("jobs/{jobId}/terminate")
-        Call<ResponseBody> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobTerminateParameter jobTerminateParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobTerminateParameter jobTerminateParameter, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs add" })
         @POST("jobs")
-        Call<ResponseBody> add(@Body JobAddParameter job, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body JobAddParameter job, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs list" })
         @GET("jobs")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listFromJobSchedule" })
         @GET("jobschedules/{jobScheduleId}/jobs")
-        Call<ResponseBody> listFromJobSchedule(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listFromJobSchedule(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listPreparationAndReleaseTaskStatus" })
         @GET("jobs/{jobId}/jobpreparationandreleasetaskstatus")
-        Call<ResponseBody> listPreparationAndReleaseTaskStatus(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPreparationAndReleaseTaskStatus(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listNext" })
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listFromJobScheduleNext" })
         @GET
-        Call<ResponseBody> listFromJobScheduleNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listFromJobScheduleNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listPreparationAndReleaseTaskStatusNext" })
         @GET
-        Call<ResponseBody> listPreparationAndReleaseTaskStatusNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPreparationAndReleaseTaskStatusNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -169,26 +170,13 @@ public final class JobsImpl implements Jobs {
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the JobStatistics object if successful.
      */
-    public ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> getAllJobsLifetimeStatistics() throws BatchErrorException, IOException, IllegalArgumentException {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getAllJobsLifetimeStatisticsDelegate(call.execute());
+    public JobStatistics getAllLifetimeStatistics() {
+        return getAllLifetimeStatisticsWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -196,138 +184,159 @@ public final class JobsImpl implements Jobs {
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall getAllJobsLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getAllJobsLifetimeStatisticsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
+    public ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobStatistics object
      */
-    public ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> getAllJobsLifetimeStatistics(JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<JobStatistics> getAllLifetimeStatisticsAsync() {
+        return getAllLifetimeStatisticsWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>, JobStatistics>() {
+            @Override
+            public JobStatistics call(ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobStatistics object
+     */
+    public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(jobGetAllJobsLifetimeStatisticsOptions);
+        final JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions = null;
         Integer timeout = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            timeout = jobGetAllJobsLifetimeStatisticsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            clientRequestId = jobGetAllJobsLifetimeStatisticsOptions.clientRequestId();
-        }
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = jobGetAllJobsLifetimeStatisticsOptions.returnClientRequestId();
-        }
         DateTime ocpDate = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            ocpDate = jobGetAllJobsLifetimeStatisticsOptions.ocpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getAllJobsLifetimeStatisticsDelegate(call.execute());
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders> clientResponse = getAllLifetimeStatisticsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets lifetime summary statistics for all of the jobs in the specified account.
      * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the JobStatistics object if successful.
      */
-    public ServiceCall getAllJobsLifetimeStatisticsAsync(JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public JobStatistics getAllLifetimeStatistics(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions) {
+        return getAllLifetimeStatisticsWithServiceResponseAsync(jobGetAllLifetimeStatisticsOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions, final ServiceCallback<JobStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(jobGetAllLifetimeStatisticsOptions), serviceCallback);
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobStatistics object
+     */
+    public Observable<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions) {
+        return getAllLifetimeStatisticsWithServiceResponseAsync(jobGetAllLifetimeStatisticsOptions).map(new Func1<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>, JobStatistics>() {
+            @Override
+            public JobStatistics call(ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the JobStatistics object
+     */
+    public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(jobGetAllJobsLifetimeStatisticsOptions, serviceCallback);
+        Validator.validate(jobGetAllLifetimeStatisticsOptions);
         Integer timeout = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            timeout = jobGetAllJobsLifetimeStatisticsOptions.timeout();
+        if (jobGetAllLifetimeStatisticsOptions != null) {
+            timeout = jobGetAllLifetimeStatisticsOptions.timeout();
         }
-        String clientRequestId = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            clientRequestId = jobGetAllJobsLifetimeStatisticsOptions.clientRequestId();
+        UUID clientRequestId = null;
+        if (jobGetAllLifetimeStatisticsOptions != null) {
+            clientRequestId = jobGetAllLifetimeStatisticsOptions.clientRequestId();
         }
         Boolean returnClientRequestId = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = jobGetAllJobsLifetimeStatisticsOptions.returnClientRequestId();
+        if (jobGetAllLifetimeStatisticsOptions != null) {
+            returnClientRequestId = jobGetAllLifetimeStatisticsOptions.returnClientRequestId();
         }
         DateTime ocpDate = null;
-        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
-            ocpDate = jobGetAllJobsLifetimeStatisticsOptions.ocpDate();
+        if (jobGetAllLifetimeStatisticsOptions != null) {
+            ocpDate = jobGetAllLifetimeStatisticsOptions.ocpDate();
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getAllJobsLifetimeStatisticsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders> clientResponse = getAllLifetimeStatisticsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> getAllJobsLifetimeStatisticsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobStatistics, BatchErrorException>(this.client.mapperAdapter())
+    private ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders> getAllLifetimeStatisticsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<JobStatistics, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<JobStatistics>() { }.getType())
                 .registerError(BatchErrorException.class)
-                .buildWithHeaders(response, JobGetAllJobsLifetimeStatisticsHeaders.class);
+                .buildWithHeaders(response, JobGetAllLifetimeStatisticsHeaders.class);
     }
 
     /**
@@ -335,12 +344,53 @@ public final class JobsImpl implements Jobs {
      * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
      * @param jobId The ID of the job to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String jobId) {
+        deleteWithServiceResponseAsync(jobId).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String jobId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(jobId), serviceCallback);
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobDeleteHeaders> delete(String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String jobId) {
+        return deleteWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<Void, JobDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -349,7 +399,7 @@ public final class JobsImpl implements Jobs {
         }
         final JobDeleteOptions jobDeleteOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -368,65 +418,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a job.
-     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
-     *
-     * @param jobId The ID of the job to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String jobId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobDeleteOptions jobDeleteOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -435,12 +438,56 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String jobId, JobDeleteOptions jobDeleteOptions) {
+        deleteWithServiceResponseAsync(jobId, jobDeleteOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @param jobDeleteOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(jobId, jobDeleteOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @param jobDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobDeleteHeaders> delete(String jobId, JobDeleteOptions jobDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions) {
+        return deleteWithServiceResponseAsync(jobId, jobDeleteOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
+     *
+     * @param jobId The ID of the job to delete.
+     * @param jobDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, JobDeleteOptions jobDeleteOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -452,7 +499,7 @@ public final class JobsImpl implements Jobs {
         if (jobDeleteOptions != null) {
             timeout = jobDeleteOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobDeleteOptions != null) {
             clientRequestId = jobDeleteOptions.clientRequestId();
         }
@@ -492,94 +539,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a job.
-     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
-     *
-     * @param jobId The ID of the job to delete.
-     * @param jobDeleteOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String jobId, JobDeleteOptions jobDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobDeleteOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobDeleteOptions != null) {
-            timeout = jobDeleteOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobDeleteOptions != null) {
-            clientRequestId = jobDeleteOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobDeleteOptions != null) {
-            returnClientRequestId = jobDeleteOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobDeleteOptions != null) {
-            ocpDate = jobDeleteOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobDeleteOptions != null) {
-            ifMatch = jobDeleteOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobDeleteOptions != null) {
-            ifNoneMatch = jobDeleteOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobDeleteOptions != null) {
-            ifModifiedSince = jobDeleteOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobDeleteOptions != null) {
-            ifUnmodifiedSince = jobDeleteOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobDeleteHeaders.class);
@@ -589,12 +564,51 @@ public final class JobsImpl implements Jobs {
      * Gets information about the specified job.
      *
      * @param jobId The ID of the job.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJob object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CloudJob object if successful.
      */
-    public ServiceResponseWithHeaders<CloudJob, JobGetHeaders> get(String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public CloudJob get(String jobId) {
+        return getWithServiceResponseAsync(jobId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudJob> getAsync(String jobId, final ServiceCallback<CloudJob> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(jobId), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudJob object
+     */
+    public Observable<CloudJob> getAsync(String jobId) {
+        return getWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>, CloudJob>() {
+            @Override
+            public CloudJob call(ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudJob object
+     */
+    public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -605,7 +619,7 @@ public final class JobsImpl implements Jobs {
         String select = null;
         String expand = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -624,66 +638,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified job.
-     *
-     * @param jobId The ID of the job.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String jobId, final ServiceCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobGetOptions jobGetOptions = null;
-        String select = null;
-        String expand = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -691,12 +657,54 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudJob object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CloudJob object if successful.
      */
-    public ServiceResponseWithHeaders<CloudJob, JobGetHeaders> get(String jobId, JobGetOptions jobGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public CloudJob get(String jobId, JobGetOptions jobGetOptions) {
+        return getWithServiceResponseAsync(jobId, jobGetOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudJob> getAsync(String jobId, JobGetOptions jobGetOptions, final ServiceCallback<CloudJob> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(jobId, jobGetOptions), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudJob object
+     */
+    public Observable<CloudJob> getAsync(String jobId, JobGetOptions jobGetOptions) {
+        return getWithServiceResponseAsync(jobId, jobGetOptions).map(new Func1<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>, CloudJob>() {
+            @Override
+            public CloudJob call(ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified job.
+     *
+     * @param jobId The ID of the job.
+     * @param jobGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudJob object
+     */
+    public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId, JobGetOptions jobGetOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -716,7 +724,7 @@ public final class JobsImpl implements Jobs {
         if (jobGetOptions != null) {
             timeout = jobGetOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobGetOptions != null) {
             clientRequestId = jobGetOptions.clientRequestId();
         }
@@ -756,101 +764,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified job.
-     *
-     * @param jobId The ID of the job.
-     * @param jobGetOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String jobId, JobGetOptions jobGetOptions, final ServiceCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobGetOptions, serviceCallback);
-        String select = null;
-        if (jobGetOptions != null) {
-            select = jobGetOptions.select();
-        }
-        String expand = null;
-        if (jobGetOptions != null) {
-            expand = jobGetOptions.expand();
-        }
-        Integer timeout = null;
-        if (jobGetOptions != null) {
-            timeout = jobGetOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobGetOptions != null) {
-            clientRequestId = jobGetOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobGetOptions != null) {
-            returnClientRequestId = jobGetOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobGetOptions != null) {
-            ocpDate = jobGetOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobGetOptions != null) {
-            ifMatch = jobGetOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobGetOptions != null) {
-            ifNoneMatch = jobGetOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobGetOptions != null) {
-            ifModifiedSince = jobGetOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobGetOptions != null) {
-            ifUnmodifiedSince = jobGetOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<CloudJob, JobGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudJob, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CloudJob, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CloudJob>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobGetHeaders.class);
@@ -862,12 +791,56 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void patch(String jobId, JobPatchParameter jobPatchParameter) {
+        patchWithServiceResponseAsync(jobId, jobPatchParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(jobId, jobPatchParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobPatchHeaders> patch(String jobId, JobPatchParameter jobPatchParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter) {
+        return patchWithServiceResponseAsync(jobId, jobPatchParameter).map(new Func1<ServiceResponseWithHeaders<Void, JobPatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobPatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -880,7 +853,7 @@ public final class JobsImpl implements Jobs {
         Validator.validate(jobPatchParameter);
         final JobPatchOptions jobPatchOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -899,71 +872,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job.
-     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
-     *
-     * @param jobId The ID of the job whose properties you want to update.
-     * @param jobPatchParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String jobId, JobPatchParameter jobPatchParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (jobPatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobPatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobPatchParameter, serviceCallback);
-        final JobPatchOptions jobPatchOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobPatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -973,12 +893,59 @@ public final class JobsImpl implements Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void patch(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions) {
+        patchWithServiceResponseAsync(jobId, jobPatchParameter, jobPatchOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @param jobPatchOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(jobId, jobPatchParameter, jobPatchOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @param jobPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobPatchHeaders> patch(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions) {
+        return patchWithServiceResponseAsync(jobId, jobPatchParameter, jobPatchOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobPatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobPatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobPatchParameter The parameters for the request.
+     * @param jobPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -994,7 +961,7 @@ public final class JobsImpl implements Jobs {
         if (jobPatchOptions != null) {
             timeout = jobPatchOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobPatchOptions != null) {
             clientRequestId = jobPatchOptions.clientRequestId();
         }
@@ -1034,100 +1001,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job.
-     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
-     *
-     * @param jobId The ID of the job whose properties you want to update.
-     * @param jobPatchParameter The parameters for the request.
-     * @param jobPatchOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (jobPatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobPatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobPatchParameter, serviceCallback);
-        Validator.validate(jobPatchOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobPatchOptions != null) {
-            timeout = jobPatchOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobPatchOptions != null) {
-            clientRequestId = jobPatchOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobPatchOptions != null) {
-            returnClientRequestId = jobPatchOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobPatchOptions != null) {
-            ocpDate = jobPatchOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobPatchOptions != null) {
-            ifMatch = jobPatchOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobPatchOptions != null) {
-            ifNoneMatch = jobPatchOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobPatchOptions != null) {
-            ifModifiedSince = jobPatchOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobPatchOptions != null) {
-            ifUnmodifiedSince = jobPatchOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobPatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobPatchHeaders> patchDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobPatchHeaders.class);
@@ -1139,12 +1028,56 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void update(String jobId, JobUpdateParameter jobUpdateParameter) {
+        updateWithServiceResponseAsync(jobId, jobUpdateParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updateWithServiceResponseAsync(jobId, jobUpdateParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobUpdateHeaders> update(String jobId, JobUpdateParameter jobUpdateParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter) {
+        return updateWithServiceResponseAsync(jobId, jobUpdateParameter).map(new Func1<ServiceResponseWithHeaders<Void, JobUpdateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobUpdateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1157,7 +1090,7 @@ public final class JobsImpl implements Jobs {
         Validator.validate(jobUpdateParameter);
         final JobUpdateOptions jobUpdateOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1176,71 +1109,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return updateDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
-     *
-     * @param jobId The ID of the job whose properties you want to update.
-     * @param jobUpdateParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (jobUpdateParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobUpdateParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobUpdateParameter, serviceCallback);
-        final JobUpdateOptions jobUpdateOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobUpdateHeaders> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1250,12 +1130,59 @@ public final class JobsImpl implements Jobs {
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void update(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions) {
+        updateWithServiceResponseAsync(jobId, jobUpdateParameter, jobUpdateOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @param jobUpdateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updateWithServiceResponseAsync(jobId, jobUpdateParameter, jobUpdateOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @param jobUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobUpdateHeaders> update(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions) {
+        return updateWithServiceResponseAsync(jobId, jobUpdateParameter, jobUpdateOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobUpdateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobUpdateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the job whose properties you want to update.
+     * @param jobUpdateParameter The parameters for the request.
+     * @param jobUpdateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1271,7 +1198,7 @@ public final class JobsImpl implements Jobs {
         if (jobUpdateOptions != null) {
             timeout = jobUpdateOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobUpdateOptions != null) {
             clientRequestId = jobUpdateOptions.clientRequestId();
         }
@@ -1311,100 +1238,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return updateDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
-     *
-     * @param jobId The ID of the job whose properties you want to update.
-     * @param jobUpdateParameter The parameters for the request.
-     * @param jobUpdateOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (jobUpdateParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobUpdateParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobUpdateParameter, serviceCallback);
-        Validator.validate(jobUpdateOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobUpdateOptions != null) {
-            timeout = jobUpdateOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobUpdateOptions != null) {
-            clientRequestId = jobUpdateOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobUpdateOptions != null) {
-            returnClientRequestId = jobUpdateOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobUpdateOptions != null) {
-            ocpDate = jobUpdateOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobUpdateOptions != null) {
-            ifMatch = jobUpdateOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobUpdateOptions != null) {
-            ifNoneMatch = jobUpdateOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobUpdateOptions != null) {
-            ifModifiedSince = jobUpdateOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobUpdateOptions != null) {
-            ifUnmodifiedSince = jobUpdateOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobUpdateHeaders> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobUpdateHeaders> updateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobUpdateHeaders.class);
@@ -1415,13 +1264,57 @@ public final class JobsImpl implements Jobs {
      * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
      * @param jobId The ID of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disable(String jobId, DisableJobOption disableTasks) {
+        disableWithServiceResponseAsync(jobId, disableTasks).toBlocking().single().body();
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAsync(String jobId, DisableJobOption disableTasks, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableWithServiceResponseAsync(jobId, disableTasks), serviceCallback);
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobDisableHeaders> disable(String jobId, DisableJobOption disableTasks) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAsync(String jobId, DisableJobOption disableTasks) {
+        return disableWithServiceResponseAsync(jobId, disableTasks).map(new Func1<ServiceResponseWithHeaders<Void, JobDisableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobDisableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1433,7 +1326,7 @@ public final class JobsImpl implements Jobs {
         }
         final JobDisableOptions jobDisableOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1454,72 +1347,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
-        return disableDelegate(call.execute());
-    }
-
-    /**
-     * Disables the specified job, preventing new tasks from running.
-     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
-     *
-     * @param jobId The ID of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAsync(String jobId, DisableJobOption disableTasks, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (disableTasks == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter disableTasks is required and cannot be null."));
-            return null;
-        }
-        final JobDisableOptions jobDisableOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.withDisableTasks(disableTasks);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobDisableHeaders> clientResponse = disableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1527,14 +1366,61 @@ public final class JobsImpl implements Jobs {
      * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
      * @param jobId The ID of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disable(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions) {
+        disableWithServiceResponseAsync(jobId, disableTasks, jobDisableOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobDisableOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableWithServiceResponseAsync(jobId, disableTasks, jobDisableOptions), serviceCallback);
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobDisableHeaders> disable(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions) {
+        return disableWithServiceResponseAsync(jobId, disableTasks, jobDisableOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobDisableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobDisableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
+     *
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. requeue - Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate - Terminate running tasks. The tasks will not run again. wait - Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobDisableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1549,7 +1435,7 @@ public final class JobsImpl implements Jobs {
         if (jobDisableOptions != null) {
             timeout = jobDisableOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobDisableOptions != null) {
             clientRequestId = jobDisableOptions.clientRequestId();
         }
@@ -1591,101 +1477,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
-        return disableDelegate(call.execute());
-    }
-
-    /**
-     * Disables the specified job, preventing new tasks from running.
-     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
-     *
-     * @param jobId The ID of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
-     * @param jobDisableOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (disableTasks == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter disableTasks is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobDisableOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobDisableOptions != null) {
-            timeout = jobDisableOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobDisableOptions != null) {
-            clientRequestId = jobDisableOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobDisableOptions != null) {
-            returnClientRequestId = jobDisableOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobDisableOptions != null) {
-            ocpDate = jobDisableOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobDisableOptions != null) {
-            ifMatch = jobDisableOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobDisableOptions != null) {
-            ifNoneMatch = jobDisableOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobDisableOptions != null) {
-            ifModifiedSince = jobDisableOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobDisableOptions != null) {
-            ifUnmodifiedSince = jobDisableOptions.ifUnmodifiedSince();
-        }
-        JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.withDisableTasks(disableTasks);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobDisableHeaders> clientResponse = disableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobDisableHeaders> disableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobDisableHeaders.class);
@@ -1696,41 +1503,12 @@ public final class JobsImpl implements Jobs {
      * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public ServiceResponseWithHeaders<Void, JobEnableHeaders> enable(String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (jobId == null) {
-            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final JobEnableOptions jobEnableOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableDelegate(call.execute());
+    public void enable(String jobId) {
+        enableWithServiceResponseAsync(jobId).toBlocking().single().body();
     }
 
     /**
@@ -1739,24 +1517,48 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall enableAsync(String jobId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<Void> enableAsync(String jobId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableWithServiceResponseAsync(jobId), serviceCallback);
+    }
+
+    /**
+     * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     *
+     * @param jobId The ID of the job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> enableAsync(String jobId) {
+        return enableWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<Void, JobEnableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobEnableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     *
+     * @param jobId The ID of the job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final JobEnableOptions jobEnableOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1775,19 +1577,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobEnableHeaders> clientResponse = enableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1796,12 +1597,56 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void enable(String jobId, JobEnableOptions jobEnableOptions) {
+        enableWithServiceResponseAsync(jobId, jobEnableOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     *
+     * @param jobId The ID of the job to enable.
+     * @param jobEnableOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableAsync(String jobId, JobEnableOptions jobEnableOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableWithServiceResponseAsync(jobId, jobEnableOptions), serviceCallback);
+    }
+
+    /**
+     * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     *
+     * @param jobId The ID of the job to enable.
+     * @param jobEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobEnableHeaders> enable(String jobId, JobEnableOptions jobEnableOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableAsync(String jobId, JobEnableOptions jobEnableOptions) {
+        return enableWithServiceResponseAsync(jobId, jobEnableOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobEnableHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobEnableHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     *
+     * @param jobId The ID of the job to enable.
+     * @param jobEnableOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId, JobEnableOptions jobEnableOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1813,7 +1658,7 @@ public final class JobsImpl implements Jobs {
         if (jobEnableOptions != null) {
             timeout = jobEnableOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobEnableOptions != null) {
             clientRequestId = jobEnableOptions.clientRequestId();
         }
@@ -1853,94 +1698,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableDelegate(call.execute());
-    }
-
-    /**
-     * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
-     *
-     * @param jobId The ID of the job to enable.
-     * @param jobEnableOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableAsync(String jobId, JobEnableOptions jobEnableOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobEnableOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobEnableOptions != null) {
-            timeout = jobEnableOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobEnableOptions != null) {
-            clientRequestId = jobEnableOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobEnableOptions != null) {
-            returnClientRequestId = jobEnableOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobEnableOptions != null) {
-            ocpDate = jobEnableOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobEnableOptions != null) {
-            ifMatch = jobEnableOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobEnableOptions != null) {
-            ifNoneMatch = jobEnableOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobEnableOptions != null) {
-            ifModifiedSince = jobEnableOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobEnableOptions != null) {
-            ifUnmodifiedSince = jobEnableOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobEnableHeaders> clientResponse = enableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobEnableHeaders> enableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobEnableHeaders.class);
@@ -1951,12 +1724,53 @@ public final class JobsImpl implements Jobs {
      * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
      * @param jobId The ID of the job to terminate.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void terminate(String jobId) {
+        terminateWithServiceResponseAsync(jobId).toBlocking().single().body();
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> terminateAsync(String jobId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(terminateWithServiceResponseAsync(jobId), serviceCallback);
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobTerminateHeaders> terminate(String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> terminateAsync(String jobId) {
+        return terminateWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<Void, JobTerminateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobTerminateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1966,7 +1780,7 @@ public final class JobsImpl implements Jobs {
         final String terminateReason = null;
         final JobTerminateOptions jobTerminateOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1987,68 +1801,18 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
-        return terminateDelegate(call.execute());
-    }
-
-    /**
-     * Terminates the specified job, marking it as completed.
-     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
-     *
-     * @param jobId The ID of the job to terminate.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall terminateAsync(String jobId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final String terminateReason = null;
-        final JobTerminateOptions jobTerminateOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
-        jobTerminateParameter.withTerminateReason(null);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(terminateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobTerminateHeaders> clientResponse = terminateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2058,12 +1822,59 @@ public final class JobsImpl implements Jobs {
      * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void terminate(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions) {
+        terminateWithServiceResponseAsync(jobId, terminateReason, jobTerminateOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
+     * @param jobTerminateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(terminateWithServiceResponseAsync(jobId, terminateReason, jobTerminateOptions), serviceCallback);
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
+     * @param jobTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobTerminateHeaders> terminate(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions) {
+        return terminateWithServiceResponseAsync(jobId, terminateReason, jobTerminateOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobTerminateHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobTerminateHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
+     *
+     * @param jobId The ID of the job to terminate.
+     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
+     * @param jobTerminateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2075,7 +1886,7 @@ public final class JobsImpl implements Jobs {
         if (jobTerminateOptions != null) {
             timeout = jobTerminateOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobTerminateOptions != null) {
             clientRequestId = jobTerminateOptions.clientRequestId();
         }
@@ -2120,100 +1931,22 @@ public final class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
-        return terminateDelegate(call.execute());
-    }
-
-    /**
-     * Terminates the specified job, marking it as completed.
-     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
-     *
-     * @param jobId The ID of the job to terminate.
-     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
-     * @param jobTerminateOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall terminateAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobTerminateOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobTerminateOptions != null) {
-            timeout = jobTerminateOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobTerminateOptions != null) {
-            clientRequestId = jobTerminateOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobTerminateOptions != null) {
-            returnClientRequestId = jobTerminateOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobTerminateOptions != null) {
-            ocpDate = jobTerminateOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (jobTerminateOptions != null) {
-            ifMatch = jobTerminateOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobTerminateOptions != null) {
-            ifNoneMatch = jobTerminateOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobTerminateOptions != null) {
-            ifModifiedSince = jobTerminateOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobTerminateOptions != null) {
-            ifUnmodifiedSince = jobTerminateOptions.ifUnmodifiedSince();
-        }
-        JobTerminateParameter jobTerminateParameter = null;
-        if (terminateReason != null) {
-            jobTerminateParameter = new JobTerminateParameter();
-            jobTerminateParameter.withTerminateReason(terminateReason);
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(terminateDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobTerminateHeaders> clientResponse = terminateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobTerminateHeaders> terminateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobTerminateHeaders.class);
@@ -2224,12 +1957,53 @@ public final class JobsImpl implements Jobs {
      * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void add(JobAddParameter job) {
+        addWithServiceResponseAsync(job).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(JobAddParameter job, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(job), serviceCallback);
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobAddHeaders> add(JobAddParameter job) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(JobAddParameter job) {
+        return addWithServiceResponseAsync(job).map(new Func1<ServiceResponseWithHeaders<Void, JobAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job) {
         if (job == null) {
             throw new IllegalArgumentException("Parameter job is required and cannot be null.");
         }
@@ -2239,61 +2013,25 @@ public final class JobsImpl implements Jobs {
         Validator.validate(job);
         final JobAddOptions jobAddOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a job to the specified account.
-     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param job The job to be added.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(JobAddParameter job, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (job == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter job is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(job, serviceCallback);
-        final JobAddOptions jobAddOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2302,12 +2040,56 @@ public final class JobsImpl implements Jobs {
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void add(JobAddParameter job, JobAddOptions jobAddOptions) {
+        addWithServiceResponseAsync(job, jobAddOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @param jobAddOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(JobAddParameter job, JobAddOptions jobAddOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(job, jobAddOptions), serviceCallback);
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @param jobAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, JobAddHeaders> add(JobAddParameter job, JobAddOptions jobAddOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(JobAddParameter job, JobAddOptions jobAddOptions) {
+        return addWithServiceResponseAsync(job, jobAddOptions).map(new Func1<ServiceResponseWithHeaders<Void, JobAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, JobAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param job The job to be added.
+     * @param jobAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job, JobAddOptions jobAddOptions) {
         if (job == null) {
             throw new IllegalArgumentException("Parameter job is required and cannot be null.");
         }
@@ -2320,7 +2102,7 @@ public final class JobsImpl implements Jobs {
         if (jobAddOptions != null) {
             timeout = jobAddOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobAddOptions != null) {
             clientRequestId = jobAddOptions.clientRequestId();
         }
@@ -2336,71 +2118,22 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a job to the specified account.
-     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param job The job to be added.
-     * @param jobAddOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(JobAddParameter job, JobAddOptions jobAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (job == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter job is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(job, serviceCallback);
-        Validator.validate(jobAddOptions, serviceCallback);
-        Integer timeout = null;
-        if (jobAddOptions != null) {
-            timeout = jobAddOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobAddOptions != null) {
-            clientRequestId = jobAddOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobAddOptions != null) {
-            returnClientRequestId = jobAddOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobAddOptions != null) {
-            ocpDate = jobAddOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, JobAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, JobAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobAddHeaders.class);
@@ -2409,12 +2142,83 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> list() {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2424,84 +2228,133 @@ public final class JobsImpl implements Jobs {
         String expand = null;
         Integer maxResults = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
-            @Override
-            public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the jobs in the specified account.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobListOptions jobListOptions = null;
-        String filter = null;
-        String select = null;
-        String expand = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Lists all of the jobs in the specified account.
      *
      * @param jobListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> list(final JobListOptions jobListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> list(final JobListOptions jobListOptions) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listSinglePageAsync(jobListOptions).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                JobListNextOptions jobListNextOptions = null;
+                if (jobListOptions != null) {
+                    jobListNextOptions = new JobListNextOptions();
+                    jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                    jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                    jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
+                }
+                return listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param jobListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(jobListOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
+                    JobListNextOptions jobListNextOptions = null;
+                    if (jobListOptions != null) {
+                        jobListNextOptions = new JobListNextOptions();
+                        jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                        jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                        jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
+                    }
+                    return listNextSinglePageAsync(nextPageLink, jobListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listAsync(final JobListOptions jobListOptions) {
+        return listWithServiceResponseAsync(jobListOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listWithServiceResponseAsync(final JobListOptions jobListOptions) {
+        return listSinglePageAsync(jobListOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    JobListNextOptions jobListNextOptions = null;
+                    if (jobListOptions != null) {
+                        jobListNextOptions = new JobListNextOptions();
+                        jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                        jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                        jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, jobListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync(final JobListOptions jobListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2526,7 +2379,7 @@ public final class JobsImpl implements Jobs {
         if (jobListOptions != null) {
             timeout = jobListOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListOptions != null) {
             clientRequestId = jobListOptions.clientRequestId();
         }
@@ -2542,108 +2395,22 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
-            @Override
-            public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                JobListNextOptions jobListNextOptions = null;
-                if (jobListOptions != null) {
-                    jobListNextOptions = new JobListNextOptions();
-                    jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
-                    jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
-                    jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
-                }
-                return listNext(nextPageLink, jobListNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the jobs in the specified account.
-     *
-     * @param jobListOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListOptions, serviceCallback);
-        String filter = null;
-        if (jobListOptions != null) {
-            filter = jobListOptions.filter();
-        }
-        String select = null;
-        if (jobListOptions != null) {
-            select = jobListOptions.select();
-        }
-        String expand = null;
-        if (jobListOptions != null) {
-            expand = jobListOptions.expand();
-        }
-        Integer maxResults = null;
-        if (jobListOptions != null) {
-            maxResults = jobListOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (jobListOptions != null) {
-            timeout = jobListOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobListOptions != null) {
-            clientRequestId = jobListOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListOptions != null) {
-            returnClientRequestId = jobListOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListOptions != null) {
-            ocpDate = jobListOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListNextOptions jobListNextOptions = null;
-                        if (jobListOptions != null) {
-                            jobListNextOptions = new JobListNextOptions();
-                            jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
-                            jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
-                            jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJob>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJob>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJob>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListHeaders.class);
@@ -2653,12 +2420,87 @@ public final class JobsImpl implements Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobSchedule(final String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> listFromJobSchedule(final String jobScheduleId) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleSinglePageAsync(jobScheduleId).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listFromJobScheduleNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listFromJobScheduleSinglePageAsync(jobScheduleId),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
+                    return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId) {
+        return listFromJobScheduleWithServiceResponseAsync(jobScheduleId)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleWithServiceResponseAsync(final String jobScheduleId) {
+        return listFromJobScheduleSinglePageAsync(jobScheduleId)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listFromJobScheduleNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2671,77 +2513,25 @@ public final class JobsImpl implements Jobs {
         String expand = null;
         Integer maxResults = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleDelegate(call.execute());
-        PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
-            @Override
-            public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listFromJobScheduleNext(nextPageLink, null).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists the jobs that have been created under the specified job schedule.
-     *
-     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobListFromJobScheduleOptions jobListFromJobScheduleOptions = null;
-        String filter = null;
-        String select = null;
-        String expand = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2749,12 +2539,112 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobSchedule(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> listFromJobSchedule(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                if (jobListFromJobScheduleOptions != null) {
+                    jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                    jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                    jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                    jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                }
+                return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
+                    JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                    if (jobListFromJobScheduleOptions != null) {
+                        jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                        jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                        jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                        jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                    }
+                    return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+        return listFromJobScheduleWithServiceResponseAsync(jobScheduleId, jobListFromJobScheduleOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleWithServiceResponseAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+        return listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                    if (jobListFromJobScheduleOptions != null) {
+                        jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                        jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                        jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                        jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listFromJobScheduleNextWithServiceResponseAsync(nextPageLink, jobListFromJobScheduleNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2782,7 +2672,7 @@ public final class JobsImpl implements Jobs {
         if (jobListFromJobScheduleOptions != null) {
             timeout = jobListFromJobScheduleOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListFromJobScheduleOptions != null) {
             clientRequestId = jobListFromJobScheduleOptions.clientRequestId();
         }
@@ -2798,113 +2688,22 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleDelegate(call.execute());
-        PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
-            @Override
-            public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
-                if (jobListFromJobScheduleOptions != null) {
-                    jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
-                    jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
-                    jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
-                    jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
-                }
-                return listFromJobScheduleNext(nextPageLink, jobListFromJobScheduleNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists the jobs that have been created under the specified job schedule.
-     *
-     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
-     * @param jobListFromJobScheduleOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobScheduleId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListFromJobScheduleOptions, serviceCallback);
-        String filter = null;
-        if (jobListFromJobScheduleOptions != null) {
-            filter = jobListFromJobScheduleOptions.filter();
-        }
-        String select = null;
-        if (jobListFromJobScheduleOptions != null) {
-            select = jobListFromJobScheduleOptions.select();
-        }
-        String expand = null;
-        if (jobListFromJobScheduleOptions != null) {
-            expand = jobListFromJobScheduleOptions.expand();
-        }
-        Integer maxResults = null;
-        if (jobListFromJobScheduleOptions != null) {
-            maxResults = jobListFromJobScheduleOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (jobListFromJobScheduleOptions != null) {
-            timeout = jobListFromJobScheduleOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobListFromJobScheduleOptions != null) {
-            clientRequestId = jobListFromJobScheduleOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListFromJobScheduleOptions != null) {
-            returnClientRequestId = jobListFromJobScheduleOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListFromJobScheduleOptions != null) {
-            ocpDate = jobListFromJobScheduleOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
-                        if (jobListFromJobScheduleOptions != null) {
-                            jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
-                            jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
-                            jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
-                            jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
-                        }
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJob>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJob>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJob>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListFromJobScheduleHeaders.class);
@@ -2915,12 +2714,91 @@ public final class JobsImpl implements Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param jobId The ID of the job.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatus(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(final String jobId) {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId).toBlocking().single();
+        return new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.body()) {
+            @Override
+            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) {
+                return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listPreparationAndReleaseTaskStatusSinglePageAsync(jobId),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
+                    return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId) {
+        return listPreparationAndReleaseTaskStatusWithServiceResponseAsync(jobId)
+            .map(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Page<JobPreparationAndReleaseTaskExecutionInformation>>() {
+                @Override
+                public Page<JobPreparationAndReleaseTaskExecutionInformation> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusWithServiceResponseAsync(final String jobId) {
+        return listPreparationAndReleaseTaskStatusSinglePageAsync(jobId)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2932,77 +2810,25 @@ public final class JobsImpl implements Jobs {
         String select = null;
         Integer maxResults = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusDelegate(call.execute());
-        PagedList<JobPreparationAndReleaseTaskExecutionInformation> result = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
-            @Override
-            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listPreparationAndReleaseTaskStatusNext(nextPageLink, null).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
-     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
-     *
-     * @param jobId The ID of the job.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions = null;
-        String filter = null;
-        String select = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3011,12 +2837,116 @@ public final class JobsImpl implements Jobs {
      *
      * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatus(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions).toBlocking().single();
+        return new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.body()) {
+            @Override
+            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) {
+                JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                    jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                }
+                return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
+                    JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                    if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                        jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                    }
+                    return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+        return listPreparationAndReleaseTaskStatusWithServiceResponseAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Page<JobPreparationAndReleaseTaskExecutionInformation>>() {
+                @Override
+                public Page<JobPreparationAndReleaseTaskExecutionInformation> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param jobId The ID of the job.
+     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusWithServiceResponseAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+        return listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                    if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                        jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                        jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobId The ID of the job.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -3040,7 +2970,7 @@ public final class JobsImpl implements Jobs {
         if (jobListPreparationAndReleaseTaskStatusOptions != null) {
             timeout = jobListPreparationAndReleaseTaskStatusOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListPreparationAndReleaseTaskStatusOptions != null) {
             clientRequestId = jobListPreparationAndReleaseTaskStatusOptions.clientRequestId();
         }
@@ -3056,110 +2986,22 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusDelegate(call.execute());
-        PagedList<JobPreparationAndReleaseTaskExecutionInformation> result = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
-            @Override
-            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
-                if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-                    jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
-                    jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
-                    jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
-                    jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
-                }
-                return listPreparationAndReleaseTaskStatusNext(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
-     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
-     *
-     * @param jobId The ID of the job.
-     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListPreparationAndReleaseTaskStatusOptions, serviceCallback);
-        String filter = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            filter = jobListPreparationAndReleaseTaskStatusOptions.filter();
-        }
-        String select = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            select = jobListPreparationAndReleaseTaskStatusOptions.select();
-        }
-        Integer maxResults = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            maxResults = jobListPreparationAndReleaseTaskStatusOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            timeout = jobListPreparationAndReleaseTaskStatusOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            clientRequestId = jobListPreparationAndReleaseTaskStatusOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            returnClientRequestId = jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-            ocpDate = jobListPreparationAndReleaseTaskStatusOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
-                        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-                            jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
-                        }
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListPreparationAndReleaseTaskStatusHeaders.class);
@@ -3169,72 +3011,112 @@ public final class JobsImpl implements Jobs {
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        final JobListNextOptions jobListNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
+    public PagedList<CloudJob> listNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
     }
 
     /**
      * Lists all of the jobs in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final JobListNextOptions jobListNextOptions = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3242,17 +3124,97 @@ public final class JobsImpl implements Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> listNext(final String nextPageLink, final JobListNextOptions jobListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> listNext(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink, jobListNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, jobListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
+        return listNextWithServiceResponseAsync(nextPageLink, jobListNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
+        return listNextSinglePageAsync(nextPageLink, jobListNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, jobListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the jobs in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextSinglePageAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Validator.validate(jobListNextOptions);
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListNextOptions != null) {
             clientRequestId = jobListNextOptions.clientRequestId();
         }
@@ -3268,69 +3230,23 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists all of the jobs in the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (jobListNextOptions != null) {
-            clientRequestId = jobListNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListNextOptions != null) {
-            returnClientRequestId = jobListNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListNextOptions != null) {
-            ocpDate = jobListNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJob>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJob>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJob>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListHeaders.class);
@@ -3340,72 +3256,112 @@ public final class JobsImpl implements Jobs {
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listFromJobScheduleNextDelegate(call.execute());
+    public PagedList<CloudJob> listFromJobScheduleNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listFromJobScheduleNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
     }
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listFromJobScheduleNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
+                    return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink) {
+        return listFromJobScheduleNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextWithServiceResponseAsync(final String nextPageLink) {
+        return listFromJobScheduleNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listFromJobScheduleNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listFromJobScheduleNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3413,17 +3369,97 @@ public final class JobsImpl implements Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudJob&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleNext(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudJob> listFromJobScheduleNext(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single();
+        return new PagedList<CloudJob>(response.body()) {
+            @Override
+            public Page<CloudJob> nextPage(String nextPageLink) {
+                return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceFuture<List<CloudJob>> serviceFuture, final ListOperationCallback<CloudJob> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
+                    return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
+        return listFromJobScheduleNextWithServiceResponseAsync(nextPageLink, jobListFromJobScheduleNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Page<CloudJob>>() {
+                @Override
+                public Page<CloudJob> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudJob&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextWithServiceResponseAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
+        return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listFromJobScheduleNextWithServiceResponseAsync(nextPageLink, jobListFromJobScheduleNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the jobs that have been created under the specified job schedule.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Validator.validate(jobListFromJobScheduleNextOptions);
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListFromJobScheduleNextOptions != null) {
             clientRequestId = jobListFromJobScheduleNextOptions.clientRequestId();
         }
@@ -3439,69 +3475,23 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listFromJobScheduleNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the jobs that have been created under the specified job schedule.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListFromJobScheduleNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (jobListFromJobScheduleNextOptions != null) {
-            clientRequestId = jobListFromJobScheduleNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListFromJobScheduleNextOptions != null) {
-            returnClientRequestId = jobListFromJobScheduleNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListFromJobScheduleNextOptions != null) {
-            ocpDate = jobListFromJobScheduleNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listFromJobScheduleNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJob>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudJob>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJob>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListFromJobScheduleHeaders.class);
@@ -3512,25 +3502,19 @@ public final class JobsImpl implements Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listPreparationAndReleaseTaskStatusNextDelegate(call.execute());
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatusNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.body()) {
+            @Override
+            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) {
+                return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -3538,47 +3522,96 @@ public final class JobsImpl implements Jobs {
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceFuture, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
+                    return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink) {
+        return listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Page<JobPreparationAndReleaseTaskExecutionInformation>>() {
+                @Override
+                public Page<JobPreparationAndReleaseTaskExecutionInformation> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(final String nextPageLink) {
+        return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPreparationAndReleaseTaskStatusNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3587,17 +3620,101 @@ public final class JobsImpl implements Jobs {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusNext(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatusNext(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single();
+        return new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.body()) {
+            @Override
+            public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) {
+                return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceFuture<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceFuture, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
+                    return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
+        return listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Page<JobPreparationAndReleaseTaskExecutionInformation>>() {
+                @Override
+                public Page<JobPreparationAndReleaseTaskExecutionInformation> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
+        return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listPreparationAndReleaseTaskStatusNextWithServiceResponseAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
+     *
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Validator.validate(jobListPreparationAndReleaseTaskStatusNextOptions);
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
             clientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.clientRequestId();
         }
@@ -3613,70 +3730,23 @@ public final class JobsImpl implements Jobs {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listPreparationAndReleaseTaskStatusNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
-     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(jobListPreparationAndReleaseTaskStatusNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
-            clientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
-            returnClientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
-            ocpDate = jobListPreparationAndReleaseTaskStatusNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listPreparationAndReleaseTaskStatusNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobListPreparationAndReleaseTaskStatusHeaders.class);

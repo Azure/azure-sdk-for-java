@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Job_ListPreparationAndReleaseTaskStatus
+ * Additional parameters for the Job_listPreparationAndReleaseTaskStatus
  * operation.
  */
 public class JobListPreparationAndReleaseTaskStatusOptions {
@@ -30,8 +31,8 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
     private String select;
 
     /**
-     * The maximum number of items to return in the response. A maximum of
-     * 1000 tasks can be returned.
+     * The maximum number of items to return in the response. A maximum of 1000
+     * tasks can be returned.
      */
     @JsonProperty(value = "")
     private Integer maxResults;
@@ -49,7 +50,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -58,8 +59,9 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
@@ -149,7 +151,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -159,7 +161,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions withClientRequestId(String clientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -193,7 +195,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**

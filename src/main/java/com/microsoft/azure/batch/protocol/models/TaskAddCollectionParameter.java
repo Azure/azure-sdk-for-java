@@ -18,7 +18,7 @@ public class TaskAddCollectionParameter {
     /**
      * The collection of tasks to add.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "value", required = true)
     private List<TaskAddParameter> value;
 
     /**

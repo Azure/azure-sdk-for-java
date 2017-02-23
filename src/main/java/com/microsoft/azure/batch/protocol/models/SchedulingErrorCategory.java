@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for SchedulingErrorCategory.
  */
 public enum SchedulingErrorCategory {
-    /** Enum value usererror. */
-    USERERROR("usererror"),
+    /** Enum value userError. */
+    USER_ERROR("userError"),
 
-    /** Enum value servererror. */
-    SERVERERROR("servererror"),
+    /** Enum value serverError. */
+    SERVER_ERROR("serverError"),
 
     /** Enum value unmapped. */
     UNMAPPED("unmapped");

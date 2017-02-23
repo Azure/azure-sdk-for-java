@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,23 +19,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskGetHeaders {
     /**
      * The client-request-id provided by the client during the request. This
-     * will be returned only if the return-client-request-id parameter was
-     * set to true.
+     * will be returned only if the return-client-request-id parameter was set
+     * to true.
      */
     @JsonProperty(value = "client-request-id")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
-     * This header uniquely identifies the request that was made and can be
-     * used for troubleshooting the request. If a request is consistently
-     * failing and you have verified that the request is properly formulated,
-     * you may use this value to report the error to Microsoft. In your
-     * report, include the value of this header, the approximate time that
-     * the request was made, the Batch account against which the request was
-     * made, and the region that account resides in.
+     * A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the
+     * request is properly formulated, you may use this value to report the
+     * error to Microsoft. In your report, include the value of this request
+     * ID, the approximate time that the request was made, the Batch account
+     * against which the request was made, and the region that account resides
+     * in.
      */
     @JsonProperty(value = "request-id")
-    private String requestId;
+    private UUID requestId;
 
     /**
      * The ETag HTTP response header. This is an opaque string. You can use it
@@ -62,7 +63,7 @@ public class TaskGetHeaders {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -72,7 +73,7 @@ public class TaskGetHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskGetHeaders object itself.
      */
-    public TaskGetHeaders withClientRequestId(String clientRequestId) {
+    public TaskGetHeaders withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -82,7 +83,7 @@ public class TaskGetHeaders {
      *
      * @return the requestId value
      */
-    public String requestId() {
+    public UUID requestId() {
         return this.requestId;
     }
 
@@ -92,7 +93,7 @@ public class TaskGetHeaders {
      * @param requestId the requestId value to set
      * @return the TaskGetHeaders object itself.
      */
-    public TaskGetHeaders withRequestId(String requestId) {
+    public TaskGetHeaders withRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -126,7 +127,7 @@ public class TaskGetHeaders {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.getDateTime();
+        return this.lastModified.dateTime();
     }
 
     /**

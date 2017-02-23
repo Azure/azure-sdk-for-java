@@ -29,13 +29,23 @@ public class PageSizeInterceptor extends RequestInterceptor {
             public void modify(Object request) {
                 Class<?> c = request.getClass();
                 try {
-                    Method maxResultsMethod = c.getMethod("withMaxResults", new Class[]{Integer.class});
+                    Method maxResultsMethod = c.getMethod("withMaxResults", Integer.class);
                     if (maxResultsMethod != null) {
                         maxResultsMethod.invoke(request, maxResults);
                     }
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
                 }
             }
         });
+    }
+
+    /**
+     * Gets the maximum number of items applied by this {@link PageSizeInterceptor} instance.
+     *
+     * @return The maximum number of items to return in a response.
+     */
+    public int maxResults() {
+        return this.maxResults;
     }
 }

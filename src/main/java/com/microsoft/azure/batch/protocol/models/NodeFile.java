@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information about a file or directory on a compute node.
@@ -16,21 +17,25 @@ public class NodeFile {
     /**
      * The file path.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The URL of the file.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * Whether the object represents a directory.
      */
+    @JsonProperty(value = "isDirectory")
     private Boolean isDirectory;
 
     /**
      * The file properties.
      */
+    @JsonProperty(value = "properties")
     private FileProperties properties;
 
     /**

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A range of task IDs that a task can depend on. All tasks with IDs in the
- * range must complete successfully before the dependent task can be
- * scheduled.
+ * range must complete successfully before the dependent task can be scheduled.
  * The start and end of the range are inclusive. For example, if a range has
  * start 9 and end 12, then it represents tasks '9', '10', '11' and '12'.
  */
@@ -21,13 +20,13 @@ public class TaskIdRange {
     /**
      * The first task ID in the range.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "start", required = true)
     private int start;
 
     /**
      * The last task ID in the range.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "end", required = true)
     private int end;
 
     /**

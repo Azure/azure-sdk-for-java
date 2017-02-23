@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains information about jobs that have been and will be run under a job
@@ -18,10 +19,11 @@ public class JobScheduleExecutionInformation {
     /**
      * The next time at which a job will be created under this schedule.
      * This property is meaningful only if the schedule is in the active state
-     * when the time comes around. For example, if the schedule is disabled,
-     * no job will be created at nextRunTime unless the job is enabled before
+     * when the time comes around. For example, if the schedule is disabled, no
+     * job will be created at nextRunTime unless the job is enabled before
      * then.
      */
+    @JsonProperty(value = "nextRunTime")
     private DateTime nextRunTime;
 
     /**
@@ -29,12 +31,14 @@ public class JobScheduleExecutionInformation {
      * This property is present only if the at least one job has run under the
      * schedule.
      */
+    @JsonProperty(value = "recentJob")
     private RecentJob recentJob;
 
     /**
      * The time at which the schedule ended.
      * This property is set only if the job schedule is in the completed state.
      */
+    @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**

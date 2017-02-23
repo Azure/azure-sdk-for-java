@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An Azure Batch task.
@@ -20,6 +21,7 @@ public class CloudTask {
      * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -27,46 +29,54 @@ public class CloudTask {
      * The display name need not be unique and can contain any Unicode
      * characters up to a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The URL of the task.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**
      * The ETag of the task.
      * This is an opaque string. You can use it to detect whether the task has
      * changed between requests. In particular, you can be pass the ETag when
-     * updating a task to specify that your changes should take effect only
-     * if nobody else has modified the task in the meantime.
+     * updating a task to specify that your changes should take effect only if
+     * nobody else has modified the task in the meantime.
      */
+    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
      * The last modified time of the task.
      */
+    @JsonProperty(value = "lastModified")
     private DateTime lastModified;
 
     /**
      * The creation time of the task.
      */
+    @JsonProperty(value = "creationTime")
     private DateTime creationTime;
 
     /**
      * How the Batch service should respond when the task completes.
      */
+    @JsonProperty(value = "exitConditions")
     private ExitConditions exitConditions;
 
     /**
      * The current state of the task.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
+    @JsonProperty(value = "state")
     private TaskState state;
 
     /**
      * The time at which the task entered its current state.
      */
+    @JsonProperty(value = "stateTransitionTime")
     private DateTime stateTransitionTime;
 
     /**
@@ -74,12 +84,14 @@ public class CloudTask {
      * This property is not set if the task is in its initial Active state.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
+    @JsonProperty(value = "previousState")
     private TaskState previousState;
 
     /**
      * The time at which the task entered its previous state.
      * This property is not set if the task is in its initial Active state.
      */
+    @JsonProperty(value = "previousStateTransitionTime")
     private DateTime previousStateTransitionTime;
 
     /**
@@ -92,71 +104,100 @@ public class CloudTask {
      * features, you should invoke the shell in the command line, for example
      * using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(value = "commandLine")
     private String commandLine;
 
     /**
-     * A list of files that the Batch service will download to the compute
-     * node before running the command line.
+     * A list of files that the Batch service will download to the compute node
+     * before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
      * the compute node on which the primary task is executed.
      */
+    @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
 
     /**
      * A list of environment variable settings for the task.
      */
+    @JsonProperty(value = "environmentSettings")
     private List<EnvironmentSetting> environmentSettings;
 
     /**
      * A locality hint that can be used by the Batch service to select a
      * compute node on which to start the new task.
      */
+    @JsonProperty(value = "affinityInfo")
     private AffinityInformation affinityInfo;
 
     /**
      * The execution constraints that apply to this task.
      */
+    @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
 
     /**
-     * Whether to run the task in elevated mode.
+     * The user identity under which the task runs.
+     * If omitted, the task runs as a non-administrative user unique to the
+     * task.
      */
-    private Boolean runElevated;
+    @JsonProperty(value = "userIdentity")
+    private UserIdentity userIdentity;
 
     /**
      * Information about the execution of the task.
      */
+    @JsonProperty(value = "executionInfo")
     private TaskExecutionInformation executionInfo;
 
     /**
      * Information about the compute node on which the task ran.
      */
+    @JsonProperty(value = "nodeInfo")
     private ComputeNodeInformation nodeInfo;
 
     /**
      * An object that indicates that the task is a multi-instance task, and
      * contains information about how to run the multi-instance task.
      */
+    @JsonProperty(value = "multiInstanceSettings")
     private MultiInstanceSettings multiInstanceSettings;
 
     /**
      * Resource usage statistics for the task.
      */
+    @JsonProperty(value = "stats")
     private TaskStatistics stats;
 
     /**
      * The tasks that this task depends on.
-     * The task will not be scheduled until all depended-on tasks have
-     * completed successfully. (If any depended-on tasks fail and exhaust
-     * their retry counts, the task will never be scheduled.).
+     * This task will not be scheduled until all tasks that it depends on have
+     * completed successfully. If any of those tasks fail and exhaust their
+     * retry counts, this task will never be scheduled.
      */
+    @JsonProperty(value = "dependsOn")
     private TaskDependencies dependsOn;
 
     /**
-     * A list of application packages that the Batch service will deploy to
-     * the compute node before running the command line.
+     * A list of application packages that the Batch service will deploy to the
+     * compute node before running the command line.
      */
+    @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
+
+    /**
+     * The settings for an authentication token that the task can use to
+     * perform Batch service operations.
+     * If this property is set, the Batch service provides the task with an
+     * authentication token which can be used to authenticate Batch service
+     * operations without requiring an account access key. The token is
+     * provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The
+     * operations that the task can carry out using the token depend on the
+     * settings. For example, a task can request job permissions in order to
+     * add other tasks to the job, or check the status of the job or of other
+     * tasks under the job.
+     */
+    @JsonProperty(value = "authenticationTokenSettings")
+    private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
      * Get the id value.
@@ -479,22 +520,22 @@ public class CloudTask {
     }
 
     /**
-     * Get the runElevated value.
+     * Get the userIdentity value.
      *
-     * @return the runElevated value
+     * @return the userIdentity value
      */
-    public Boolean runElevated() {
-        return this.runElevated;
+    public UserIdentity userIdentity() {
+        return this.userIdentity;
     }
 
     /**
-     * Set the runElevated value.
+     * Set the userIdentity value.
      *
-     * @param runElevated the runElevated value to set
+     * @param userIdentity the userIdentity value to set
      * @return the CloudTask object itself.
      */
-    public CloudTask withRunElevated(Boolean runElevated) {
-        this.runElevated = runElevated;
+    public CloudTask withUserIdentity(UserIdentity userIdentity) {
+        this.userIdentity = userIdentity;
         return this;
     }
 
@@ -615,6 +656,26 @@ public class CloudTask {
      */
     public CloudTask withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
+        return this;
+    }
+
+    /**
+     * Get the authenticationTokenSettings value.
+     *
+     * @return the authenticationTokenSettings value
+     */
+    public AuthenticationTokenSettings authenticationTokenSettings() {
+        return this.authenticationTokenSettings;
+    }
+
+    /**
+     * Set the authenticationTokenSettings value.
+     *
+     * @param authenticationTokenSettings the authenticationTokenSettings value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
+        this.authenticationTokenSettings = authenticationTokenSettings;
         return this;
     }
 

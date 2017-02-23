@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.Period;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Execution constraints to apply to a task.
@@ -21,15 +22,17 @@ public class TaskConstraints {
      * If this is not specified, there is no time limit on how long the task
      * may run.
      */
+    @JsonProperty(value = "maxWallClockTime")
     private Period maxWallClockTime;
 
     /**
      * The minimum time to retain the task directory on the compute node where
-     * it ran, from the time it completes execution. After this time, the
-     * Batch service may delete the task directory and all its contents.
+     * it ran, from the time it completes execution. After this time, the Batch
+     * service may delete the task directory and all its contents.
      * The default is infinite, i.e. the task directory will be retained until
      * the compute node is removed or reimaged.
      */
+    @JsonProperty(value = "retentionTime")
     private Period retentionTime;
 
     /**
@@ -38,11 +41,11 @@ public class TaskConstraints {
      * Note that this value specifically controls the number of retries. The
      * Batch service will try the task once, and may then retry up to this
      * limit. For example, if the maximum retry count is 3, Batch tries the
-     * task up to 4 times (one initial try and 3 retries). If the maximum
-     * retry count is 0, the Batch service does not retry the task. If the
-     * maximum retry count is -1, the Batch service retries the task without
-     * limit.
+     * task up to 4 times (one initial try and 3 retries). If the maximum retry
+     * count is 0, the Batch service does not retry the task. If the maximum
+     * retry count is -1, the Batch service retries the task without limit.
      */
+    @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
     /**

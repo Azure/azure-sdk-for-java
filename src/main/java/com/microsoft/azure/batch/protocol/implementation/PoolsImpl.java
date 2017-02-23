@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Pools;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudPool;
@@ -32,16 +32,16 @@ import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
 import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleParameter;
 import com.microsoft.azure.batch.protocol.models.PoolExistsHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllPoolsLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllPoolsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsHeaders;
+import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolGetHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolListNextOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsNextOptions;
-import com.microsoft.azure.batch.protocol.models.PoolListPoolUsageMetricsOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsHeaders;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsNextOptions;
+import com.microsoft.azure.batch.protocol.models.PoolListUsageMetricsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolPatchHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolPatchOptions;
 import com.microsoft.azure.batch.protocol.models.PoolPatchParameter;
@@ -64,17 +64,15 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponseCallback;
-import com.microsoft.rest.ServiceResponseEmptyCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HEAD;
@@ -87,12 +85,14 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in Pools.
  */
-public final class PoolsImpl implements Pools {
+public class PoolsImpl implements Pools {
     /** The Retrofit service to perform REST calls. */
     private PoolsService service;
     /** The service client containing this operation class. */
@@ -114,77 +114,77 @@ public final class PoolsImpl implements Pools {
      * used by Retrofit to perform actually REST calls.
      */
     interface PoolsService {
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools listUsageMetrics" })
         @GET("poolusagemetrics")
-        Call<ResponseBody> listPoolUsageMetrics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("starttime") DateTime startTime, @Query("endtime") DateTime endTime, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUsageMetrics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("starttime") DateTime startTime, @Query("endtime") DateTime endTime, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools getAllLifetimeStatistics" })
         @GET("lifetimepoolstats")
-        Call<ResponseBody> getAllPoolsLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools add" })
         @POST("pools")
-        Call<ResponseBody> add(@Body PoolAddParameter pool, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body PoolAddParameter pool, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools list" })
         @GET("pools")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools delete" })
         @HTTP(path = "pools/{poolId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools exists" })
         @HEAD("pools/{poolId}")
-        Call<Void> exists(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<Void>> exists(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools get" })
         @GET("pools/{poolId}")
-        Call<ResponseBody> get(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools patch" })
         @PATCH("pools/{poolId}")
-        Call<ResponseBody> patch(@Path("poolId") String poolId, @Body PoolPatchParameter poolPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("poolId") String poolId, @Body PoolPatchParameter poolPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools disableAutoScale" })
         @POST("pools/{poolId}/disableautoscale")
-        Call<ResponseBody> disableAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disableAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools enableAutoScale" })
         @POST("pools/{poolId}/enableautoscale")
-        Call<ResponseBody> enableAutoScale(@Path("poolId") String poolId, @Body PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enableAutoScale(@Path("poolId") String poolId, @Body PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools evaluateAutoScale" })
         @POST("pools/{poolId}/evaluateautoscale")
-        Call<ResponseBody> evaluateAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> evaluateAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools resize" })
         @POST("pools/{poolId}/resize")
-        Call<ResponseBody> resize(@Path("poolId") String poolId, @Body PoolResizeParameter poolResizeParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> resize(@Path("poolId") String poolId, @Body PoolResizeParameter poolResizeParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools stopResize" })
         @POST("pools/{poolId}/stopresize")
-        Call<ResponseBody> stopResize(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> stopResize(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools updateProperties" })
         @POST("pools/{poolId}/updateproperties")
-        Call<ResponseBody> updateProperties(@Path("poolId") String poolId, @Body PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateProperties(@Path("poolId") String poolId, @Body PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools upgradeOS" })
         @POST("pools/{poolId}/upgradeos")
-        Call<ResponseBody> upgradeOS(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body PoolUpgradeOSParameter poolUpgradeOSParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> upgradeOS(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body PoolUpgradeOSParameter poolUpgradeOSParameter, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools removeNodes" })
         @POST("pools/{poolId}/removenodes")
-        Call<ResponseBody> removeNodes(@Path("poolId") String poolId, @Body NodeRemoveParameter nodeRemoveParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> removeNodes(@Path("poolId") String poolId, @Body NodeRemoveParameter nodeRemoveParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools listUsageMetricsNext" })
         @GET
-        Call<ResponseBody> listPoolUsageMetricsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUsageMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools listNext" })
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -192,37 +192,19 @@ public final class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics() throws BatchErrorException, IOException, IllegalArgumentException {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions = null;
-        DateTime startTime = null;
-        DateTime endTime = null;
-        String filter = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsDelegate(call.execute());
-        PagedList<PoolUsageMetrics> result = new PagedList<PoolUsageMetrics>(response.getBody()) {
+    public PagedList<PoolUsageMetrics> listUsageMetrics() {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response = listUsageMetricsSinglePageAsync().toBlocking().single();
+        return new PagedList<PoolUsageMetrics>(response.body()) {
             @Override
-            public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listPoolUsageMetricsNext(nextPageLink, null).getBody();
+            public Page<PoolUsageMetrics> nextPage(String nextPageLink) {
+                return listUsageMetricsNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
             }
         };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -230,235 +212,280 @@ public final class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions = null;
-        DateTime startTime = null;
-        DateTime endTime = null;
-        String filter = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
-                    }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listUsageMetricsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(String nextPageLink) {
+                    return listUsageMetricsNextSinglePageAsync(nextPageLink, null);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
     }
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
-     * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
      */
-    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync() {
+        return listUsageMetricsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Page<PoolUsageMetrics>>() {
+                @Override
+                public Page<PoolUsageMetrics> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync() {
+        return listUsageMetricsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listUsageMetricsNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(poolListPoolUsageMetricsOptions);
+        final PoolListUsageMetricsOptions poolListUsageMetricsOptions = null;
         DateTime startTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            startTime = poolListPoolUsageMetricsOptions.startTime();
-        }
         DateTime endTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            endTime = poolListPoolUsageMetricsOptions.endTime();
-        }
         String filter = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            filter = poolListPoolUsageMetricsOptions.filter();
-        }
         Integer maxResults = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            maxResults = poolListPoolUsageMetricsOptions.maxResults();
-        }
         Integer timeout = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            timeout = poolListPoolUsageMetricsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsOptions.clientRequestId();
-        }
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsOptions.returnClientRequestId();
-        }
         DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            ocpDate = poolListPoolUsageMetricsOptions.ocpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsDelegate(call.execute());
-        PagedList<PoolUsageMetrics> result = new PagedList<PoolUsageMetrics>(response.getBody()) {
-            @Override
-            public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-                if (poolListPoolUsageMetricsOptions != null) {
-                    poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                    poolListPoolUsageMetricsNextOptions.withClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
-                    poolListPoolUsageMetricsNextOptions.withReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
-                    poolListPoolUsageMetricsNextOptions.withOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
+        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> result = listUsageMetricsDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-                return listPoolUsageMetricsNext(nextPageLink, poolListPoolUsageMetricsNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+            });
     }
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
-     * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    public ServiceCall listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public PagedList<PoolUsageMetrics> listUsageMetrics(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response = listUsageMetricsSinglePageAsync(poolListUsageMetricsOptions).toBlocking().single();
+        return new PagedList<PoolUsageMetrics>(response.body()) {
+            @Override
+            public Page<PoolUsageMetrics> nextPage(String nextPageLink) {
+                PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions = null;
+                if (poolListUsageMetricsOptions != null) {
+                    poolListUsageMetricsNextOptions = new PoolListUsageMetricsNextOptions();
+                    poolListUsageMetricsNextOptions.withClientRequestId(poolListUsageMetricsOptions.clientRequestId());
+                    poolListUsageMetricsNextOptions.withReturnClientRequestId(poolListUsageMetricsOptions.returnClientRequestId());
+                    poolListUsageMetricsNextOptions.withOcpDate(poolListUsageMetricsOptions.ocpDate());
+                }
+                return listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listUsageMetricsSinglePageAsync(poolListUsageMetricsOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(String nextPageLink) {
+                    PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions = null;
+                    if (poolListUsageMetricsOptions != null) {
+                        poolListUsageMetricsNextOptions = new PoolListUsageMetricsNextOptions();
+                        poolListUsageMetricsNextOptions.withClientRequestId(poolListUsageMetricsOptions.clientRequestId());
+                        poolListUsageMetricsNextOptions.withReturnClientRequestId(poolListUsageMetricsOptions.returnClientRequestId());
+                        poolListUsageMetricsNextOptions.withOcpDate(poolListUsageMetricsOptions.ocpDate());
+                    }
+                    return listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<Page<PoolUsageMetrics>> listUsageMetricsAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
+        return listUsageMetricsWithServiceResponseAsync(poolListUsageMetricsOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Page<PoolUsageMetrics>>() {
+                @Override
+                public Page<PoolUsageMetrics> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
+        return listUsageMetricsSinglePageAsync(poolListUsageMetricsOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions = null;
+                    if (poolListUsageMetricsOptions != null) {
+                        poolListUsageMetricsNextOptions = new PoolListUsageMetricsNextOptions();
+                        poolListUsageMetricsNextOptions.withClientRequestId(poolListUsageMetricsOptions.clientRequestId());
+                        poolListUsageMetricsNextOptions.withReturnClientRequestId(poolListUsageMetricsOptions.returnClientRequestId());
+                        poolListUsageMetricsNextOptions.withOcpDate(poolListUsageMetricsOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listUsageMetricsNextWithServiceResponseAsync(nextPageLink, poolListUsageMetricsNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(poolListPoolUsageMetricsOptions, serviceCallback);
+        Validator.validate(poolListUsageMetricsOptions);
         DateTime startTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            startTime = poolListPoolUsageMetricsOptions.startTime();
+        if (poolListUsageMetricsOptions != null) {
+            startTime = poolListUsageMetricsOptions.startTime();
         }
         DateTime endTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            endTime = poolListPoolUsageMetricsOptions.endTime();
+        if (poolListUsageMetricsOptions != null) {
+            endTime = poolListUsageMetricsOptions.endTime();
         }
         String filter = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            filter = poolListPoolUsageMetricsOptions.filter();
+        if (poolListUsageMetricsOptions != null) {
+            filter = poolListUsageMetricsOptions.filter();
         }
         Integer maxResults = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            maxResults = poolListPoolUsageMetricsOptions.maxResults();
+        if (poolListUsageMetricsOptions != null) {
+            maxResults = poolListUsageMetricsOptions.maxResults();
         }
         Integer timeout = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            timeout = poolListPoolUsageMetricsOptions.timeout();
+        if (poolListUsageMetricsOptions != null) {
+            timeout = poolListUsageMetricsOptions.timeout();
         }
-        String clientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsOptions.clientRequestId();
+        UUID clientRequestId = null;
+        if (poolListUsageMetricsOptions != null) {
+            clientRequestId = poolListUsageMetricsOptions.clientRequestId();
         }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsOptions.returnClientRequestId();
+        if (poolListUsageMetricsOptions != null) {
+            returnClientRequestId = poolListUsageMetricsOptions.returnClientRequestId();
         }
         DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            ocpDate = poolListPoolUsageMetricsOptions.ocpDate();
+        if (poolListUsageMetricsOptions != null) {
+            ocpDate = poolListUsageMetricsOptions.ocpDate();
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-                        if (poolListPoolUsageMetricsOptions != null) {
-                            poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                            poolListPoolUsageMetricsNextOptions.withClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
-                            poolListPoolUsageMetricsNextOptions.withReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
-                            poolListPoolUsageMetricsNextOptions.withOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
-                        }
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), poolListPoolUsageMetricsNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> result = listUsageMetricsDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.mapperAdapter())
+    private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> listUsageMetricsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PoolUsageMetrics>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PoolUsageMetrics>>() { }.getType())
                 .registerError(BatchErrorException.class)
-                .buildWithHeaders(response, PoolListPoolUsageMetricsHeaders.class);
+                .buildWithHeaders(response, PoolListUsageMetricsHeaders.class);
     }
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PoolStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PoolStatistics object if successful.
      */
-    public ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics() throws BatchErrorException, IOException, IllegalArgumentException {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getAllPoolsLifetimeStatisticsDelegate(call.execute());
+    public PoolStatistics getAllLifetimeStatistics() {
+        return getAllLifetimeStatisticsWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -466,138 +493,159 @@ public final class PoolsImpl implements Pools {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall getAllPoolsLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<PoolStatistics>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getAllPoolsLifetimeStatisticsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
+    public ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PoolStatistics object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PoolStatistics object
      */
-    public ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics(PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<PoolStatistics> getAllLifetimeStatisticsAsync() {
+        return getAllLifetimeStatisticsWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>, PoolStatistics>() {
+            @Override
+            public PoolStatistics call(ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PoolStatistics object
+     */
+    public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(poolGetAllPoolsLifetimeStatisticsOptions);
+        final PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions = null;
         Integer timeout = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            timeout = poolGetAllPoolsLifetimeStatisticsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            clientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.clientRequestId();
-        }
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.returnClientRequestId();
-        }
         DateTime ocpDate = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            ocpDate = poolGetAllPoolsLifetimeStatisticsOptions.ocpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getAllPoolsLifetimeStatisticsDelegate(call.execute());
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders> clientResponse = getAllLifetimeStatisticsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
-     * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PoolStatistics object if successful.
      */
-    public ServiceCall getAllPoolsLifetimeStatisticsAsync(PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public PoolStatistics getAllLifetimeStatistics(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
+        return getAllLifetimeStatisticsWithServiceResponseAsync(poolGetAllLifetimeStatisticsOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getAllLifetimeStatisticsWithServiceResponseAsync(poolGetAllLifetimeStatisticsOptions), serviceCallback);
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PoolStatistics object
+     */
+    public Observable<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
+        return getAllLifetimeStatisticsWithServiceResponseAsync(poolGetAllLifetimeStatisticsOptions).map(new Func1<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>, PoolStatistics>() {
+            @Override
+            public PoolStatistics call(ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     *
+     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PoolStatistics object
+     */
+    public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(poolGetAllPoolsLifetimeStatisticsOptions, serviceCallback);
+        Validator.validate(poolGetAllLifetimeStatisticsOptions);
         Integer timeout = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            timeout = poolGetAllPoolsLifetimeStatisticsOptions.timeout();
+        if (poolGetAllLifetimeStatisticsOptions != null) {
+            timeout = poolGetAllLifetimeStatisticsOptions.timeout();
         }
-        String clientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            clientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.clientRequestId();
+        UUID clientRequestId = null;
+        if (poolGetAllLifetimeStatisticsOptions != null) {
+            clientRequestId = poolGetAllLifetimeStatisticsOptions.clientRequestId();
         }
         Boolean returnClientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.returnClientRequestId();
+        if (poolGetAllLifetimeStatisticsOptions != null) {
+            returnClientRequestId = poolGetAllLifetimeStatisticsOptions.returnClientRequestId();
         }
         DateTime ocpDate = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            ocpDate = poolGetAllPoolsLifetimeStatisticsOptions.ocpDate();
+        if (poolGetAllLifetimeStatisticsOptions != null) {
+            ocpDate = poolGetAllLifetimeStatisticsOptions.ocpDate();
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<PoolStatistics>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getAllPoolsLifetimeStatisticsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders> clientResponse = getAllLifetimeStatisticsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatisticsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PoolStatistics, BatchErrorException>(this.client.mapperAdapter())
+    private ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders> getAllLifetimeStatisticsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PoolStatistics, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PoolStatistics>() { }.getType())
                 .registerError(BatchErrorException.class)
-                .buildWithHeaders(response, PoolGetAllPoolsLifetimeStatisticsHeaders.class);
+                .buildWithHeaders(response, PoolGetAllLifetimeStatisticsHeaders.class);
     }
 
     /**
@@ -605,12 +653,53 @@ public final class PoolsImpl implements Pools {
      * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param pool The pool to be added.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void add(PoolAddParameter pool) {
+        addWithServiceResponseAsync(pool).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(pool), serviceCallback);
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolAddHeaders> add(PoolAddParameter pool) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(PoolAddParameter pool) {
+        return addWithServiceResponseAsync(pool).map(new Func1<ServiceResponseWithHeaders<Void, PoolAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool) {
         if (pool == null) {
             throw new IllegalArgumentException("Parameter pool is required and cannot be null.");
         }
@@ -620,61 +709,25 @@ public final class PoolsImpl implements Pools {
         Validator.validate(pool);
         final PoolAddOptions poolAddOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a pool to the specified account.
-     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param pool The pool to be added.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(PoolAddParameter pool, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (pool == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter pool is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(pool, serviceCallback);
-        final PoolAddOptions poolAddOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -683,12 +736,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param pool The pool to be added.
      * @param poolAddOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void add(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
+        addWithServiceResponseAsync(pool, poolAddOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param poolAddOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(addWithServiceResponseAsync(pool, poolAddOptions), serviceCallback);
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param poolAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolAddHeaders> add(PoolAddParameter pool, PoolAddOptions poolAddOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
+        return addWithServiceResponseAsync(pool, poolAddOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolAddHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolAddHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Adds a pool to the specified account.
+     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param pool The pool to be added.
+     * @param poolAddOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
         if (pool == null) {
             throw new IllegalArgumentException("Parameter pool is required and cannot be null.");
         }
@@ -701,7 +798,7 @@ public final class PoolsImpl implements Pools {
         if (poolAddOptions != null) {
             timeout = poolAddOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolAddOptions != null) {
             clientRequestId = poolAddOptions.clientRequestId();
         }
@@ -717,71 +814,22 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addDelegate(call.execute());
-    }
-
-    /**
-     * Adds a pool to the specified account.
-     * When naming pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param pool The pool to be added.
-     * @param poolAddOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (pool == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter pool is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(pool, serviceCallback);
-        Validator.validate(poolAddOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolAddOptions != null) {
-            timeout = poolAddOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolAddOptions != null) {
-            clientRequestId = poolAddOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolAddOptions != null) {
-            returnClientRequestId = poolAddOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolAddOptions != null) {
-            ocpDate = poolAddOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolAddHeaders> clientResponse = addDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolAddHeaders.class);
@@ -790,12 +838,83 @@ public final class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudPool> list() {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<CloudPool>(response.body()) {
+            @Override
+            public Page<CloudPool> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<Page<CloudPool>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Page<CloudPool>>() {
+                @Override
+                public Page<CloudPool> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -805,84 +924,133 @@ public final class PoolsImpl implements Pools {
         String expand = null;
         Integer maxResults = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudPool> result = new PagedList<CloudPool>(response.getBody()) {
-            @Override
-            public Page<CloudPool> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolListOptions poolListOptions = null;
-        String filter = null;
-        String select = null;
-        String expand = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Lists all of the pools in the specified account.
      *
      * @param poolListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list(final PoolListOptions poolListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudPool> list(final PoolListOptions poolListOptions) {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listSinglePageAsync(poolListOptions).toBlocking().single();
+        return new PagedList<CloudPool>(response.body()) {
+            @Override
+            public Page<CloudPool> nextPage(String nextPageLink) {
+                PoolListNextOptions poolListNextOptions = null;
+                if (poolListOptions != null) {
+                    poolListNextOptions = new PoolListNextOptions();
+                    poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
+                    poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
+                    poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
+                }
+                return listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listSinglePageAsync(poolListOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
+                    PoolListNextOptions poolListNextOptions = null;
+                    if (poolListOptions != null) {
+                        poolListNextOptions = new PoolListNextOptions();
+                        poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
+                        poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
+                        poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
+                    }
+                    return listNextSinglePageAsync(nextPageLink, poolListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions) {
+        return listWithServiceResponseAsync(poolListOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Page<CloudPool>>() {
+                @Override
+                public Page<CloudPool> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync(final PoolListOptions poolListOptions) {
+        return listSinglePageAsync(poolListOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    PoolListNextOptions poolListNextOptions = null;
+                    if (poolListOptions != null) {
+                        poolListNextOptions = new PoolListNextOptions();
+                        poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
+                        poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
+                        poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, poolListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync(final PoolListOptions poolListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -907,7 +1075,7 @@ public final class PoolsImpl implements Pools {
         if (poolListOptions != null) {
             timeout = poolListOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolListOptions != null) {
             clientRequestId = poolListOptions.clientRequestId();
         }
@@ -923,108 +1091,22 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> response = listDelegate(call.execute());
-        PagedList<CloudPool> result = new PagedList<CloudPool>(response.getBody()) {
-            @Override
-            public Page<CloudPool> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                PoolListNextOptions poolListNextOptions = null;
-                if (poolListOptions != null) {
-                    poolListNextOptions = new PoolListNextOptions();
-                    poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
-                    poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
-                    poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
-                }
-                return listNext(nextPageLink, poolListNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param poolListOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolListOptions, serviceCallback);
-        String filter = null;
-        if (poolListOptions != null) {
-            filter = poolListOptions.filter();
-        }
-        String select = null;
-        if (poolListOptions != null) {
-            select = poolListOptions.select();
-        }
-        String expand = null;
-        if (poolListOptions != null) {
-            expand = poolListOptions.expand();
-        }
-        Integer maxResults = null;
-        if (poolListOptions != null) {
-            maxResults = poolListOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (poolListOptions != null) {
-            timeout = poolListOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolListOptions != null) {
-            clientRequestId = poolListOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolListOptions != null) {
-            returnClientRequestId = poolListOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListOptions != null) {
-            ocpDate = poolListOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        PoolListNextOptions poolListNextOptions = null;
-                        if (poolListOptions != null) {
-                            poolListNextOptions = new PoolListNextOptions();
-                            poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
-                            poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
-                            poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), poolListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudPool>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudPool>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListHeaders.class);
@@ -1035,41 +1117,12 @@ public final class PoolsImpl implements Pools {
      * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the pool to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public ServiceResponseWithHeaders<Void, PoolDeleteHeaders> delete(String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (poolId == null) {
-            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PoolDeleteOptions poolDeleteOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
+    public void delete(String poolId) {
+        deleteWithServiceResponseAsync(poolId).toBlocking().single().body();
     }
 
     /**
@@ -1078,24 +1131,48 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<Void> deleteAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(poolId), serviceCallback);
+    }
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> deleteAsync(String poolId) {
+        return deleteWithServiceResponseAsync(poolId).map(new Func1<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final PoolDeleteOptions poolDeleteOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1114,19 +1191,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1135,12 +1211,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to delete.
      * @param poolDeleteOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String poolId, PoolDeleteOptions poolDeleteOptions) {
+        deleteWithServiceResponseAsync(poolId, poolDeleteOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @param poolDeleteOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(deleteWithServiceResponseAsync(poolId, poolDeleteOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @param poolDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolDeleteHeaders> delete(String poolId, PoolDeleteOptions poolDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions) {
+        return deleteWithServiceResponseAsync(poolId, poolDeleteOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolDeleteHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a pool from the specified account.
+     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the pool to delete.
+     * @param poolDeleteOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId, PoolDeleteOptions poolDeleteOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1152,7 +1272,7 @@ public final class PoolsImpl implements Pools {
         if (poolDeleteOptions != null) {
             timeout = poolDeleteOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolDeleteOptions != null) {
             clientRequestId = poolDeleteOptions.clientRequestId();
         }
@@ -1192,94 +1312,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a pool from the specified account.
-     * When you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool. If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
-     *
-     * @param poolId The ID of the pool to delete.
-     * @param poolDeleteOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String poolId, PoolDeleteOptions poolDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolDeleteOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolDeleteOptions != null) {
-            timeout = poolDeleteOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolDeleteOptions != null) {
-            clientRequestId = poolDeleteOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolDeleteOptions != null) {
-            returnClientRequestId = poolDeleteOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDeleteOptions != null) {
-            ocpDate = poolDeleteOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolDeleteOptions != null) {
-            ifMatch = poolDeleteOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolDeleteOptions != null) {
-            ifNoneMatch = poolDeleteOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifModifiedSince = poolDeleteOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifUnmodifiedSince = poolDeleteOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolDeleteHeaders> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolDeleteHeaders.class);
@@ -1289,12 +1337,51 @@ public final class PoolsImpl implements Pools {
      * Gets basic properties of a pool.
      *
      * @param poolId The ID of the pool to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the boolean object if successful.
      */
-    public ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> exists(String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public boolean exists(String poolId) {
+        return existsWithServiceResponseAsync(poolId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Boolean> existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(poolId), serviceCallback);
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<Boolean> existsAsync(String poolId) {
+        return existsWithServiceResponseAsync(poolId).map(new Func1<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1303,7 +1390,7 @@ public final class PoolsImpl implements Pools {
         }
         final PoolExistsOptions poolExistsOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1322,64 +1409,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return existsDelegate(call.execute());
-    }
-
-    /**
-     * Gets basic properties of a pool.
-     *
-     * @param poolId The ID of the pool to get.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall existsAsync(String poolId, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolExistsOptions poolExistsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                try {
-                    serviceCallback.success(existsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> call(Response<Void> response) {
+                    try {
+                        ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> clientResponse = existsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1387,12 +1428,54 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolExistsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the boolean object if successful.
      */
-    public ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> exists(String poolId, PoolExistsOptions poolExistsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public boolean exists(String poolId, PoolExistsOptions poolExistsOptions) {
+        return existsWithServiceResponseAsync(poolId, poolExistsOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolExistsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(existsWithServiceResponseAsync(poolId, poolExistsOptions), serviceCallback);
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<Boolean> existsAsync(String poolId, PoolExistsOptions poolExistsOptions) {
+        return existsWithServiceResponseAsync(poolId, poolExistsOptions).map(new Func1<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets basic properties of a pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolExistsOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Boolean object
+     */
+    public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId, PoolExistsOptions poolExistsOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1404,7 +1487,7 @@ public final class PoolsImpl implements Pools {
         if (poolExistsOptions != null) {
             timeout = poolExistsOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolExistsOptions != null) {
             clientRequestId = poolExistsOptions.clientRequestId();
         }
@@ -1444,93 +1527,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return existsDelegate(call.execute());
-    }
-
-    /**
-     * Gets basic properties of a pool.
-     *
-     * @param poolId The ID of the pool to get.
-     * @param poolExistsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall existsAsync(String poolId, PoolExistsOptions poolExistsOptions, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolExistsOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolExistsOptions != null) {
-            timeout = poolExistsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolExistsOptions != null) {
-            clientRequestId = poolExistsOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolExistsOptions != null) {
-            returnClientRequestId = poolExistsOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolExistsOptions != null) {
-            ocpDate = poolExistsOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolExistsOptions != null) {
-            ifMatch = poolExistsOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolExistsOptions != null) {
-            ifNoneMatch = poolExistsOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifModifiedSince = poolExistsOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifUnmodifiedSince = poolExistsOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                try {
-                    serviceCallback.success(existsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> call(Response<Void> response) {
+                    try {
+                        ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> clientResponse = existsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> existsDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Boolean, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
@@ -1541,12 +1553,51 @@ public final class PoolsImpl implements Pools {
      * Gets information about the specified pool.
      *
      * @param poolId The ID of the pool to get.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudPool object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CloudPool object if successful.
      */
-    public ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> get(String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public CloudPool get(String poolId) {
+        return getWithServiceResponseAsync(poolId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudPool> getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(poolId), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudPool object
+     */
+    public Observable<CloudPool> getAsync(String poolId) {
+        return getWithServiceResponseAsync(poolId).map(new Func1<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>, CloudPool>() {
+            @Override
+            public CloudPool call(ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudPool object
+     */
+    public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1557,7 +1608,7 @@ public final class PoolsImpl implements Pools {
         String select = null;
         String expand = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1576,66 +1627,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified pool.
-     *
-     * @param poolId The ID of the pool to get.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String poolId, final ServiceCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolGetOptions poolGetOptions = null;
-        String select = null;
-        String expand = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudPool>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1643,12 +1646,54 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to get.
      * @param poolGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CloudPool object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CloudPool object if successful.
      */
-    public ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> get(String poolId, PoolGetOptions poolGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public CloudPool get(String poolId, PoolGetOptions poolGetOptions) {
+        return getWithServiceResponseAsync(poolId, poolGetOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(poolId, poolGetOptions), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudPool object
+     */
+    public Observable<CloudPool> getAsync(String poolId, PoolGetOptions poolGetOptions) {
+        return getWithServiceResponseAsync(poolId, poolGetOptions).map(new Func1<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>, CloudPool>() {
+            @Override
+            public CloudPool call(ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified pool.
+     *
+     * @param poolId The ID of the pool to get.
+     * @param poolGetOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CloudPool object
+     */
+    public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId, PoolGetOptions poolGetOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1668,7 +1713,7 @@ public final class PoolsImpl implements Pools {
         if (poolGetOptions != null) {
             timeout = poolGetOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolGetOptions != null) {
             clientRequestId = poolGetOptions.clientRequestId();
         }
@@ -1708,101 +1753,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified pool.
-     *
-     * @param poolId The ID of the pool to get.
-     * @param poolGetOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String poolId, PoolGetOptions poolGetOptions, final ServiceCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolGetOptions, serviceCallback);
-        String select = null;
-        if (poolGetOptions != null) {
-            select = poolGetOptions.select();
-        }
-        String expand = null;
-        if (poolGetOptions != null) {
-            expand = poolGetOptions.expand();
-        }
-        Integer timeout = null;
-        if (poolGetOptions != null) {
-            timeout = poolGetOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolGetOptions != null) {
-            clientRequestId = poolGetOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolGetOptions != null) {
-            returnClientRequestId = poolGetOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolGetOptions != null) {
-            ocpDate = poolGetOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolGetOptions != null) {
-            ifMatch = poolGetOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolGetOptions != null) {
-            ifNoneMatch = poolGetOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolGetOptions != null) {
-            ifModifiedSince = poolGetOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolGetOptions != null) {
-            ifUnmodifiedSince = poolGetOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CloudPool>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudPool, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<CloudPool, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<CloudPool>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolGetHeaders.class);
@@ -1814,12 +1780,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void patch(String poolId, PoolPatchParameter poolPatchParameter) {
+        patchWithServiceResponseAsync(poolId, poolPatchParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolPatchHeaders> patch(String poolId, PoolPatchParameter poolPatchParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter) {
+        return patchWithServiceResponseAsync(poolId, poolPatchParameter).map(new Func1<ServiceResponseWithHeaders<Void, PoolPatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolPatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1832,7 +1842,7 @@ public final class PoolsImpl implements Pools {
         Validator.validate(poolPatchParameter);
         final PoolPatchOptions poolPatchOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -1851,71 +1861,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified pool.
-     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
-     *
-     * @param poolId The ID of the pool to update.
-     * @param poolPatchParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String poolId, PoolPatchParameter poolPatchParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolPatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolPatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolPatchParameter, serviceCallback);
-        final PoolPatchOptions poolPatchOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolPatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1925,12 +1882,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolPatchParameter The parameters for the request.
      * @param poolPatchOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void patch(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
+        patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param poolPatchOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param poolPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolPatchHeaders> patch(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
+        return patchWithServiceResponseAsync(poolId, poolPatchParameter, poolPatchOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolPatchHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolPatchHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolPatchParameter The parameters for the request.
+     * @param poolPatchOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1946,7 +1950,7 @@ public final class PoolsImpl implements Pools {
         if (poolPatchOptions != null) {
             timeout = poolPatchOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolPatchOptions != null) {
             clientRequestId = poolPatchOptions.clientRequestId();
         }
@@ -1986,100 +1990,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return patchDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified pool.
-     * This only replaces the pool properties specified in the request. For example, if the pool has a start task associated with it, and a request does not specify a start task element, then the pool keeps the existing start task.
-     *
-     * @param poolId The ID of the pool to update.
-     * @param poolPatchParameter The parameters for the request.
-     * @param poolPatchOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall patchAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolPatchParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolPatchParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolPatchParameter, serviceCallback);
-        Validator.validate(poolPatchOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolPatchOptions != null) {
-            timeout = poolPatchOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolPatchOptions != null) {
-            clientRequestId = poolPatchOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolPatchOptions != null) {
-            returnClientRequestId = poolPatchOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolPatchOptions != null) {
-            ocpDate = poolPatchOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolPatchOptions != null) {
-            ifMatch = poolPatchOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolPatchOptions != null) {
-            ifNoneMatch = poolPatchOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifModifiedSince = poolPatchOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifUnmodifiedSince = poolPatchOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolPatchHeaders> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolPatchHeaders> patchDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolPatchHeaders.class);
@@ -2089,12 +2015,50 @@ public final class PoolsImpl implements Pools {
      * Disables automatic scaling for a pool.
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disableAutoScale(String poolId) {
+        disableAutoScaleWithServiceResponseAsync(poolId).toBlocking().single().body();
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId), serviceCallback);
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScale(String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAutoScaleAsync(String poolId) {
+        return disableAutoScaleWithServiceResponseAsync(poolId).map(new Func1<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2103,59 +2067,25 @@ public final class PoolsImpl implements Pools {
         }
         final PoolDisableAutoScaleOptions poolDisableAutoScaleOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return disableAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Disables automatic scaling for a pool.
-     *
-     * @param poolId The ID of the pool on which to disable automatic scaling.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAutoScaleAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final PoolDisableAutoScaleOptions poolDisableAutoScaleOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> clientResponse = disableAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2163,12 +2093,53 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to disable automatic scaling.
      * @param poolDisableAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disableAutoScale(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
+        disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions), serviceCallback);
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScale(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
+        return disableAutoScaleWithServiceResponseAsync(poolId, poolDisableAutoScaleOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables automatic scaling for a pool.
+     *
+     * @param poolId The ID of the pool on which to disable automatic scaling.
+     * @param poolDisableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2180,7 +2151,7 @@ public final class PoolsImpl implements Pools {
         if (poolDisableAutoScaleOptions != null) {
             timeout = poolDisableAutoScaleOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolDisableAutoScaleOptions != null) {
             clientRequestId = poolDisableAutoScaleOptions.clientRequestId();
         }
@@ -2196,69 +2167,22 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return disableAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Disables automatic scaling for a pool.
-     *
-     * @param poolId The ID of the pool on which to disable automatic scaling.
-     * @param poolDisableAutoScaleOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableAutoScaleAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolDisableAutoScaleOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolDisableAutoScaleOptions != null) {
-            timeout = poolDisableAutoScaleOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            clientRequestId = poolDisableAutoScaleOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            returnClientRequestId = poolDisableAutoScaleOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDisableAutoScaleOptions != null) {
-            ocpDate = poolDisableAutoScaleOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> clientResponse = disableAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolDisableAutoScaleHeaders.class);
@@ -2270,12 +2194,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
+        enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter), serviceCallback);
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
+        return enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter).map(new Func1<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2288,7 +2256,7 @@ public final class PoolsImpl implements Pools {
         Validator.validate(poolEnableAutoScaleParameter);
         final PoolEnableAutoScaleOptions poolEnableAutoScaleOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -2307,71 +2275,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Enables automatic scaling for a pool.
-     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
-     *
-     * @param poolId The ID of the pool on which to enable automatic scaling.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolEnableAutoScaleParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolEnableAutoScaleParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolEnableAutoScaleParameter, serviceCallback);
-        final PoolEnableAutoScaleOptions poolEnableAutoScaleOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> clientResponse = enableAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2381,12 +2296,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to enable automatic scaling.
      * @param poolEnableAutoScaleParameter The parameters for the request.
      * @param poolEnableAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
+        enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions), serviceCallback);
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScale(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
+        return enableAutoScaleWithServiceResponseAsync(poolId, poolEnableAutoScaleParameter, poolEnableAutoScaleOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enables automatic scaling for a pool.
+     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the pool on which to enable automatic scaling.
+     * @param poolEnableAutoScaleParameter The parameters for the request.
+     * @param poolEnableAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2402,7 +2364,7 @@ public final class PoolsImpl implements Pools {
         if (poolEnableAutoScaleOptions != null) {
             timeout = poolEnableAutoScaleOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolEnableAutoScaleOptions != null) {
             clientRequestId = poolEnableAutoScaleOptions.clientRequestId();
         }
@@ -2442,100 +2404,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return enableAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Enables automatic scaling for a pool.
-     * You cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
-     *
-     * @param poolId The ID of the pool on which to enable automatic scaling.
-     * @param poolEnableAutoScaleParameter The parameters for the request.
-     * @param poolEnableAutoScaleOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableAutoScaleAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolEnableAutoScaleParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolEnableAutoScaleParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolEnableAutoScaleParameter, serviceCallback);
-        Validator.validate(poolEnableAutoScaleOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolEnableAutoScaleOptions != null) {
-            timeout = poolEnableAutoScaleOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            clientRequestId = poolEnableAutoScaleOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            returnClientRequestId = poolEnableAutoScaleOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ocpDate = poolEnableAutoScaleOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifMatch = poolEnableAutoScaleOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifNoneMatch = poolEnableAutoScaleOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifModifiedSince = poolEnableAutoScaleOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifUnmodifiedSince = poolEnableAutoScaleOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> clientResponse = enableAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolEnableAutoScaleHeaders.class);
@@ -2547,12 +2431,57 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AutoScaleRun object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AutoScaleRun object if successful.
      */
-    public ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScale(String poolId, String autoScaleFormula) throws BatchErrorException, IOException, IllegalArgumentException {
+    public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula) {
+        return evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula), serviceCallback);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AutoScaleRun object
+     */
+    public Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula) {
+        return evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula).map(new Func1<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>, AutoScaleRun>() {
+            @Override
+            public AutoScaleRun call(ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AutoScaleRun object
+     */
+    public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2564,7 +2493,7 @@ public final class PoolsImpl implements Pools {
         }
         final PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
@@ -2573,60 +2502,18 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
-        return evaluateAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the pool.
-     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
-     *
-     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall evaluateAutoScaleAsync(String poolId, String autoScaleFormula, final ServiceCallback<AutoScaleRun> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (autoScaleFormula == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter autoScaleFormula is required and cannot be null."));
-            return null;
-        }
-        final PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<AutoScaleRun>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(evaluateAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> clientResponse = evaluateAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2636,12 +2523,60 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AutoScaleRun object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AutoScaleRun object if successful.
      */
-    public ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScale(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
+        return evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula, poolEvaluateAutoScaleOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula, poolEvaluateAutoScaleOptions), serviceCallback);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AutoScaleRun object
+     */
+    public Observable<AutoScaleRun> evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
+        return evaluateAutoScaleWithServiceResponseAsync(poolId, autoScaleFormula, poolEvaluateAutoScaleOptions).map(new Func1<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>, AutoScaleRun>() {
+            @Override
+            public AutoScaleRun call(ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the pool.
+     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
+     *
+     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
+     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AutoScaleRun object
+     */
+    public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2656,7 +2591,7 @@ public final class PoolsImpl implements Pools {
         if (poolEvaluateAutoScaleOptions != null) {
             timeout = poolEvaluateAutoScaleOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolEvaluateAutoScaleOptions != null) {
             clientRequestId = poolEvaluateAutoScaleOptions.clientRequestId();
         }
@@ -2674,77 +2609,22 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
-        return evaluateAutoScaleDelegate(call.execute());
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the pool.
-     * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the pool.
-     *
-     * @param poolId The ID of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of compute nodes in the pool. The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
-     * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall evaluateAutoScaleAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions, final ServiceCallback<AutoScaleRun> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (autoScaleFormula == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter autoScaleFormula is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolEvaluateAutoScaleOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            timeout = poolEvaluateAutoScaleOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            clientRequestId = poolEvaluateAutoScaleOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            returnClientRequestId = poolEvaluateAutoScaleOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            ocpDate = poolEvaluateAutoScaleOptions.ocpDate();
-        }
-        PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<AutoScaleRun>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(evaluateAutoScaleDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> clientResponse = evaluateAutoScaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AutoScaleRun, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<AutoScaleRun, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AutoScaleRun>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolEvaluateAutoScaleHeaders.class);
@@ -2756,12 +2636,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resize(String poolId, PoolResizeParameter poolResizeParameter) {
+        resizeWithServiceResponseAsync(poolId, poolResizeParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter), serviceCallback);
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolResizeHeaders> resize(String poolId, PoolResizeParameter poolResizeParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter) {
+        return resizeWithServiceResponseAsync(poolId, poolResizeParameter).map(new Func1<ServiceResponseWithHeaders<Void, PoolResizeHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolResizeHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2774,7 +2698,7 @@ public final class PoolsImpl implements Pools {
         Validator.validate(poolResizeParameter);
         final PoolResizeOptions poolResizeOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -2793,71 +2717,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return resizeDelegate(call.execute());
-    }
-
-    /**
-     * Changes the number of compute nodes that are assigned to a pool.
-     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
-     *
-     * @param poolId The ID of the pool to resize.
-     * @param poolResizeParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolResizeParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolResizeParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolResizeParameter, serviceCallback);
-        final PoolResizeOptions poolResizeOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(resizeDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolResizeHeaders> clientResponse = resizeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2867,12 +2738,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to resize.
      * @param poolResizeParameter The parameters for the request.
      * @param poolResizeOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resize(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
+        resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param poolResizeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions), serviceCallback);
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param poolResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolResizeHeaders> resize(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
+        return resizeWithServiceResponseAsync(poolId, poolResizeParameter, poolResizeOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolResizeHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolResizeHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Changes the number of compute nodes that are assigned to a pool.
+     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
+     *
+     * @param poolId The ID of the pool to resize.
+     * @param poolResizeParameter The parameters for the request.
+     * @param poolResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2888,7 +2806,7 @@ public final class PoolsImpl implements Pools {
         if (poolResizeOptions != null) {
             timeout = poolResizeOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolResizeOptions != null) {
             clientRequestId = poolResizeOptions.clientRequestId();
         }
@@ -2928,100 +2846,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return resizeDelegate(call.execute());
-    }
-
-    /**
-     * Changes the number of compute nodes that are assigned to a pool.
-     * You can only resize a pool when its allocation state is steady. If the pool is already resizing, the request fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific nodes, use the pool remove nodes API instead.
-     *
-     * @param poolId The ID of the pool to resize.
-     * @param poolResizeParameter The parameters for the request.
-     * @param poolResizeOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolResizeParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolResizeParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolResizeParameter, serviceCallback);
-        Validator.validate(poolResizeOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolResizeOptions != null) {
-            timeout = poolResizeOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolResizeOptions != null) {
-            clientRequestId = poolResizeOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolResizeOptions != null) {
-            returnClientRequestId = poolResizeOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolResizeOptions != null) {
-            ocpDate = poolResizeOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolResizeOptions != null) {
-            ifMatch = poolResizeOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolResizeOptions != null) {
-            ifNoneMatch = poolResizeOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifModifiedSince = poolResizeOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifUnmodifiedSince = poolResizeOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(resizeDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolResizeHeaders> clientResponse = resizeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolResizeHeaders> resizeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolResizeHeaders.class);
@@ -3032,41 +2872,12 @@ public final class PoolsImpl implements Pools {
      * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
-        if (poolId == null) {
-            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PoolStopResizeOptions poolStopResizeOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return stopResizeDelegate(call.execute());
+    public void stopResize(String poolId) {
+        stopResizeWithServiceResponseAsync(poolId).toBlocking().single().body();
     }
 
     /**
@@ -3075,24 +2886,48 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
      */
-    public ServiceCall stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceFuture<Void> stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId), serviceCallback);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> stopResizeAsync(String poolId) {
+        return stopResizeWithServiceResponseAsync(poolId).map(new Func1<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final PoolStopResizeOptions poolStopResizeOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -3111,19 +2946,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(stopResizeDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> clientResponse = stopResizeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3132,12 +2966,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
+        stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @param poolStopResizeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions), serviceCallback);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @param poolStopResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
+        return stopResizeWithServiceResponseAsync(poolId, poolStopResizeOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param poolId The ID of the pool whose resizing you want to stop.
+     * @param poolStopResizeOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3149,7 +3027,7 @@ public final class PoolsImpl implements Pools {
         if (poolStopResizeOptions != null) {
             timeout = poolStopResizeOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolStopResizeOptions != null) {
             clientRequestId = poolStopResizeOptions.clientRequestId();
         }
@@ -3189,94 +3067,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return stopResizeDelegate(call.execute());
-    }
-
-    /**
-     * Stops an ongoing resize operation on the pool.
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
-     *
-     * @param poolId The ID of the pool whose resizing you want to stop.
-     * @param poolStopResizeOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall stopResizeAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolStopResizeOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolStopResizeOptions != null) {
-            timeout = poolStopResizeOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            clientRequestId = poolStopResizeOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            returnClientRequestId = poolStopResizeOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolStopResizeOptions != null) {
-            ocpDate = poolStopResizeOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifMatch = poolStopResizeOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifNoneMatch = poolStopResizeOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifModifiedSince = poolStopResizeOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifUnmodifiedSince = poolStopResizeOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(stopResizeDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> clientResponse = stopResizeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResizeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolStopResizeHeaders.class);
@@ -3288,12 +3094,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
+        updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
+        return updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3306,66 +3156,25 @@ public final class PoolsImpl implements Pools {
         Validator.validate(poolUpdatePropertiesParameter);
         final PoolUpdatePropertiesOptions poolUpdatePropertiesOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return updatePropertiesDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
-     *
-     * @param poolId The ID of the pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolUpdatePropertiesParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolUpdatePropertiesParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolUpdatePropertiesParameter, serviceCallback);
-        final PoolUpdatePropertiesOptions poolUpdatePropertiesOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updatePropertiesDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> clientResponse = updatePropertiesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3375,12 +3184,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
      * @param poolUpdatePropertiesOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
+        updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updateProperties(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
+        return updatePropertiesWithServiceResponseAsync(poolId, poolUpdatePropertiesParameter, poolUpdatePropertiesOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of the specified pool.
+     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     *
+     * @param poolId The ID of the pool to update.
+     * @param poolUpdatePropertiesParameter The parameters for the request.
+     * @param poolUpdatePropertiesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3396,7 +3252,7 @@ public final class PoolsImpl implements Pools {
         if (poolUpdatePropertiesOptions != null) {
             timeout = poolUpdatePropertiesOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolUpdatePropertiesOptions != null) {
             clientRequestId = poolUpdatePropertiesOptions.clientRequestId();
         }
@@ -3412,76 +3268,22 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return updatePropertiesDelegate(call.execute());
-    }
-
-    /**
-     * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
-     *
-     * @param poolId The ID of the pool to update.
-     * @param poolUpdatePropertiesParameter The parameters for the request.
-     * @param poolUpdatePropertiesOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updatePropertiesAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (poolUpdatePropertiesParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolUpdatePropertiesParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolUpdatePropertiesParameter, serviceCallback);
-        Validator.validate(poolUpdatePropertiesOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolUpdatePropertiesOptions != null) {
-            timeout = poolUpdatePropertiesOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            clientRequestId = poolUpdatePropertiesOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            returnClientRequestId = poolUpdatePropertiesOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpdatePropertiesOptions != null) {
-            ocpDate = poolUpdatePropertiesOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updatePropertiesDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> clientResponse = updatePropertiesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updatePropertiesDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolUpdatePropertiesHeaders.class);
@@ -3493,12 +3295,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void upgradeOS(String poolId, String targetOSVersion) {
+        upgradeOSWithServiceResponseAsync(poolId, targetOSVersion).toBlocking().single().body();
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion), serviceCallback);
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOS(String poolId, String targetOSVersion) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion) {
+        return upgradeOSWithServiceResponseAsync(poolId, targetOSVersion).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3510,7 +3356,7 @@ public final class PoolsImpl implements Pools {
         }
         final PoolUpgradeOSOptions poolUpgradeOSOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -3531,72 +3377,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
-        return upgradeOSDelegate(call.execute());
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (targetOSVersion == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter targetOSVersion is required and cannot be null."));
-            return null;
-        }
-        final PoolUpgradeOSOptions poolUpgradeOSOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(upgradeOSDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> clientResponse = upgradeOSDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3606,12 +3398,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool to upgrade.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
+        upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions), serviceCallback);
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
+        return upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Upgrades the operating system of the specified pool.
+     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
+     *
+     * @param poolId The ID of the pool to upgrade.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param poolUpgradeOSOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3626,7 +3465,7 @@ public final class PoolsImpl implements Pools {
         if (poolUpgradeOSOptions != null) {
             timeout = poolUpgradeOSOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolUpgradeOSOptions != null) {
             clientRequestId = poolUpgradeOSOptions.clientRequestId();
         }
@@ -3668,101 +3507,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
-        return upgradeOSDelegate(call.execute());
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (targetOSVersion == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter targetOSVersion is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolUpgradeOSOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolUpgradeOSOptions != null) {
-            timeout = poolUpgradeOSOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            clientRequestId = poolUpgradeOSOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            returnClientRequestId = poolUpgradeOSOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpgradeOSOptions != null) {
-            ocpDate = poolUpgradeOSOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifMatch = poolUpgradeOSOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifNoneMatch = poolUpgradeOSOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifModifiedSince = poolUpgradeOSOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifUnmodifiedSince = poolUpgradeOSOptions.ifUnmodifiedSince();
-        }
-        PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(upgradeOSDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> clientResponse = upgradeOSDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOSDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolUpgradeOSHeaders.class);
@@ -3774,12 +3534,56 @@ public final class PoolsImpl implements Pools {
      *
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter) {
+        removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter).toBlocking().single().body();
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter), serviceCallback);
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter) {
+        return removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter).map(new Func1<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3792,7 +3596,7 @@ public final class PoolsImpl implements Pools {
         Validator.validate(nodeRemoveParameter);
         final PoolRemoveNodesOptions poolRemoveNodesOptions = null;
         Integer timeout = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         String ifMatch = null;
@@ -3811,71 +3615,18 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return removeNodesDelegate(call.execute());
-    }
-
-    /**
-     * Removes compute nodes from the specified pool.
-     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
-     *
-     * @param poolId The ID of the pool from which you want to remove nodes.
-     * @param nodeRemoveParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeRemoveParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeRemoveParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(nodeRemoveParameter, serviceCallback);
-        final PoolRemoveNodesOptions poolRemoveNodesOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(removeNodesDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> clientResponse = removeNodesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3885,12 +3636,59 @@ public final class PoolsImpl implements Pools {
      * @param poolId The ID of the pool from which you want to remove nodes.
      * @param nodeRemoveParameter The parameters for the request.
      * @param poolRemoveNodesOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
+        removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions).toBlocking().single().body();
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions), serviceCallback);
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodes(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
+        return removeNodesWithServiceResponseAsync(poolId, nodeRemoveParameter, poolRemoveNodesOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Removes compute nodes from the specified pool.
+     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
+     *
+     * @param poolId The ID of the pool from which you want to remove nodes.
+     * @param nodeRemoveParameter The parameters for the request.
+     * @param poolRemoveNodesOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3906,7 +3704,7 @@ public final class PoolsImpl implements Pools {
         if (poolRemoveNodesOptions != null) {
             timeout = poolRemoveNodesOptions.timeout();
         }
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolRemoveNodesOptions != null) {
             clientRequestId = poolRemoveNodesOptions.clientRequestId();
         }
@@ -3946,100 +3744,22 @@ public final class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        return removeNodesDelegate(call.execute());
-    }
-
-    /**
-     * Removes compute nodes from the specified pool.
-     * This operation can only run when the allocation state of the pool is steady. When this operation runs, the allocation state changes from steady to resizing.
-     *
-     * @param poolId The ID of the pool from which you want to remove nodes.
-     * @param nodeRemoveParameter The parameters for the request.
-     * @param poolRemoveNodesOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall removeNodesAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeRemoveParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeRemoveParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(nodeRemoveParameter, serviceCallback);
-        Validator.validate(poolRemoveNodesOptions, serviceCallback);
-        Integer timeout = null;
-        if (poolRemoveNodesOptions != null) {
-            timeout = poolRemoveNodesOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            clientRequestId = poolRemoveNodesOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            returnClientRequestId = poolRemoveNodesOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolRemoveNodesOptions != null) {
-            ocpDate = poolRemoveNodesOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifMatch = poolRemoveNodesOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifNoneMatch = poolRemoveNodesOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifModifiedSince = poolRemoveNodesOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifUnmodifiedSince = poolRemoveNodesOptions.ifUnmodifiedSince();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(removeNodesDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> clientResponse = removeNodesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodesDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolRemoveNodesHeaders.class);
@@ -4050,73 +3770,116 @@ public final class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response = listUsageMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PoolUsageMetrics>(response.body()) {
+            @Override
+            public Page<PoolUsageMetrics> nextPage(String nextPageLink) {
+                return listUsageMetricsNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<PoolUsageMetrics>> serviceFuture, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listUsageMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(String nextPageLink) {
+                    return listUsageMetricsNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink) {
+        return listUsageMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Page<PoolUsageMetrics>>() {
+                @Override
+                public Page<PoolUsageMetrics> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listUsageMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listUsageMetricsNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-        String clientRequestId = null;
+        final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listPoolUsageMetricsNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
-     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsageMetricsNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> result = listUsageMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4124,172 +3887,249 @@ public final class PoolsImpl implements Pools {
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<PoolUsageMetrics> listUsageMetricsNext(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response = listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions).toBlocking().single();
+        return new PagedList<PoolUsageMetrics>(response.body()) {
+            @Override
+            public Page<PoolUsageMetrics> nextPage(String nextPageLink) {
+                return listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions, final ServiceFuture<List<PoolUsageMetrics>> serviceFuture, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(String nextPageLink) {
+                    return listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<Page<PoolUsageMetrics>> listUsageMetricsNextAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
+        return listUsageMetricsNextWithServiceResponseAsync(nextPageLink, poolListUsageMetricsNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Page<PoolUsageMetrics>>() {
+                @Override
+                public Page<PoolUsageMetrics> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PoolUsageMetrics&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
+        return listUsageMetricsNextSinglePageAsync(nextPageLink, poolListUsageMetricsNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listUsageMetricsNextWithServiceResponseAsync(nextPageLink, poolListUsageMetricsNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
+     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
+     *
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextSinglePageAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(poolListPoolUsageMetricsNextOptions);
-        String clientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsNextOptions.clientRequestId();
+        Validator.validate(poolListUsageMetricsNextOptions);
+        UUID clientRequestId = null;
+        if (poolListUsageMetricsNextOptions != null) {
+            clientRequestId = poolListUsageMetricsNextOptions.clientRequestId();
         }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsNextOptions.returnClientRequestId();
+        if (poolListUsageMetricsNextOptions != null) {
+            returnClientRequestId = poolListUsageMetricsNextOptions.returnClientRequestId();
         }
         DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            ocpDate = poolListPoolUsageMetricsNextOptions.ocpDate();
+        if (poolListUsageMetricsNextOptions != null) {
+            ocpDate = poolListUsageMetricsNextOptions.ocpDate();
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listPoolUsageMetricsNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
-     * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolListPoolUsageMetricsNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            ocpDate = poolListPoolUsageMetricsNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), poolListPoolUsageMetricsNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listUsageMetricsNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> result = listUsageMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.mapperAdapter())
+    private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> listUsageMetricsNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PoolUsageMetrics>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PoolUsageMetrics>>() { }.getType())
                 .registerError(BatchErrorException.class)
-                .buildWithHeaders(response, PoolListPoolUsageMetricsHeaders.class);
+                .buildWithHeaders(response, PoolListUsageMetricsHeaders.class);
     }
 
     /**
      * Lists all of the pools in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudPool> listNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<CloudPool>(response.body()) {
+            @Override
+            public Page<CloudPool> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<Page<CloudPool>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Page<CloudPool>>() {
+                @Override
+                public Page<CloudPool> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final PoolListNextOptions poolListNextOptions = null;
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        final PoolListNextOptions poolListNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4297,17 +4137,97 @@ public final class PoolsImpl implements Pools {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CloudPool&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<CloudPool> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single();
+        return new PagedList<CloudPool>(response.body()) {
+            @Override
+            public Page<CloudPool> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback) {
+        return AzureServiceFuture.fromHeaderPageResponse(
+            listNextSinglePageAsync(nextPageLink, poolListNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, poolListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
+        return listNextWithServiceResponseAsync(nextPageLink, poolListNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Page<CloudPool>>() {
+                @Override
+                public Page<CloudPool> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CloudPool&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
+        return listNextSinglePageAsync(nextPageLink, poolListNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, poolListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the pools in the specified account.
+     *
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Validator.validate(poolListNextOptions);
-        String clientRequestId = null;
+        UUID clientRequestId = null;
         if (poolListNextOptions != null) {
             clientRequestId = poolListNextOptions.clientRequestId();
         }
@@ -4323,69 +4243,23 @@ public final class PoolsImpl implements Pools {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists all of the pools in the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudPool> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(poolListNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (poolListNextOptions != null) {
-            clientRequestId = poolListNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolListNextOptions != null) {
-            returnClientRequestId = poolListNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListNextOptions != null) {
-            ocpDate = poolListNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), poolListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.body(), result.headers(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.mapperAdapter())
+        return this.client.restClient().responseBuilderFactory().<PageImpl<CloudPool>, BatchErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<CloudPool>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListHeaders.class);

@@ -20,13 +20,14 @@ public class JobExecutionInformation {
      * The start time of the job.
      * This is the time at which the job was created.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
 
     /**
      * The completion time of the job.
      * This property is set only if the job is in the completed state.
      */
+    @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**
@@ -35,33 +36,36 @@ public class JobExecutionInformation {
      * you get job details from the service, they also contain a poolInfo
      * element, which contains the pool configuration data from when the job
      * was added or updated. That poolInfo element may also contain a poolId
-     * element. If it does, the two IDs are the same. If it does not, it
-     * means the job ran on an auto pool, and this property contains the id
-     * of that auto pool.
+     * element. If it does, the two IDs are the same. If it does not, it means
+     * the job ran on an auto pool, and this property contains the id of that
+     * auto pool.
      */
+    @JsonProperty(value = "poolId")
     private String poolId;
 
     /**
      * Details of any error encountered by the service in starting the job.
      * This property is not set if there was no error starting the job.
      */
+    @JsonProperty(value = "schedulingError")
     private JobSchedulingError schedulingError;
 
     /**
      * A string describing the reason the job ended.
      * This property is set only if the job is in the completed state. If the
      * Batch service terminates the job, it sets the reason as follows:
-     * JMComplete – the Job Manager task completed, and killJobOnCompletion
-     * was set to true. MaxWallClockTimeExpiry – the job reached its
-     * maxWallClockTime constraint. TerminateJobSchedule – the job ran as
-     * part of a schedule, and the schedule terminated. AllTasksComplete –
-     * the job's onAllTasksComplete attribute is set to terminatejob, and all
-     * tasks in the job are complete. TaskFailed – the job's onTaskFailure
-     * attribute is set to performexitoptionsjobaction, and a task in the job
-     * failed with an exit condition that specified a jobAction of
-     * terminatejob. Any other string is a user-defined reason specified in a
-     * call to the 'Terminate a job' operation.
+     * JMComplete - the Job Manager task completed, and killJobOnCompletion was
+     * set to true. MaxWallClockTimeExpiry - the job reached its
+     * maxWallClockTime constraint. TerminateJobSchedule - the job ran as part
+     * of a schedule, and the schedule terminated. AllTasksComplete - the job's
+     * onAllTasksComplete attribute is set to terminateJob, and all tasks in
+     * the job are complete. TaskFailed - the job's onTaskFailure attribute is
+     * set to performExitOptionsJobAction, and a task in the job failed with an
+     * exit condition that specified a jobAction of terminateJob. Any other
+     * string is a user-defined reason specified in a call to the 'Terminate a
+     * job' operation.
      */
+    @JsonProperty(value = "terminateReason")
     private String terminateReason;
 
     /**

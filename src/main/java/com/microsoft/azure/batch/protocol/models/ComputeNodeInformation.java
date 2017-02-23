@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information about the compute node on which a task ran.
@@ -15,34 +16,40 @@ package com.microsoft.azure.batch.protocol.models;
 public class ComputeNodeInformation {
     /**
      * An identifier for the compute node on which the task ran, which can be
-     * passed when adding a task to request that the task be scheduled close
-     * to this compute node.
+     * passed when adding a task to request that the task be scheduled close to
+     * this compute node.
      */
+    @JsonProperty(value = "affinityId")
     private String affinityId;
 
     /**
      * The URL of the node on which the task ran.
      */
+    @JsonProperty(value = "nodeUrl")
     private String nodeUrl;
 
     /**
      * The ID of the pool on which the task ran.
      */
+    @JsonProperty(value = "poolId")
     private String poolId;
 
     /**
      * The ID of the node on which the task ran.
      */
+    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /**
      * The root directory of the task on the compute node.
      */
+    @JsonProperty(value = "taskRootDirectory")
     private String taskRootDirectory;
 
     /**
      * The URL to the root directory of the task on the compute node.
      */
+    @JsonProperty(value = "taskRootDirectoryUrl")
     private String taskRootDirectoryUrl;
 
     /**

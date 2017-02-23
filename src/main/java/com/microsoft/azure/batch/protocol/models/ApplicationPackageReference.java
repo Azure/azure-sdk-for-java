@@ -17,7 +17,7 @@ public class ApplicationPackageReference {
     /**
      * The ID of the application to deploy.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /**
@@ -28,6 +28,7 @@ public class ApplicationPackageReference {
      * InvalidApplicationPackageReferences. If you are calling the REST API
      * directly, the HTTP status code is 409.
      */
+    @JsonProperty(value = "version")
     private String version;
 
     /**

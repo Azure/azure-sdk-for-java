@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.UUID;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the JobSchedule_Get operation.
+ * Additional parameters for the JobSchedule_get operation.
  */
 public class JobScheduleGetOptions {
     /**
@@ -41,7 +42,7 @@ public class JobScheduleGetOptions {
      * 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      */
     @JsonProperty(value = "")
-    private String clientRequestId;
+    private UUID clientRequestId;
 
     /**
      * Whether the server should return the client-request-id in the response.
@@ -50,36 +51,41 @@ public class JobScheduleGetOptions {
     private Boolean returnClientRequestId;
 
     /**
-     * The time the request was issued. If not specified, this header will be
-     * automatically populated with the current system clock time.
+     * The time the request was issued. Client libraries typically set this to
+     * the current system clock time; set it explicitly if you are calling the
+     * REST API directly.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * An ETag is specified. Specify this header to perform the operation only
-     * if the resource's ETag is an exact match as specified.
+     * An ETag value associated with the version of the resource known to the
+     * client. The operation will be performed only if the resource's current
+     * ETag on the service exactly matches the value specified by the client.
      */
     @JsonProperty(value = "")
     private String ifMatch;
 
     /**
-     * An ETag is specified. Specify this header to perform the operation only
-     * if the resource's ETag does not match the specified ETag.
+     * An ETag value associated with the version of the resource known to the
+     * client. The operation will be performed only if the resource's current
+     * ETag on the service does not match the value specified by the client.
      */
     @JsonProperty(value = "")
     private String ifNoneMatch;
 
     /**
-     * Specify this header to perform the operation only if the resource has
-     * been modified since the specified date/time.
+     * A timestamp indicating the last modified time of the resource known to
+     * the client. The operation will be performed only if the resource on the
+     * service has been modified since the specified time.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ifModifiedSince;
 
     /**
-     * Specify this header to perform the operation only if the resource has
-     * not been modified since the specified date/time.
+     * A timestamp indicating the last modified time of the resource known to
+     * the client. The operation will be performed only if the resource on the
+     * service has not been modified since the specified time.
      */
     @JsonProperty(value = "")
     private DateTimeRfc1123 ifUnmodifiedSince;
@@ -149,7 +155,7 @@ public class JobScheduleGetOptions {
      *
      * @return the clientRequestId value
      */
-    public String clientRequestId() {
+    public UUID clientRequestId() {
         return this.clientRequestId;
     }
 
@@ -159,7 +165,7 @@ public class JobScheduleGetOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobScheduleGetOptions object itself.
      */
-    public JobScheduleGetOptions withClientRequestId(String clientRequestId) {
+    public JobScheduleGetOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -193,7 +199,7 @@ public class JobScheduleGetOptions {
         if (this.ocpDate == null) {
             return null;
         }
-        return this.ocpDate.getDateTime();
+        return this.ocpDate.dateTime();
     }
 
     /**
@@ -260,7 +266,7 @@ public class JobScheduleGetOptions {
         if (this.ifModifiedSince == null) {
             return null;
         }
-        return this.ifModifiedSince.getDateTime();
+        return this.ifModifiedSince.dateTime();
     }
 
     /**
@@ -287,7 +293,7 @@ public class JobScheduleGetOptions {
         if (this.ifUnmodifiedSince == null) {
             return null;
         }
-        return this.ifUnmodifiedSince.getDateTime();
+        return this.ifUnmodifiedSince.dateTime();
     }
 
     /**

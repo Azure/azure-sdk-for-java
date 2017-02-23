@@ -12,29 +12,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A reference to an Azure Virtual Machines Marketplace image. To get the list
- * of all imageReferences verified by Azure Batch, see the 'List supported
- * node agent SKUs' operation.
+ * of all imageReferences verified by Azure Batch, see the 'List supported node
+ * agent SKUs' operation.
  */
 public class ImageReference {
     /**
      * The publisher of the Azure Virtual Machines Marketplace image.
      * For example, Canonical or MicrosoftWindowsServer.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /**
      * The offer type of the Azure Virtual Machines Marketplace image.
      * For example, UbuntuServer or WindowsServer.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "offer", required = true)
     private String offer;
 
     /**
      * The SKU of the Azure Virtual Machines Marketplace image.
      * For example, 14.04.0-LTS or 2012-R2-Datacenter.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sku", required = true)
     private String sku;
 
     /**
@@ -42,6 +42,7 @@ public class ImageReference {
      * A value of 'latest' can be specified to select the latest version of an
      * image. If omitted, the default is 'latest'.
      */
+    @JsonProperty(value = "version")
     private String version;
 
     /**

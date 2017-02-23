@@ -21,8 +21,8 @@ public enum CertificateState {
     /** Enum value deleting. */
     DELETING("deleting"),
 
-    /** Enum value deletefailed. */
-    DELETEFAILED("deletefailed");
+    /** Enum value deleteFailed. */
+    DELETE_FAILED("deleteFailed");
 
     /** The actual serialized value for a CertificateState instance. */
     private String value;

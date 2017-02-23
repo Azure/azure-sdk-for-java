@@ -17,26 +17,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobSchedulingError {
     /**
      * The category of the job scheduling error.
-     * Possible values include: 'usererror', 'servererror', 'unmapped'.
+     * Possible values include: 'userError', 'serverError', 'unmapped'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "category", required = true)
     private SchedulingErrorCategory category;
 
     /**
      * An identifier for the job scheduling error. Codes are invariant and are
      * intended to be consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * A message describing the job scheduling error, intended to be suitable
      * for display in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * A list of additional error details related to the scheduling error.
      */
+    @JsonProperty(value = "details")
     private List<NameValuePair> details;
 
     /**

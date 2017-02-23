@@ -7,9 +7,7 @@
 package com.microsoft.azure.batch;
 
 import com.google.common.io.CharStreams;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
@@ -248,9 +246,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
     }
 
     /**
@@ -445,10 +441,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
+        InputStream response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
 
-        if (response.getBody() != null) {
-            return CharStreams.toString(new InputStreamReader(response.getBody(), "UTF-8"));
+        if (response != null) {
+            return CharStreams.toString(new InputStreamReader(response, "UTF-8"));
         }
         else {
             return null;
@@ -464,8 +460,8 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
-        return getRemoteLoginSettings(poolId, nodeId, null);
+    public ComputeNodeGetRemoteLoginSettingsResult getComputeNodeRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
+        return getComputeNodeRemoteLoginSettings(poolId, nodeId, null);
     }
 
     /**
@@ -478,14 +474,12 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public ComputeNodeGetRemoteLoginSettingsResult getComputeNodeRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteLoginSettingsOptions options = new ComputeNodeGetRemoteLoginSettingsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
     }
 
     /**
@@ -529,9 +523,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
-
-        return response.getBody();
+        return this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
     }
 
 }

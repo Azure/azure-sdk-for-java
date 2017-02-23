@@ -23,31 +23,35 @@ public class JobSpecification {
      * schedule. You can update a job's priority after it has been created
      * using by using the update job API.
      */
+    @JsonProperty(value = "priority")
     private Integer priority;
 
     /**
      * The display name for jobs created under this schedule.
-     * The name need not be unique and can contain any Unicode characters up
-     * to a maximum length of 1024.
+     * The name need not be unique and can contain any Unicode characters up to
+     * a maximum length of 1024.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The flag that determines if this job will use tasks with dependencies.
      */
+    @JsonProperty(value = "usesTaskDependencies")
     private Boolean usesTaskDependencies;
 
     /**
-     * The action the Batch service should take when all tasks in a job
-     * created under this schedule are in the completed state.
+     * The action the Batch service should take when all tasks in a job created
+     * under this schedule are in the completed state.
      * Note that if a job contains no tasks, then all tasks are considered
-     * complete. This option is therefore most commonly used with a job
-     * manager task; if you want to use automatic job termination without a
-     * job manager, you should initially set onAllTasksComplete to noaction
-     * and update the job properties to set onAllTasksComplete to
-     * terminatejob once you have finished adding tasks. The default is
-     * noaction. Possible values include: 'noAction', 'terminateJob'.
+     * complete. This option is therefore most commonly used with a Job Manager
+     * task; if you want to use automatic job termination without a Job
+     * Manager, you should initially set onAllTasksComplete to noAction and
+     * update the job properties to set onAllTasksComplete to terminateJob once
+     * you have finished adding tasks. The default is noAction. Possible values
+     * include: 'noAction', 'terminateJob'.
      */
+    @JsonProperty(value = "onAllTasksComplete")
     private OnAllTasksComplete onAllTasksComplete;
 
     /**
@@ -55,33 +59,37 @@ public class JobSpecification {
      * created under this schedule. A task is considered to have failed if it
      * completes with a non-zero exit code and has exhausted its retry count,
      * or if it had a scheduling error.
-     * The default is noaction. Possible values include: 'noAction',
+     * The default is noAction. Possible values include: 'noAction',
      * 'performExitOptionsJobAction'.
      */
+    @JsonProperty(value = "onTaskFailure")
     private OnTaskFailure onTaskFailure;
 
     /**
      * The execution constraints for jobs created under this schedule.
      */
+    @JsonProperty(value = "constraints")
     private JobConstraints constraints;
 
     /**
      * The details of a Job Manager task to be launched when a job is started
      * under this schedule.
-     * If the job does not specify a Job Manager task, the user must
-     * explicitly add tasks to the job using the Task API. If the job does
-     * specify a Job Manager task, the Batch service creates the Job Manager
-     * task when the job is created, and will try to schedule the Job Manager
-     * task before scheduling other tasks in the job.
+     * If the job does not specify a Job Manager task, the user must explicitly
+     * add tasks to the job using the Task API. If the job does specify a Job
+     * Manager task, the Batch service creates the Job Manager task when the
+     * job is created, and will try to schedule the Job Manager task before
+     * scheduling other tasks in the job.
      */
+    @JsonProperty(value = "jobManagerTask")
     private JobManagerTask jobManagerTask;
 
     /**
      * The Job Preparation task for jobs created under this schedule.
      * If a job has a Job Preparation task, the Batch service will run the Job
-     * Preparation task on a compute node before starting any tasks of that
-     * job on that compute node.
+     * Preparation task on a compute node before starting any tasks of that job
+     * on that compute node.
      */
+    @JsonProperty(value = "jobPreparationTask")
     private JobPreparationTask jobPreparationTask;
 
     /**
@@ -94,6 +102,7 @@ public class JobSpecification {
      * The Batch service runs the Job Release task on the compute nodes that
      * have run the Job Preparation task.
      */
+    @JsonProperty(value = "jobReleaseTask")
     private JobReleaseTask jobReleaseTask;
 
     /**
@@ -103,13 +112,14 @@ public class JobSpecification {
      * Individual tasks can override an environment setting specified here by
      * specifying the same setting name with a different value.
      */
+    @JsonProperty(value = "commonEnvironmentSettings")
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /**
-     * The pool on which the Batch service runs the tasks of jobs created
-     * under this schedule.
+     * The pool on which the Batch service runs the tasks of jobs created under
+     * this schedule.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "poolInfo", required = true)
     private PoolInformation poolInfo;
 
     /**
@@ -118,6 +128,7 @@ public class JobSpecification {
      * The Batch service does not assign any meaning to metadata; it is solely
      * for the use of user code.
      */
+    @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /**

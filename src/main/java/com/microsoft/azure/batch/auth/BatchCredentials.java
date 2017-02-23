@@ -6,29 +6,16 @@
 
 package com.microsoft.azure.batch.auth;
 
-/**
- * Base class for credentials used to authenticate access to an Azure Batch account.
- */
-public abstract class BatchCredentials {
-    private String baseUrl;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 
+/**
+ * Interface for credentials used to authenticate access to an Azure Batch account.
+ */
+public interface BatchCredentials extends ServiceClientCredentials {
     /**
      * Gets the Batch service endpoint.
      *
      * @return The Batch service endpoint.
      */
-    public String baseUrl() {
-        return baseUrl;
-    }
-
-    /**
-     * Initializes a new instance of the {@link BatchCredentials} class.
-     *
-     * @param baseUrl The Batch service endpoint.
-     * @return The new instance of BatchCredentials.
-     */
-    protected BatchCredentials withBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-        return this;
-    }
+    String baseUrl();
 }

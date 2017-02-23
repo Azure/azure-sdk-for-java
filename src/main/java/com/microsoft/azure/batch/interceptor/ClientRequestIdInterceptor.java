@@ -25,20 +25,20 @@ public class ClientRequestIdInterceptor extends RequestInterceptor {
                 Class<?> c = request.getClass();
 
                 try {
-                    Method clientRequestIdMethod = c.getMethod("withClientRequestId", new Class[]{String.class});
+                    Method clientRequestIdMethod = c.getMethod("withClientRequestId", UUID.class);
                     if (clientRequestIdMethod != null) {
-                        String clientRequestId = UUID.randomUUID().toString();
+                        UUID clientRequestId = UUID.randomUUID();
                         clientRequestIdMethod.invoke(request, clientRequestId);
                     }
 
-                    Method returnClientRequestIdMethod = c.getMethod("withReturnClientRequestId", new Class[]{Boolean.class});
+                    Method returnClientRequestIdMethod = c.getMethod("withReturnClientRequestId", Boolean.class);
                     if (returnClientRequestIdMethod != null) {
                         returnClientRequestIdMethod.invoke(request, true);
                     }
                 }
                 catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                    // Ignore exception
                 }
-
             }
         });
     }
