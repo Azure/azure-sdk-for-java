@@ -85,5 +85,6 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         // Delete
         genericResources.deleteById(resource.id());
         Assert.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        Assert.assertFalse(genericResources.checkExistenceById(resource.id()));
     }
 }
