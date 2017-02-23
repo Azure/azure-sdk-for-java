@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.redis.implementation.ScheduleEntryInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -157,7 +158,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         premiumCache.forceReboot(RebootType.ALL_NODES);
 
         // Patch Schedule
-        List<ScheduleEntry> patchSchedule = premiumCache.listPatchSchedules();
+        List<ScheduleEntryInner> patchSchedule = premiumCache.listPatchSchedules();
         Assert.assertEquals(2, patchSchedule.size());
 
         premiumCache.deletePatchSchedule();

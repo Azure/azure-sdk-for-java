@@ -74,7 +74,7 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
-import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.redis.implementation.ScheduleEntryInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
 import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
@@ -422,10 +422,10 @@ public final class Utils {
         }
         if (redisCache.isPremium()) {
             RedisCachePremium premium = redisCache.asPremium();
-            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
+            List<ScheduleEntryInner> scheduleEntries = premium.listPatchSchedules();
             if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
                 redisInfo.append("\n\tRedis Patch Schedule:");
-                for (ScheduleEntry schedule : scheduleEntries) {
+                for (ScheduleEntryInner schedule : scheduleEntries) {
                     redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
                             .append("', start at: '").append(schedule.startHourUtc())
                             .append("', maintenance window: '").append(schedule.maintenanceWindow())
