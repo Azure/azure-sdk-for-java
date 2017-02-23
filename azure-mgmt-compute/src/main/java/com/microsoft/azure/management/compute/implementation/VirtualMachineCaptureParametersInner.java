@@ -17,20 +17,20 @@ public class VirtualMachineCaptureParametersInner {
     /**
      * The captured virtual hard disk's name prefix.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vhdPrefix", required = true)
     private String vhdPrefix;
 
     /**
      * The destination container name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "destinationContainerName", required = true)
     private String destinationContainerName;
 
     /**
      * Specifies whether to overwrite the destination virtual hard disk, in
      * case of conflict.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "overwriteVhds", required = true)
     private boolean overwriteVhds;
 
     /**

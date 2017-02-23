@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.SubResource;
 
 /**
@@ -17,16 +18,19 @@ public class ImageReferenceInner extends SubResource {
     /**
      * The image publisher.
      */
+    @JsonProperty(value = "publisher")
     private String publisher;
 
     /**
      * The image offer.
      */
+    @JsonProperty(value = "offer")
     private String offer;
 
     /**
      * The image SKU.
      */
+    @JsonProperty(value = "sku")
     private String sku;
 
     /**
@@ -34,6 +38,7 @@ public class ImageReferenceInner extends SubResource {
      * 'latest'. Major, Minor and Build are decimal numbers. Specify 'latest'
      * to use the latest version of the image.
      */
+    @JsonProperty(value = "version")
     private String version;
 
     /**

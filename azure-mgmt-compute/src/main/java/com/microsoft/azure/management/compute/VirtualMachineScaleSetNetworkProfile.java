@@ -10,6 +10,7 @@ package com.microsoft.azure.management.compute;
 
 import java.util.List;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetNetworkConfigurationInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set network profile.
@@ -18,6 +19,7 @@ public class VirtualMachineScaleSetNetworkProfile {
     /**
      * The list of network configurations.
      */
+    @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations;
 
     /**

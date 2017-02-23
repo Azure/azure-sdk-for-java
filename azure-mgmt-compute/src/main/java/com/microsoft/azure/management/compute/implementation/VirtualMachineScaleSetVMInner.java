@@ -30,13 +30,13 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     /**
      * The virtual machine instance ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "instanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceId;
 
     /**
      * The virtual machine SKU.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /**
@@ -111,12 +111,13 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * The purchase plan when deploying virtual machine from VM Marketplace
      * images.
      */
+    @JsonProperty(value = "plan")
     private Plan plan;
 
     /**
      * The virtual machine child extension resources.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /**

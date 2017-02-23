@@ -18,13 +18,13 @@ public class ContainerServiceServicePrincipalProfile {
     /**
      * The ID for the service principal.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /**
      * The secret password associated with the service principal.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "secret", required = true)
     private String secret;
 
     /**

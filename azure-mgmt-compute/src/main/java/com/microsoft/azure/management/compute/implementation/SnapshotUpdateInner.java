@@ -10,7 +10,6 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.OperatingSystemStateTypes;
 import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.EncryptionSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,13 +33,6 @@ public class SnapshotUpdateInner extends ResourceUpdate {
      */
     @JsonProperty(value = "properties.osType")
     private OperatingSystemTypes osType;
-
-    /**
-     * the Operating System state. Possible values include: 'Generalized',
-     * 'Specialized'.
-     */
-    @JsonProperty(value = "properties.osState")
-    private OperatingSystemStateTypes osState;
 
     /**
      * disk source information. CreationData information cannot be changed
@@ -102,26 +94,6 @@ public class SnapshotUpdateInner extends ResourceUpdate {
      */
     public SnapshotUpdateInner withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
-        return this;
-    }
-
-    /**
-     * Get the osState value.
-     *
-     * @return the osState value
-     */
-    public OperatingSystemStateTypes osState() {
-        return this.osState;
-    }
-
-    /**
-     * Set the osState value.
-     *
-     * @param osState the osState value to set
-     * @return the SnapshotUpdateInner object itself.
-     */
-    public SnapshotUpdateInner withOsState(OperatingSystemStateTypes osState) {
-        this.osState = osState;
         return this;
     }
 

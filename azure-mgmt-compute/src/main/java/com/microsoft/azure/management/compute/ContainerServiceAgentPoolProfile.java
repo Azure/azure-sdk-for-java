@@ -18,14 +18,14 @@ public class ContainerServiceAgentPoolProfile {
      * Unique name of the agent pool profile in the context of the subscription
      * and resource group.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 1 to 100 (inclusive). The default value is 1.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "count", required = true)
     private int count;
 
     /**
@@ -43,19 +43,19 @@ public class ContainerServiceAgentPoolProfile {
      * 'Standard_DS13', 'Standard_DS14', 'Standard_GS1', 'Standard_GS2',
      * 'Standard_GS3', 'Standard_GS4', 'Standard_GS5'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vmSize", required = true)
     private ContainerServiceVMSizeTypes vmSize;
 
     /**
      * DNS prefix to be used to create the FQDN for the agent pool.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dnsPrefix", required = true)
     private String dnsPrefix;
 
     /**
      * FDQN for the agent pool.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /**

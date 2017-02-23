@@ -1823,6 +1823,9 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
+    /**
+     * Class to manage Data Disk collection.
+     */
     private class ManagedDataDiskCollection {
         private final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();

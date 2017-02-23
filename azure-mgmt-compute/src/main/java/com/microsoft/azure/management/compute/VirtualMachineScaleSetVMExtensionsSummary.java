@@ -18,13 +18,13 @@ public class VirtualMachineScaleSetVMExtensionsSummary {
     /**
      * The extension name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * The extensions information.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**

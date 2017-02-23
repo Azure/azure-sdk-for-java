@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of a virtual machine extension handler.
@@ -17,16 +18,19 @@ public class VirtualMachineExtensionHandlerInstanceView {
      * Full type of the extension handler which includes both publisher and
      * type.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
      * The type version of the extension handler.
      */
+    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
      * The extension handler status.
      */
+    @JsonProperty(value = "status")
     private InstanceViewStatus status;
 
     /**

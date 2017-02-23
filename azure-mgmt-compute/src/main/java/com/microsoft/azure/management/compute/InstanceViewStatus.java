@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Instance view status.
@@ -17,26 +18,31 @@ public class InstanceViewStatus {
     /**
      * The status code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * The level code. Possible values include: 'Info', 'Warning', 'Error'.
      */
+    @JsonProperty(value = "level")
     private StatusLevelTypes level;
 
     /**
      * The short localizable label for the status.
      */
+    @JsonProperty(value = "displayStatus")
     private String displayStatus;
 
     /**
      * The detailed status message, including for alerts and error messages.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * The time of the status.
      */
+    @JsonProperty(value = "time")
     private DateTime time;
 
     /**

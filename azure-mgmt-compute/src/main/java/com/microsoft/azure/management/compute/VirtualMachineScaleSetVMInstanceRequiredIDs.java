@@ -18,7 +18,7 @@ public class VirtualMachineScaleSetVMInstanceRequiredIDs {
     /**
      * The virtual machine scale set instance ids.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "instanceIds", required = true)
     private List<String> instanceIds;
 
     /**

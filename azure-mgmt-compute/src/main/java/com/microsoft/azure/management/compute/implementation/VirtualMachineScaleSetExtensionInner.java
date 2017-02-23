@@ -20,6 +20,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     /**
      * The name of the extension.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
