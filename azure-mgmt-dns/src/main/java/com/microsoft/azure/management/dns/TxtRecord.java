@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.dns;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A TXT record.
@@ -17,6 +18,7 @@ public class TxtRecord {
     /**
      * The text value of this TXT record.
      */
+    @JsonProperty(value = "value")
     private List<String> value;
 
     /**

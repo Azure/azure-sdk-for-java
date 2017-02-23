@@ -31,21 +31,25 @@ public class RecordSetInner {
     /**
      * The ID of the record set.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The name of the record set.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The type of the record set.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
      * The etag of the record set.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
