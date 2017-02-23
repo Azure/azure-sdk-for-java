@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -16,8 +17,8 @@ import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Profiles.
  */
-public class ProfilesInner {
+public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /** The Retrofit service to perform REST calls. */
     private ProfilesService service;
     /** The service client containing this operation class. */
@@ -1094,7 +1095,7 @@ public class ProfilesInner {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1198,7 +1199,7 @@ public class ProfilesInner {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1302,7 +1303,7 @@ public class ProfilesInner {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

@@ -10,8 +10,8 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityInput;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
@@ -19,8 +19,8 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -599,7 +599,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -703,7 +703,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
