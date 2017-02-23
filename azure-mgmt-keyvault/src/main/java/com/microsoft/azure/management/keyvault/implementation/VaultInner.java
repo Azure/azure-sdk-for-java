@@ -19,7 +19,7 @@ public class VaultInner extends Resource {
     /**
      * Properties of the vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "properties", required = true)
     private VaultProperties properties;
 
     /**

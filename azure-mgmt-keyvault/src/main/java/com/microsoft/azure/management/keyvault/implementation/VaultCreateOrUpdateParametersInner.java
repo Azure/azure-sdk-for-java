@@ -19,18 +19,19 @@ public class VaultCreateOrUpdateParametersInner {
     /**
      * The supported Azure location where the key vault should be created.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
      * The tags that will be assigned to the key vault.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
      * Properties of the vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "properties", required = true)
     private VaultProperties properties;
 
     /**
