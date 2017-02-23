@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Plan for the resource.
@@ -16,21 +17,25 @@ public class Plan {
     /**
      * The plan ID.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The publisher ID.
      */
+    @JsonProperty(value = "publisher")
     private String publisher;
 
     /**
      * The offer ID.
      */
+    @JsonProperty(value = "product")
     private String product;
 
     /**
      * The promotion code.
      */
+    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /**

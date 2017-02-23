@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a virtual machine scale set sku.
@@ -16,16 +17,19 @@ public class Sku {
     /**
      * The sku name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The sku tier.
      */
+    @JsonProperty(value = "tier")
     private String tier;
 
     /**
      * The sku capacity.
      */
+    @JsonProperty(value = "capacity")
     private Long capacity;
 
     /**

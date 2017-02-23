@@ -21,18 +21,19 @@ public class VirtualMachineScaleSetInstanceViewInner {
     /**
      * The instance view status summary for the virtual machine scale set.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine;
 
     /**
      * The extensions information.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "extensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineScaleSetVMExtensionsSummary> extensions;
 
     /**
      * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**

@@ -18,7 +18,7 @@ public class ContainerServiceSshConfiguration {
     /**
      * the list of SSH public keys used to authenticate with Linux-based VMs.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "publicKeys", required = true)
     private List<ContainerServiceSshPublicKey> publicKeys;
 
     /**

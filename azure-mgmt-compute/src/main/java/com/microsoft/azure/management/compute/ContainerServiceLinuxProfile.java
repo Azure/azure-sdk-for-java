@@ -17,13 +17,13 @@ public class ContainerServiceLinuxProfile {
     /**
      * The administrator username to use for Linux VMs.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "adminUsername", required = true)
     private String adminUsername;
 
     /**
      * The ssh key configuration for Linux VMs.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
 
     /**

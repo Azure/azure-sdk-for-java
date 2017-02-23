@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Compute-specific operation properties, including output.
@@ -16,6 +17,7 @@ public class ComputeLongRunningOperationProperties {
     /**
      * Operation output data (raw JSON).
      */
+    @JsonProperty(value = "output")
     private Object output;
 
     /**

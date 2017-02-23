@@ -19,18 +19,19 @@ public class VirtualMachineImageResourceInner extends SubResource {
     /**
      * The name of the resource.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * The supported Azure location of the resource.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
      * The tags attached to the resource.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**

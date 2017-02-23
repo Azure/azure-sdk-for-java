@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.DiskInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.azure.management.compute.BootDiagnosticsInstanceView;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The instance view of a virtual machine scale set VM.
@@ -22,42 +23,57 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
     /**
      * The Update Domain count.
      */
+    @JsonProperty(value = "platformUpdateDomain")
     private Integer platformUpdateDomain;
 
     /**
      * The Fault Domain count.
      */
+    @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
 
     /**
      * The Remote desktop certificate thumbprint.
      */
+    @JsonProperty(value = "rdpThumbPrint")
     private String rdpThumbPrint;
 
     /**
      * The VM Agent running on the virtual machine.
      */
+    @JsonProperty(value = "vmAgent")
     private VirtualMachineAgentInstanceView vmAgent;
 
     /**
      * The disks information.
      */
+    @JsonProperty(value = "disks")
     private List<DiskInstanceView> disks;
 
     /**
      * The extensions information.
      */
+    @JsonProperty(value = "extensions")
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /**
      * The boot diagnostics.
      */
+    @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
 
     /**
      * The resource status information.
      */
+    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
+
+    /**
+     * The placement group in which the VM is running. If the VM is deallocated
+     * it will not have a placementGroupId.
+     */
+    @JsonProperty(value = "placementGroupId")
+    private String placementGroupId;
 
     /**
      * Get the platformUpdateDomain value.
@@ -216,6 +232,26 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      */
     public VirtualMachineScaleSetVMInstanceViewInner withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
+        return this;
+    }
+
+    /**
+     * Get the placementGroupId value.
+     *
+     * @return the placementGroupId value
+     */
+    public String placementGroupId() {
+        return this.placementGroupId;
+    }
+
+    /**
+     * Set the placementGroupId value.
+     *
+     * @param placementGroupId the placementGroupId value to set
+     * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
+     */
+    public VirtualMachineScaleSetVMInstanceViewInner withPlacementGroupId(String placementGroupId) {
+        this.placementGroupId = placementGroupId;
         return this;
     }
 

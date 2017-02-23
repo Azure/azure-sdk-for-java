@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.StorageAccountTypes;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.SubResource;
 
 /**
@@ -19,6 +20,7 @@ public class ManagedDiskParametersInner extends SubResource {
      * The Storage Account type. Possible values include: 'Standard_LRS',
      * 'Premium_LRS'.
      */
+    @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /**

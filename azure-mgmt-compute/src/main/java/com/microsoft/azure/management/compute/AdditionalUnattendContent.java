@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Additional XML formatted information that can be included in the
@@ -20,6 +21,7 @@ public class AdditionalUnattendContent {
      * The pass name. Currently, the only allowable value is oobeSystem.
      * Possible values include: 'oobeSystem'.
      */
+    @JsonProperty(value = "passName")
     private PassNames passName;
 
     /**
@@ -27,12 +29,14 @@ public class AdditionalUnattendContent {
      * Microsoft-Windows-Shell-Setup. Possible values include:
      * 'Microsoft-Windows-Shell-Setup'.
      */
+    @JsonProperty(value = "componentName")
     private ComponentNames componentName;
 
     /**
      * Setting name (e.g. FirstLogonCommands, AutoLogon ). Possible values
      * include: 'AutoLogon', 'FirstLogonCommands'.
      */
+    @JsonProperty(value = "settingName")
     private SettingNames settingName;
 
     /**
@@ -41,6 +45,7 @@ public class AdditionalUnattendContent {
      * include the root element for the setting or feature that is being
      * inserted.
      */
+    @JsonProperty(value = "content")
     private String content;
 
     /**

@@ -18,18 +18,19 @@ public class ContainerServiceMasterProfile {
      * Number of masters (VMs) in the container service cluster. Allowed values
      * are 1, 3, and 5. The default value is 1.
      */
+    @JsonProperty(value = "count")
     private Integer count;
 
     /**
      * DNS prefix to be used to create the FQDN for master.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dnsPrefix", required = true)
     private String dnsPrefix;
 
     /**
      * FDQN for the master.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /**
