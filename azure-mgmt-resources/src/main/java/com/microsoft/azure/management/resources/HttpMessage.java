@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The HttpMessage model.
@@ -16,6 +17,7 @@ public class HttpMessage {
     /**
      * HTTP message content.
      */
+    @JsonProperty(value = "content")
     private Object content;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceManagementErrorWithDetails;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ResourceGroupExportResultInner model.
@@ -17,11 +18,13 @@ public class ResourceGroupExportResultInner {
     /**
      * The template content.
      */
+    @JsonProperty(value = "template")
     private Object template;
 
     /**
      * The error.
      */
+    @JsonProperty(value = "error")
     private ResourceManagementErrorWithDetails error;
 
     /**

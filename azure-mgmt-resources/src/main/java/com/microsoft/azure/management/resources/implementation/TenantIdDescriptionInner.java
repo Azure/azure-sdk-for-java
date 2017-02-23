@@ -18,13 +18,13 @@ public class TenantIdDescriptionInner {
      * The fully qualified ID of the tenant. For example,
      * /tenants/00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.TagCount;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Tag information.
@@ -17,16 +18,19 @@ public class TagValueInner {
     /**
      * The tag ID.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The tag value.
      */
+    @JsonProperty(value = "tagValue")
     private String tagValue;
 
     /**
      * The tag value count.
      */
+    @JsonProperty(value = "count")
     private TagCount count;
 
     /**

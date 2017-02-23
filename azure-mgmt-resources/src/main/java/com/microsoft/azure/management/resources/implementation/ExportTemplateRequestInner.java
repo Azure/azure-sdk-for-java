@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Export resource group template request parameters.
@@ -19,6 +20,7 @@ public class ExportTemplateRequestInner {
      * (all resources). Future updates will support exporting specific
      * resources.
      */
+    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**
@@ -26,6 +28,7 @@ public class ExportTemplateRequestInner {
      * 'IncludeParameterDefaultValue', 'IncludeComments' or
      * 'IncludeParameterDefaultValue, IncludeComments.
      */
+    @JsonProperty(value = "options")
     private String options;
 
     /**

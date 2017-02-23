@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The alias type.
@@ -17,11 +18,13 @@ public class AliasType {
     /**
      * The alias name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The paths for an alias.
      */
+    @JsonProperty(value = "paths")
     private List<AliasPathType> paths;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource provider operation's display properties.
@@ -16,26 +17,31 @@ public class ResourceProviderOperationDisplayProperties {
     /**
      * Operation description.
      */
+    @JsonProperty(value = "publisher")
     private String publisher;
 
     /**
      * Operation provider.
      */
+    @JsonProperty(value = "provider")
     private String provider;
 
     /**
      * Operation resource.
      */
+    @JsonProperty(value = "resource")
     private String resource;
 
     /**
      * Operation.
      */
+    @JsonProperty(value = "operation")
     private String operation;
 
     /**
      * Operation description.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /**

@@ -76,6 +76,6 @@ final class PolicyAssignmentsImpl
 
     @Override
     public PagedList<PolicyAssignment> listByGroup(String resourceGroupName) {
-        return wrapList(client.listForResourceGroup(resourceGroupName));
+        return wrapList(client.listByResourceGroup(resourceGroupName));
     }
 }

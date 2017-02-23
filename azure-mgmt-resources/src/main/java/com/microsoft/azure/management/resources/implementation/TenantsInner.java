@@ -33,7 +33,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Tenants.
  */
-public final class TenantsInner {
+public class TenantsInner {
     /** The Retrofit service to perform REST calls. */
     private TenantsService service;
     /** The service client containing this operation class. */
@@ -182,7 +182,7 @@ public final class TenantsInner {
      * Gets the tenants for your account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

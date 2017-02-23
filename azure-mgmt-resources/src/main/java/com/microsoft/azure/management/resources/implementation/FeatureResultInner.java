@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.FeatureProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Previewed feature information.
@@ -17,21 +18,25 @@ public class FeatureResultInner {
     /**
      * The name of the feature.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Properties of the previewed feature.
      */
+    @JsonProperty(value = "properties")
     private FeatureProperties properties;
 
     /**
      * The resource ID of the feature.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The resource type of the feature.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**

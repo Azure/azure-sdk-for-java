@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the FeatureClientImpl class.
  */
-public final class FeatureClientImpl extends AzureServiceClient {
+public class FeatureClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

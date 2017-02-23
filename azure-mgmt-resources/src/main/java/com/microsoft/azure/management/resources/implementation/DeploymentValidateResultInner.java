@@ -10,6 +10,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceManagementErrorWithDetails;
 import com.microsoft.azure.management.resources.DeploymentPropertiesExtended;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information from validate template deployment response.
@@ -18,11 +19,13 @@ public class DeploymentValidateResultInner {
     /**
      * Validation error.
      */
+    @JsonProperty(value = "error")
     private ResourceManagementErrorWithDetails error;
 
     /**
      * The template deployment properties.
      */
+    @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
     /**

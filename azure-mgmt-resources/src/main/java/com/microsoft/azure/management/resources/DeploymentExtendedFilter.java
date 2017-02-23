@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment filter.
@@ -16,6 +17,7 @@ public class DeploymentExtendedFilter {
     /**
      * The provisioning state.
      */
+    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /**

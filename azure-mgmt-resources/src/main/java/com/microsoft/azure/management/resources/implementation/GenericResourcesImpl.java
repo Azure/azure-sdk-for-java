@@ -43,12 +43,12 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
-        return wrapList(this.manager().inner().resourceGroups().listResources(groupName));
+        return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(groupName));
     }
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().resourceGroups().listResources(
+        return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(
                 resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 

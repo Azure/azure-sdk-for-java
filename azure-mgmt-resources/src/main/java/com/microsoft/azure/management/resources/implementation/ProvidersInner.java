@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Providers.
  */
-public final class ProvidersInner {
+public class ProvidersInner {
     /** The Retrofit service to perform REST calls. */
     private ProvidersService service;
     /** The service client containing this operation class. */
@@ -595,7 +595,7 @@ public final class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

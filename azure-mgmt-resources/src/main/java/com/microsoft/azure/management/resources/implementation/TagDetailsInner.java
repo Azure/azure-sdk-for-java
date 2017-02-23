@@ -10,6 +10,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.TagCount;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Tag details.
@@ -18,22 +19,26 @@ public class TagDetailsInner {
     /**
      * The tag ID.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The tag name.
      */
+    @JsonProperty(value = "tagName")
     private String tagName;
 
     /**
      * The total number of resources that use the resource tag. When a tag is
      * initially created and has no associated resources, the value is 0.
      */
+    @JsonProperty(value = "count")
     private TagCount count;
 
     /**
      * The list of tag values.
      */
+    @JsonProperty(value = "values")
     private List<TagValueInner> values;
 
     /**
