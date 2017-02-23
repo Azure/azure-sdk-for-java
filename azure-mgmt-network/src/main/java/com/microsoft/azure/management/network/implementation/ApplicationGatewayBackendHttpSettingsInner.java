@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.SubResource;
 import java.util.List;
+import com.microsoft.azure.management.network.ApplicationGatewayConnectionDraining;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -68,14 +69,22 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     private String provisioningState;
 
     /**
+     * Connection draining of the backend http settings resource.
+     */
+    @JsonProperty(value = "properties.connectionDraining")
+    private ApplicationGatewayConnectionDraining connectionDraining;
+
+    /**
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -215,6 +224,26 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettingsInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the connectionDraining value.
+     *
+     * @return the connectionDraining value
+     */
+    public ApplicationGatewayConnectionDraining connectionDraining() {
+        return this.connectionDraining;
+    }
+
+    /**
+     * Set the connectionDraining value.
+     *
+     * @param connectionDraining the connectionDraining value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withConnectionDraining(ApplicationGatewayConnectionDraining connectionDraining) {
+        this.connectionDraining = connectionDraining;
         return this;
     }
 

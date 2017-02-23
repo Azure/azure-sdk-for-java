@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in LocalNetworkGateways.
  */
-public final class LocalNetworkGatewaysInner {
+public class LocalNetworkGatewaysInner {
     /** The Retrofit service to perform REST calls. */
     private LocalNetworkGatewaysService service;
     /** The service client containing this operation class. */
@@ -81,13 +81,13 @@ public final class LocalNetworkGatewaysInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways listNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways listByResourceGroupNext" })
         @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -155,7 +155,7 @@ public final class LocalNetworkGatewaysInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<LocalNetworkGatewayInner>() { }.getType());
     }
@@ -224,7 +224,7 @@ public final class LocalNetworkGatewaysInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LocalNetworkGatewayInner>>>() {
                 @Override
@@ -303,7 +303,7 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LocalNetworkGatewayInner>>>() {
                 @Override
@@ -380,7 +380,7 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -440,7 +440,7 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -460,6 +460,7 @@ public final class LocalNetworkGatewaysInner {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -469,12 +470,12 @@ public final class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<LocalNetworkGatewayInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<LocalNetworkGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<LocalNetworkGatewayInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<LocalNetworkGatewayInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<LocalNetworkGatewayInner>(response.body()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -486,13 +487,13 @@ public final class LocalNetworkGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<LocalNetworkGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
+    public ServiceFuture<List<LocalNetworkGatewayInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -504,8 +505,8 @@ public final class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<Page<LocalNetworkGatewayInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<LocalNetworkGatewayInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
                 @Override
                 public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
@@ -520,8 +521,8 @@ public final class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
@@ -529,7 +530,7 @@ public final class LocalNetworkGatewaysInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -540,20 +541,20 @@ public final class LocalNetworkGatewaysInner {
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -562,7 +563,7 @@ public final class LocalNetworkGatewaysInner {
             });
     }
 
-    private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<LocalNetworkGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -575,12 +576,12 @@ public final class LocalNetworkGatewaysInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<LocalNetworkGatewayInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<LocalNetworkGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<LocalNetworkGatewayInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<LocalNetworkGatewayInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<LocalNetworkGatewayInner>(response.body()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -589,17 +590,17 @@ public final class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<LocalNetworkGatewayInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<LocalNetworkGatewayInner>> serviceFuture, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
+    public ServiceFuture<List<LocalNetworkGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<LocalNetworkGatewayInner>> serviceFuture, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -611,8 +612,8 @@ public final class LocalNetworkGatewaysInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<Page<LocalNetworkGatewayInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<LocalNetworkGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
                 @Override
                 public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
@@ -627,8 +628,8 @@ public final class LocalNetworkGatewaysInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
@@ -636,7 +637,7 @@ public final class LocalNetworkGatewaysInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -647,17 +648,17 @@ public final class LocalNetworkGatewaysInner {
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<LocalNetworkGatewayInner>> result = listByResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<LocalNetworkGatewayInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -666,7 +667,7 @@ public final class LocalNetworkGatewaysInner {
             });
     }
 
-    private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<LocalNetworkGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)

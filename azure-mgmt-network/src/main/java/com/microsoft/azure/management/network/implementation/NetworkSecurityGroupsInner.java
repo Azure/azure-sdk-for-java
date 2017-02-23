@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -15,8 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -39,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in NetworkSecurityGroups.
  */
-public final class NetworkSecurityGroupsInner {
+public class NetworkSecurityGroupsInner implements InnerSupportsListing<NetworkSecurityGroupInner> {
     /** The Retrofit service to perform REST calls. */
     private NetworkSecurityGroupsService service;
     /** The service client containing this operation class. */
@@ -81,21 +82,21 @@ public final class NetworkSecurityGroupsInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups listAll" })
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups")
-        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups list" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups listAllNext" })
-        @GET
-        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups listByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups")
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkSecurityGroups listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -154,7 +155,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -214,7 +215,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -234,6 +235,7 @@ public final class NetworkSecurityGroupsInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -293,7 +295,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         final String expand = null;
         return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
@@ -369,7 +371,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
                 @Override
@@ -455,7 +457,7 @@ public final class NetworkSecurityGroupsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NetworkSecurityGroupInner>() { }.getType());
     }
@@ -524,7 +526,7 @@ public final class NetworkSecurityGroupsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
                 @Override
@@ -552,107 +554,8 @@ public final class NetworkSecurityGroupsInner {
      *
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> listAll() {
-        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
-            @Override
-            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all network security groups in a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<NetworkSecurityGroupInner>> listAllAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all network security groups in a subscription.
-     *
-     * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
-     */
-    public Observable<Page<NetworkSecurityGroupInner>> listAllAsync() {
-        return listAllWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
-                @Override
-                public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all network security groups in a subscription.
-     *
-     * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listAllWithServiceResponseAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all network security groups in a subscription.
-     *
-     * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listAllSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-09-01";
-        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<NetworkSecurityGroupInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkSecurityGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<NetworkSecurityGroupInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets all network security groups in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
-     */
-    public PagedList<NetworkSecurityGroupInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<NetworkSecurityGroupInner> list() {
+        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
@@ -662,15 +565,14 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
-     * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(String nextPageLink) {
@@ -681,13 +583,12 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
-     * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
-    public Observable<Page<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<NetworkSecurityGroupInner>> listAsync() {
+        return listWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
@@ -697,13 +598,12 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
-     * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
@@ -717,20 +617,16 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
-    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listSinglePageAsync(final String resourceGroupName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
@@ -752,49 +648,48 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a subscription.
+     * Gets all network security groups in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> listAllNext(final String nextPageLink) {
-        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<NetworkSecurityGroupInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.body()) {
             @Override
             public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Gets all network security groups in a subscription.
+     * Gets all network security groups in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<NetworkSecurityGroupInner>> serviceFuture, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listAllNextSinglePageAsync(nextPageLink),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
     }
 
     /**
-     * Gets all network security groups in a subscription.
+     * Gets all network security groups in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
-    public Observable<Page<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink) {
-        return listAllNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<NetworkSecurityGroupInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
                 @Override
                 public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
@@ -804,13 +699,13 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a subscription.
+     * Gets all network security groups in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
-        return listAllNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
@@ -818,28 +713,31 @@ public final class NetworkSecurityGroupsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
-     * Gets all network security groups in a subscription.
+     * Gets all network security groups in a resource group.
      *
-    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-12-01";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listAllNextDelegate(response);
+                        ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -848,7 +746,7 @@ public final class NetworkSecurityGroupsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<NetworkSecurityGroupInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkSecurityGroupInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkSecurityGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NetworkSecurityGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -856,7 +754,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
@@ -872,10 +770,10 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -892,7 +790,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -908,7 +806,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -928,7 +826,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * Gets all network security groups in a resource group.
+     * Gets all network security groups in a subscription.
      *
     ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -953,6 +851,110 @@ public final class NetworkSecurityGroupsInner {
     }
 
     private ServiceResponse<PageImpl<NetworkSecurityGroupInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkSecurityGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NetworkSecurityGroupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all network security groups in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
+     */
+    public PagedList<NetworkSecurityGroupInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<NetworkSecurityGroupInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<NetworkSecurityGroupInner>(response.body()) {
+            @Override
+            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all network security groups in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<NetworkSecurityGroupInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<NetworkSecurityGroupInner>> serviceFuture, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all network security groups in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
+     */
+    public Observable<Page<NetworkSecurityGroupInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Page<NetworkSecurityGroupInner>>() {
+                @Override
+                public Page<NetworkSecurityGroupInner> call(ServiceResponse<Page<NetworkSecurityGroupInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all network security groups in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<NetworkSecurityGroupInner>>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(ServiceResponse<Page<NetworkSecurityGroupInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all network security groups in a resource group.
+     *
+    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<NetworkSecurityGroupInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NetworkSecurityGroupInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<NetworkSecurityGroupInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<NetworkSecurityGroupInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NetworkSecurityGroupInner>>() { }.getType())
                 .registerError(CloudException.class)

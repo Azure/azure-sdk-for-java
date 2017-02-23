@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Backend address of an application gateway.
@@ -16,11 +17,13 @@ public class ApplicationGatewayBackendAddress {
     /**
      * Fully qualified domain name (FQDN).
      */
+    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /**
      * IP address.
      */
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**

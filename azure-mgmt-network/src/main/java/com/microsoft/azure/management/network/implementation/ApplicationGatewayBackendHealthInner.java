@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthPool;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * List of ApplicationGatewayBackendHealthPool resources.
@@ -18,6 +19,7 @@ public class ApplicationGatewayBackendHealthInner {
     /**
      * The backendAddressPools property.
      */
+    @JsonProperty(value = "backendAddressPools")
     private List<ApplicationGatewayBackendHealthPool> backendAddressPools;
 
     /**

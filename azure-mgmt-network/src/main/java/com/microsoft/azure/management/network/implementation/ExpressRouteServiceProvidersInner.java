@@ -34,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteServiceProviders.
  */
-public final class ExpressRouteServiceProvidersInner {
+public class ExpressRouteServiceProvidersInner {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteServiceProvidersService service;
     /** The service client containing this operation class. */
@@ -142,7 +142,7 @@ public final class ExpressRouteServiceProvidersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
                 @Override
@@ -184,7 +184,7 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

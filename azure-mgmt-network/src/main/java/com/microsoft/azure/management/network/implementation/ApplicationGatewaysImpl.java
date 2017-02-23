@@ -32,12 +32,12 @@ class ApplicationGatewaysImpl
 
     @Override
     public PagedList<ApplicationGateway> list() {
-        return wrapList(this.inner().listAll());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<ApplicationGateway> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override

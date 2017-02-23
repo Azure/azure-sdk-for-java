@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworkPeerings.
  */
-public final class VirtualNetworkPeeringsInner {
+public class VirtualNetworkPeeringsInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworkPeeringsService service;
     /** The service client containing this operation class. */
@@ -153,7 +153,7 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -220,7 +220,7 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -240,6 +240,7 @@ public final class VirtualNetworkPeeringsInner {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -306,7 +307,7 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkPeeringInner>>>() {
                 @Override
@@ -399,7 +400,7 @@ public final class VirtualNetworkPeeringsInner {
             throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
         Validator.validate(virtualNetworkPeeringParameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualNetworkPeeringInner>() { }.getType());
     }
@@ -475,7 +476,7 @@ public final class VirtualNetworkPeeringsInner {
             throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
         Validator.validate(virtualNetworkPeeringParameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkPeeringInner>>>() {
                 @Override
@@ -590,7 +591,7 @@ public final class VirtualNetworkPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
@@ -632,7 +633,7 @@ public final class VirtualNetworkPeeringsInner {
      * Gets all virtual network peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
