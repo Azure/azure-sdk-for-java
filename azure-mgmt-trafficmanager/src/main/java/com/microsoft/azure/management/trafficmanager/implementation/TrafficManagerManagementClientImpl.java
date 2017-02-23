@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the TrafficManagerManagementClientImpl class.
  */
-public final class TrafficManagerManagementClientImpl extends AzureServiceClient {
+public class TrafficManagerManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

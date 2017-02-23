@@ -8,11 +8,13 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.Page;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -36,7 +38,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Profiles.
  */
-public final class ProfilesInner {
+public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /** The Retrofit service to perform REST calls. */
     private ProfilesService service;
     /** The service client containing this operation class. */
@@ -62,13 +64,13 @@ public final class ProfilesInner {
         @POST("providers/Microsoft.Network/checkTrafficManagerNameAvailability")
         Observable<Response<ResponseBody>> checkTrafficManagerRelativeDnsNameAvailability(@Path("subscriptionId") String subscriptionId, @Body CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listAllInResourceGroup" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles")
-        Observable<Response<ResponseBody>> listAllInResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles listAll" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles")
-        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
@@ -168,8 +170,8 @@ public final class ProfilesInner {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
-    public List<ProfileInner> listAllInResourceGroup(String resourceGroupName) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public List<ProfileInner> listByResourceGroup(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -179,8 +181,8 @@ public final class ProfilesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ProfileInner>> listAllInResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listAllInResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<ProfileInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<ProfileInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -189,11 +191,13 @@ public final class ProfilesInner {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
-    public Observable<List<ProfileInner>> listAllInResourceGroupAsync(String resourceGroupName) {
-        return listAllInResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
+    public Observable<Page<ProfileInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<ProfileInner>>, Page<ProfileInner>>() {
             @Override
-            public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.body();
+            public Page<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
+                PageImpl<ProfileInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -204,7 +208,7 @@ public final class ProfilesInner {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
-    public Observable<ServiceResponse<List<ProfileInner>>> listAllInResourceGroupWithServiceResponseAsync(String resourceGroupName) {
+    public Observable<ServiceResponse<List<ProfileInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -214,12 +218,12 @@ public final class ProfilesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listAllInResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ProfileInner>> result = listAllInResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl<ProfileInner>> result = listByResourceGroupDelegate(response);
                         ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -229,7 +233,7 @@ public final class ProfilesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ProfileInner>> listAllInResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ProfileInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -241,8 +245,8 @@ public final class ProfilesInner {
      *
      * @return the List&lt;ProfileInner&gt; object if successful.
      */
-    public List<ProfileInner> listAll() {
-        return listAllWithServiceResponseAsync().toBlocking().single().body();
+    public List<ProfileInner> list() {
+        return listWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
@@ -251,8 +255,8 @@ public final class ProfilesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ProfileInner>> listAllAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listAllWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<ProfileInner>> listAsync(final ServiceCallback<List<ProfileInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -260,11 +264,13 @@ public final class ProfilesInner {
      *
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
-    public Observable<List<ProfileInner>> listAllAsync() {
-        return listAllWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ProfileInner>>, List<ProfileInner>>() {
+    public Observable<Page<ProfileInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ProfileInner>>, Page<ProfileInner>>() {
             @Override
-            public List<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
-                return response.body();
+            public Page<ProfileInner> call(ServiceResponse<List<ProfileInner>> response) {
+                PageImpl<ProfileInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -274,19 +280,19 @@ public final class ProfilesInner {
      *
      * @return the observable to the List&lt;ProfileInner&gt; object
      */
-    public Observable<ServiceResponse<List<ProfileInner>>> listAllWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<ProfileInner>>> listWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ProfileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ProfileInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ProfileInner>> result = listAllDelegate(response);
+                        ServiceResponse<PageImpl<ProfileInner>> result = listDelegate(response);
                         ServiceResponse<List<ProfileInner>> clientResponse = new ServiceResponse<List<ProfileInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -296,7 +302,7 @@ public final class ProfilesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ProfileInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ProfileInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ProfileInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProfileInner>>() { }.getType())
                 .registerError(CloudException.class)
