@@ -1113,7 +1113,8 @@ public class ResourcesInner {
      * @return the boolean object if successful.
      */
     public boolean checkExistenceById(String resourceId, String apiVersion) {
-        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
+        Boolean result = checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
+        return (result != null) ? result.booleanValue() : false;
     }
 
     /**
