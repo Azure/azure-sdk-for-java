@@ -194,7 +194,7 @@ public class UserCreateParametersInner {
 	 * @return the usageLocation value
 	 */
 	public String usageLocation() {
-		return this.mailNickname;
+		return this.usageLocation;
 	}
 
 	/**
