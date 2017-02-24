@@ -18,24 +18,27 @@ public class VirtualMachineScaleSetOSDisk {
     /**
      * The disk name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
      * The create option. Possible values include: 'fromImage', 'empty',
      * 'attach'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
      * The Operating System type. Possible values include: 'Windows', 'Linux'.
      */
+    @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /**
@@ -43,16 +46,19 @@ public class VirtualMachineScaleSetOSDisk {
      * copied before using it to attach to the Virtual Machine. If SourceImage
      * is provided, the destination VirtualHardDisk should not exist.
      */
+    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /**
      * The list of virtual hard disk container uris.
      */
+    @JsonProperty(value = "vhdContainers")
     private List<String> vhdContainers;
 
     /**
      * The managed disk parameters.
      */
+    @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /**

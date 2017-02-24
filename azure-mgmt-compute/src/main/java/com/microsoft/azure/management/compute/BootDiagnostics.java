@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes Boot Diagnostics.
@@ -16,12 +17,14 @@ public class BootDiagnostics {
     /**
      * Whether boot diagnostics should be enabled on the Virtual Machine.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
      * URI of the storage account to use for placing the console output and
      * screenshot.
      */
+    @JsonProperty(value = "storageUri")
     private String storageUri;
 
     /**

@@ -18,34 +18,39 @@ public class ImageDataDisk {
     /**
      * The logical unit number.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /**
      * The snapshot.
      */
+    @JsonProperty(value = "snapshot")
     private SubResource snapshot;
 
     /**
      * The managedDisk.
      */
+    @JsonProperty(value = "managedDisk")
     private SubResource managedDisk;
 
     /**
      * The Virtual Hard Disk.
      */
+    @JsonProperty(value = "blobUri")
     private String blobUri;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
      * The initial disk size in GB for blank data disks, and the new desired
      * size for existing OS and Data disks.
      */
+    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /**

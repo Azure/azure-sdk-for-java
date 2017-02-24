@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a hardware profile.
@@ -32,6 +33,7 @@ public class HardwareProfile {
      * 'Standard_G3', 'Standard_G4', 'Standard_G5', 'Standard_GS1',
      * 'Standard_GS2', 'Standard_GS3', 'Standard_GS4', 'Standard_GS5'.
      */
+    @JsonProperty(value = "vmSize")
     private VirtualMachineSizeTypes vmSize;
 
     /**

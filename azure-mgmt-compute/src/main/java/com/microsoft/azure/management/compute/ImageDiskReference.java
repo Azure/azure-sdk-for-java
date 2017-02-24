@@ -18,7 +18,7 @@ public class ImageDiskReference {
      * A relative uri containing either a Platform Imgage Repository or user
      * image reference.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -26,6 +26,7 @@ public class ImageDiskReference {
      * indicates which of the data disks in the image to use. For OS disks,
      * this field is null.
      */
+    @JsonProperty(value = "lun")
     private Integer lun;
 
     /**

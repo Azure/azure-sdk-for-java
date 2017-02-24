@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The vault id is an Azure Resource Manager Resoure id in the form
@@ -17,6 +18,7 @@ public class SourceVault {
     /**
      * Resource Id.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**

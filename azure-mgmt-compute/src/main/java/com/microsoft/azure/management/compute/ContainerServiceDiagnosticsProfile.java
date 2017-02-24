@@ -17,7 +17,7 @@ public class ContainerServiceDiagnosticsProfile {
     /**
      * Profile for the container service VM diagnostic agent.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "vmDiagnostics", required = true)
     private ContainerServiceVMDiagnostics vmDiagnostics;
 
     /**

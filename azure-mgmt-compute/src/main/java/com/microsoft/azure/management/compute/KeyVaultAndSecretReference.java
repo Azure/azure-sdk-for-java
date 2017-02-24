@@ -17,13 +17,13 @@ public class KeyVaultAndSecretReference {
     /**
      * Resource id of the KeyVault containing the key or secret.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sourceVault", required = true)
     private SourceVault sourceVault;
 
     /**
      * Url pointing to a key or secret in KeyVault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "secretUrl", required = true)
     private String secretUrl;
 
     /**

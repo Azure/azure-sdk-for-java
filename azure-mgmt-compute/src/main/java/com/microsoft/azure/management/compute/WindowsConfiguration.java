@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes Windows Configuration of the OS Profile.
@@ -19,27 +20,32 @@ public class WindowsConfiguration {
      * Virtual Machine. If not specified, then the default behavior is to set
      * it to true.
      */
+    @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /**
      * Indicates whether Windows updates are automatically installed on the VM.
      */
+    @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /**
      * The time zone of the VM.
      */
+    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /**
      * Additional base-64 encoded XML formatted information that can be
      * included in the Unattend.xml file.
      */
+    @JsonProperty(value = "additionalUnattendContent")
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /**
      * The Windows Remote Management configuration of the VM.
      */
+    @JsonProperty(value = "winRM")
     private WinRMConfiguration winRM;
 
     /**

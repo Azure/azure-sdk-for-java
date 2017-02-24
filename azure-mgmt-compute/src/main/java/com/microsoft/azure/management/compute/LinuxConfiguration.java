@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes Windows configuration of the OS Profile.
@@ -16,11 +17,13 @@ public class LinuxConfiguration {
     /**
      * Specifies whether password authentication should be disabled.
      */
+    @JsonProperty(value = "disablePasswordAuthentication")
     private Boolean disablePasswordAuthentication;
 
     /**
      * The SSH configuration for linux VMs.
      */
+    @JsonProperty(value = "ssh")
     private SshConfiguration ssh;
 
     /**

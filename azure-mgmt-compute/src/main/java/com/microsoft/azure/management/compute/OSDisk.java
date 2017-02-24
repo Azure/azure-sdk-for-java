@@ -18,21 +18,25 @@ public class OSDisk {
     /**
      * The Operating System type. Possible values include: 'Windows', 'Linux'.
      */
+    @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /**
      * The disk encryption settings.
      */
+    @JsonProperty(value = "encryptionSettings")
     private DiskEncryptionSettings encryptionSettings;
 
     /**
      * The disk name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The virtual hard disk.
      */
+    @JsonProperty(value = "vhd")
     private VirtualHardDisk vhd;
 
     /**
@@ -40,30 +44,34 @@ public class OSDisk {
      * copied before using it to attach to the virtual machine. If SourceImage
      * is provided, the destination virtual hard disk must not exist.
      */
+    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
      * The create option. Possible values include: 'fromImage', 'empty',
      * 'attach'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
      * The initial disk size, in GB, for blank data disks, and the new desired
      * size for resizing existing OS and data disks.
      */
+    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /**
      * The managed disk parameters.
      */
+    @JsonProperty(value = "managedDisk")
     private ManagedDiskParametersInner managedDisk;
 
     /**

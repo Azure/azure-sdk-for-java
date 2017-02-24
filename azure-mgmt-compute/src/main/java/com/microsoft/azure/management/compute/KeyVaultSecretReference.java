@@ -18,13 +18,13 @@ public class KeyVaultSecretReference {
     /**
      * The URL referencing a secret in a Key Vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "secretUrl", required = true)
     private String secretUrl;
 
     /**
      * The relative URL of the Key Vault containing the secret.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sourceVault", required = true)
     private SubResource sourceVault;
 
     /**

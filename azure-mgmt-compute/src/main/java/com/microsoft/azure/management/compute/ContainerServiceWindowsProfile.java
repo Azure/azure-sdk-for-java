@@ -17,13 +17,13 @@ public class ContainerServiceWindowsProfile {
     /**
      * The administrator username to use for Windows VMs.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "adminUsername", required = true)
     private String adminUsername;
 
     /**
      * The administrator password to use for Windows VMs.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "adminPassword", required = true)
     private String adminPassword;
 
     /**

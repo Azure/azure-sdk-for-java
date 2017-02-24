@@ -18,7 +18,7 @@ public class OSDiskImage {
      * The operating system of the osDiskImage. Possible values include:
      * 'Windows', 'Linux'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "operatingSystem", required = true)
     private OperatingSystemTypes operatingSystem;
 
     /**

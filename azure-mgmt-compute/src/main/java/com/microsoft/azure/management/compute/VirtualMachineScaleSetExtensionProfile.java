@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
-
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
 
 /**
  * Describes a virtual machine scale set extension profile.
@@ -19,6 +19,7 @@ public class VirtualMachineScaleSetExtensionProfile {
     /**
      * The virtual machine scale set child extension resources.
      */
+    @JsonProperty(value = "extensions")
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /**

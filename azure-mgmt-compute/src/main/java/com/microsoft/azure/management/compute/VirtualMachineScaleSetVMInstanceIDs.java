@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies a list of virtual machine instance IDs from the VM scale set.
@@ -17,6 +18,7 @@ public class VirtualMachineScaleSetVMInstanceIDs {
     /**
      * The virtual machine scale set instance ids.
      */
+    @JsonProperty(value = "instanceIds")
     private List<String> instanceIds;
 
     /**

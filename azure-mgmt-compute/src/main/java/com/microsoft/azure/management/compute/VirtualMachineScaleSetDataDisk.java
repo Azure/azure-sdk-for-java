@@ -17,36 +17,40 @@ public class VirtualMachineScaleSetDataDisk {
     /**
      * The disk name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The logical unit number.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
      * The create option. Possible values include: 'fromImage', 'empty',
      * 'attach'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
      * The initial disk size in GB for blank data disks, and the new desired
      * size for existing OS and Data disks.
      */
+    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /**
      * The managed disk parameters.
      */
+    @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /**

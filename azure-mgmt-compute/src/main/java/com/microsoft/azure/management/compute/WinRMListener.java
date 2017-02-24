@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes Protocol and thumbprint of Windows Remote Management listener.
@@ -17,12 +18,14 @@ public class WinRMListener {
      * The Protocol used by the WinRM listener. Http and Https are supported.
      * Possible values include: 'Http', 'Https'.
      */
+    @JsonProperty(value = "protocol")
     private ProtocolTypes protocol;
 
     /**
      * The Certificate URL in KMS for Https listeners. Should be null for Http
      * listeners.
      */
+    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /**
