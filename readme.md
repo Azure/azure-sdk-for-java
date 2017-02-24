@@ -62,19 +62,18 @@ you then create an *EventHubClient* instance, which manages a secure AMQP 1.0 co
     final String sasKey = "---SharedAccessSignatureKey----";
     ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
 		
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
+    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
 ```
 
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. 
 
 ```Java
     EventData sendEvent = new EventData(payloadBytes);
-    ehClient.send(sendEvent).get();
+    ehClient.sendSync(sendEvent);
 ```
          
 The entire client API is built for Java 8's concurrent task model, generally returning 
-[*CompleteableFuture<T>*](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html), so the 
-*.get()* suffixing the operations in the snippets above just wait until the respective operation is complete.
+[*CompleteableFuture<T>*](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html), so the library has these methods suffixed with *Sync* as their Synchronous counterparts/varaints.
 
 Learn more about publishing events, including advanced options, and when you should and shouldn't use those options, 
 [in the event publisher guide](PublishingEvents.md).
@@ -104,28 +103,28 @@ Just like the sender, the receiver code imports the package and creates an *Even
     final String sasKey = "---SharedAccessSignatureKey----";
     ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
 		
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
+    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
 ```           
 
 The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with 
 an offset, in the snippet below it's simply the start of the log.    
 		
 ```Java
-		String partitionId = "0"; // API to get PartitionIds will be released as part of V0.2
-		PartitionReceiver receiver = ehClient.createReceiver(
+		String partitionId = "0";
+		PartitionReceiver receiver = ehClient.createReceiverSync(
 				EventHubClient.DefaultConsumerGroupName, 
 				partitionId, 
 				PartitionReceiver.StartOfStream,
-				false).get();
+				false);
 
-		receiver.setReceiveTimeout(Duration.ofSeconds(5));
+		receiver.setReceiveTimeout(Duration.ofSeconds(20));
 ``` 
 
 Once the receiver is initialized, getting events is just a matter of calling the *receive()* method in a loop. Each call 
 to *receive()* will fetch an enumerable batch of events to process.    		
         
 ```Java        
-		Iterable<EventData> receivedEvents = receiver.receive(maxEventsCount).get();         
+		Iterable<EventData> receivedEvents = receiver.receiveSync(maxEventsCount);         
 ```
 
 As you might imagine, there's quite a bit more to know about partitions, about distributing the workload of processing huge and 
@@ -148,7 +147,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.10.0</version> 
+   		<version>0.11.0</version> 
    	</dependency>   
  ```
  

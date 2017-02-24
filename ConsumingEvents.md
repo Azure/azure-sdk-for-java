@@ -30,7 +30,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.10.0</version> 
+   		<version>0.11.0</version> 
    	</dependency>   
  ```
  
@@ -57,28 +57,27 @@ The receiver code creates an *EventHubClient* from a given connecting string
     final String sasKey = "---SharedAccessSignatureKey----";
     ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
 		
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
+    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
 ```           
 
-The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with 
-an offset, in the snippet below it's simply the start of the log.    
+The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with an offset, in the snippet below it's simply the start of the log.    
 		
 ```Java
-		String partitionId = "0"; // API to get PartitionIds will be released soon
-		PartitionReceiver receiver = ehClient.createReceiver(
+		String partitionId = "0";
+		PartitionReceiver receiver = ehClient.createReceiverSync(
 				EventHubClient.DefaultConsumerGroupName, 
 				partitionId, 
 				PartitionReceiver.StartOfStream,
-				false).get();
+				false);
 
-		receiver.setReceiveTimeout(Duration.ofSeconds(5));
+		receiver.setReceiveTimeout(Duration.ofSeconds(20));
 ``` 
 
 Once the receiver is initialized, getting events is just a matter of calling the *receive()* method in a loop. Each call 
 to *receive()* will fetch an iterable batch of events to process.    		
         
 ```Java        
-		Iterable<EventData> receivedEvents = receiver.receive(maxEventCount).get();         
+		Iterable<EventData> receivedEvents = receiver.receiveSync(maxEventCount);         
 ```
 
 ##Consumer Groups 
@@ -111,20 +110,20 @@ begin receiving events:
    after the given instant.
    
    ``` Java
-   PartitionReceiver receiver = ehClient.createReceiver(
+   PartitionReceiver receiver = ehClient.createReceiverSync(
 				EventHubClient.DefaultConsumerGroupName, 
 				partitionId, 
-				Instant.now()).get();
+				Instant.now());
    ```  
 3. **Absolute offset** This option is commonly used to resume receiving events after a previous receiver on the partition 
    has been aborted or suspended for any reason. The offset is a system-supplied string that should not be interpreted by
    the application. The next section will discuss scenarios for using this option.
    
     ``` Java
-   PartitionReceiver receiver = ehClient.createReceiver(
+   PartitionReceiver receiver = ehClient.createReceiverSync(
        EventHubClient.DefaultConsumerGroupName, 
 	   partitionId, 
-	   savedOffset).get();
+	   savedOffset);
     ``` 
    
 
@@ -162,11 +161,11 @@ That mechanism is called **epochs**. An epoch is an integer value that acts as a
 
   ``` Java
    epochValue = 1
-   PartitionReceiver receiver1 = ehClient.createEpochReceiver(
+   PartitionReceiver receiver1 = ehClient.createEpochReceiverSync(
        EventHubClient.DefaultConsumerGroupName, 
 	   partitionId, 
 	   savedOffset,
-       epochValue).get();
+       epochValue);
   ```
   
  When a new partition owner takes over, it creates a receiver for the same partition, but with a greater epoch value. This will instantly
@@ -175,14 +174,14 @@ That mechanism is called **epochs**. An epoch is an integer value that acts as a
   ``` Java
    /* obtain checkpoint data */
    epochValue = 2
-   PartitionReceiver receiver2 = ehClient.createEpochReceiver(
+   PartitionReceiver receiver2 = ehClient.createEpochReceiverSync(
        EventHubClient.DefaultConsumerGroupName, 
 	   partitionId, 
 	   savedOffset,
-       epochValue).get();
+       epochValue);
   ```   
   
-The new leader obviously also needs to know at which offset processing shall continue. For this, the current owner of a partition should 
+The new reader obviously also needs to know at which offset processing shall continue. For this, the current owner of a partition should 
 periodically record its progress on the event stream to a shared location, tracking the offset of the last processed message. This is 
 called "checkpointing". In case of the aforementioned Azure Blob lease election model, the blob itself is a great place to keep this information. 
 

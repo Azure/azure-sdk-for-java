@@ -12,7 +12,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.10.0</version> 
+   		<version>0.11.0</version> 
    	</dependency>   
  ```
  
@@ -40,7 +40,7 @@ Using an Event Hub connection string, which holds all required connection inform
     final String sasKey = "---SharedAccessSignatureKey----";
     ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
 		
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
+    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
 ```
 
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. The samples 
@@ -48,12 +48,11 @@ we use to illustrate the functionality send a UTF-8 encoded JSON data, but you c
 
 ```Java
     EventData sendEvent = new EventData(payloadBytes);
-    ehClient.send(sendEvent).get();
+    ehClient.sendSync(sendEvent);
 ```
          
 The entire client API is built for Java 8's concurrent task model, generally returning 
-[*CompletableFuture<T>*](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html), so the 
-*.get()* suffixing the operations in the snippets above just wait until the respective operation is complete.
+[*CompletableFuture<T>*](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html), so the library has these methods suffixed with *Sync* as their Synchronous counterparts/varaints.
 
 ##AMQP 1.0
 Azure Event Hubs allows for publishing events using the HTTPS and AMQP 1.0 protocols. The Azure Event Hub endpoints
@@ -126,7 +125,7 @@ The gesture is a straightforward extra override to the send operation supplying 
 
 ```Java
     EventData sendEvent = new EventData(payloadBytes);
->   ehClient.send(sendEvent, partitionKey).get();
+>   ehClient.sendSync(sendEvent, partitionKey);
 ```
      
 ####Using Partition Ids
@@ -136,10 +135,10 @@ you can send directly to the partition, but doing so requires an extra gesture s
 option. To send to a partition you explicitly need to create a client object that is tued to the partition as shown below:
 
 ```Java
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(str).get();
->	EventHubSender sender = ehClient.createPartitionSender("0").get();
+    EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(str);
+>	EventHubSender sender = ehClient.createPartitionSenderSync("0");
     EventData sendEvent = new EventData(payloadBytes);
-    sender.send(sendEvent).get();
+    sender.sendSync(sendEvent);
 ```
 
 #### Publisher Policies
