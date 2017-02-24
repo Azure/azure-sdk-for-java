@@ -183,7 +183,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	// Need to fetch the most current lease data so that we can update it correctly.
     	AzureBlobLease lease = getLeaseSync(checkpoint.getPartitionId());
-    	this.host.logWithHostAndPartition(Level.FINE, checkpoint.getPartitionId(), "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber());
+    	this.host.logWithHostAndPartition(Level.FINER, checkpoint.getPartitionId(), "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber());
     	lease.setOffset(checkpoint.getOffset());
     	lease.setSequenceNumber(checkpoint.getSequenceNumber());
     	updateLeaseSync(lease);
@@ -200,7 +200,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	// "Delete" a checkpoint by changing the offset to null, so first we need to fetch the most current lease
     	AzureBlobLease lease = getLeaseSync(partitionId);
-    	this.host.logWithHostAndPartition(Level.FINE, partitionId, "Deleting checkpoint for " + partitionId);
+    	this.host.logWithHostAndPartition(Level.FINER, partitionId, "Deleting checkpoint for " + partitionId);
     	lease.setOffset(null);
     	lease.setSequenceNumber(0L);
     	updateLeaseSync(lease);
@@ -334,7 +334,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	{
     		CloudBlockBlob leaseBlob = this.consumerGroupDirectory.getBlockBlobReference(partitionId);
     		returnLease = new AzureBlobLease(partitionId, leaseBlob);
-    		this.host.logWithHostAndPartition(Level.INFO, partitionId,
+    		this.host.logWithHostAndPartition(Level.FINE, partitionId,
     				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
     				"storageBlobPrefix: " + this.storageBlobPrefix);
     		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), UploadActivity.Create);
@@ -347,7 +347,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     				 (extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.LEASE_ID_MISSING) == 0))) // occurs when somebody else already has leased the blob
     		{
     			// The blob already exists.
-    			this.host.logWithHostAndPartition(Level.INFO, partitionId, "Lease already exists");
+    			this.host.logWithHostAndPartition(Level.FINE, partitionId, "Lease already exists");
         		returnLease = getLeaseSync(partitionId);
     		}
     		else
@@ -371,7 +371,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Void deleteLeaseSync(AzureBlobLease lease) throws StorageException
     {
-    	this.host.logWithHostAndPartition(Level.INFO, lease.getPartitionId(), "Deleting lease");
+    	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Deleting lease");
     	lease.getBlob().deleteIfExists();
     	return null;
     }
@@ -384,7 +384,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Boolean acquireLeaseSync(AzureBlobLease lease) throws Exception
     {
-    	this.host.logWithHostAndPartition(Level.INFO, lease.getPartitionId(), "Acquiring lease");
+    	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Acquiring lease");
     	
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	boolean retval = true;
@@ -399,12 +399,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		leaseBlob.downloadAttributes();
 	    	if (leaseBlob.getProperties().getLeaseState() == LeaseState.LEASED)
 	    	{
-	    		this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "changeLease");
+	    		this.host.logWithHostAndPartition(Level.FINER, lease.getPartitionId(), "changeLease");
 	    		newToken = leaseBlob.changeLease(newLeaseId, AccessCondition.generateLeaseCondition(lease.getToken()));
 	    	}
 	    	else
 	    	{
-	    		this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "acquireLease");
+	    		this.host.logWithHostAndPartition(Level.FINER, lease.getPartitionId(), "acquireLease");
 	    		newToken = leaseBlob.acquireLease(AzureStorageCheckpointLeaseManager.leaseDurationInSeconds, newLeaseId);
 	    	}
 	    	lease.setToken(newToken);
@@ -435,7 +435,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Boolean renewLeaseSync(AzureBlobLease lease) throws Exception
     {
-    	this.host.logWithHostAndPartition(Level.INFO, lease.getPartitionId(), "Renewing lease");
+    	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Renewing lease");
     	
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	boolean retval = true;
@@ -467,7 +467,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private Boolean releaseLeaseSync(AzureBlobLease lease) throws Exception
     {
-    	this.host.logWithHostAndPartition(Level.INFO, lease.getPartitionId(), "Releasing lease");
+    	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Releasing lease");
     	
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	boolean retval = true;
@@ -508,7 +508,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		return false;
     	}
     	
-    	this.host.logWithHostAndPartition(Level.INFO, lease.getPartitionId(), "Updating lease");
+    	this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Updating lease");
     	
     	String token = lease.getToken();
     	if ((token == null) || (token.length() == 0))
@@ -590,11 +590,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private boolean wasLeaseLost(StorageException se, String partitionId)
     {
     	boolean retval = false;
-		this.host.logWithHostAndPartition(Level.FINE, partitionId, "WAS LEASE LOST?");
-		this.host.logWithHostAndPartition(Level.FINE, partitionId, "Http " + se.getHttpStatusCode());
+		this.host.logWithHostAndPartition(Level.FINER, partitionId, "WAS LEASE LOST?");
+		this.host.logWithHostAndPartition(Level.FINER, partitionId, "Http " + se.getHttpStatusCode());
 		if (se.getExtendedErrorInformation() != null)
 		{
-			this.host.logWithHostAndPartition(Level.FINE, partitionId, "Http " + se.getExtendedErrorInformation().getErrorCode() + " :: " + se.getExtendedErrorInformation().getErrorMessage());
+			this.host.logWithHostAndPartition(Level.FINER, partitionId, "Http " + se.getExtendedErrorInformation().getErrorCode() + " :: " + se.getExtendedErrorInformation().getErrorMessage());
 		}
     	if ((se.getHttpStatusCode() == 409) || // conflict
     		(se.getHttpStatusCode() == 412)) // precondition failed
@@ -603,8 +603,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		if (extendedErrorInfo != null)
     		{
     			String errorCode = extendedErrorInfo.getErrorCode();
-				this.host.logWithHostAndPartition(Level.FINE, partitionId, "Error code: " + errorCode);
-				this.host.logWithHostAndPartition(Level.FINE, partitionId, "Error message: " + extendedErrorInfo.getErrorMessage());
+				this.host.logWithHostAndPartition(Level.FINER, partitionId, "Error code: " + errorCode);
+				this.host.logWithHostAndPartition(Level.FINER, partitionId, "Error message: " + extendedErrorInfo.getErrorMessage());
     			if ((errorCode.compareTo(StorageErrorCodeStrings.LEASE_LOST) == 0) ||
     				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_LEASE_OPERATION) == 0) ||
     				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0) ||

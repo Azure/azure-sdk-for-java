@@ -44,7 +44,7 @@ class Pump
     		else
     		{
     			// Pump is working, just replace the lease.
-    			this.host.logWithHostAndPartition(Level.FINE, partitionId, "updating lease for pump");
+    			this.host.logWithHostAndPartition(Level.FINER, partitionId, "updating lease for pump");
     			capturedPump.setLease(lease);
     		}
     	}
@@ -60,7 +60,7 @@ class Pump
 		PartitionPump newPartitionPump = new EventHubPartitionPump(this.host, this, lease);
 		EventProcessorHost.getExecutorService().submit(() -> newPartitionPump.startPump());
         this.pumpStates.put(partitionId, newPartitionPump); // do the put after start, if the start fails then put doesn't happen
-		this.host.logWithHostAndPartition(Level.INFO, partitionId, "created new pump");
+		this.host.logWithHostAndPartition(Level.FINE, partitionId, "created new pump");
     }
     
     public Future<?> removePump(String partitionId, final CloseReason reason)
@@ -69,17 +69,17 @@ class Pump
     	PartitionPump capturedPump = this.pumpStates.get(partitionId);
     	if (capturedPump != null)
     	{
-			this.host.logWithHostAndPartition(Level.INFO, partitionId, "closing pump for reason " + reason.toString());
+			this.host.logWithHostAndPartition(Level.FINE, partitionId, "closing pump for reason " + reason.toString());
 			retval = EventProcessorHost.getExecutorService().submit(() -> capturedPump.shutdown(reason));
     		
-    		this.host.logWithHostAndPartition(Level.INFO, partitionId, "removing pump");
+    		this.host.logWithHostAndPartition(Level.FINE, partitionId, "removing pump");
     		this.pumpStates.remove(partitionId);
     	}
     	else
     	{
     		// PartitionManager main loop tries to remove pump for every partition that the host does not own, just to be sure.
     		// Not finding a pump for a partition is normal and expected most of the time.
-    		this.host.logWithHostAndPartition(Level.FINE, partitionId, "no pump found to remove for partition " + partitionId);
+    		this.host.logWithHostAndPartition(Level.FINER, partitionId, "no pump found to remove for partition " + partitionId);
     	}
     	return retval;
     }

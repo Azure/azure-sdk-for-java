@@ -98,7 +98,7 @@ abstract class PartitionPump
     		}
     		this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
     	}
-        this.host.logWithHostAndPartition(Level.INFO, this.partitionContext, "pump shutdown for reason " + reason.toString());
+        this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "pump shutdown for reason " + reason.toString());
 
         specializedShutdown(reason);
 
@@ -157,7 +157,7 @@ abstract class PartitionPump
 	        		}
 	        		if (last != null)
 	        		{
-	        			this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Updating offset in partition context with end of batch " +
+	        			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Updating offset in partition context with end of batch " +
 	        					last.getSystemProperties().getOffset() + "//" + last.getSystemProperties().getSequenceNumber());
 	        			this.partitionContext.setOffsetAndSequenceNumber(last);
 	        		}

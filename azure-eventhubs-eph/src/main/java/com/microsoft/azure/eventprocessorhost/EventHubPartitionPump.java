@@ -91,7 +91,7 @@ class EventHubPartitionPump extends PartitionPump
     private void openClients() throws ServiceBusException, IOException, InterruptedException, ExecutionException
     {
     	// Create new client
-    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH client");
+    	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH client");
 		this.internalOperationFuture = EventHubClient.createFromConnectionString(this.host.getEventHubConnectionString());
 		this.eventHubClient = (EventHubClient) this.internalOperationFuture.get();
 		this.internalOperationFuture = null;
@@ -99,7 +99,7 @@ class EventHubPartitionPump extends PartitionPump
 		// Create new receiver and set options
     	Object startAt = this.partitionContext.getInitialOffset();
     	long epoch = this.lease.getEpoch();
-    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
+    	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
     	if (startAt instanceof String)
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
@@ -130,7 +130,7 @@ class EventHubPartitionPump extends PartitionPump
 		this.partitionReceiver.setReceiveTimeout(this.host.getEventProcessorOptions().getReceiveTimeOut());
 		this.internalOperationFuture = null;
 		
-        this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "EH client and receiver creation finished");
+        this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "EH client and receiver creation finished");
     }
     
     private void cleanUpClients() // swallows all exceptions
@@ -146,14 +146,14 @@ class EventHubPartitionPump extends PartitionPump
         		this.partitionReceiver.setReceiveHandler(null);
         	}
         	
-        	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH receiver");
+        	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH receiver");
         	this.partitionReceiver.close();
         	this.partitionReceiver = null;
         }
         
         if (this.eventHubClient != null)
         {
-        	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH client");
+        	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH client");
         	this.eventHubClient.close();
         	this.eventHubClient = null;
         }

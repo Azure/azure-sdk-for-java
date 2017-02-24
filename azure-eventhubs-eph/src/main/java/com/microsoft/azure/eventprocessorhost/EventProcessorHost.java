@@ -268,8 +268,6 @@ public final class EventProcessorHost
             ILeaseManager leaseManager,
             ExecutorService executorService)
     {
-    	EventProcessorHost.TRACE_LOGGER.setLevel(Level.SEVERE);
-    	
     	if ((hostName == null) || hostName.isEmpty())
     	{
     		throw new IllegalArgumentException("hostName argument must not be null or empty string");
@@ -376,7 +374,7 @@ public final class EventProcessorHost
         
         this.partitionManager = new PartitionManager(this);
         
-        logWithHost(Level.INFO, "New EventProcessorHost created");
+        logWithHost(Level.FINE, "New EventProcessorHost created");
     }
 
     /**
@@ -505,7 +503,7 @@ public final class EventProcessorHost
 			}
         }
         
-        logWithHost(Level.INFO, "Starting event processing");
+        logWithHost(Level.FINE, "Starting event processing");
         this.processorFactory = factory;
         this.processorOptions = processorOptions;
         return EventProcessorHost.executorService.submit(() -> this.partitionManager.initialize()); 
@@ -519,7 +517,7 @@ public final class EventProcessorHost
      */
     public void unregisterEventProcessor() throws InterruptedException, ExecutionException
     {
-    	logWithHost(Level.INFO, "Stopping event processing");
+    	logWithHost(Level.FINE, "Stopping event processing");
     	
     	if (this.partitionManager != null)
     	{

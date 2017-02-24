@@ -119,10 +119,10 @@ class PartitionManager
                     throw new EPHConfigurationException(errorMessage, exception);
             }
 
-            this.host.logWithHost(Level.INFO, "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + this.partitionIds.size());
+            this.host.logWithHost(Level.FINE, "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + this.partitionIds.size());
             for (String id : this.partitionIds)
             {
-                this.host.logWithHost(Level.FINE, "Found partition with id: " + id);
+                this.host.logWithHost(Level.FINER, "Found partition with id: " + id);
             }
         }
         
@@ -183,7 +183,7 @@ class PartitionManager
     	try
     	{
     		runLoop();
-    		this.host.logWithHost(Level.INFO, "Partition manager main loop exited normally, shutting down");
+    		this.host.logWithHost(Level.FINE, "Partition manager main loop exited normally, shutting down");
     	}
     	catch (ExceptionWithAction e)
     	{
@@ -213,7 +213,7 @@ class PartitionManager
     	}
     	
     	// Cleanup
-    	this.host.logWithHost(Level.INFO, "Shutting down all pumps");
+    	this.host.logWithHost(Level.FINE, "Shutting down all pumps");
     	Iterable<Future<?>> pumpRemovals = this.pump.removeAllPumps(CloseReason.Shutdown);
     	
     	// All of the shutdown threads have been launched, we can shut down the executor now.
@@ -244,7 +244,7 @@ class PartitionManager
 			}
     	}
     	
-    	this.host.logWithHost(Level.INFO, "Partition manager exiting");
+    	this.host.logWithHost(Level.FINE, "Partition manager exiting");
     	
     	return null;
     }
@@ -400,7 +400,7 @@ class PartitionManager
 	            		{
     	                	if (leaseManager.acquireLease(stealee).get())
     	                	{
-    	                		this.host.logWithHostAndPartition(Level.INFO, stealee.getPartitionId(), "Stole lease");
+    	                		this.host.logWithHostAndPartition(Level.FINE, stealee.getPartitionId(), "Stole lease");
     	                		allLeases.put(stealee.getPartitionId(), stealee);
     	                		ourLeasesCount++;
     	                	}
@@ -423,7 +423,7 @@ class PartitionManager
             for (String partitionId : allLeases.keySet())
             {
             	Lease updatedLease = allLeases.get(partitionId);
-            	this.host.logWithHost(Level.FINE, "Lease on partition " + updatedLease.getPartitionId() + " owned by " + updatedLease.getOwner()); // DEBUG
+            	this.host.logWithHost(Level.FINER, "Lease on partition " + updatedLease.getPartitionId() + " owned by " + updatedLease.getOwner()); // DEBUG
             	if (updatedLease.getOwner().compareTo(this.host.getHostName()) == 0)
             	{
             		this.pump.addPump(partitionId, updatedLease);
@@ -489,7 +489,7 @@ class PartitionManager
     			if (l.getOwner().compareTo(biggestOwner) == 0)
     			{
     				stealTheseLeases.add(l);
-    				this.host.logWithHost(Level.FINE, "Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner);
+    				this.host.logWithHost(Level.FINER, "Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner);
   					break;
     			}
     		}
@@ -529,9 +529,9 @@ class PartitionManager
     	}
     	for (String owner : counts.keySet())
     	{
-    		this.host.log(Level.FINE, "host " + owner + " owns " + counts.get(owner) + " leases");
+    		this.host.log(Level.FINER, "host " + owner + " owns " + counts.get(owner) + " leases");
     	}
-    	this.host.log(Level.FINE, "total hosts in sorted list: " + counts.size());
+    	this.host.log(Level.FINER, "total hosts in sorted list: " + counts.size());
     	
     	return counts;
     }
