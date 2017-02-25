@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -17,8 +18,8 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceID
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -42,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineScaleSets.
  */
-public final class VirtualMachineScaleSetsInner {
+public class VirtualMachineScaleSetsInner implements InnerSupportsListing<VirtualMachineScaleSetInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineScaleSetsService service;
     /** The service client containing this operation class. */
@@ -104,13 +105,13 @@ public final class VirtualMachineScaleSetsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/instanceView")
         Observable<Response<ResponseBody>> getInstanceView(@Path("resourceGroupName") String resourceGroupName, @Path("vmScaleSetName") String vmScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listAll" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachineScaleSets")
-        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listSkus" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/skus")
@@ -164,13 +165,13 @@ public final class VirtualMachineScaleSetsInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/reimageall")
         Observable<Response<ResponseBody>> beginReimageAll(@Path("resourceGroupName") String resourceGroupName, @Path("vmScaleSetName") String vmScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listAllNext" })
-        @GET
-        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets listSkusNext" })
         @GET
@@ -1094,12 +1095,12 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<VirtualMachineScaleSetInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
             @Override
             public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1111,13 +1112,13 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VirtualMachineScaleSetInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+    public ServiceFuture<List<VirtualMachineScaleSetInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1129,8 +1130,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
-    public Observable<Page<VirtualMachineScaleSetInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<VirtualMachineScaleSetInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Page<VirtualMachineScaleSetInner>>() {
                 @Override
                 public Page<VirtualMachineScaleSetInner> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> response) {
@@ -1145,8 +1146,110 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all VM scale sets under a resource group.
+     *
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param resourceGroupName The name of the resource group.
+     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
+     *
+     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
+     */
+    public PagedList<VirtualMachineScaleSetInner> list() {
+        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineScaleSetInner>> listAsync(final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
+     *
+     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
+     */
+    public Observable<Page<VirtualMachineScaleSetInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Page<VirtualMachineScaleSetInner>>() {
+                @Override
+                public Page<VirtualMachineScaleSetInner> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
+     *
+     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> page) {
@@ -1160,20 +1263,16 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM scale sets under a resource group.
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listSinglePageAsync(final String resourceGroupName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(Response<ResponseBody> response) {
@@ -1188,104 +1287,6 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
-     */
-    public PagedList<VirtualMachineScaleSetInner> listAll() {
-        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
-            @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<VirtualMachineScaleSetInner>> listAllAsync(final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
-     */
-    public Observable<Page<VirtualMachineScaleSetInner>> listAllAsync() {
-        return listAllWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Page<VirtualMachineScaleSetInner>>() {
-                @Override
-                public Page<VirtualMachineScaleSetInner> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listAllWithServiceResponseAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listAllSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-04-30-preview";
-        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -2743,6 +2744,110 @@ public final class VirtualMachineScaleSetsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
+    public PagedList<VirtualMachineScaleSetInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all VM scale sets under a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineScaleSetInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineScaleSetInner>> serviceFuture, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all VM scale sets under a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
+     */
+    public Observable<Page<VirtualMachineScaleSetInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Page<VirtualMachineScaleSetInner>>() {
+                @Override
+                public Page<VirtualMachineScaleSetInner> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all VM scale sets under a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all VM scale sets under a resource group.
+     *
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
+     */
     public PagedList<VirtualMachineScaleSetInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
@@ -2754,10 +2859,10 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM scale sets under a resource group.
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -2774,7 +2879,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM scale sets under a resource group.
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
@@ -2790,7 +2895,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM scale sets under a resource group.
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
@@ -2810,7 +2915,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM scale sets under a resource group.
+     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -2842,110 +2947,6 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
-     */
-    public PagedList<VirtualMachineScaleSetInner> listAllNext(final String nextPageLink) {
-        ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualMachineScaleSetInner>(response.body()) {
-            @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<VirtualMachineScaleSetInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineScaleSetInner>> serviceFuture, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
-     */
-    public Observable<Page<VirtualMachineScaleSetInner>> listAllNextAsync(final String nextPageLink) {
-        return listAllNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Page<VirtualMachineScaleSetInner>>() {
-                @Override
-                public Page<VirtualMachineScaleSetInner> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
-        return listAllNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineScaleSetInner>>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(ServiceResponse<Page<VirtualMachineScaleSetInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
-     *
-    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineScaleSetInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineScaleSetInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -2965,7 +2966,7 @@ public final class VirtualMachineScaleSetsInner {
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

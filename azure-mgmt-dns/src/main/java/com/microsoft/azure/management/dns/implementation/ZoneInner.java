@@ -21,6 +21,7 @@ public class ZoneInner extends Resource {
     /**
      * The etag of the zone.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

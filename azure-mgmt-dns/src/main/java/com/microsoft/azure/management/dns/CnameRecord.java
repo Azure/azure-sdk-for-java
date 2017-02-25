@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A CNAME record.
@@ -16,6 +17,7 @@ public class CnameRecord {
     /**
      * The canonical name for this CNAME record.
      */
+    @JsonProperty(value = "cname")
     private String cname;
 
     /**

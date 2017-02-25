@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a Encryption Settings for a Disk.
@@ -16,17 +17,20 @@ public class DiskEncryptionSettings {
     /**
      * The disk encryption key which is a Key Vault Secret.
      */
+    @JsonProperty(value = "diskEncryptionKey")
     private KeyVaultSecretReference diskEncryptionKey;
 
     /**
      * The key encryption key which is Key Vault Key.
      */
+    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
     /**
      * Specifies whether disk encryption should be enabled on the virtual
      * machine.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**

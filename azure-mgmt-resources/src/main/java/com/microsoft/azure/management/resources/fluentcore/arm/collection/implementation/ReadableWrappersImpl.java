@@ -9,6 +9,8 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -63,4 +65,31 @@ public abstract class ReadableWrappersImpl<
         };
     }
 
+
+    protected Observable<T> convertPageToIndividualResourcesAsync(Observable<Page<InnerT>> innerPage) {
+        return convertListToIndividualResourcesAsync(convertPageToListAsync(innerPage));
+    }
+
+    private Observable<List<InnerT>> convertPageToListAsync(Observable<Page<InnerT>> innerPage) {
+        return innerPage.map(new Func1<Page<InnerT>, List<InnerT>>() {
+            @Override
+            public List<InnerT> call(Page<InnerT> pageInner) {
+                return pageInner.items();
+            }
+        });
+    }
+
+    private Observable<T> convertListToIndividualResourcesAsync(Observable<List<InnerT>> innerList) {
+        return innerList.flatMap(new Func1<List<InnerT>, Observable<T>>() {
+            @Override
+            public Observable<T> call(List<InnerT> inners) {
+                return Observable.from(inners).map(new Func1<InnerT, T>() {
+                    @Override
+                    public T call(InnerT inner) {
+                        return wrapModel(inner);
+                    }
+                });
+            }
+        });
+    }
 }

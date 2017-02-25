@@ -18,19 +18,19 @@ public class PurchasePlan {
     /**
      * The publisher ID.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /**
      * The plan ID.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * The product ID.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "product", required = true)
     private String product;
 
     /**

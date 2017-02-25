@@ -16,8 +16,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Vaults.
  */
-public final class VaultsInner {
+public class VaultsInner {
     /** The Retrofit service to perform REST calls. */
     private VaultsService service;
     /** The service client containing this operation class. */
@@ -771,7 +771,7 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -875,7 +875,7 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */

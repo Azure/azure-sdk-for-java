@@ -52,12 +52,12 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public PagedList<VirtualMachineScaleSet> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
     public PagedList<VirtualMachineScaleSet> list() {
-        return wrapList(this.inner().listAll());
+        return wrapList(this.inner().list());
     }
 
     @Override

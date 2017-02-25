@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.dns;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An MX record.
@@ -16,11 +17,13 @@ public class MxRecord {
     /**
      * The preference value for this MX record.
      */
+    @JsonProperty(value = "preference")
     private Integer preference;
 
     /**
      * The domain name of the mail host for this MX record.
      */
+    @JsonProperty(value = "exchange")
     private String exchange;
 
     /**

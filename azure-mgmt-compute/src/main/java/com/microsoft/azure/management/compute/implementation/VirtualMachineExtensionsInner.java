@@ -11,8 +11,8 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -33,7 +33,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineExtensions.
  */
-public final class VirtualMachineExtensionsInner {
+public class VirtualMachineExtensionsInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineExtensionsService service;
     /** The service client containing this operation class. */

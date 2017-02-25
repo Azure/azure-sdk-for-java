@@ -19,7 +19,7 @@ public class DataDiskImage {
      * image inside the VMImage and therefore it must be unique for each data
      * disk.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lun", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lun;
 
     /**

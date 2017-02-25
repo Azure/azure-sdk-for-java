@@ -17,14 +17,14 @@ public class Sku {
     /**
      * SKU family name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "family", required = true)
     private String family;
 
     /**
      * SKU name to specify whether the key vault is a standard vault or a
      * premium vault. Possible values include: 'standard', 'premium'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**

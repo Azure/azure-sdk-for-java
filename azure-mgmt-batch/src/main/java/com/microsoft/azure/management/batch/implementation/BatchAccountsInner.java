@@ -45,7 +45,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in BatchAccounts.
  */
-public class BatchAccountsInner implements InnerSupportsListing {
+public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInner> {
     /** The Retrofit service to perform REST calls. */
     private BatchAccountsService service;
     /** The service client containing this operation class. */

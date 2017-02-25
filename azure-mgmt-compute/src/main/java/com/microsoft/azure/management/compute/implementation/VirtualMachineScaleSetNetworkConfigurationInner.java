@@ -22,7 +22,7 @@ public class VirtualMachineScaleSetNetworkConfigurationInner extends SubResource
     /**
      * The network configuration name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**

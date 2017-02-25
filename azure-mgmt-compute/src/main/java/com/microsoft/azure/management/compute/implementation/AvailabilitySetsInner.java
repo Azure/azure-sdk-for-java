@@ -11,8 +11,9 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.Page;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -34,7 +35,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AvailabilitySets.
  */
-public final class AvailabilitySetsInner {
+public class AvailabilitySetsInner {
     /** The Retrofit service to perform REST calls. */
     private AvailabilitySetsService service;
     /** The service client containing this operation class. */
@@ -68,9 +69,9 @@ public final class AvailabilitySetsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.AvailabilitySets listAvailableSizes" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes")
@@ -327,8 +328,8 @@ public final class AvailabilitySetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the List&lt;AvailabilitySetInner&gt; object if successful.
      */
-    public List<AvailabilitySetInner> list(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public List<AvailabilitySetInner> listByResourceGroup(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
     }
 
     /**
@@ -338,8 +339,8 @@ public final class AvailabilitySetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<AvailabilitySetInner>> listAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySetInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<AvailabilitySetInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySetInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -348,11 +349,13 @@ public final class AvailabilitySetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AvailabilitySetInner&gt; object
      */
-    public Observable<List<AvailabilitySetInner>> listAsync(String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, List<AvailabilitySetInner>>() {
+    public Observable<Page<AvailabilitySetInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, Page<AvailabilitySetInner>>() {
             @Override
-            public List<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
-                return response.body();
+            public Page<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
+                PageImpl<AvailabilitySetInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -363,7 +366,7 @@ public final class AvailabilitySetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AvailabilitySetInner&gt; object
      */
-    public Observable<ServiceResponse<List<AvailabilitySetInner>>> listWithServiceResponseAsync(String resourceGroupName) {
+    public Observable<ServiceResponse<List<AvailabilitySetInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -371,12 +374,12 @@ public final class AvailabilitySetsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailabilitySetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<AvailabilitySetInner>> result = listByResourceGroupDelegate(response);
                         ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.body().items(), result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -386,7 +389,7 @@ public final class AvailabilitySetsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<AvailabilitySetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<AvailabilitySetInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<AvailabilitySetInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AvailabilitySetInner>>() { }.getType())
                 .registerError(CloudException.class)

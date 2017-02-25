@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class representing a Traffic Manager Name Availability response.
@@ -16,27 +17,32 @@ public class TrafficManagerNameAvailabilityInner {
     /**
      * The relative name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Traffic Manager profile resource type.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**
      * Describes whether the relative name is available or not.
      */
+    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /**
      * The reason why the name is not available, when applicable.
      */
+    @JsonProperty(value = "reason")
     private String reason;
 
     /**
      * Descriptive message that explains why the name is not available, when
      * applicable.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

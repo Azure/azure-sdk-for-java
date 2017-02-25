@@ -18,40 +18,45 @@ public class ImageOSDisk {
     /**
      * The Operating System type. Possible values include: 'Windows', 'Linux'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /**
      * The OS State. Possible values include: 'Generalized', 'Specialized'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /**
      * The snapshot.
      */
+    @JsonProperty(value = "snapshot")
     private SubResource snapshot;
 
     /**
      * The managedDisk.
      */
+    @JsonProperty(value = "managedDisk")
     private SubResource managedDisk;
 
     /**
      * The Virtual Hard Disk.
      */
+    @JsonProperty(value = "blobUri")
     private String blobUri;
 
     /**
      * The caching type. Possible values include: 'None', 'ReadOnly',
      * 'ReadWrite'.
      */
+    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /**
      * The initial managed disk size in GB for blank data disks, and the new
      * desired size for existing OS and Data disks.
      */
+    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /**

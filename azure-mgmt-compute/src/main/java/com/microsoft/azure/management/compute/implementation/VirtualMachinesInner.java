@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -16,8 +17,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachines.
  */
-public final class VirtualMachinesInner {
+public class VirtualMachinesInner implements InnerSupportsListing<VirtualMachineInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachinesService service;
     /** The service client containing this operation class. */
@@ -111,13 +112,13 @@ public final class VirtualMachinesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/generalize")
         Observable<Response<ResponseBody>> generalize(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listAll" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines")
-        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listAvailableSizes" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes")
@@ -155,13 +156,13 @@ public final class VirtualMachinesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy")
         Observable<Response<ResponseBody>> beginRedeploy(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachines listAllNext" })
-        @GET
-        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1136,12 +1137,12 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<VirtualMachineInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<VirtualMachineInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<VirtualMachineInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.body()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1153,13 +1154,13 @@ public final class VirtualMachinesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VirtualMachineInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+    public ServiceFuture<List<VirtualMachineInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1171,8 +1172,8 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<Page<VirtualMachineInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<VirtualMachineInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
                 public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
@@ -1187,8 +1188,110 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-04-30-preview";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
+     */
+    public PagedList<VirtualMachineInner> list() {
+        ServiceResponse<Page<VirtualMachineInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<VirtualMachineInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineInner>> listAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<Page<VirtualMachineInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
@@ -1202,20 +1305,16 @@ public final class VirtualMachinesInner {
     }
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listSinglePageAsync(final String resourceGroupName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
@@ -1230,104 +1329,6 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl1<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
-     */
-    public PagedList<VirtualMachineInner> listAll() {
-        ServiceResponse<Page<VirtualMachineInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.body()) {
-            @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<VirtualMachineInner>> listAllAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
-     */
-    public Observable<Page<VirtualMachineInner>> listAllAsync() {
-        return listAllWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
-                @Override
-                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllWithServiceResponseAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-04-30-preview";
-        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1979,6 +1980,110 @@ public final class VirtualMachinesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
+    public PagedList<VirtualMachineInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualMachineInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<VirtualMachineInner>(response.body()) {
+            @Override
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<VirtualMachineInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineInner>> serviceFuture, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<Page<VirtualMachineInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<VirtualMachineInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
+     */
     public PagedList<VirtualMachineInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.body()) {
@@ -1990,10 +2095,10 @@ public final class VirtualMachinesInner {
     }
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -2010,7 +2115,7 @@ public final class VirtualMachinesInner {
     }
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
@@ -2026,7 +2131,7 @@ public final class VirtualMachinesInner {
     }
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
@@ -2046,7 +2151,7 @@ public final class VirtualMachinesInner {
     }
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
      *
     ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -2071,110 +2176,6 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl1<VirtualMachineInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
-     */
-    public PagedList<VirtualMachineInner> listAllNext(final String nextPageLink) {
-        ServiceResponse<Page<VirtualMachineInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<VirtualMachineInner>(response.body()) {
-            @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<VirtualMachineInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineInner>> serviceFuture, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
-     */
-    public Observable<Page<VirtualMachineInner>> listAllNextAsync(final String nextPageLink) {
-        return listAllNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
-                @Override
-                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
-        return listAllNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     *
-    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<VirtualMachineInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<VirtualMachineInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl1<VirtualMachineInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
