@@ -742,7 +742,7 @@ abstract class WebAppBaseImpl<
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
         inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(inner, (FluentImplT) this, this.manager().inner().webApps());
+        return new HostNameBindingImpl<>(inner, (FluentImplT) this);
     }
 
     @Override
@@ -813,7 +813,7 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
-        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this, myManager);
+        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this);
     }
 
     @Override
