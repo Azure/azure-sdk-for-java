@@ -44,15 +44,13 @@ class HostNameBindingImpl<
             HostNameBinding,
             HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
             HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
-    private WebAppsInner client;
     private final FluentImplT parent;
     private String domainName;
     private String name;
 
-    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent, WebAppsInner client) {
+    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent) {
         super(innerObject);
         this.parent = parent;
-        this.client = client;
         this.name = innerObject.name();
         if (name != null && name.contains("/")) {
             this.name = name.replace(parent.name() + "/", "");
@@ -139,9 +137,9 @@ class HostNameBindingImpl<
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> refresh() {
         if (parent instanceof DeploymentSlot) {
-            this.setInner(client.getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name()));
+            this.setInner(this.parent().manager().inner().webApps().getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name()));
         } else {
-            this.setInner(client.getHostNameBinding(parent().resourceGroupName(), parent().name(), name()));
+            this.setInner(this.parent().manager().inner().webApps().getHostNameBinding(parent().resourceGroupName(), parent().name(), name()));
         }
         return this;
     }
@@ -171,12 +169,14 @@ class HostNameBindingImpl<
 
         Observable<HostNameBinding> hostNameBindingObservable;
         if (parent instanceof DeploymentSlot) {
-            hostNameBindingObservable = client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(),
+            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingSlotAsync(
+                    parent().resourceGroupName(),
                     ((DeploymentSlot) parent).parent().name(),
                     name,
                     parent().name(), inner()).map(mapper);
         } else {
-            hostNameBindingObservable = client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
+            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingAsync(
+                    parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
         }
 
         return hostNameBindingObservable.map(new Func1<HostNameBinding, Indexable>() {

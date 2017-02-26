@@ -133,7 +133,7 @@ class WebAppImpl
         List<HostNameBindingInner> collectionInner = this.manager().inner().webApps().listHostNameBindings(resourceGroupName(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
         for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner, this, this.manager().inner().webApps()));
+            hostNameBindings.add(new HostNameBindingImpl<>(inner, this));
         }
         return Collections.unmodifiableMap(Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
             @Override

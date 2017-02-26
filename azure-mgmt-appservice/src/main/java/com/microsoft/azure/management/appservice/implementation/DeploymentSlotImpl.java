@@ -59,7 +59,7 @@ class DeploymentSlotImpl
         List<HostNameBindingInner> collectionInner = this.manager().inner().webApps().listHostNameBindingsSlot(resourceGroupName(), this.parent().name(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
         for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner, this, manager().inner().webApps()));
+            hostNameBindings.add(new HostNameBindingImpl<>(inner, this));
         }
         return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
             @Override
