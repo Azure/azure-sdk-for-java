@@ -15,6 +15,7 @@ public final class EventProcessorOptions
 {
 	private Consumer<ExceptionReceivedEventArgs> exceptionNotificationHandler = null;
     private Boolean invokeProcessorAfterReceiveTimeout = false;
+    private boolean receiverRuntimeMetricEnabled = false;
     private int maxBatchSize = 10;
     private int prefetchCount = 300;
     private Duration receiveTimeOut = Duration.ofMinutes(1);
@@ -30,6 +31,7 @@ public final class EventProcessorOptions
      * PrefetchCount: 300
      * InitialOffsetProvider: uses the last offset checkpointed, or START_OF_STREAM
      * InvokeProcessorAfterReceiveTimeout: false
+     * ReceiverRuntimeMetricEnabled: false
      * </pre>
      * 
      * @return an EventProcessorOptions instance with all options set to the default values
@@ -169,6 +171,32 @@ public final class EventProcessorOptions
     public void setInvokeProcessorAfterReceiveTimeout(Boolean invokeProcessorAfterReceiveTimeout)
     {
         this.invokeProcessorAfterReceiveTimeout = invokeProcessorAfterReceiveTimeout;
+    }
+    
+    /**
+     * Knob to enable/disable runtime metric of the receiver. If this is set to true, 
+     * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
+     * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
+     * <p>
+     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * @return the {@link boolean} indicating, whether, the runtime metric of the receiver was enabled
+     */
+    public boolean getReceiverRuntimeMetricEnabled()
+    {
+        return this.receiverRuntimeMetricEnabled;
+    }
+    
+    /**
+     * Knob to enable/disable runtime metric of the receiver. If this is set to true, 
+     * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
+     * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
+     * <p>
+     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * @param value the {@link boolean} to indicate, whether, the runtime metric of the receiver should be enabled
+     */
+    public void setReceiverRuntimeMetricEnabled(boolean value)
+    {
+        this.receiverRuntimeMetricEnabled = value;
     }
 
     void notifyOfException(String hostname, Exception exception, String action)

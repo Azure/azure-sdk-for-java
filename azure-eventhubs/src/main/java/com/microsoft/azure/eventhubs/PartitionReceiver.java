@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -21,14 +22,15 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ClientEntity;
 import com.microsoft.azure.servicebus.IReceiverSettingsProvider;
 import com.microsoft.azure.servicebus.MessageReceiver;
 import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.PassByRef;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.StringUtil;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.
@@ -69,6 +71,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 	private Long epoch;
 	private boolean isEpochReceiver;
 	private ReceivePump receivePump;
+        private ReceiverOptions receiverOptions;
+        private ReceiverRuntimeInformation runtimeInformation;
 	
 	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
@@ -95,7 +99,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 		this.receiveHandlerLock = new Object();
 	}
 
-	static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
+        static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
 			final String partitionId, 
@@ -103,7 +107,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 			final boolean offsetInclusive,
 			final Instant dateTime,
 			final long epoch,
-			final boolean isEpochReceiver) 
+			final boolean isEpochReceiver,
+                        final ReceiverOptions receiverOptions) 
 					throws ServiceBusException
 	{
 		if (epoch < NULL_EPOCH)
@@ -117,7 +122,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 		}
 
 		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver);
-		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
+		receiver.receiverOptions = receiverOptions;
+                return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
 		{
 			public PartitionReceiver apply(Void a)
 			{
@@ -207,6 +213,17 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 	{
 		return this.epoch;
 	}
+        
+        /**
+         * Gets the temporal {@link ReceiverRuntimeInformation} for this EventHub partition.
+         * In general, this information is a representation of, where this {@link PartitionReceiver}'s end of stream is,
+         * at the time {@link ReceiverRuntimeInformation#getRetrievalTime()}.
+         * @return receiver runtime information
+         */
+        public final ReceiverRuntimeInformation getRuntimeInformation() {
+            
+            return this.runtimeInformation;
+        }
 
 	/**
 	 * Synchronous version of {@link #receive}. 
@@ -288,7 +305,28 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 			@Override
 			public Iterable<EventData> apply(Collection<Message> amqpMessages)
 			{
-				return EventDataUtil.toEventDataCollection(amqpMessages);
+                                PassByRef<Message> lastMessageRef = null;
+                                if (PartitionReceiver.this.receiverOptions != null && PartitionReceiver.this.receiverOptions.getReceiverRuntimeMetricEnabled())
+                                   lastMessageRef = new PassByRef<>();
+                                
+				Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
+                                
+                                if (lastMessageRef != null && lastMessageRef.get() != null) {
+                                    
+                                    if (PartitionReceiver.this.runtimeInformation == null)
+                                        PartitionReceiver.this.runtimeInformation = new ReceiverRuntimeInformation(PartitionReceiver.this.partitionId);
+                                    
+                                    if (lastMessageRef.get().getDeliveryAnnotations() != null && lastMessageRef.get().getDeliveryAnnotations().getValue() != null) {
+                                        
+                                        Map<Symbol, Object> deliveryAnnotationsMap = lastMessageRef.get().getDeliveryAnnotations().getValue();
+                                        PartitionReceiver.this.runtimeInformation.setRuntimeInformation(
+                                                (long) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_SEQUENCE_NUMBER),
+                                                ((Date) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                                                (String) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_OFFSET));
+                                    }
+                                }
+                                
+                                return events;
 			}
 		});
 	}
@@ -443,8 +481,16 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 	}
 
 	@Override
-	public Map<Symbol, Object> getProperties()
-	{
-		return this.isEpochReceiver ? Collections.singletonMap(AmqpConstants.EPOCH, (Object) this.epoch) : null;
+	public Map<Symbol, Object> getProperties() {
+            
+            return this.isEpochReceiver ? Collections.singletonMap(AmqpConstants.EPOCH, (Object) this.epoch) : null;
 	}
+
+        @Override
+        public Symbol[] getDesiredCapabilities() {
+
+            return this.receiverOptions != null && this.receiverOptions.getReceiverRuntimeMetricEnabled()
+                    ? new Symbol[] { AmqpConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME }
+                    : null;
+        }
 }
