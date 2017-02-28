@@ -27,16 +27,10 @@ final class DeploymentsImpl
     implements Deployments,
     HasManager<ResourceManager> {
 
-    private final DeploymentsInner client;
-    private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceManager resourceManager;
     private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    DeploymentsImpl(final DeploymentsInner client,
-                           final DeploymentOperationsInner deploymentOperationsClient,
-                           final ResourceManager resourceManager) {
-        this.client = client;
-        this.deploymentOperationsClient = deploymentOperationsClient;
+    DeploymentsImpl(final ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
@@ -48,6 +42,7 @@ final class DeploymentsImpl
 
     @Override
     public PagedList<Deployment> list() {
+        final DeploymentsInner client = this.manager().inner().deployments();
         return new GroupPagedList<Deployment>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<Deployment> listNextGroup(String resourceGroupName) {
@@ -58,13 +53,13 @@ final class DeploymentsImpl
 
     @Override
     public PagedList<Deployment> listByGroup(String groupName) {
-        return converter.convert(client.list(groupName));
+        return converter.convert(this.manager().inner().deployments().list(groupName));
     }
 
     @Override
     public Deployment getByName(String name) {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            DeploymentExtendedInner inner = client.get(group.name(), name);
+            DeploymentExtendedInner inner = this.manager().inner().deployments().get(group.name(), name);
             if (inner != null) {
                 return createFluentModel(inner);
             }
@@ -74,7 +69,7 @@ final class DeploymentsImpl
 
     @Override
     public Deployment getByGroup(String groupName, String name) {
-        return createFluentModel(client.get(groupName, name));
+        return createFluentModel(this.manager().inner().deployments().get(groupName, name));
     }
 
     @Override
@@ -89,7 +84,7 @@ final class DeploymentsImpl
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
-        return client.deleteAsync(groupName, name).toCompletable();
+        return this.manager().inner().deployments().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
@@ -99,19 +94,17 @@ final class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        return client.checkExistence(resourceGroupName, deploymentName);
+        return this.manager().inner().deployments().checkExistence(resourceGroupName, deploymentName);
     }
 
     protected DeploymentImpl createFluentModel(String name) {
         return new DeploymentImpl(
                 new DeploymentExtendedInner().withName(name),
-                client,
-                deploymentOperationsClient,
                 this.resourceManager);
     }
 
     protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+        return new DeploymentImpl(deploymentExtendedInner, this.resourceManager);
     }
 
     @Override
