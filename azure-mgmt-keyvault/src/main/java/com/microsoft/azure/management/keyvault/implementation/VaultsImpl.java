@@ -49,8 +49,8 @@ class VaultsImpl
     }
 
     @Override
-    public Vault getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<VaultInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

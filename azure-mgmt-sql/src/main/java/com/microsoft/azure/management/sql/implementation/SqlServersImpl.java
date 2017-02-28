@@ -13,6 +13,7 @@ import com.microsoft.azure.management.sql.ServerVersion;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlServers;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Implementation for SqlServers and its parent interfaces.
@@ -63,7 +64,7 @@ class SqlServersImpl
     }
 
     @Override
-    public SqlServer getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().getByResourceGroup(groupName, name));
+    protected Observable<ServerInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 }

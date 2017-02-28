@@ -22,6 +22,7 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
+import rx.Observable;
 import rx.exceptions.Exceptions;
 
 import java.util.ArrayList;
@@ -64,8 +65,8 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public VirtualMachine getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<VirtualMachineInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

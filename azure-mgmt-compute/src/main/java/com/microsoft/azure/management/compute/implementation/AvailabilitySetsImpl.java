@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -49,9 +50,8 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public AvailabilitySetImpl getByGroup(String groupName, String name) {
-        AvailabilitySetInner response = this.inner().get(groupName, name);
-        return wrapModel(response);
+    protected Observable<AvailabilitySetInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

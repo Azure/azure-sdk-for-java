@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInter
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -46,8 +47,8 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public NetworkInterface getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<NetworkInterfaceInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

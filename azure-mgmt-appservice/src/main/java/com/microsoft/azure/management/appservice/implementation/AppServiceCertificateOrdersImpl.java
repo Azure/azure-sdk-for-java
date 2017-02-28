@@ -67,13 +67,7 @@ class AppServiceCertificateOrdersImpl
     }
 
     @Override
-    public Observable<AppServiceCertificateOrder> getByGroupAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name)
-                .map(new Func1<AppServiceCertificateOrderInner, AppServiceCertificateOrder>() {
-                    @Override
-                    public AppServiceCertificateOrder call(AppServiceCertificateOrderInner appServiceCertificateOrderInner) {
-                        return wrapModel(appServiceCertificateOrderInner);
-                    }
-                });
+    protected Observable<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 }

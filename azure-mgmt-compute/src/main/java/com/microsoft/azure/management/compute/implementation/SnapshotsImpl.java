@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for Snapshots.
@@ -54,9 +55,8 @@ class SnapshotsImpl
     }
 
     @Override
-    public Snapshot getByGroup(String resourceGroupName, String name) {
-        SnapshotInner inner = this.inner().get(resourceGroupName, name);
-        return wrapModel(inner);
+    protected Observable<SnapshotInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override
