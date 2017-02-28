@@ -23,8 +23,8 @@
   </licenses>
 
   <scm>
-    <url>scm:git:https://github.com/Azure/azure-key-vault-sdk-for-java</url>
-    <connection>scm:git:git@github.com:Azure/azure-key-vault-sdk-for-java.git</connection>
+    <url>scm:git:https://github.com/Azure/azure-keyvault-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-keyvault-java.git</connection>
     <tag>HEAD</tag>
   </scm>
 
