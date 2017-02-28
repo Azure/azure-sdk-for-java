@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of TxtRecordSets.
@@ -50,5 +51,11 @@ class TxtRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
+    }
+
+    @Override
+    public Observable<TxtRecordSet> listAsync() {
+        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.TXT));
     }
 }

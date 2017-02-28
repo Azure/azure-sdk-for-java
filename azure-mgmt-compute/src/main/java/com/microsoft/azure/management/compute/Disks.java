@@ -12,12 +12,12 @@ import com.microsoft.azure.management.compute.implementation.DisksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -26,8 +26,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent
 public interface Disks extends
         SupportsCreating<Disk.DefinitionStages.Blank>,
-        SupportsListing<Disk>,
-        SupportsListingByGroup<Disk>,
+        SupportsListingAsync<Disk>,
+        SupportsListingByGroupAsync<Disk>,
         SupportsGettingByGroup<Disk>,
         SupportsGettingById<Disk>,
         SupportsDeletingById,

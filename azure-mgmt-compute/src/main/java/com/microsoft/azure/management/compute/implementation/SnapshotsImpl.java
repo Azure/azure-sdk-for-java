@@ -11,7 +11,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
 
 /**
@@ -19,12 +19,12 @@ import rx.Completable;
  */
 @LangDefinition
 class SnapshotsImpl
-        extends GroupableResourcesImpl<
-            Snapshot,
-            SnapshotImpl,
-            SnapshotInner,
-            SnapshotsInner,
-            ComputeManager>
+        extends ListableResourcesImpl<
+                    Snapshot,
+                    SnapshotImpl,
+                    SnapshotInner,
+                    SnapshotsInner,
+                    ComputeManager>
         implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {

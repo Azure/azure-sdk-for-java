@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent
 public interface VirtualMachineCustomImages extends
-        SupportsListing<VirtualMachineCustomImage>,
+        SupportsListingAsync<VirtualMachineCustomImage>,
         SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<VirtualMachineCustomImage>,

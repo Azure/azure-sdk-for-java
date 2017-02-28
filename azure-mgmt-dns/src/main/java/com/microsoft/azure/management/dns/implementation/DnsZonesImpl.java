@@ -9,14 +9,14 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
 
 /**
  * Implementation of DnsZones.
  */
 @LangDefinition
-class DnsZonesImpl extends GroupableResourcesImpl<
+class DnsZonesImpl extends ListableResourcesImpl<
         DnsZone,
         DnsZoneImpl,
         ZoneInner,

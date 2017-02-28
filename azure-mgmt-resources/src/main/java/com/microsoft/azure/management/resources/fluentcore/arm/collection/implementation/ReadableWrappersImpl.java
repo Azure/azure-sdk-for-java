@@ -66,29 +66,49 @@ public abstract class ReadableWrappersImpl<
     }
 
 
-    protected Observable<T> convertPageToIndividualResourcesAsync(Observable<Page<InnerT>> innerPage) {
-        return convertListToIndividualResourcesAsync(convertPageToListAsync(innerPage));
+    protected Observable<T> wrapPageAsync(Observable<Page<InnerT>> innerPage) {
+        return wrapModelAsync(convertPageToInnerAsync(innerPage));
     }
 
-    private Observable<List<InnerT>> convertPageToListAsync(Observable<Page<InnerT>> innerPage) {
-        return innerPage.map(new Func1<Page<InnerT>, List<InnerT>>() {
+    protected Observable<T> wrapListAsync(Observable<List<InnerT>> innerList) {
+        return wrapModelAsync(convertListToInnerAsync(innerList));
+    }
+
+    /**
+     * Converts Observable of list to Observable of Inner.
+     * @param innerList list to be converted.
+     * @param <InnerT> type of inner.
+     * @return Observable for list of inner.
+     */
+    public static <InnerT> Observable<InnerT> convertListToInnerAsync(Observable<List<InnerT>> innerList) {
+        return innerList.flatMap(new Func1<List<InnerT>, Observable<InnerT>>() {
             @Override
-            public List<InnerT> call(Page<InnerT> pageInner) {
-                return pageInner.items();
+            public Observable<InnerT> call(List<InnerT> inners) {
+                return Observable.from(inners);
             }
         });
     }
 
-    private Observable<T> convertListToIndividualResourcesAsync(Observable<List<InnerT>> innerList) {
-        return innerList.flatMap(new Func1<List<InnerT>, Observable<T>>() {
+    /**
+     * Converts Observable of page to Observable of Inner.
+     * @param <InnerT> type of inner.
+     * @param innerPage Page to be converted.
+     * @return Observable for list of inner.
+     */
+    public static <InnerT> Observable<InnerT> convertPageToInnerAsync(Observable<Page<InnerT>> innerPage) {
+        return innerPage.flatMap(new Func1<Page<InnerT>, Observable<InnerT>>() {
             @Override
-            public Observable<T> call(List<InnerT> inners) {
-                return Observable.from(inners).map(new Func1<InnerT, T>() {
-                    @Override
-                    public T call(InnerT inner) {
-                        return wrapModel(inner);
-                    }
-                });
+            public Observable<InnerT> call(Page<InnerT> pageInner) {
+                return Observable.from(pageInner.items());
+            }
+        });
+    }
+
+    private Observable<T> wrapModelAsync(Observable<InnerT> inner) {
+        return inner.map(new Func1<InnerT, T>() {
+            @Override
+            public T call(InnerT inner) {
+                return wrapModel(inner);
             }
         });
     }

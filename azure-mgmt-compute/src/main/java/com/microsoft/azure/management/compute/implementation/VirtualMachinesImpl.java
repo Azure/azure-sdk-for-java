@@ -19,7 +19,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 import rx.exceptions.Exceptions;
@@ -31,13 +31,13 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class VirtualMachinesImpl
-        extends GroupableResourcesImpl<
-        VirtualMachine,
-        VirtualMachineImpl,
-        VirtualMachineInner,
-        VirtualMachinesInner,
-        ComputeManager>
-        implements VirtualMachines {
+    extends ListableResourcesImpl<
+            VirtualMachine,
+            VirtualMachineImpl,
+            VirtualMachineInner,
+            VirtualMachinesInner,
+            ComputeManager>
+    implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final VirtualMachineSizesImpl vmSizes;

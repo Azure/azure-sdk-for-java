@@ -49,11 +49,11 @@ public abstract class ListableResourcesImpl<
 
     @Override
     public Observable<T> listAsync() {
-        return convertPageToIndividualResourcesAsync(inner().listAsync());
+        return wrapPageAsync(inner().listAsync());
     }
 
     @Override
     public Observable<T> listByGroupAsync(String resourceGroupName) {
-        return convertPageToIndividualResourcesAsync(inner().listByResourceGroupAsync(resourceGroupName));
+        return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 }

@@ -15,7 +15,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfi
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Completable;
 
@@ -26,12 +26,12 @@ import java.util.ArrayList;
  */
 @LangDefinition
 public class VirtualMachineScaleSetsImpl
-        extends GroupableResourcesImpl<
-                        VirtualMachineScaleSet,
-                        VirtualMachineScaleSetImpl,
-                        VirtualMachineScaleSetInner,
-                        VirtualMachineScaleSetsInner,
-                        ComputeManager>
+        extends ListableResourcesImpl<
+                VirtualMachineScaleSet,
+                VirtualMachineScaleSetImpl,
+                VirtualMachineScaleSetInner,
+                VirtualMachineScaleSetsInner,
+                ComputeManager>
         implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

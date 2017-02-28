@@ -7,14 +7,14 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
  * Entry point to features management API.
  */
 @Fluent
 public interface Features extends
-        SupportsListing<Feature> {
+        SupportsListingAsync<Feature> {
     /**
      * Registers a feature in a resource provider.
      *
