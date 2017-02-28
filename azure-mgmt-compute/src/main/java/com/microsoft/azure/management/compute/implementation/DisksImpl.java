@@ -11,7 +11,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
 
 /**
@@ -19,12 +19,12 @@ import rx.Completable;
  */
 @LangDefinition
 class DisksImpl
-        extends GroupableResourcesImpl<
-            Disk,
-            DiskImpl,
-            DiskInner,
-            DisksInner,
-            ComputeManager>
+        extends ListableResourcesImpl<
+                Disk,
+                DiskImpl,
+                DiskInner,
+                DisksInner,
+                ComputeManager>
         implements Disks {
 
     DisksImpl(ComputeManager computeManager) {

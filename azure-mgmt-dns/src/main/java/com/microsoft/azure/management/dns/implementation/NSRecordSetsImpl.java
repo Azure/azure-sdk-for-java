@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.NSRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of NSRecordSets.
@@ -50,5 +51,11 @@ class NSRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
+    }
+
+    @Override
+    public Observable<NSRecordSet> listAsync() {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.NS));
     }
 }

@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation of {@link DeploymentOperations}.
@@ -43,5 +44,10 @@ final class DeploymentOperationsImpl
             return null;
         }
         return new DeploymentOperationImpl(inner, this.client);
+    }
+
+    @Override
+    public Observable<DeploymentOperation> listAsync() {
+        return wrapPageAsync(this.client.listByResourceGroupAsync(deployment.resourceGroupName(), deployment.name()));
     }
 }

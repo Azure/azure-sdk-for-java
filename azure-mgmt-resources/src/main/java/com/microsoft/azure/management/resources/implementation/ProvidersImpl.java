@@ -63,4 +63,9 @@ final class ProvidersImpl
         }
         return new ProviderImpl(inner);
     }
+
+    @Override
+    public Observable<Provider> listAsync() {
+        return wrapPageAsync(this.client.listAsync());
+    }
 }

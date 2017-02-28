@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of PtrRecordSets.
@@ -50,5 +51,11 @@ class PtrRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
+    }
+
+    @Override
+    public Observable<PtrRecordSet> listAsync() {
+        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(), this.parent().name(), RecordType.PTR));
     }
 }

@@ -202,4 +202,14 @@ final class GenericResourcesImpl
                     }
                 });
     }
+
+    @Override
+    public Observable<GenericResource> listAsync() {
+        return wrapPageAsync(this.inner().listAsync());
+    }
+
+    @Override
+    public Observable<GenericResource> listByGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(resourceGroupName));
+    }
 }

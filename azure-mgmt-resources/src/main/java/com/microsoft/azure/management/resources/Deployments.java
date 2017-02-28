@@ -11,11 +11,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
@@ -24,8 +24,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 @Fluent
 public interface Deployments extends
         SupportsCreating<Deployment.DefinitionStages.Blank>,
-        SupportsListing<Deployment>,
-        SupportsListingByGroup<Deployment>,
+        SupportsListingAsync<Deployment>,
+        SupportsListingByGroupAsync<Deployment>,
         SupportsGettingByName<Deployment>,
         SupportsGettingByGroup<Deployment>,
         SupportsGettingById<Deployment>,

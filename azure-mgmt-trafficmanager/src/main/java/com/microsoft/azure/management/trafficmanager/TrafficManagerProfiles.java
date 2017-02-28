@@ -9,12 +9,12 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.trafficmanager.implementation.ProfilesInner;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
@@ -25,8 +25,8 @@ import com.microsoft.azure.management.trafficmanager.implementation.TrafficManag
 @Fluent
 public interface TrafficManagerProfiles extends
         SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
-        SupportsListing<TrafficManagerProfile>,
-        SupportsListingByGroup<TrafficManagerProfile>,
+        SupportsListingAsync<TrafficManagerProfile>,
+        SupportsListingByGroupAsync<TrafficManagerProfile>,
         SupportsGettingByGroup<TrafficManagerProfile>,
         SupportsGettingById<TrafficManagerProfile>,
         SupportsDeletingById,

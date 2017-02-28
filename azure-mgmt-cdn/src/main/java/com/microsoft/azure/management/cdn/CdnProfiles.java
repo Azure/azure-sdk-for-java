@@ -13,12 +13,12 @@ import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.util.List;
@@ -29,8 +29,8 @@ import java.util.List;
 @Fluent
 public interface CdnProfiles extends
         SupportsCreating<CdnProfile.DefinitionStages.Blank>,
-        SupportsListing<CdnProfile>,
-        SupportsListingByGroup<CdnProfile>,
+        SupportsListingAsync<CdnProfile>,
+        SupportsListingByGroupAsync<CdnProfile>,
         SupportsGettingByGroup<CdnProfile>,
         SupportsGettingById<CdnProfile>,
         SupportsDeletingById,

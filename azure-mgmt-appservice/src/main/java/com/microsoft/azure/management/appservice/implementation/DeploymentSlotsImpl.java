@@ -16,6 +16,8 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation DeploymentSlots.
@@ -42,10 +44,14 @@ class DeploymentSlotsImpl
         converter = new PagedListConverter<SiteInner, DeploymentSlot>() {
             @Override
             public DeploymentSlot typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")));
-                return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                return wrapModelWithConfigChange(siteInner, innerCollection, parent);
             }
         };
+    }
+
+    private DeploymentSlot wrapModelWithConfigChange(SiteInner siteInner, WebAppsInner innerCollection, WebAppImpl parent) {
+        siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")));
+        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override
@@ -120,5 +126,15 @@ class DeploymentSlotsImpl
     @Override
     public WebApp parent() {
         return this.parent;
+    }
+
+    @Override
+    public Observable<DeploymentSlot> listAsync() {
+        return convertPageToInnerAsync(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name())).map(new Func1<SiteInner, DeploymentSlot>() {
+            @Override
+            public DeploymentSlot call(SiteInner siteInner) {
+                return wrapModelWithConfigChange(siteInner, innerCollection, parent);
+            }
+        });
     }
 }

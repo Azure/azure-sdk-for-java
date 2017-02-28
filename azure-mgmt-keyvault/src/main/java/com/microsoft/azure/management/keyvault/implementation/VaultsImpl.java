@@ -15,6 +15,7 @@ import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.UUID;
 
@@ -85,5 +86,10 @@ class VaultsImpl
                 vaultInner,
                 super.manager(),
                 graphRbacManager);
+    }
+
+    @Override
+    public Observable<Vault> listByGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 }
