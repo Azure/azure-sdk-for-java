@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
 
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -52,8 +54,13 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlElasticPool getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.innerCollection.get(resourceGroup, parentName, name));
+    public Observable<SqlElasticPool> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.innerCollection.getAsync(resourceGroup, parentName, name).map(new Func1<ElasticPoolInner, SqlElasticPool>() {
+            @Override
+            public SqlElasticPool call(ElasticPoolInner elasticPoolInner) {
+                return wrapModel(elasticPoolInner);
+            }
+        });
     }
 
     @Override

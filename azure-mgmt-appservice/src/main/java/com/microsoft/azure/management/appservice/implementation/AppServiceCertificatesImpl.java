@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificates;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for AppServiceCertificates.
@@ -31,8 +32,8 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    public AppServiceCertificate getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<CertificateInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

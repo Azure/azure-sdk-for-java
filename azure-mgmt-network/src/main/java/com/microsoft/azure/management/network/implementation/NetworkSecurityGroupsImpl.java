@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for NetworkSecurityGroups.
@@ -43,14 +44,14 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override
     public Completable deleteByGroupAsync(String groupName, String name) {
         // Clear NIC references if any
-        NetworkSecurityGroupImpl nsg = getByGroup(groupName, name);
+        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByGroup(groupName, name);
         if (nsg != null) {
             Set<String> nicIds = nsg.networkInterfaceIds();
             if (nicIds != null) {

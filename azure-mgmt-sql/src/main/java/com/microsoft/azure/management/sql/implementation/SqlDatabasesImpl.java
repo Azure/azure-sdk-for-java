@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServer;
 
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -45,8 +47,13 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public SqlDatabase getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.inner().get(resourceGroup, parentName, name));
+    public Observable<SqlDatabase> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.inner().getAsync(resourceGroup, parentName, name).map(new Func1<DatabaseInner, SqlDatabase>() {
+            @Override
+            public SqlDatabase call(DatabaseInner databaseInner) {
+                return wrapModel(databaseInner);
+            }
+        });
     }
 
     @Override

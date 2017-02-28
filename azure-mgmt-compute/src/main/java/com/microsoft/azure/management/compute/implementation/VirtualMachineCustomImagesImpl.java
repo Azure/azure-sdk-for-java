@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for VirtualMachineCustomImages.
@@ -35,8 +36,8 @@ class VirtualMachineCustomImagesImpl extends ListableResourcesImpl<
     }
 
     @Override
-    public VirtualMachineCustomImage getByGroup(String resourceGroupName, String name) {
-        return wrapModel(this.inner().get(resourceGroupName, name));
+    protected Observable<ImageInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

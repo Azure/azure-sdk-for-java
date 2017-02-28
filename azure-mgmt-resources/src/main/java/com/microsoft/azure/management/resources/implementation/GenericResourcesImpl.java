@@ -170,7 +170,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getByGroup(String groupName, String name) {
+    public Observable<GenericResourceInner> getAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
     }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 import rx.functions.Func1;
@@ -18,6 +18,7 @@ import rx.functions.Func1;
  * The implementation of Subscriptions.
  */
 final class SubscriptionsImpl
+        extends SupportsGettingByIdImpl<Subscription>
         implements Subscriptions {
     private final SubscriptionsInner client;
 
@@ -36,10 +37,18 @@ final class SubscriptionsImpl
         return converter.convert(client.list());
     }
 
+
     @Override
-    // Gets a specific resource group
-    public SubscriptionImpl getById(String id) {
-        SubscriptionInner subscription = client.get(id);
+    public Observable<Subscription> getByIdAsync(String id) {
+        return client.getAsync(id).map(new Func1<SubscriptionInner, Subscription>() {
+            @Override
+            public Subscription call(SubscriptionInner subscriptionInner) {
+                return wrapModel(subscriptionInner);
+            }
+        });
+    }
+
+    private SubscriptionImpl wrapModel(SubscriptionInner subscription) {
         if (subscription == null) {
             return null;
         }

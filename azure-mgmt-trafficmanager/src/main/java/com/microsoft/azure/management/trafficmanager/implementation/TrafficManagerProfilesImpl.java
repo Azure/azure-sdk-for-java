@@ -14,6 +14,7 @@ import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -55,8 +56,8 @@ class TrafficManagerProfilesImpl extends ListableResourcesImpl<
     }
 
     @Override
-    public TrafficManagerProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<ProfileInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

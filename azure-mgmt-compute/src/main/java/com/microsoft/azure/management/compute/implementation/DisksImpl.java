@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for Disks.
@@ -55,9 +56,8 @@ class DisksImpl
     }
 
     @Override
-    public Disk getByGroup(String resourceGroupName, String name) {
-        DiskInner inner = this.inner().get(resourceGroupName, name);
-        return wrapModel(inner);
+    protected Observable<DiskInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

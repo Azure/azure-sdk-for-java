@@ -14,6 +14,7 @@ import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServiceDomains;
 import com.microsoft.azure.management.appservice.DomainLegalAgreement;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for AppServiceDomains.
@@ -33,8 +34,8 @@ class AppServiceDomainsImpl
     }
 
     @Override
-    public AppServiceDomainImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<DomainInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -46,8 +47,8 @@ class StorageAccountsImpl
     }
 
     @Override
-    public StorageAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().getProperties(groupName, name));
+    protected Observable<StorageAccountInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getPropertiesAsync(resourceGroupName, name);
     }
 
     @Override

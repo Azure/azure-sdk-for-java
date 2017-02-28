@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Implementation of DnsZones.
@@ -39,8 +40,8 @@ class DnsZonesImpl extends ListableResourcesImpl<
     }
 
     @Override
-    public DnsZone getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<ZoneInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override
