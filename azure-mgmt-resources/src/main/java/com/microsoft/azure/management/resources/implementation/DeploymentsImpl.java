@@ -150,6 +150,7 @@ final class DeploymentsImpl
 
     @Override
     public Observable<Deployment> listByGroupAsync(String resourceGroupName) {
+        final DeploymentsInner client = this.manager().inner().deployments();
         return ReadableWrappersImpl.convertPageToInnerAsync(client.listAsync(resourceGroupName))
                 .map(new Func1<DeploymentExtendedInner, Deployment>() {
                     @Override
