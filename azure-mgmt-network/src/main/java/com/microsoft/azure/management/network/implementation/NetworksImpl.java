@@ -35,12 +35,12 @@ class NetworksImpl
 
     @Override
     public PagedList<Network> list() {
-        return wrapList(this.inner().listAll());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override

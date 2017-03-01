@@ -17,6 +17,7 @@ public class ExpressRouteCircuitArpTable {
     /**
      * Age.
      */
+    @JsonProperty(value = "age")
     private Integer age;
 
     /**
@@ -28,11 +29,13 @@ public class ExpressRouteCircuitArpTable {
     /**
      * The IP address.
      */
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
      * The MAC address.
      */
+    @JsonProperty(value = "macAddress")
     private String macAddress;
 
     /**

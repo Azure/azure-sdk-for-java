@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains SKU in an ExpressRouteCircuit.
@@ -16,18 +17,21 @@ public class ExpressRouteCircuitSku {
     /**
      * The name of the SKU.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The tier of the SKU. Possible values are 'Standard' and 'Premium'.
      * Possible values include: 'Standard', 'Premium'.
      */
+    @JsonProperty(value = "tier")
     private ExpressRouteCircuitSkuTier tier;
 
     /**
      * The family of the SKU. Possible values are: 'UnlimitedData' and
      * 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'.
      */
+    @JsonProperty(value = "family")
     private ExpressRouteCircuitSkuFamily family;
 
     /**

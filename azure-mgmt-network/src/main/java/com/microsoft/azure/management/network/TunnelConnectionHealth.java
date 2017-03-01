@@ -17,32 +17,32 @@ public class TunnelConnectionHealth {
     /**
      * Tunnel name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tunnel", access = JsonProperty.Access.WRITE_ONLY)
     private String tunnel;
 
     /**
      * Virtual network Gateway connection status. Possible values include:
      * 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
 
     /**
      * The Ingress Bytes Transferred in this connection.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /**
      * The Egress Bytes Transferred in this connection.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
 
     /**
      * The time at which connection was established in Utc format.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastConnectionEstablishedUtcTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastConnectionEstablishedUtcTime;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The routes table associated with the ExpressRouteCircuit.
@@ -16,28 +17,33 @@ public class ExpressRouteCircuitRoutesTableSummary {
     /**
      * Neighbor.
      */
+    @JsonProperty(value = "neighbor")
     private String neighbor;
 
     /**
      * BGP version number spoken to the neighbor.
      */
+    @JsonProperty(value = "v")
     private Integer v;
 
     /**
      * Autonomous system number.
      */
+    @JsonProperty(value = "as")
     private Integer as;
 
     /**
      * The length of time that the BGP session has been in the Established
      * state, or the current status if not in the Established state.
      */
+    @JsonProperty(value = "upDown")
     private String upDown;
 
     /**
      * Current state of the BGP session, and the number of prefixes that have
      * been received from a neighbor or peer group.
      */
+    @JsonProperty(value = "statePfxRcd")
     private String statePfxRcd;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ErrorDetails model.
@@ -16,16 +17,19 @@ public class ErrorDetails {
     /**
      * The code property.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * The target property.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /**
      * The message property.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

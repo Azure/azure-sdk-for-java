@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application gateway SSL policy.
@@ -18,6 +19,7 @@ public class ApplicationGatewaySslPolicy {
      * SSL protocols to be disabled on application gateway. Possible values
      * are: 'TLSv1_0', 'TLSv1_1', and 'TLSv1_2'.
      */
+    @JsonProperty(value = "disabledSslProtocols")
     private List<ApplicationGatewaySslProtocol> disabledSslProtocols;
 
     /**

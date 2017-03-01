@@ -89,6 +89,7 @@ public class LoadBalancerInner extends Resource {
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**

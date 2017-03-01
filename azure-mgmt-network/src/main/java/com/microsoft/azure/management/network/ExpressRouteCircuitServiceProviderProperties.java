@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains ServiceProviderProperties in an ExpressRouteCircuit.
@@ -16,16 +17,19 @@ public class ExpressRouteCircuitServiceProviderProperties {
     /**
      * The serviceProviderName.
      */
+    @JsonProperty(value = "serviceProviderName")
     private String serviceProviderName;
 
     /**
      * The peering location.
      */
+    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /**
      * The BandwidthInMbps.
      */
+    @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;
 
     /**

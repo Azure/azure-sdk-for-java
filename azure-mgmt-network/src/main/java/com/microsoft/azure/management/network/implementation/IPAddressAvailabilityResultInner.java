@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Response for CheckIPAddressAvailability API service call.
@@ -17,12 +18,14 @@ public class IPAddressAvailabilityResultInner {
     /**
      * Private IP address availability.
      */
+    @JsonProperty(value = "available")
     private Boolean available;
 
     /**
      * Contains other available private IP addresses if the asked for address
      * is taken.
      */
+    @JsonProperty(value = "availableIPAddresses")
     private List<String> availableIPAddresses;
 
     /**
