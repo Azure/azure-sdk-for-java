@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -61,5 +62,10 @@ final class PolicyDefinitionsImpl
     @Override
     protected PolicyDefinitionImpl wrapModel(PolicyDefinitionInner inner) {
         return new PolicyDefinitionImpl(inner, client);
+    }
+
+    @Override
+    public Observable<PolicyDefinition> listAsync() {
+        return wrapPageAsync(client.listAsync());
     }
 }

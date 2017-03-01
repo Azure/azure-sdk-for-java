@@ -9,18 +9,18 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
  * Entry point to policy assignment management API.
  */
 @Fluent
 public interface PolicyAssignments extends
-        SupportsListing<PolicyAssignment>,
-        SupportsListingByGroup<PolicyAssignment>,
+        SupportsListingAsync<PolicyAssignment>,
+        SupportsListingByGroupAsync<PolicyAssignment>,
         SupportsGettingById<PolicyAssignment>,
         SupportsCreating<PolicyAssignment.DefinitionStages.Blank>,
         SupportsDeletingById {

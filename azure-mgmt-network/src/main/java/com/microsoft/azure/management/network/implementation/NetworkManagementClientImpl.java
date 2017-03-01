@@ -14,8 +14,8 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
@@ -31,7 +31,7 @@ import rx.Observable;
 /**
  * Initializes a new instance of the NetworkManagementClientImpl class.
  */
-public final class NetworkManagementClientImpl extends AzureServiceClient {
+public class NetworkManagementClientImpl extends AzureServiceClient {
     /** The Retrofit service to perform REST calls. */
     private NetworkManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
@@ -151,188 +151,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The RouteTablesInner object to access its operations.
-     */
-    private RouteTablesInner routeTables;
-
-    /**
-     * Gets the RouteTablesInner object to access its operations.
-     * @return the RouteTablesInner object.
-     */
-    public RouteTablesInner routeTables() {
-        return this.routeTables;
-    }
-
-    /**
-     * The RoutesInner object to access its operations.
-     */
-    private RoutesInner routes;
-
-    /**
-     * Gets the RoutesInner object to access its operations.
-     * @return the RoutesInner object.
-     */
-    public RoutesInner routes() {
-        return this.routes;
-    }
-
-    /**
-     * The PublicIPAddressesInner object to access its operations.
-     */
-    private PublicIPAddressesInner publicIPAddresses;
-
-    /**
-     * Gets the PublicIPAddressesInner object to access its operations.
-     * @return the PublicIPAddressesInner object.
-     */
-    public PublicIPAddressesInner publicIPAddresses() {
-        return this.publicIPAddresses;
-    }
-
-    /**
-     * The NetworkSecurityGroupsInner object to access its operations.
-     */
-    private NetworkSecurityGroupsInner networkSecurityGroups;
-
-    /**
-     * Gets the NetworkSecurityGroupsInner object to access its operations.
-     * @return the NetworkSecurityGroupsInner object.
-     */
-    public NetworkSecurityGroupsInner networkSecurityGroups() {
-        return this.networkSecurityGroups;
-    }
-
-    /**
-     * The SecurityRulesInner object to access its operations.
-     */
-    private SecurityRulesInner securityRules;
-
-    /**
-     * Gets the SecurityRulesInner object to access its operations.
-     * @return the SecurityRulesInner object.
-     */
-    public SecurityRulesInner securityRules() {
-        return this.securityRules;
-    }
-
-    /**
-     * The LoadBalancersInner object to access its operations.
-     */
-    private LoadBalancersInner loadBalancers;
-
-    /**
-     * Gets the LoadBalancersInner object to access its operations.
-     * @return the LoadBalancersInner object.
-     */
-    public LoadBalancersInner loadBalancers() {
-        return this.loadBalancers;
-    }
-
-    /**
-     * The VirtualNetworksInner object to access its operations.
-     */
-    private VirtualNetworksInner virtualNetworks;
-
-    /**
-     * Gets the VirtualNetworksInner object to access its operations.
-     * @return the VirtualNetworksInner object.
-     */
-    public VirtualNetworksInner virtualNetworks() {
-        return this.virtualNetworks;
-    }
-
-    /**
-     * The SubnetsInner object to access its operations.
-     */
-    private SubnetsInner subnets;
-
-    /**
-     * Gets the SubnetsInner object to access its operations.
-     * @return the SubnetsInner object.
-     */
-    public SubnetsInner subnets() {
-        return this.subnets;
-    }
-
-    /**
-     * The VirtualNetworkPeeringsInner object to access its operations.
-     */
-    private VirtualNetworkPeeringsInner virtualNetworkPeerings;
-
-    /**
-     * Gets the VirtualNetworkPeeringsInner object to access its operations.
-     * @return the VirtualNetworkPeeringsInner object.
-     */
-    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
-        return this.virtualNetworkPeerings;
-    }
-
-    /**
-     * The NetworkInterfacesInner object to access its operations.
-     */
-    private NetworkInterfacesInner networkInterfaces;
-
-    /**
-     * Gets the NetworkInterfacesInner object to access its operations.
-     * @return the NetworkInterfacesInner object.
-     */
-    public NetworkInterfacesInner networkInterfaces() {
-        return this.networkInterfaces;
-    }
-
-    /**
-     * The UsagesInner object to access its operations.
-     */
-    private UsagesInner usages;
-
-    /**
-     * Gets the UsagesInner object to access its operations.
-     * @return the UsagesInner object.
-     */
-    public UsagesInner usages() {
-        return this.usages;
-    }
-
-    /**
-     * The VirtualNetworkGatewaysInner object to access its operations.
-     */
-    private VirtualNetworkGatewaysInner virtualNetworkGateways;
-
-    /**
-     * Gets the VirtualNetworkGatewaysInner object to access its operations.
-     * @return the VirtualNetworkGatewaysInner object.
-     */
-    public VirtualNetworkGatewaysInner virtualNetworkGateways() {
-        return this.virtualNetworkGateways;
-    }
-
-    /**
-     * The VirtualNetworkGatewayConnectionsInner object to access its operations.
-     */
-    private VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections;
-
-    /**
-     * Gets the VirtualNetworkGatewayConnectionsInner object to access its operations.
-     * @return the VirtualNetworkGatewayConnectionsInner object.
-     */
-    public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
-        return this.virtualNetworkGatewayConnections;
-    }
-
-    /**
-     * The LocalNetworkGatewaysInner object to access its operations.
-     */
-    private LocalNetworkGatewaysInner localNetworkGateways;
-
-    /**
-     * Gets the LocalNetworkGatewaysInner object to access its operations.
-     * @return the LocalNetworkGatewaysInner object.
-     */
-    public LocalNetworkGatewaysInner localNetworkGateways() {
-        return this.localNetworkGateways;
-    }
-
-    /**
      * The ExpressRouteCircuitAuthorizationsInner object to access its operations.
      */
     private ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations;
@@ -385,6 +203,253 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The LoadBalancersInner object to access its operations.
+     */
+    private LoadBalancersInner loadBalancers;
+
+    /**
+     * Gets the LoadBalancersInner object to access its operations.
+     * @return the LoadBalancersInner object.
+     */
+    public LoadBalancersInner loadBalancers() {
+        return this.loadBalancers;
+    }
+
+    /**
+     * The NetworkInterfacesInner object to access its operations.
+     */
+    private NetworkInterfacesInner networkInterfaces;
+
+    /**
+     * Gets the NetworkInterfacesInner object to access its operations.
+     * @return the NetworkInterfacesInner object.
+     */
+    public NetworkInterfacesInner networkInterfaces() {
+        return this.networkInterfaces;
+    }
+
+    /**
+     * The NetworkSecurityGroupsInner object to access its operations.
+     */
+    private NetworkSecurityGroupsInner networkSecurityGroups;
+
+    /**
+     * Gets the NetworkSecurityGroupsInner object to access its operations.
+     * @return the NetworkSecurityGroupsInner object.
+     */
+    public NetworkSecurityGroupsInner networkSecurityGroups() {
+        return this.networkSecurityGroups;
+    }
+
+    /**
+     * The SecurityRulesInner object to access its operations.
+     */
+    private SecurityRulesInner securityRules;
+
+    /**
+     * Gets the SecurityRulesInner object to access its operations.
+     * @return the SecurityRulesInner object.
+     */
+    public SecurityRulesInner securityRules() {
+        return this.securityRules;
+    }
+
+    /**
+     * The NetworkWatchersInner object to access its operations.
+     */
+    private NetworkWatchersInner networkWatchers;
+
+    /**
+     * Gets the NetworkWatchersInner object to access its operations.
+     * @return the NetworkWatchersInner object.
+     */
+    public NetworkWatchersInner networkWatchers() {
+        return this.networkWatchers;
+    }
+
+    /**
+     * The PacketCapturesInner object to access its operations.
+     */
+    private PacketCapturesInner packetCaptures;
+
+    /**
+     * Gets the PacketCapturesInner object to access its operations.
+     * @return the PacketCapturesInner object.
+     */
+    public PacketCapturesInner packetCaptures() {
+        return this.packetCaptures;
+    }
+
+    /**
+     * The PublicIPAddressesInner object to access its operations.
+     */
+    private PublicIPAddressesInner publicIPAddresses;
+
+    /**
+     * Gets the PublicIPAddressesInner object to access its operations.
+     * @return the PublicIPAddressesInner object.
+     */
+    public PublicIPAddressesInner publicIPAddresses() {
+        return this.publicIPAddresses;
+    }
+
+    /**
+     * The RouteFiltersInner object to access its operations.
+     */
+    private RouteFiltersInner routeFilters;
+
+    /**
+     * Gets the RouteFiltersInner object to access its operations.
+     * @return the RouteFiltersInner object.
+     */
+    public RouteFiltersInner routeFilters() {
+        return this.routeFilters;
+    }
+
+    /**
+     * The RouteFilterRulesInner object to access its operations.
+     */
+    private RouteFilterRulesInner routeFilterRules;
+
+    /**
+     * Gets the RouteFilterRulesInner object to access its operations.
+     * @return the RouteFilterRulesInner object.
+     */
+    public RouteFilterRulesInner routeFilterRules() {
+        return this.routeFilterRules;
+    }
+
+    /**
+     * The RouteTablesInner object to access its operations.
+     */
+    private RouteTablesInner routeTables;
+
+    /**
+     * Gets the RouteTablesInner object to access its operations.
+     * @return the RouteTablesInner object.
+     */
+    public RouteTablesInner routeTables() {
+        return this.routeTables;
+    }
+
+    /**
+     * The RoutesInner object to access its operations.
+     */
+    private RoutesInner routes;
+
+    /**
+     * Gets the RoutesInner object to access its operations.
+     * @return the RoutesInner object.
+     */
+    public RoutesInner routes() {
+        return this.routes;
+    }
+
+    /**
+     * The BgpServiceCommunitiesInner object to access its operations.
+     */
+    private BgpServiceCommunitiesInner bgpServiceCommunities;
+
+    /**
+     * Gets the BgpServiceCommunitiesInner object to access its operations.
+     * @return the BgpServiceCommunitiesInner object.
+     */
+    public BgpServiceCommunitiesInner bgpServiceCommunities() {
+        return this.bgpServiceCommunities;
+    }
+
+    /**
+     * The UsagesInner object to access its operations.
+     */
+    private UsagesInner usages;
+
+    /**
+     * Gets the UsagesInner object to access its operations.
+     * @return the UsagesInner object.
+     */
+    public UsagesInner usages() {
+        return this.usages;
+    }
+
+    /**
+     * The VirtualNetworksInner object to access its operations.
+     */
+    private VirtualNetworksInner virtualNetworks;
+
+    /**
+     * Gets the VirtualNetworksInner object to access its operations.
+     * @return the VirtualNetworksInner object.
+     */
+    public VirtualNetworksInner virtualNetworks() {
+        return this.virtualNetworks;
+    }
+
+    /**
+     * The SubnetsInner object to access its operations.
+     */
+    private SubnetsInner subnets;
+
+    /**
+     * Gets the SubnetsInner object to access its operations.
+     * @return the SubnetsInner object.
+     */
+    public SubnetsInner subnets() {
+        return this.subnets;
+    }
+
+    /**
+     * The VirtualNetworkPeeringsInner object to access its operations.
+     */
+    private VirtualNetworkPeeringsInner virtualNetworkPeerings;
+
+    /**
+     * Gets the VirtualNetworkPeeringsInner object to access its operations.
+     * @return the VirtualNetworkPeeringsInner object.
+     */
+    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
+        return this.virtualNetworkPeerings;
+    }
+
+    /**
+     * The VirtualNetworkGatewaysInner object to access its operations.
+     */
+    private VirtualNetworkGatewaysInner virtualNetworkGateways;
+
+    /**
+     * Gets the VirtualNetworkGatewaysInner object to access its operations.
+     * @return the VirtualNetworkGatewaysInner object.
+     */
+    public VirtualNetworkGatewaysInner virtualNetworkGateways() {
+        return this.virtualNetworkGateways;
+    }
+
+    /**
+     * The VirtualNetworkGatewayConnectionsInner object to access its operations.
+     */
+    private VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections;
+
+    /**
+     * Gets the VirtualNetworkGatewayConnectionsInner object to access its operations.
+     * @return the VirtualNetworkGatewayConnectionsInner object.
+     */
+    public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
+        return this.virtualNetworkGatewayConnections;
+    }
+
+    /**
+     * The LocalNetworkGatewaysInner object to access its operations.
+     */
+    private LocalNetworkGatewaysInner localNetworkGateways;
+
+    /**
+     * Gets the LocalNetworkGatewaysInner object to access its operations.
+     * @return the LocalNetworkGatewaysInner object.
+     */
+    public LocalNetworkGatewaysInner localNetworkGateways() {
+        return this.localNetworkGateways;
+    }
+
+    /**
      * Initializes an instance of NetworkManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -419,24 +484,29 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.applicationGateways = new ApplicationGatewaysInner(restClient().retrofit(), this);
-        this.routeTables = new RouteTablesInner(restClient().retrofit(), this);
-        this.routes = new RoutesInner(restClient().retrofit(), this);
-        this.publicIPAddresses = new PublicIPAddressesInner(restClient().retrofit(), this);
-        this.networkSecurityGroups = new NetworkSecurityGroupsInner(restClient().retrofit(), this);
-        this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
-        this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
-        this.virtualNetworks = new VirtualNetworksInner(restClient().retrofit(), this);
-        this.subnets = new SubnetsInner(restClient().retrofit(), this);
-        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(restClient().retrofit(), this);
-        this.networkInterfaces = new NetworkInterfacesInner(restClient().retrofit(), this);
-        this.usages = new UsagesInner(restClient().retrofit(), this);
-        this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
-        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
-        this.localNetworkGateways = new LocalNetworkGatewaysInner(restClient().retrofit(), this);
         this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsInner(restClient().retrofit(), this);
         this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsInner(restClient().retrofit(), this);
         this.expressRouteCircuits = new ExpressRouteCircuitsInner(restClient().retrofit(), this);
         this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
+        this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
+        this.networkInterfaces = new NetworkInterfacesInner(restClient().retrofit(), this);
+        this.networkSecurityGroups = new NetworkSecurityGroupsInner(restClient().retrofit(), this);
+        this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
+        this.networkWatchers = new NetworkWatchersInner(restClient().retrofit(), this);
+        this.packetCaptures = new PacketCapturesInner(restClient().retrofit(), this);
+        this.publicIPAddresses = new PublicIPAddressesInner(restClient().retrofit(), this);
+        this.routeFilters = new RouteFiltersInner(restClient().retrofit(), this);
+        this.routeFilterRules = new RouteFilterRulesInner(restClient().retrofit(), this);
+        this.routeTables = new RouteTablesInner(restClient().retrofit(), this);
+        this.routes = new RoutesInner(restClient().retrofit(), this);
+        this.bgpServiceCommunities = new BgpServiceCommunitiesInner(restClient().retrofit(), this);
+        this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.virtualNetworks = new VirtualNetworksInner(restClient().retrofit(), this);
+        this.subnets = new SubnetsInner(restClient().retrofit(), this);
+        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(restClient().retrofit(), this);
+        this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
+        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
+        this.localNetworkGateways = new LocalNetworkGatewaysInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -517,7 +587,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         final String domainNameLabel = null;
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
@@ -586,7 +656,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
                 @Override

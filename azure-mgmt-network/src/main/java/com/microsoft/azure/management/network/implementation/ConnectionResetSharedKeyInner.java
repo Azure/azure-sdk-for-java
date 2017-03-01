@@ -18,7 +18,7 @@ public class ConnectionResetSharedKeyInner {
      * The virtual network connection reset shared key length, should between 1
      * and 128.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyLength", required = true)
     private int keyLength;
 
     /**

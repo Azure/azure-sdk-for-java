@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The response body contains the status of the specified asynchronous
@@ -25,11 +26,13 @@ public class AzureAsyncOperationResult {
      * 'Succeeded', and 'Failed'. Possible values include: 'InProgress',
      * 'Succeeded', 'Failed'.
      */
+    @JsonProperty(value = "status")
     private NetworkOperationStatus status;
 
     /**
      * The error property.
      */
+    @JsonProperty(value = "error")
     private Error error;
 
     /**

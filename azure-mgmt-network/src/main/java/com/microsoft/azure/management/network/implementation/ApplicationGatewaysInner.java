@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -15,8 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ApplicationGateways.
  */
-public final class ApplicationGatewaysInner {
+public class ApplicationGatewaysInner implements InnerSupportsListing<ApplicationGatewayInner> {
     /** The Retrofit service to perform REST calls. */
     private ApplicationGatewaysService service;
     /** The service client containing this operation class. */
@@ -82,13 +83,13 @@ public final class ApplicationGatewaysInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listAll" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways")
-        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways start" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start")
@@ -114,13 +115,13 @@ public final class ApplicationGatewaysInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth")
         Observable<Response<ResponseBody>> beginBackendHealth(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways listAllNext" })
-        @GET
-        Observable<Response<ResponseBody>> listAllNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -179,7 +180,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -239,7 +240,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -259,6 +260,7 @@ public final class ApplicationGatewaysInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -318,7 +320,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayInner>>>() {
                 @Override
@@ -404,7 +406,7 @@ public final class ApplicationGatewaysInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ApplicationGatewayInner>() { }.getType());
     }
@@ -473,7 +475,7 @@ public final class ApplicationGatewaysInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayInner>>>() {
                 @Override
@@ -502,12 +504,12 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<ApplicationGatewayInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<ApplicationGatewayInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.body()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -519,13 +521,13 @@ public final class ApplicationGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+    public ServiceFuture<List<ApplicationGatewayInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -537,8 +539,8 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<Page<ApplicationGatewayInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<ApplicationGatewayInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
                 public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
@@ -553,8 +555,110 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
+     *
+    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-12-01";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ApplicationGatewayInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all the application gateways in a subscription.
+     *
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
+     */
+    public PagedList<ApplicationGatewayInner> list() {
+        ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
+            @Override
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all the application gateways in a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ApplicationGatewayInner>> listAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all the application gateways in a subscription.
+     *
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<Page<ApplicationGatewayInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
+                @Override
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all the application gateways in a subscription.
+     *
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
@@ -568,20 +672,16 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * Lists all application gateways in a resource group.
+     * Gets all the application gateways in a subscription.
      *
-    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
@@ -596,104 +696,6 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
-     */
-    public PagedList<ApplicationGatewayInner> listAll() {
-        ServiceResponse<Page<ApplicationGatewayInner>> response = listAllSinglePageAsync().toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.body()) {
-            @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
-     */
-    public Observable<Page<ApplicationGatewayInner>> listAllAsync() {
-        return listAllWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
-                @Override
-                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllWithServiceResponseAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllSinglePageAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-09-01";
-        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -755,7 +757,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -815,7 +817,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -834,6 +836,7 @@ public final class ApplicationGatewaysInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -892,7 +895,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -952,7 +955,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -971,6 +974,7 @@ public final class ApplicationGatewaysInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1030,7 +1034,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         final String expand = null;
         Observable<Response<ResponseBody>> observable = service.backendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType());
@@ -1095,7 +1099,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.backendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType());
     }
@@ -1156,7 +1160,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         final String expand = null;
         return service.beginBackendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>>>() {
@@ -1232,7 +1236,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginBackendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>>>() {
                 @Override
@@ -1261,6 +1265,110 @@ public final class ApplicationGatewaysInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
+    public PagedList<ApplicationGatewayInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<ApplicationGatewayInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ApplicationGatewayInner>(response.body()) {
+            @Override
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ApplicationGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<Page<ApplicationGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
+                @Override
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
+     *
+    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ApplicationGatewayInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all the application gateways in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
+     */
     public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.body()) {
@@ -1272,10 +1380,10 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * Lists all application gateways in a resource group.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1292,7 +1400,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * Lists all application gateways in a resource group.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1308,7 +1416,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * Lists all application gateways in a resource group.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1328,7 +1436,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * Lists all application gateways in a resource group.
+     * Gets all the application gateways in a subscription.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1353,110 +1461,6 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
-     */
-    public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) {
-        ServiceResponse<Page<ApplicationGatewayInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationGatewayInner>(response.body()) {
-            @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
-                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAllNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(String nextPageLink) {
-                    return listAllNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
-     */
-    public Observable<Page<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink) {
-        return listAllNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
-                @Override
-                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
-        return listAllNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Gets all the application gateways in a subscription.
-     *
-    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listAllNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ApplicationGatewayInner>> result = listAllNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationGatewayInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ApplicationGatewayInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains FQDN of the DNS record associated with the public IP address.
@@ -20,6 +21,7 @@ public class PublicIPAddressDnsSettings {
      * specified, an A DNS record is created for the public IP in the Microsoft
      * Azure DNS system.
      */
+    @JsonProperty(value = "domainNameLabel")
     private String domainNameLabel;
 
     /**
@@ -27,6 +29,7 @@ public class PublicIPAddressDnsSettings {
      * associated with the public IP. This is the concatenation of the
      * domainNameLabel and the regionalized DNS zone.
      */
+    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /**
@@ -35,6 +38,7 @@ public class PublicIPAddressDnsSettings {
      * specified, then a PTR DNS record is created pointing from the IP address
      * in the in-addr.arpa domain to the reverse FQDN.
      */
+    @JsonProperty(value = "reverseFqdn")
     private String reverseFqdn;
 
     /**

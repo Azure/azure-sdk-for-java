@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworkGatewayConnections.
  */
-public final class VirtualNetworkGatewayConnectionsInner {
+public class VirtualNetworkGatewayConnectionsInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworkGatewayConnectionsService service;
     /** The service client containing this operation class. */
@@ -94,9 +94,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
         Observable<Response<ResponseBody>> getSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkGatewayConnections list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkGatewayConnections listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections")
-        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkGatewayConnections resetSharedKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
@@ -106,9 +106,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
         Observable<Response<ResponseBody>> beginResetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionResetSharedKeyInner parameters, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkGatewayConnections listNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworkGatewayConnections listByResourceGroupNext" })
         @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -176,7 +176,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType());
     }
@@ -245,7 +245,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkGatewayConnectionInner>>>() {
                 @Override
@@ -324,7 +324,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkGatewayConnectionInner>>>() {
                 @Override
@@ -401,7 +401,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -461,7 +461,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -481,6 +481,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -547,7 +548,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (value == null) {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.withValue(value);
         Observable<Response<ResponseBody>> observable = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -617,7 +618,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (value == null) {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.withValue(value);
         return service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -698,7 +699,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.getSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionSharedKeyInner>>>() {
                 @Override
@@ -726,12 +727,12 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayConnectionInner> list(final String resourceGroupName) {
-        ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+    public PagedList<VirtualNetworkGatewayConnectionInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayConnectionInner>(response.body()) {
             @Override
             public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -743,13 +744,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
+    public ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName),
+            listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -761,8 +762,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object
      */
-    public Observable<Page<VirtualNetworkGatewayConnectionInner>> listAsync(final String resourceGroupName) {
-        return listWithServiceResponseAsync(resourceGroupName)
+    public Observable<Page<VirtualNetworkGatewayConnectionInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
             .map(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Page<VirtualNetworkGatewayConnectionInner>>() {
                 @Override
                 public Page<VirtualNetworkGatewayConnectionInner> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response) {
@@ -777,8 +778,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
+    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> page) {
@@ -786,7 +787,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -797,20 +798,20 @@ public final class VirtualNetworkGatewayConnectionsInner {
     ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
-        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-12-01";
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -819,7 +820,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -886,7 +887,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.withKeyLength(keyLength);
         Observable<Response<ResponseBody>> observable = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -953,7 +954,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.withKeyLength(keyLength);
         return service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -984,12 +985,12 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayConnectionInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<VirtualNetworkGatewayConnectionInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayConnectionInner>(response.body()) {
             @Override
             public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -998,17 +999,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> serviceFuture, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
+    public ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkGatewayConnectionInner>> serviceFuture, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1020,8 +1021,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object
      */
-    public Observable<Page<VirtualNetworkGatewayConnectionInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<VirtualNetworkGatewayConnectionInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Page<VirtualNetworkGatewayConnectionInner>>() {
                 @Override
                 public Page<VirtualNetworkGatewayConnectionInner> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response) {
@@ -1036,8 +1037,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> page) {
@@ -1045,7 +1046,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1056,17 +1057,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
     ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listNextDelegate(response);
+                        ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> result = listByResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1075,7 +1076,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)

@@ -17,7 +17,7 @@ public class ConnectionSharedKeyInner {
     /**
      * The virtual network connection shared key value.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**

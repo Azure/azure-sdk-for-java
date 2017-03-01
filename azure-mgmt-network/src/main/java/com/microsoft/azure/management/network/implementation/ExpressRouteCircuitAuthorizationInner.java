@@ -42,11 +42,13 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -136,17 +138,6 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the ExpressRouteCircuitAuthorizationInner object itself.
-     */
-    public ExpressRouteCircuitAuthorizationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
 }

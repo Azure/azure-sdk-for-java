@@ -29,7 +29,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private ExpressRouteCircuitPeeringType peeringType;
 
     /**
-     * The state of peering. Possible values are: 'Disabled' and 'Enbaled'.
+     * The state of peering. Possible values are: 'Disabled' and 'Enabled'.
      * Possible values include: 'Disabled', 'Enabled'.
      */
     @JsonProperty(value = "properties.state")
@@ -115,14 +115,22 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private String lastModifiedBy;
 
     /**
+     * The reference of the RouteFilter resource.
+     */
+    @JsonProperty(value = "properties.routeFilter")
+    private RouteFilterInner routeFilter;
+
+    /**
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * A unique read-only string that changes whenever the resource is updated.
      */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -426,6 +434,26 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
+     * Get the routeFilter value.
+     *
+     * @return the routeFilter value
+     */
+    public RouteFilterInner routeFilter() {
+        return this.routeFilter;
+    }
+
+    /**
+     * Set the routeFilter value.
+     *
+     * @param routeFilter the routeFilter value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withRouteFilter(RouteFilterInner routeFilter) {
+        this.routeFilter = routeFilter;
+        return this;
+    }
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -452,17 +480,6 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the ExpressRouteCircuitPeeringInner object itself.
-     */
-    public ExpressRouteCircuitPeeringInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
 }

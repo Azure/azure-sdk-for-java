@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.SubResource;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application gateway backendhealth http settings.
@@ -17,11 +18,13 @@ public class ApplicationGatewayBackendHealthServer {
     /**
      * IP address or FQDN of backend server.
      */
+    @JsonProperty(value = "address")
     private String address;
 
     /**
      * Reference of IP configuration of backend server.
      */
+    @JsonProperty(value = "ipConfiguration")
     private SubResource ipConfiguration;
 
     /**
@@ -29,6 +32,7 @@ public class ApplicationGatewayBackendHealthServer {
      * and 'Partial'. Possible values include: 'Unknown', 'Up', 'Down',
      * 'Partial'.
      */
+    @JsonProperty(value = "health")
     private ApplicationGatewayBackendHealthServerHealth health;
 
     /**
