@@ -6,10 +6,39 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.servicebus.implementation.TimeSpan;
+import org.joda.time.Period;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TimeSpanTests {
+    @Test
+    public void testTimeSpanFromPeriod() {
+        Period period = new Period()
+                .withDays(366)
+                .withHours(25)
+                .withMinutes(10)
+                .withSeconds(70)
+                .withMillis(1001);
+        TimeSpan timeSpan = new TimeSpan()
+                .withDays(366)
+                .withHours(25)
+                .withMinutes(10)
+                .withSeconds(70)
+                .withMilliseconds(1001);
+        Assert.assertEquals(TimeSpan.fromPeriod(period).toString(), timeSpan.toString());
+
+        period = new Period()
+                .withWeeks(12)
+                .withDays(366)
+                .withHours(25)
+                .withMinutes(10)
+                .withSeconds(70)
+                .withMillis(1001);
+        // Days -> 12 * 7 + 366 + 1
+        Assert.assertEquals("451.01:11:11.0010000", TimeSpan.fromPeriod(period).toString());
+    }
+
     @Test
     public void testTimeSpanStringParse() {
         TimeSpan timeSpan1 = TimeSpan.parse("366.01:02:00.12345");

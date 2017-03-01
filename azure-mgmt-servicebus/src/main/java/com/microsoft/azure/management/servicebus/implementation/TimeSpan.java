@@ -4,8 +4,9 @@
  * license information.
  */
 
-package com.microsoft.azure.management.servicebus;
+package com.microsoft.azure.management.servicebus.implementation;
 
+import org.joda.time.Period;
 import rx.functions.Func0;
 
 /**
@@ -118,6 +119,24 @@ public class TimeSpan {
      */
     public int milliseconds() {
         return this.milliseconds;
+    }
+
+    /**
+     * Gets TimeSpan from given period.
+     *
+     * @param period duration in period format
+     * @return TimeSpan
+     */
+    public static TimeSpan fromPeriod(Period period) {
+        // Normalize (e.g. move weeks to hour part)
+        //
+       Period p = new Period(period.toStandardDuration().getMillis());
+       return TimeSpan.parse((new TimeSpan()
+               .withDays(p.getDays())
+               .withHours(p.getHours())
+               .withMinutes(p.getMinutes())
+               .withSeconds(p.getSeconds())
+               .withMilliseconds(p.getMillis())).toString());
     }
 
     /**
@@ -302,7 +321,7 @@ class TokenParser {
             @Override
             public Token call() {
                 if (currentIndex >= length) {
-                    return new Token(null ,null);
+                    return new Token(null, null);
                 }
                 StringBuilder builder = new StringBuilder();
                 while (currentIndex < length
