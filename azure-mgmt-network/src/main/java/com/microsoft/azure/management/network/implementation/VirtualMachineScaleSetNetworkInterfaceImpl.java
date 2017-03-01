@@ -183,13 +183,12 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
-    public VirtualMachineScaleSetNetworkInterface refresh() {
-        this.setInner(this.manager().inner().networkInterfaces().getVirtualMachineScaleSetNetworkInterface(
+    protected Observable<NetworkInterfaceInner> getInnerAsync() {
+        return this.manager().inner().networkInterfaces().getVirtualMachineScaleSetNetworkInterfaceAsync(
                 this.resourceGroupName,
                 this.scaleSetName,
                 ResourceUtils.nameFromResourceId(this.virtualMachineId()),
-                this.name()));
-        return this;
+                this.name());
     }
 
     @Override

@@ -257,9 +257,7 @@ class SnapshotImpl
     }
 
     @Override
-    public Snapshot refresh() {
-        SnapshotInner snapshotInner = this.manager().inner().snapshots().get(this.resourceGroupName(), this.name());
-        this.setInner(snapshotInner);
-        return this;
+    protected Observable<SnapshotInner> getInnerAsync() {
+        return this.manager().inner().snapshots().getAsync(this.resourceGroupName(), this.name());
     }
 }

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
@@ -48,13 +49,6 @@ final class SubscriptionsImpl
         });
     }
 
-    private SubscriptionImpl wrapModel(SubscriptionInner subscription) {
-        if (subscription == null) {
-            return null;
-        }
-        return wrapModel(subscription);
-    }
-
     @Override
     public Observable<Subscription> listAsync() {
         return ReadableWrappersImpl.convertPageToInnerAsync(client.listAsync()).map(new Func1<SubscriptionInner, Subscription>() {
@@ -66,6 +60,9 @@ final class SubscriptionsImpl
     }
 
     private SubscriptionImpl wrapModel(SubscriptionInner subscriptionInner) {
+        if (subscriptionInner == null) {
+            return null;
+        }
         return new SubscriptionImpl(subscriptionInner, client);
     }
 }

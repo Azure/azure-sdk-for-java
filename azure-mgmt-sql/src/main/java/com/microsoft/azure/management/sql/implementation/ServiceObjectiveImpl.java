@@ -8,15 +8,16 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.azure.management.sql.ServiceObjective;
+import rx.Observable;
 
 /**
  * Implementation for Azure SQL Server's Service Objective.
  */
 @LangDefinition
 class ServiceObjectiveImpl
-        extends WrapperImpl<ServiceObjectiveInner>
+        extends RefreshableWrapperImpl<ServiceObjectiveInner, ServiceObjective>
         implements ServiceObjective {
     private final ResourceId resourceId;
     private final ServersInner serversInner;
@@ -74,8 +75,7 @@ class ServiceObjectiveImpl
     }
 
     @Override
-    public ServiceObjective refresh() {
-        this.setInner(this.serversInner.getServiceObjective(this.resourceGroupName(), this.sqlServerName(), this.name()));
-        return this;
+    protected Observable<ServiceObjectiveInner> getInnerAsync() {
+        return this.serversInner.getServiceObjectiveAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 }

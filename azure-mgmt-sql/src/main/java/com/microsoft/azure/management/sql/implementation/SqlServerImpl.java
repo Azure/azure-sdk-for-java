@@ -70,11 +70,9 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServer refresh() {
-        ServerInner response = this.manager().inner().servers().getByResourceGroup(
+    protected Observable<ServerInner> getInnerAsync() {
+        return this.manager().inner().servers().getByResourceGroupAsync(
                 this.resourceGroupName(), this.name());
-        this.setInner(response);
-        return this;
     }
 
     @Override

@@ -110,8 +110,8 @@ class PastaImpl
     }
 
     @Override
-    public IPasta refresh() {
-        return this;
+    protected Observable<PastaInner> getInnerAsync() {
+        return Observable.just(this.inner());
     }
 
     private Observable<IPasta> toErrorObservable(Throwable throwable) {

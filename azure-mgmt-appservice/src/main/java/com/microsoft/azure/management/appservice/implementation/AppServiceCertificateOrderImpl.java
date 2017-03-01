@@ -54,9 +54,8 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public AppServiceCertificateOrder refresh() {
-        this.setInner(this.manager().inner().appServiceCertificateOrders().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<AppServiceCertificateOrderInner> getInnerAsync() {
+        return this.manager().inner().appServiceCertificateOrders().getAsync(resourceGroupName(), name());
     }
 
     @Override

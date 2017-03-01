@@ -78,13 +78,12 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
             return Observable.error(new Exception("Deletion of " + this.name() + " failed"));
         }
 
-        return Observable
-                .just(null);
+        return Observable.just(null);
     }
 
     @Override
-    public PulletImpl refresh() {
-        return null;
+    protected Observable<Object> getInnerAsync() {
+        return Observable.just(null);
     }
 
     @Override

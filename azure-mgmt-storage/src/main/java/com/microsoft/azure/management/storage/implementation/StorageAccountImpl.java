@@ -123,13 +123,21 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl refresh() {
-        StorageAccountInner response =
-            this.manager().inner().storageAccounts().getProperties(
-                    this.resourceGroupName(), this.name());
-        this.setInner(response);
-        clearWrapperProperties();
-        return this;
+    public Observable<StorageAccount> refreshAsync() {
+        return super.refreshAsync().map(new Func1<StorageAccount, StorageAccount>() {
+            @Override
+            public StorageAccount call(StorageAccount storageAccount) {
+                StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
+                impl.clearWrapperProperties();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<StorageAccountInner> getInnerAsync() {
+        return this.manager().inner().storageAccounts().getPropertiesAsync(
+                this.resourceGroupName(), this.name());
     }
 
     @Override

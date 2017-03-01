@@ -103,9 +103,8 @@ class UserImpl
     }
 
     @Override
-    public User refresh() {
-        setInner(client.get(name()));
-        return this;
+    protected Observable<UserInner> getInnerAsync() {
+        return client.getAsync(name());
     }
 
     @Override

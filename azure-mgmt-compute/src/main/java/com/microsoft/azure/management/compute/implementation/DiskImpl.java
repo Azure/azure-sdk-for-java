@@ -274,9 +274,7 @@ class DiskImpl
     }
 
     @Override
-    public Disk refresh() {
-        DiskInner diskInner = this.manager().inner().disks().get(this.resourceGroupName(), this.name());
-        this.setInner(diskInner);
-        return this;
+    protected Observable<DiskInner> getInnerAsync() {
+        return this.manager().inner().disks().getAsync(this.resourceGroupName(), this.name());
     }
 }

@@ -8,6 +8,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
@@ -188,18 +189,32 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl refresh() {
-        EndpointInner inner = this.parent().manager().inner().endpoints().get(this.parent().resourceGroupName(),
+    public Observable<CdnEndpoint> refreshAsync() {
+        final CdnEndpointImpl self = this;
+        return refreshAsync().flatMap(new Func1<CdnEndpoint, Observable<CdnEndpoint>>() {
+            @Override
+            public Observable<CdnEndpoint> call(CdnEndpoint cdnEndpoint) {
+                self.customDomainList.clear();
+                self.deletedCustomDomainList.clear();
+                return self.parent().manager().inner().customDomains().listByEndpointAsync(
+                        self.parent().resourceGroupName(),
+                        self.parent().name(),
+                        self.name()).flatMap(new Func1<Page<CustomDomainInner>, Observable<CdnEndpoint>>() {
+                    @Override
+                    public Observable<CdnEndpoint> call(Page<CustomDomainInner> customDomainInnerPage) {
+                        self.customDomainList.addAll(customDomainInnerPage.items());
+                        return Observable.just((CdnEndpoint) self);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected Observable<EndpointInner> getInnerAsync() {
+        return this.parent().manager().inner().endpoints().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
-        this.setInner(inner);
-        this.customDomainList.clear();
-        this.deletedCustomDomainList.clear();
-        this.customDomainList.addAll(this.parent().manager().inner().customDomains().listByEndpoint(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name()));
-        return this;
     }
 
     @Override
