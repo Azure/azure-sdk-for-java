@@ -35,14 +35,14 @@ public interface ApplicationGateway extends
     // Getters
 
     /**
-     * @return true if the application gateway has at least one Internet-facing frontend
-     */
-    boolean isPublic();
-
-    /**
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network
      */
     boolean isPrivate();
+
+    /**
+     * @return true if the application gateway has at least one Internet-facing frontend
+     */
+    boolean isPublic();
 
     /**
      * @return the frontend IP configuration associated with a public IP address, if any, that frontend listeners and request routing rules can reference implicitly
