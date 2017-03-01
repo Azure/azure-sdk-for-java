@@ -30,6 +30,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import rx.Observable;
 import rx.exceptions.CompositeException;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,11 +77,20 @@ class LoadBalancerImpl
     // Verbs
 
     @Override
-    public LoadBalancerImpl refresh() {
-        LoadBalancerInner inner = this.manager().inner().loadBalancers().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<LoadBalancer> refreshAsync() {
+        return super.refreshAsync().map(new Func1<LoadBalancer, LoadBalancer>() {
+            @Override
+            public LoadBalancer call(LoadBalancer loadBalancer) {
+                LoadBalancerImpl impl = (LoadBalancerImpl) loadBalancer;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<LoadBalancerInner> getInnerAsync() {
+        return this.manager().inner().loadBalancers().getAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

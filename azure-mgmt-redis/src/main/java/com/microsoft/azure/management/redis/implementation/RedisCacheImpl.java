@@ -204,11 +204,8 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl refresh() {
-        RedisResourceInner redisResourceInner =
-                this.manager().inner().redis().get(this.resourceGroupName(), this.name());
-        this.setInner(redisResourceInner);
-        return this;
+    protected Observable<RedisResourceInner> getInnerAsync() {
+        return this.manager().inner().redis().getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

@@ -9,13 +9,14 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.RecommendedElasticPool;
 import com.microsoft.azure.management.sql.RecommendedElasticPoolMetric;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @LangDefinition
 class RecommendedElasticPoolImpl
-        extends WrapperImpl<RecommendedElasticPoolInner>
+        extends RefreshableWrapperImpl<RecommendedElasticPoolInner, RecommendedElasticPool>
         implements RecommendedElasticPool {
 
     private final ResourceId resourceId;
@@ -38,10 +39,9 @@ class RecommendedElasticPoolImpl
     }
 
     @Override
-    public RecommendedElasticPool refresh() {
-        this.setInner(this.manager().inner().recommendedElasticPools().get(
-                this.resourceGroupName(), this.sqlServerName(), this.name()));
-        return this;
+    protected Observable<RecommendedElasticPoolInner> getInnerAsync() {
+        return this.manager().inner().recommendedElasticPools().getAsync(
+                this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override

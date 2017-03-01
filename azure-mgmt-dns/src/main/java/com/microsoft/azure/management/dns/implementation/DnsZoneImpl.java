@@ -266,11 +266,20 @@ public class DnsZoneImpl
     }
 
     @Override
-    public DnsZone refresh() {
-        ZoneInner inner = this.manager().inner().zones().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.initRecordSets();
-        return this;
+    public Observable<DnsZone> refreshAsync() {
+        return super.refreshAsync().map(new Func1<DnsZone, DnsZone>() {
+            @Override
+            public DnsZone call(DnsZone dnsZone) {
+                DnsZoneImpl impl = (DnsZoneImpl) dnsZone;
+                impl.initRecordSets();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ZoneInner> getInnerAsync() {
+        return this.manager().inner().zones().getAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {

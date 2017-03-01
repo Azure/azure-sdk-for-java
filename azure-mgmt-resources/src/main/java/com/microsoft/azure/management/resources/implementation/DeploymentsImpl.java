@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByGroupImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -73,7 +74,7 @@ final class DeploymentsImpl
 
     @Override
     public Observable<Deployment> getByGroupAsync(String groupName, String name) {
-        return client.getAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
+        return this.manager().inner().deployments().getAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
                 return createFluentModel(deploymentExtendedInner);

@@ -511,11 +511,22 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public VirtualMachineScaleSetVM refresh() {
-        this.setInner(this.client.get(this.parent().resourceGroupName(),
+        return this.refreshAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineScaleSetVM> refreshAsync() {
+        final VirtualMachineScaleSetVMImpl self = this;
+        return this.client.getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId()));
-        this.clearCachedRelatedResources();
-        return this;
+                this.instanceId()).map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
+            @Override
+            public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner virtualMachineScaleSetVMInner) {
+                self.setInner(virtualMachineScaleSetVMInner);
+                self.clearCachedRelatedResources();
+                return self;
+            }
+        });
     }
 
     @Override

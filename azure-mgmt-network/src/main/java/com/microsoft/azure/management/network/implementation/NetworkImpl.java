@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,11 +59,20 @@ class NetworkImpl
     // Verbs
 
     @Override
-    public NetworkImpl refresh() {
-        VirtualNetworkInner inner = this.manager().inner().virtualNetworks().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<Network> refreshAsync() {
+        return super.refreshAsync().map(new Func1<Network, Network>() {
+            @Override
+            public Network call(Network network) {
+                NetworkImpl impl = (NetworkImpl) network;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<VirtualNetworkInner> getInnerAsync() {
+        return this.manager().inner().virtualNetworks().getAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

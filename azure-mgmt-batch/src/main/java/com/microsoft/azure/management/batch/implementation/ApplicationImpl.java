@@ -135,13 +135,22 @@ public class ApplicationImpl
     }
 
     @Override
-    public Application refresh() {
-        ApplicationInner inner =
-                this.parent().manager().inner().applications().get(
-                        this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
-        this.setInner(inner);
-        this.applicationPackages.refresh();
-        return this;
+    public Observable<Application> refreshAsync() {
+        return super.refreshAsync().map(new Func1<Application, Application>() {
+            @Override
+            public Application call(Application application) {
+                ApplicationImpl impl = (ApplicationImpl) application;
+
+                impl.applicationPackages.refresh();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ApplicationInner> getInnerAsync() {
+        return this.parent().manager().inner().applications().getAsync(
+                this.parent().resourceGroupName(), this.parent().name(), this.inner().id());
     }
 
     @Override

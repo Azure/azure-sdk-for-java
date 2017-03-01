@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * The implementation of {@link Deployment} and its nested interfaces.
  */
-final class DeploymentImpl extends
+public final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
@@ -51,6 +51,7 @@ final class DeploymentImpl extends
         this.objectMapper = new ObjectMapper();
     }
 
+    @Override
     public String resourceGroupName() {
         return this.resourceGroupName;
     }
@@ -309,9 +310,8 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment refresh() {
-        setInner(this.manager().inner().deployments().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<DeploymentExtendedInner> getInnerAsync() {
+        return this.manager().inner().deployments().getAsync(resourceGroupName(), name());
     }
 
     @Override

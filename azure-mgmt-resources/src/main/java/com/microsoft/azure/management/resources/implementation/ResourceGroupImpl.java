@@ -132,8 +132,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl refresh() {
-        this.setInner(client.get(this.key));
-        return this;
+    protected Observable<ResourceGroupInner> getInnerAsync() {
+        return client.getAsync(this.key);
     }
 }

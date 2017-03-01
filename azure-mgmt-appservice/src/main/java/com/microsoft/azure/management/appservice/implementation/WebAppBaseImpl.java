@@ -1106,10 +1106,25 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public FluentT refresh() {
-        SiteInner inner = getInner().toBlocking().single();
-        inner.withSiteConfig(getConfigInner().toBlocking().single());
-        setInner(inner);
-        return this.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+    public Observable<FluentT> refreshAsync() {
+        return super.refreshAsync().flatMap(new Func1<FluentT, Observable<FluentT>>() {
+            @Override
+            public Observable<FluentT> call(final FluentT fluentT) {
+                return getConfigInner().flatMap(new Func1<SiteConfigInner, Observable<FluentT>>() {
+                    @Override
+                    public Observable<FluentT> call(SiteConfigInner siteConfigInner) {
+                        fluentT.inner().withSiteConfig(siteConfigInner);
+                        final WebAppBaseImpl<FluentT, FluentImplT> impl = (WebAppBaseImpl<FluentT, FluentImplT>) fluentT;
+
+                        return impl.cacheAppSettingsAndConnectionStrings();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected Observable<SiteInner> getInnerAsync() {
+        return getInner();
     }
 }

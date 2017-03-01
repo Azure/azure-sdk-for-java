@@ -24,6 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,12 +87,21 @@ class NetworkInterfaceImpl
     // Verbs
 
     @Override
-    public NetworkInterface refresh() {
-        NetworkInterfaceInner inner = this.manager().inner().networkInterfaces().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        clearCachedRelatedResources();
-        initializeChildrenFromInner();
-        return this;
+    public Observable<NetworkInterface> refreshAsync() {
+        return super.refreshAsync().map(new Func1<NetworkInterface, NetworkInterface>() {
+            @Override
+            public NetworkInterface call(NetworkInterface networkInterface) {
+                NetworkInterfaceImpl impl = (NetworkInterfaceImpl) networkInterface;
+                impl.clearCachedRelatedResources();
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<NetworkInterfaceInner> getInnerAsync() {
+        return this.manager().inner().networkInterfaces().getAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)

@@ -100,8 +100,7 @@ final class PolicyAssignmentImpl extends
     }
 
     @Override
-    public PolicyAssignmentImpl refresh() {
-        setInner(innerCollection.get(inner().scope(), name()));
-        return this;
+    protected Observable<PolicyAssignmentInner> getInnerAsync() {
+        return innerCollection.getAsync(inner().scope(), name());
     }
 }
