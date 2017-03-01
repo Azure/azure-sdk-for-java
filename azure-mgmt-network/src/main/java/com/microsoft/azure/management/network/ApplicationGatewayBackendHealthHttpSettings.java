@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application gateway BackendHealthHttp settings.
@@ -18,11 +19,13 @@ public class ApplicationGatewayBackendHealthHttpSettings {
     /**
      * Reference of an ApplicationGatewayBackendHttpSettings resource.
      */
+    @JsonProperty(value = "backendHttpSettings")
     private ApplicationGatewayBackendHttpSettingsInner backendHttpSettings;
 
     /**
      * List of ApplicationGatewayBackendHealthServer resources.
      */
+    @JsonProperty(value = "servers")
     private List<ApplicationGatewayBackendHealthServer> servers;
 
     /**

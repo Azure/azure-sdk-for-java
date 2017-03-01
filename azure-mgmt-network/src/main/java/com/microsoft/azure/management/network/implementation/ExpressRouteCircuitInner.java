@@ -24,6 +24,7 @@ public class ExpressRouteCircuitInner extends Resource {
     /**
      * The SKU.
      */
+    @JsonProperty(value = "sku")
     private ExpressRouteCircuitSku sku;
 
     /**
@@ -94,6 +95,7 @@ public class ExpressRouteCircuitInner extends Resource {
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
      */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -323,17 +325,6 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the ExpressRouteCircuitInner object itself.
-     */
-    public ExpressRouteCircuitInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
 }

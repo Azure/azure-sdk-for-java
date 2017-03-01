@@ -19,7 +19,7 @@ public class VirtualNetworkGatewaySku {
      * 'HighPerformance','Standard', and 'UltraPerformance'. Possible values
      * include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private VirtualNetworkGatewaySkuName name;
 
     /**
@@ -27,12 +27,13 @@ public class VirtualNetworkGatewaySku {
      * 'HighPerformance','Standard', and 'UltraPerformance'. Possible values
      * include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tier", required = true)
     private VirtualNetworkGatewaySkuTier tier;
 
     /**
      * The capacity.
      */
+    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**

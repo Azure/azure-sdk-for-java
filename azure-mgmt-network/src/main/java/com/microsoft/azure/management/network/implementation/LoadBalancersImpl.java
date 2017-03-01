@@ -31,12 +31,12 @@ class LoadBalancersImpl
 
     @Override
     public PagedList<LoadBalancer> list() {
-        return wrapList(this.inner().listAll());
+        return wrapList(this.inner().list());
     }
 
     @Override
     public PagedList<LoadBalancer> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override

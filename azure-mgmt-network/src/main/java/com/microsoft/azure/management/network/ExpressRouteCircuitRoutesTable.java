@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The routes table associated with the ExpressRouteCircuit.
@@ -16,26 +17,31 @@ public class ExpressRouteCircuitRoutesTable {
     /**
      * network.
      */
+    @JsonProperty(value = "network")
     private String network;
 
     /**
      * nextHop.
      */
+    @JsonProperty(value = "nextHop")
     private String nextHop;
 
     /**
      * locPrf.
      */
+    @JsonProperty(value = "locPrf")
     private String locPrf;
 
     /**
      * weight.
      */
+    @JsonProperty(value = "weight")
     private Integer weight;
 
     /**
      * path.
      */
+    @JsonProperty(value = "path")
     private String path;
 
     /**

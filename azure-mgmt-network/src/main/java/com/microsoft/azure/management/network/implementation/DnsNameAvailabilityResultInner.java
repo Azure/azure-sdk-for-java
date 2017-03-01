@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Response for the CheckDnsNameAvailability API service call.
@@ -16,6 +17,7 @@ public class DnsNameAvailabilityResultInner {
     /**
      * Domain availability (True/False).
      */
+    @JsonProperty(value = "available")
     private Boolean available;
 
     /**

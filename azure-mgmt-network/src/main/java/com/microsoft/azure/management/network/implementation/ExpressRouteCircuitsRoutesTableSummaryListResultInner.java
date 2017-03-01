@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.ExpressRouteCircuitRoutesTableSummary;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Response for ListRoutesTable associated with the Express Route Circuits API.
@@ -18,11 +19,13 @@ public class ExpressRouteCircuitsRoutesTableSummaryListResultInner {
     /**
      * A list of the routes table.
      */
+    @JsonProperty(value = "value")
     private List<ExpressRouteCircuitRoutesTableSummary> value;
 
     /**
      * The URL to get the next set of results.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**

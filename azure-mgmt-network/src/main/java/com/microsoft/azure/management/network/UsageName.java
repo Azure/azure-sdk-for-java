@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The usage names.
@@ -16,11 +17,13 @@ public class UsageName {
     /**
      * A string describing the resource name.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**
      * A localized string describing the resource name.
      */
+    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**
