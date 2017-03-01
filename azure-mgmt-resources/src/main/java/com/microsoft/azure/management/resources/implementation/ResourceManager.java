@@ -188,10 +188,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public Deployments deployments() {
         if (deployments == null) {
-            deployments = new DeploymentsImpl(
-                    resourceManagementClient.deployments(),
-                    resourceManagementClient.deploymentOperations(),
-                    this);
+            deployments = new DeploymentsImpl(this);
         }
         return deployments;
     }
