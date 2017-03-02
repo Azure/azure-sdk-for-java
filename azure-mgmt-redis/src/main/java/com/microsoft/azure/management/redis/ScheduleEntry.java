@@ -20,18 +20,19 @@ public class ScheduleEntry {
      * 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
      * 'Sunday', 'Everyday', 'Weekend'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "dayOfWeek", required = true)
     private DayOfWeek dayOfWeek;
 
     /**
      * Start hour after which cache patching can start.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "startHourUtc", required = true)
     private int startHourUtc;
 
     /**
      * ISO8601 timespan specifying how much time cache patching can take.
      */
+    @JsonProperty(value = "maintenanceWindow")
     private Period maintenanceWindow;
 
     /**
@@ -47,7 +48,7 @@ public class ScheduleEntry {
      * Set the dayOfWeek value.
      *
      * @param dayOfWeek the dayOfWeek value to set
-     * @return the ScheduleEntryInner object itself.
+     * @return the ScheduleEntry object itself.
      */
     public ScheduleEntry withDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
@@ -67,7 +68,7 @@ public class ScheduleEntry {
      * Set the startHourUtc value.
      *
      * @param startHourUtc the startHourUtc value to set
-     * @return the ScheduleEntryInner object itself.
+     * @return the ScheduleEntry object itself.
      */
     public ScheduleEntry withStartHourUtc(int startHourUtc) {
         this.startHourUtc = startHourUtc;
@@ -87,7 +88,7 @@ public class ScheduleEntry {
      * Set the maintenanceWindow value.
      *
      * @param maintenanceWindow the maintenanceWindow value to set
-     * @return the ScheduleEntryInner object itself.
+     * @return the ScheduleEntry object itself.
      */
     public ScheduleEntry withMaintenanceWindow(Period maintenanceWindow) {
         this.maintenanceWindow = maintenanceWindow;

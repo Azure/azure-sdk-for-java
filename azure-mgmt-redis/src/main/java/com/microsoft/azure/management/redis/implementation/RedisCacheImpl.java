@@ -9,13 +9,18 @@ package com.microsoft.azure.management.redis.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.DayOfWeek;
+import com.microsoft.azure.management.redis.ExportRDBParameters;
+import com.microsoft.azure.management.redis.ImportRDBParameters;
 import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
-import com.microsoft.azure.management.redis.RedisKeyType;
+import com.microsoft.azure.management.redis.RedisPatchSchedule;
+import com.microsoft.azure.management.redis.RedisRebootParameters;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.Sku;
+import com.microsoft.azure.management.redis.RedisKeyType;
+import com.microsoft.azure.management.redis.RedisUpdateParameters;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
@@ -49,7 +54,7 @@ class RedisCacheImpl
             RedisCache.Update {
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParametersInner createParameters;
-    private RedisUpdateParametersInner updateParameters;
+    private RedisUpdateParameters updateParameters;
     private Map<DayOfWeek, ScheduleEntry> scheduleEntries;
 
     RedisCacheImpl(String name,
@@ -142,30 +147,30 @@ class RedisCacheImpl
 
     @Override
     public RedisAccessKeys refreshKeys() {
-        RedisAccessKeysInner response =
+        RedisAccessKeys response =
                 this.manager().inner().redis().listKeys(this.resourceGroupName(), this.name());
-        cachedAccessKeys = new RedisAccessKeysImpl(response);
+        cachedAccessKeys = response;
         return cachedAccessKeys;
     }
 
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
-        RedisAccessKeysInner response =
+        RedisAccessKeys response =
                 this.manager().inner().redis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
-        cachedAccessKeys = new RedisAccessKeysImpl(response);
+        cachedAccessKeys = response;
         return cachedAccessKeys;
     }
 
     @Override
     public void forceReboot(RebootType rebootType) {
-        RedisRebootParametersInner parameters = new RedisRebootParametersInner()
+        RedisRebootParameters parameters = new RedisRebootParameters()
                 .withRebootType(rebootType);
         this.manager().inner().redis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void forceReboot(RebootType rebootType, int shardId) {
-        RedisRebootParametersInner parameters = new RedisRebootParametersInner()
+        RedisRebootParameters parameters = new RedisRebootParameters()
                 .withRebootType(rebootType)
                 .withShardId(shardId);
         this.manager().inner().redis().forceReboot(this.resourceGroupName(), this.name(), parameters);
@@ -173,14 +178,14 @@ class RedisCacheImpl
 
     @Override
     public void importData(List<String> files) {
-        ImportRDBParametersInner parameters = new ImportRDBParametersInner()
+        ImportRDBParameters parameters = new ImportRDBParameters()
                 .withFiles(files);
         this.manager().inner().redis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files, String fileFormat) {
-        ImportRDBParametersInner parameters = new ImportRDBParametersInner()
+        ImportRDBParameters parameters = new ImportRDBParameters()
                 .withFiles(files)
                 .withFormat(fileFormat);
         this.manager().inner().redis().importData(this.resourceGroupName(), this.name(), parameters);
@@ -188,7 +193,7 @@ class RedisCacheImpl
 
     @Override
     public void exportData(String containerSASUrl, String prefix) {
-        ExportRDBParametersInner parameters = new ExportRDBParametersInner()
+        ExportRDBParameters parameters = new ExportRDBParameters()
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix);
         this.manager().inner().redis().exportData(this.resourceGroupName(), this.name(), parameters);
@@ -196,7 +201,7 @@ class RedisCacheImpl
 
     @Override
     public void exportData(String containerSASUrl, String prefix, String fileFormat) {
-        ExportRDBParametersInner parameters = new ExportRDBParametersInner()
+        ExportRDBParameters parameters = new ExportRDBParameters()
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix)
                 .withFormat(fileFormat);
@@ -428,7 +433,7 @@ class RedisCacheImpl
 
     @Override
     public List<ScheduleEntry> listPatchSchedules() {
-        RedisPatchScheduleInner patchSchedules =  this.manager().inner().patchSchedules().get(resourceGroupName(), name());
+        RedisPatchSchedule patchSchedules =  this.manager().inner().patchSchedules().get(resourceGroupName(), name());
         if (patchSchedules != null) {
             return patchSchedules.scheduleEntries();
         }
@@ -442,7 +447,7 @@ class RedisCacheImpl
 
     private void updatePatchSchedules() {
         if (this.scheduleEntries != null && !this.scheduleEntries.isEmpty()) {
-            RedisPatchScheduleInner parameters = new RedisPatchScheduleInner()
+            RedisPatchSchedule parameters = new RedisPatchSchedule()
                     .withScheduleEntries(new ArrayList<ScheduleEntry>());
             for (ScheduleEntry entry : this.scheduleEntries.values()) {
                 parameters.scheduleEntries().add(entry);
@@ -453,7 +458,7 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl update() {
-        this.updateParameters = new RedisUpdateParametersInner();
+        this.updateParameters = new RedisUpdateParameters();
         this.scheduleEntries = new TreeMap<>();
         return super.update();
     }

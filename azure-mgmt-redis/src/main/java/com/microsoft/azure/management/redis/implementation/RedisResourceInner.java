@@ -10,6 +10,7 @@ package com.microsoft.azure.management.redis.implementation;
 
 import java.util.Map;
 import com.microsoft.azure.management.redis.Sku;
+import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -95,6 +96,13 @@ public class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer sslPort;
+
+    /**
+     * The keys of the Redis cache - not set if this object is not the response
+     * to Create or Update redis cache.
+     */
+    @JsonProperty(value = "properties.accessKeys", access = JsonProperty.Access.WRITE_ONLY)
+    private RedisAccessKeys accessKeys;
 
     /**
      * Get the redisConfiguration value.
@@ -279,6 +287,15 @@ public class RedisResourceInner extends Resource {
      */
     public Integer sslPort() {
         return this.sslPort;
+    }
+
+    /**
+     * Get the accessKeys value.
+     *
+     * @return the accessKeys value
+     */
+    public RedisAccessKeys accessKeys() {
+        return this.accessKeys;
     }
 
 }
