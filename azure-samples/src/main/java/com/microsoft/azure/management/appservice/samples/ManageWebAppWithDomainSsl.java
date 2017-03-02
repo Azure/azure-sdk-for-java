@@ -61,9 +61,8 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Creating web app " + app1Name + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
-                    .withNewResourceGroup(rgName)
-                    .withNewAppServicePlan(planName)
-                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName, Region.US_WEST)
+                    .withNewAppServicePlan(planName, Region.US_WEST)
                     .withPricingTier(AppServicePricingTier.STANDARD_S1)
                     .create();
 

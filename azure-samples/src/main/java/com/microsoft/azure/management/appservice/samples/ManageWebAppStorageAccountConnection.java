@@ -100,8 +100,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             WebApp app1 = azure.webApps().define(app1Name)
                     .withExistingResourceGroup(rgName)
-                    .withNewAppServicePlan(planName)
-                    .withRegion(Region.US_WEST)
+                    .withNewAppServicePlan(planName, Region.US_WEST)
                     .withPricingTier(AppServicePricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)

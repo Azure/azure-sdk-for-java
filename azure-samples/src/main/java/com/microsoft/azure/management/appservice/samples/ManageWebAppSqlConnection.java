@@ -83,8 +83,7 @@ public final class ManageWebAppSqlConnection {
 
             WebApp app = azure.webApps().define(appName)
                     .withExistingResourceGroup(rgName)
-                    .withNewAppServicePlan(planName)
-                    .withRegion(Region.US_WEST)
+                    .withNewAppServicePlan(planName, Region.US_WEST)
                     .withPricingTier(AppServicePricingTier.STANDARD_S1)
                     .withPhpVersion(PhpVersion.PHP5_6)
                     .defineSourceControl()

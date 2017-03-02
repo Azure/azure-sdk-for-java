@@ -43,9 +43,8 @@ public class WebAppsTests extends AppServiceTest {
     public void canCRUDWebApp() throws Exception {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
-                .withNewResourceGroup(RG_NAME_1)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_1)
-                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(RG_NAME_1, Region.US_WEST)
+                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_1, Region.US_WEST)
                 .withPricingTier(AppServicePricingTier.BASIC_B1)
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
                 .create();
@@ -58,7 +57,7 @@ public class WebAppsTests extends AppServiceTest {
 
         // Create in a new group with existing app service plan
         WebApp webApp2 = appServiceManager.webApps().define(WEBAPP_NAME_2)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(RG_NAME_2, Region.US_WEST)
                 .withExistingAppServicePlan(plan1)
                 .create();
         Assert.assertNotNull(webApp2);

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -33,7 +34,6 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithRegion,
             DefinitionStages.WithAppServicePlan,
             DefinitionStages.WithNewAppServicePlan {
     }
@@ -45,13 +45,7 @@ public interface WebApp extends
         /**
          * The first stage of the web app definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithAppServicePlan> {
-        }
-
-        /**
-         * A web app definition allowing new app service plan's region to be set.
-         */
-        interface WithRegion extends GroupableResource.DefinitionWithRegion<WithNewAppServicePlan> {
+        interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithAppServicePlan> {
         }
 
         /**
@@ -62,8 +56,16 @@ public interface WebApp extends
              * Creates a new app service plan to use.
              * @return the next stage of the web app definition
              * @param name the name of the app service plan
+             * @param region the region of the app service plan
              */
-            WithRegion withNewAppServicePlan(String name);
+            WithNewAppServicePlan withNewAppServicePlan(String name, Region region);
+            /**
+             * Creates a new app service plan to use.
+             * @return the next stage of the web app definition
+             * @param name the name of the app service plan
+             * @param regionName the region of the app service plan
+             */
+            WithNewAppServicePlan withNewAppServicePlan(String name, String regionName);
 
             /**
              * Uses an existing app service plan for the web app.
@@ -102,7 +104,7 @@ public interface WebApp extends
         interface WithAppServicePlan {
             /**
              * Creates a new app service plan to use.
-             * @return the next stage of the web app update
+             * @return the next stage of the web app definition
              * @param name the name of the app service plan
              */
             WithNewAppServicePlan withNewAppServicePlan(String name);

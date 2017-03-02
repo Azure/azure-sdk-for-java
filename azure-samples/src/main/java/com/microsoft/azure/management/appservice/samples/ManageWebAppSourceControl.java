@@ -71,9 +71,8 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating web app " + app1Name + " in resource group " + rgName + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
-                    .withNewResourceGroup(rgName)
-                    .withNewAppServicePlan(planName)
-                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName, Region.US_WEST)
+                    .withNewAppServicePlan(planName, Region.US_WEST)
                     .withPricingTier(AppServicePricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
@@ -149,7 +148,7 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Creating another web app " + app3Name + "...");
             WebApp app3 = azure.webApps().define(app3Name)
-                    .withNewResourceGroup(rgName)
+                    .withNewResourceGroup(rgName, Region.US_WEST)
                     .withExistingAppServicePlan(plan)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")

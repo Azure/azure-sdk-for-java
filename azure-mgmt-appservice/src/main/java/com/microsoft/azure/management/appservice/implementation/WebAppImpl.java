@@ -17,6 +17,7 @@ import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
@@ -215,7 +216,7 @@ class WebAppImpl
 
     @Override
     public WebAppImpl withNewAppServicePlan(String name) {
-        appServicePlan = (AppServicePlanImpl) this.manager().appServicePlans().define(name);
+        appServicePlan = (AppServicePlanImpl) this.manager().appServicePlans().define(name).withRegion(regionName());
         String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
                 resourceGroupName(), "Microsoft.Web", "serverFarms", name, "");
         inner().withServerFarmId(id);
@@ -231,11 +232,9 @@ class WebAppImpl
     @SuppressWarnings("unchecked")
     public WebAppImpl withPricingTier(AppServicePricingTier pricingTier) {
         appServicePlan = appServicePlan
-                .withRegion(region())
                 .withPricingTier(pricingTier);
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
-            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
@@ -244,6 +243,20 @@ class WebAppImpl
         } else {
             addAppliableDependency(appServicePlan);
         }
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withNewAppServicePlan(String name, Region region) {
+        withNewAppServicePlan(name).withRegion(region);
+        appServicePlan.withRegion(region);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withNewAppServicePlan(String name, String regionName) {
+        withNewAppServicePlan(name).withRegion(regionName);
+        appServicePlan.withRegion(regionName);
         return this;
     }
 

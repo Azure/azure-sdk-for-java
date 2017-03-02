@@ -36,9 +36,8 @@ public class DeploymentSlotsTests extends AppServiceTest {
     public void canCRUDSwapSlots() throws Exception {
         // Create web app
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
-                .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME)
-                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(RG_NAME, Region.US_WEST)
+                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME, Region.US_WEST)
                 .withPricingTier(AppServicePricingTier.STANDARD_S2)
                 .withAppSetting("appkey", "appvalue")
                 .withStickyAppSetting("stickykey", "stickyvalue")
