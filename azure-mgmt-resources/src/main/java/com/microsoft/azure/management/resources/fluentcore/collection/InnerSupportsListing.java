@@ -32,4 +32,21 @@ public interface InnerSupportsListing<InnerT> {
      * @return Observable of list of resources.
      */
     Observable<Page<InnerT>> listByResourceGroupAsync(String resourceGroup);
+
+    /**
+     * Lists the page list of all resources of specific type available in subscription.
+     *
+     * @return the PagedList<InnerT> object if successful.
+     */
+    // TODO - ans - enable this once we regenerate the Inner layer.
+    //PagedList<InnerT> list();
+
+    /**
+     * Lists the page list of all resources of specific type in specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @return the PagedList<InnerT> object if successful.
+     */
+    // TODO - ans - enable this once we regenerate the Inner layer.
+    //PagedList<InnerT> listByResourceGroup(String resourceGroupName);
 }
