@@ -7,6 +7,7 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -205,7 +206,17 @@ class EventHubPartitionPump extends PartitionPump
                     // get control back each time onEvents returns, and be able to receive a new batch of messages
                     // with which to make the next onEvents call. The pump gains nothing by running faster than onEvents.
 
-                    EventHubPartitionPump.this.onEvents(events);
+                    // The underlying client returns null if there are no events, but the contract for IEventProcessor
+                    // is different and is expecting an empty iterable if there are no events (and invoke processor after
+                    // receive timeout is turned on).
+                    
+                    Iterable<EventData> effectiveEvents = events;
+                    if (effectiveEvents == null)
+                    {
+                    	effectiveEvents = new ArrayList<EventData>();
+                    }
+                    
+                    EventHubPartitionPump.this.onEvents(effectiveEvents);
 		}
 
 		@Override

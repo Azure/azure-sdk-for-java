@@ -44,8 +44,8 @@ class RealEventHubUtilities
 	private ConnectionStringBuilder hubConnectionString = null;
 	private String hubName = null;
 	private String consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
-	private EventHubClient client;
-	private ArrayList<String> partitionIds = null;
+	private EventHubClient client = null;
+	private ArrayList<String> cachedPartitionIds = null;
 	private HashMap<String, PartitionSender> partitionSenders = new HashMap<String, PartitionSender>();
 	
 	static int QUERY_ENTITY_FOR_PARTITIONS = -1;
@@ -55,6 +55,16 @@ class RealEventHubUtilities
 	}
 	
 	ArrayList<String> setup(int fakePartitions) throws ServiceBusException, IOException
+	{
+		ArrayList<String> partitionIds = setupWithoutSenders(fakePartitions);
+		
+		// EventHubClient is source of all senders
+		this.client = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
+		
+		return partitionIds;
+	}
+	
+	ArrayList<String> setupWithoutSenders(int fakePartitions) throws ServiceBusException, IOException
 	{
 		// Get the connection string from the environment
 		ehCacheCheck();
@@ -80,10 +90,7 @@ class RealEventHubUtilities
 				partitionIds.add(Integer.toString(i));
 			}
 		}
-		
-		// EventHubClient is source of all senders
-		this.client = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
-		
+
 		return partitionIds;
 	}
 	
@@ -93,7 +100,10 @@ class RealEventHubUtilities
 		{
 			sender.closeSync();
 		}
-		this.client.closeSync();
+		if (this.client != null)
+		{
+			this.client.closeSync();
+		}
 	}
 	
 	ConnectionStringBuilder getConnectionString()
@@ -154,9 +164,9 @@ class RealEventHubUtilities
 	
     ArrayList<String> getPartitionIdsForTest() throws IllegalEntityException
     {
-    	if (this.partitionIds == null)
+    	if (this.cachedPartitionIds == null)
     	{
-	    	this.partitionIds = new ArrayList<String>();
+	    	this.cachedPartitionIds = new ArrayList<String>();
 	    	ehCacheCheck();
 	    	
 	    	try
@@ -193,7 +203,7 @@ class RealEventHubUtilities
 	        	
 	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
 	        	{
-	        		this.partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
+	        		this.cachedPartitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
 	        	}
 	    	}
 	    	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
@@ -203,7 +213,7 @@ class RealEventHubUtilities
 	    	}
     	}
 
-    	return this.partitionIds;
+    	return this.cachedPartitionIds;
     }
 	
 }

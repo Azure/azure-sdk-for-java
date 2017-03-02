@@ -148,8 +148,8 @@ public final class EventProcessorOptions
     }
     
     /***
-     * Returns whether the EventProcessorHost will call IEventProcessor.onEvents(null) when a receive
-     * timeout occurs (true) or not (false).
+     * Returns whether the EventProcessorHost will call IEventProcessor.onEvents() with an empty iterable
+     * when a receive timeout occurs (true) or not (false).
      * 
      * Defaults to false.
      * 
@@ -161,8 +161,8 @@ public final class EventProcessorOptions
     }
 
     /**
-     * Changes whether the EventProcessorHost will call IEventProcessor.onEvents(null) when a receive
-     * timeout occurs (true) or not (false).
+     * Changes whether the EventProcessorHost will call IEventProcessor.onEvents() with an empty iterable
+     * when a receive timeout occurs (true) or not (false).
      * 
      * The default is false (no call).
      * 

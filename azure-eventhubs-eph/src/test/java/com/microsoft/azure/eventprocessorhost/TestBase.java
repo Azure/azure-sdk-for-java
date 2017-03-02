@@ -23,7 +23,14 @@ public class TestBase
 				settings.inoutEPHConstructorArgs.getHostName() : settings.getTestName() + "-1";
 
 		settings.outUtils = new RealEventHubUtilities();
-		settings.outPartitionIds = settings.outUtils.setup(settings.inEntityDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		if (settings.inHasSenders)
+		{
+			settings.outPartitionIds = settings.outUtils.setup(settings.inEntityDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		}
+		else
+		{
+			settings.outPartitionIds = settings.outUtils.setupWithoutSenders(settings.inEntityDoesNotExist ? 8 : RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		}
 		ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString();
 
 		String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE) ?
@@ -51,7 +58,14 @@ public class TestBase
 		ExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE) ?
 				settings.inoutEPHConstructorArgs.getExecutor() : null;
 		
-		settings.outTelltale = settings.getTestName() + "-telltale-" + EventProcessorHost.safeCreateUUID();
+		if (settings.inTelltaleOnTimeout)
+		{
+			settings.outTelltale = "";
+		}
+		else
+		{
+			settings.outTelltale = settings.getTestName() + "-telltale-" + EventProcessorHost.safeCreateUUID();
+		}
 		settings.outGeneralErrorHandler = new PrefabGeneralErrorHandler();
 		settings.outProcessorFactory = new PrefabProcessorFactory(settings.outTelltale, settings.inDoCheckpoint, true, true);
 		
@@ -121,6 +135,7 @@ public class TestBase
 	}
 
 	
+	final static int SKIP_COUNT_CHECK = -3; // expectedMessages could be anything, don't check it at all
 	final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
 	final static int ANY_NONZERO_COUNT = -1; // if expectedMessages is -1, just check for > 0
 	void testFinish(PerTestSettings settings, int expectedMessages) throws InterruptedException, ExecutionException, ServiceBusException
@@ -137,7 +152,7 @@ public class TestBase
 			{
 				assertTrue("no messages received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
 			}
-			else
+			else if (expectedMessages != SKIP_COUNT_CHECK)
 			{
 				assertEquals("wrong number of messages received", expectedMessages, settings.outProcessorFactory.getEventsReceivedCount());
 			}
