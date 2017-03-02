@@ -14,134 +14,134 @@ import com.microsoft.azure.management.graphrbac.PasswordProfile;
  * Request parameters for updating an existing work or school account user.
  */
 public class UserUpdateParametersInner {
-	/**
-	 * Whether the account is enabled.
-	 */
-	private Boolean accountEnabled;
+    /**
+     * Whether the account is enabled.
+     */
+    private Boolean accountEnabled;
 
-	/**
-	 * The display name of the user.
-	 */
-	private String displayName;
+    /**
+     * The display name of the user.
+     */
+    private String displayName;
 
-	/**
-	 * The password profile of the user.
-	 */
-	private PasswordProfile passwordProfile;
+    /**
+     * The password profile of the user.
+     */
+    private PasswordProfile passwordProfile;
 
-	/**
-	 * The mail alias for the user.
-	 */
-	private String mailNickname;
+    /**
+     * The mail alias for the user.
+     */
+    private String mailNickname;
 
-	/**
-	 * The usageLocation for the User.
-	 */
-	private String usageLocation;
+    /**
+     * The usageLocation for the User.
+     */
+    private String usageLocation;
 
-	/**
-	 * Get the accountEnabled value.
-	 *
-	 * @return the accountEnabled value
-	 */
-	public Boolean accountEnabled() {
-		return this.accountEnabled;
-	}
+    /**
+     * Get the accountEnabled value.
+     *
+     * @return the accountEnabled value
+     */
+    public Boolean accountEnabled() {
+        return this.accountEnabled;
+    }
 
-	/**
-	 * Set the accountEnabled value.
-	 *
-	 * @param accountEnabled
-	 *            the accountEnabled value to set
-	 * @return the UserUpdateParametersInner object itself.
-	 */
-	public UserUpdateParametersInner withAccountEnabled(Boolean accountEnabled) {
-		this.accountEnabled = accountEnabled;
-		return this;
-	}
+    /**
+     * Set the accountEnabled value.
+     *
+     * @param accountEnabled
+     *            the accountEnabled value to set
+     * @return the UserUpdateParametersInner object itself.
+     */
+    public UserUpdateParametersInner withAccountEnabled(Boolean accountEnabled) {
+        this.accountEnabled = accountEnabled;
+        return this;
+    }
 
-	/**
-	 * Get the displayName value.
-	 *
-	 * @return the displayName value
-	 */
-	public String displayName() {
-		return this.displayName;
-	}
+    /**
+     * Get the displayName value.
+     *
+     * @return the displayName value
+     */
+    public String displayName() {
+        return this.displayName;
+    }
 
-	/**
-	 * Set the displayName value.
-	 *
-	 * @param displayName
-	 *            the displayName value to set
-	 * @return the UserUpdateParametersInner object itself.
-	 */
-	public UserUpdateParametersInner withDisplayName(String displayName) {
-		this.displayName = displayName;
-		return this;
-	}
+    /**
+     * Set the displayName value.
+     *
+     * @param displayName
+     *            the displayName value to set
+     * @return the UserUpdateParametersInner object itself.
+     */
+    public UserUpdateParametersInner withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
-	/**
-	 * Get the passwordProfile value.
-	 *
-	 * @return the passwordProfile value
-	 */
-	public PasswordProfile passwordProfile() {
-		return this.passwordProfile;
-	}
+    /**
+     * Get the passwordProfile value.
+     *
+     * @return the passwordProfile value
+     */
+    public PasswordProfile passwordProfile() {
+        return this.passwordProfile;
+    }
 
-	/**
-	 * Set the passwordProfile value.
-	 *
-	 * @param passwordProfile
-	 *            the passwordProfile value to set
-	 * @return the UserUpdateParametersInner object itself.
-	 */
-	public UserUpdateParametersInner withPasswordProfile(PasswordProfile passwordProfile) {
-		this.passwordProfile = passwordProfile;
-		return this;
-	}
+    /**
+     * Set the passwordProfile value.
+     *
+     * @param passwordProfile
+     *            the passwordProfile value to set
+     * @return the UserUpdateParametersInner object itself.
+     */
+    public UserUpdateParametersInner withPasswordProfile(PasswordProfile passwordProfile) {
+        this.passwordProfile = passwordProfile;
+        return this;
+    }
 
-	/**
-	 * Get the mailNickname value.
-	 *
-	 * @return the mailNickname value
-	 */
-	public String mailNickname() {
-		return this.mailNickname;
-	}
+    /**
+     * Get the mailNickname value.
+     *
+     * @return the mailNickname value
+     */
+    public String mailNickname() {
+        return this.mailNickname;
+    }
 
-	/**
-	 * Set the mailNickname value.
-	 *
-	 * @param mailNickname
-	 *            the mailNickname value to set
-	 * @return the UserUpdateParametersInner object itself.
-	 */
-	public UserUpdateParametersInner withMailNickname(String mailNickname) {
-		this.mailNickname = mailNickname;
-		return this;
-	}
+    /**
+     * Set the mailNickname value.
+     *
+     * @param mailNickname
+     *            the mailNickname value to set
+     * @return the UserUpdateParametersInner object itself.
+     */
+    public UserUpdateParametersInner withMailNickname(String mailNickname) {
+        this.mailNickname = mailNickname;
+        return this;
+    }
 
-	/**
-	 * Get the usageLocation value.
-	 *
-	 * @return the usageLocation value
-	 */
-	public String usageLocation() {
-		return this.usageLocation;
-	}
+    /**
+     * Get the usageLocation value.
+     *
+     * @return the usageLocation value
+     */
+    public String usageLocation() {
+        return this.usageLocation;
+    }
 
-	/**
-	 * Set the usageLocation value.
-	 *
-	 * @param usageLocation
-	 *            the usageLocation value to set
-	 * @return the UserInner object itself.
-	 */
-	public UserUpdateParametersInner withUsageLocation(String usageLocation) {
-		this.usageLocation = usageLocation;
-		return this;
-	}
+    /**
+     * Set the usageLocation value.
+     *
+     * @param usageLocation
+     *            the usageLocation value to set
+     * @return the UserInner object itself.
+     */
+    public UserUpdateParametersInner withUsageLocation(String usageLocation) {
+        this.usageLocation = usageLocation;
+        return this;
+    }
 
 }
