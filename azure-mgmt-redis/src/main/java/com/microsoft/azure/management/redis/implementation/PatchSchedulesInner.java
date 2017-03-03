@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.ScheduleEntry;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.management.redis.RedisPatchSchedule;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PatchSchedules.
  */
-public final class PatchSchedulesInner {
+public class PatchSchedulesInner {
     /** The Retrofit service to perform REST calls. */
     private PatchSchedulesService service;
     /** The service client containing this operation class. */
@@ -59,7 +60,7 @@ public final class PatchSchedulesInner {
     interface PatchSchedulesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.PatchSchedules createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/default")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisPatchScheduleInner parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisPatchSchedule parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.PatchSchedules delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/default", method = "DELETE", hasBody = true)
@@ -77,9 +78,9 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
-     * @return the RedisPatchScheduleInner object if successful.
+     * @return the RedisPatchSchedule object if successful.
      */
-    public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+    public RedisPatchSchedule createOrUpdate(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().body();
     }
 
@@ -92,7 +93,7 @@ public final class PatchSchedulesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
+    public ServiceFuture<RedisPatchSchedule> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries, final ServiceCallback<RedisPatchSchedule> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries), serviceCallback);
     }
 
@@ -102,12 +103,12 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
-     * @return the observable to the RedisPatchScheduleInner object
+     * @return the observable to the RedisPatchSchedule object
      */
-    public Observable<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).map(new Func1<ServiceResponse<RedisPatchScheduleInner>, RedisPatchScheduleInner>() {
+    public Observable<RedisPatchSchedule> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).map(new Func1<ServiceResponse<RedisPatchSchedule>, RedisPatchSchedule>() {
             @Override
-            public RedisPatchScheduleInner call(ServiceResponse<RedisPatchScheduleInner> response) {
+            public RedisPatchSchedule call(ServiceResponse<RedisPatchSchedule> response) {
                 return response.body();
             }
         });
@@ -119,9 +120,9 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
-     * @return the observable to the RedisPatchScheduleInner object
+     * @return the observable to the RedisPatchSchedule object
      */
-    public Observable<ServiceResponse<RedisPatchScheduleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+    public Observable<ServiceResponse<RedisPatchSchedule>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -138,14 +139,14 @@ public final class PatchSchedulesInner {
             throw new IllegalArgumentException("Parameter scheduleEntries is required and cannot be null.");
         }
         Validator.validate(scheduleEntries);
-        RedisPatchScheduleInner parameters = new RedisPatchScheduleInner();
+        RedisPatchSchedule parameters = new RedisPatchSchedule();
         parameters.withScheduleEntries(scheduleEntries);
         return service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchScheduleInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchSchedule>>>() {
                 @Override
-                public Observable<ServiceResponse<RedisPatchScheduleInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RedisPatchSchedule>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RedisPatchScheduleInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<RedisPatchSchedule> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -154,9 +155,10 @@ public final class PatchSchedulesInner {
             });
     }
 
-    private ServiceResponse<RedisPatchScheduleInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RedisPatchScheduleInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
+    private ServiceResponse<RedisPatchSchedule> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RedisPatchSchedule, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RedisPatchSchedule>() { }.getType())
+                .register(201, new TypeToken<RedisPatchSchedule>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -237,6 +239,7 @@ public final class PatchSchedulesInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -245,9 +248,9 @@ public final class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @return the RedisPatchScheduleInner object if successful.
+     * @return the RedisPatchSchedule object if successful.
      */
-    public RedisPatchScheduleInner get(String resourceGroupName, String name) {
+    public RedisPatchSchedule get(String resourceGroupName, String name) {
         return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
@@ -259,7 +262,7 @@ public final class PatchSchedulesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
+    public ServiceFuture<RedisPatchSchedule> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisPatchSchedule> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -268,12 +271,12 @@ public final class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @return the observable to the RedisPatchScheduleInner object
+     * @return the observable to the RedisPatchSchedule object
      */
-    public Observable<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisPatchScheduleInner>, RedisPatchScheduleInner>() {
+    public Observable<RedisPatchSchedule> getAsync(String resourceGroupName, String name) {
+        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisPatchSchedule>, RedisPatchSchedule>() {
             @Override
-            public RedisPatchScheduleInner call(ServiceResponse<RedisPatchScheduleInner> response) {
+            public RedisPatchSchedule call(ServiceResponse<RedisPatchSchedule> response) {
                 return response.body();
             }
         });
@@ -284,9 +287,9 @@ public final class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @return the observable to the RedisPatchScheduleInner object
+     * @return the observable to the RedisPatchSchedule object
      */
-    public Observable<ServiceResponse<RedisPatchScheduleInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<RedisPatchSchedule>> getWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -300,11 +303,11 @@ public final class PatchSchedulesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.get(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchScheduleInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchSchedule>>>() {
                 @Override
-                public Observable<ServiceResponse<RedisPatchScheduleInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RedisPatchSchedule>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RedisPatchScheduleInner> clientResponse = getDelegate(response);
+                        ServiceResponse<RedisPatchSchedule> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -313,10 +316,9 @@ public final class PatchSchedulesInner {
             });
     }
 
-    private ServiceResponse<RedisPatchScheduleInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RedisPatchScheduleInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<RedisPatchSchedule> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RedisPatchSchedule, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RedisPatchSchedule>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
