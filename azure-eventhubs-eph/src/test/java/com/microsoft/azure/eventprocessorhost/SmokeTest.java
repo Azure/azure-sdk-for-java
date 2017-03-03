@@ -5,14 +5,13 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import static org.junit.Assert.*;
-
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventData;
@@ -32,6 +31,19 @@ public class SmokeTest extends TestBase
 		waitForTelltale(settings);
 
 		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+	}
+        
+        @Test
+	public void ReceiverRuntimeMetricsTest() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("ReceiverRuntimeMetrics");
+                settings.inOptions.setReceiverRuntimeMetricEnabled(true);
+		settings = testSetup(settings); 
+
+		settings.outUtils.sendToAny(settings.outTelltale);
+		waitForTelltale(settings);
+
+		Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation() != null);
 	}
 	
 	@Test

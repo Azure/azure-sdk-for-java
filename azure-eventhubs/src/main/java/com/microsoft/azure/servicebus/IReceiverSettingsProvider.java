@@ -15,4 +15,6 @@ public interface IReceiverSettingsProvider
 	public Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage);
 
 	public Map<Symbol, Object> getProperties();
+        
+        public Symbol[] getDesiredCapabilities();
 }

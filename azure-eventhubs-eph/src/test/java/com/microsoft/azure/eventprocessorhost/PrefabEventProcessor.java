@@ -43,6 +43,9 @@ public class PrefabEventProcessor implements IEventProcessor
 	{
 		int batchSize = 0;
 		EventData lastEvent = null;
+                if (messages != null && messages.iterator().hasNext())
+                    this.factory.setOnEventsContext(context);
+                
 		for (EventData event : messages)
 		{
 			this.eventCount++;

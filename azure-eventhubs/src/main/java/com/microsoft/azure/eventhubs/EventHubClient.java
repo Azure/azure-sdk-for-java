@@ -626,7 +626,7 @@ public class EventHubClient extends ClientEntity
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
 	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
 	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
-	 * @return                     a CompletableFuture that would result in a PartitionReceiver isntance when it is completed.
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver instance when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 * @see PartitionReceiver
 	 */
@@ -694,7 +694,7 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NULL_EPOCH, false);
+		return this.createReceiver(consumerGroupName, partitionId, startingOffset, offsetInclusive, null);
 	}
 
 	/**
@@ -753,9 +753,198 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NULL_EPOCH, false);
+		return this.createReceiver(consumerGroupName, partitionId, dateTime, null);
 	}
 
+        /**
+	 * Synchronous version of {@link #createReceiver(String, String, String)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+         * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createReceiver(consumerGroupName, partitionId, startingOffset, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * The receiver is created for a specific EventHub partition from the specific consumer group.
+	 * 
+	 * <p>NOTE: There can be a maximum number of receivers that can run in parallel per ConsumerGroup per Partition. 
+	 * The limit is enforced by the Event Hub service - current limit is 5 receivers in parallel. Having multiple receivers 
+	 * reading from offsets that are far apart on the same consumer group / partition combo will have significant performance Impact.   
+	 * 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver instance when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 */
+	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		return this.createReceiver(consumerGroupName, partitionId, startingOffset, false, receiverOptions);
+	}
+
+	/**
+	 * Synchronous version of {@link #createReceiver(String, String, String, boolean)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createReceiver(consumerGroupName, partitionId, startingOffset, offsetInclusive, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create the EventHub receiver with given partition id and start receiving from the specified starting offset.
+	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver instance when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 */
+	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NULL_EPOCH, false, receiverOptions);
+	}
+
+	/**
+	 * Synchronous version of {@link #createReceiver(String, String, Instant)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final Instant dateTime, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createReceiver(consumerGroupName, partitionId, dateTime, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create the EventHub receiver with given partition id and start receiving from the specified starting offset.
+	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 */	
+	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final ReceiverOptions receiverOptions)
+			throws ServiceBusException
+	{
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NULL_EPOCH, false, receiverOptions);
+	}
+        
 	/**
 	 * Synchronous version of {@link #createEpochReceiver(String, String, String, long)}. 
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
@@ -893,7 +1082,7 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true);
+		return this.createEpochReceiver(consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, null);
 	}
 
 	/**
@@ -962,7 +1151,222 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch)
 			throws ServiceBusException
 	{
-            return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true);
+            return this.createEpochReceiver(consumerGroupName, partitionId, dateTime, epoch, null);
+	}
+
+	/**
+	 * Synchronous version of {@link #createEpochReceiver(String, String, String, long)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createEpochReceiver(consumerGroupName, partitionId, startingOffset, epoch, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a Epoch based EventHub receiver with given partition id and start receiving from the beginning of the partition stream.
+	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
+	 * <p> 
+	 * It is important to pay attention to the following when creating epoch based receiver:
+	 * <ul>
+	 * <li> Ownership enforcement - Once you created an epoch based receiver, you cannot create a non-epoch receiver to the same consumerGroup-Partition combo until all receivers to the combo are closed.
+	 * <li> Ownership stealing - If a receiver with higher epoch value is created for a consumerGroup-Partition combo, any older epoch receiver to that combo will be force closed.
+	 * <li> Any receiver closed due to lost of ownership to a consumerGroup-Partition combo will get ReceiverDisconnectedException for all operations from that receiver.
+	 * </ul>
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 * @see ReceiverDisconnectedException
+	 */	
+	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch, final ReceiverOptions receiverOptions)
+			throws ServiceBusException
+	{
+		return this.createEpochReceiver(consumerGroupName, partitionId, startingOffset, false, epoch, receiverOptions);
+	}
+
+	/**
+	 * Synchronous version of {@link #createEpochReceiver(String, String, String, boolean, long)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}     
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createEpochReceiver(consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a Epoch based EventHub receiver with given partition id and start receiving from the beginning of the partition stream.
+	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
+	 * <p> 
+	 * It is important to pay attention to the following when creating epoch based receiver:
+	 * <ul>
+	 * <li> Ownership enforcement - Once you created an epoch based receiver, you cannot create a non-epoch receiver to the same consumerGroup-Partition combo until all receivers to the combo are closed.
+	 * <li> Ownership stealing - If a receiver with higher epoch value is created for a consumerGroup-Partition combo, any older epoch receiver to that combo will be force closed.
+	 * <li> Any receiver closed due to lost of ownership to a consumerGroup-Partition combo will get ReceiverDisconnectedException for all operations from that receiver.
+	 * </ul>
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}     
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 * @see ReceiverDisconnectedException
+	 */	
+	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, final ReceiverOptions receiverOptions)
+			throws ServiceBusException
+	{
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true, receiverOptions);
+	}
+
+	/**
+	 * Synchronous version of {@link #createEpochReceiver(String, String, Instant, long)}. 
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 */
+	public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch, final ReceiverOptions receiverOptions) 
+			throws ServiceBusException
+	{
+		try
+		{
+			return this.createEpochReceiver(consumerGroupName, partitionId, dateTime, epoch, receiverOptions).get();
+		}
+		catch (InterruptedException|ExecutionException exception)
+		{
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Create a Epoch based EventHub receiver with given partition id and start receiving from the beginning of the partition stream.
+	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
+	 * <p> 
+	 * It is important to pay attention to the following when creating epoch based receiver:
+	 * <ul>
+	 * <li> Ownership enforcement - Once you created an epoch based receiver, you cannot create a non-epoch receiver to the same consumerGroup-Partition combo until all receivers to the combo are closed.
+	 * <li> Ownership stealing - If a receiver with higher epoch value is created for a consumerGroup-Partition combo, any older epoch receiver to that combo will be force closed.
+	 * <li> Any receiver closed due to lost of ownership to a consumerGroup-Partition combo will get ReceiverDisconnectedException for all operations from that receiver.
+	 * </ul>
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param epoch                a unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param receiverOptions      the set of options to enable on the event hubs receiver
+	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @see PartitionReceiver
+	 * @see ReceiverDisconnectedException
+	 */	
+	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch, final ReceiverOptions receiverOptions)
+			throws ServiceBusException
+	{
+            return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true, receiverOptions);
 	}
 
 	@Override
