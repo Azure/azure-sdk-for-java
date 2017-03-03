@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the RedisManagementClientImpl class.
  */
-public final class RedisManagementClientImpl extends AzureServiceClient {
+public class RedisManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

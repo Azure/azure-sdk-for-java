@@ -20,12 +20,13 @@ public class RedisRebootParametersInner {
      * possible. Possible values include: 'PrimaryNode', 'SecondaryNode',
      * 'AllNodes'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "rebootType", required = true)
     private RebootType rebootType;
 
     /**
      * If clustering is enabled, the ID of the shard to be rebooted.
      */
+    @JsonProperty(value = "shardId")
     private Integer shardId;
 
     /**

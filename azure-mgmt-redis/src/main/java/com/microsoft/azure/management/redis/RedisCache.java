@@ -5,7 +5,6 @@
  */
 
 package com.microsoft.azure.management.redis;
-
 import org.joda.time.Period;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
