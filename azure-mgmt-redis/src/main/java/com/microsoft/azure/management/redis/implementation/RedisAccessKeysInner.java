@@ -18,14 +18,14 @@ public class RedisAccessKeysInner {
      * The current primary key that clients can use to authenticate with Redis
      * cache.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /**
      * The current secondary key that clients can use to authenticate with
      * Redis cache.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /**

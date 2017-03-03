@@ -18,7 +18,7 @@ public class RedisRegenerateKeyParameters {
      * The Redis access key to regenerate. Possible values include: 'Primary',
      * 'Secondary'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyType", required = true)
     private RedisKeyType keyType;
 
     /**
