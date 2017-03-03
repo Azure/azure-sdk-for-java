@@ -341,7 +341,7 @@ public class LogProfilesInner {
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<LogProfileResourceInner>>, Page<LogProfileResourceInner>>() {
             @Override
             public Page<LogProfileResourceInner> call(ServiceResponse<List<LogProfileResourceInner>> response) {
-                PageImpl1<LogProfileResourceInner> page = new PageImpl<>();
+                PageImpl1<LogProfileResourceInner> page = new PageImpl1<>();
                 page.setItems(response.body());
                 return page;
             }

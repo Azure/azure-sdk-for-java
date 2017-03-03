@@ -77,7 +77,8 @@ public class AlertRulesInner {
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT
+     Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -93,7 +94,8 @@ public class AlertRulesInner {
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT
+     Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -108,7 +110,8 @@ public class AlertRulesInner {
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT
+     Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -127,7 +130,8 @@ public class AlertRulesInner {
 
     /**
      * Creates or updates an alert rule.
-     Request method: PUT		Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
+     Request method: PUT
+     Request URI: https://management.azure.com/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/microsoft.insights/alertRules/{alert-rule-name}?api-version={api-version}.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -354,34 +358,6 @@ public class AlertRulesInner {
      * List the alert rules within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<AlertRuleResourceInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<AlertRuleResourceInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
-    }
-
-    /**
-     * List the alert rules within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;AlertRuleResourceInner&gt; object
-     */
-    public Observable<Page<AlertRuleResourceInner>> listByResourceGroupAsync(String resourceGroupName, String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter).map(new Func1<ServiceResponse<List<AlertRuleResourceInner>>, Page<AlertRuleResourceInner>>() {
-            @Override
-            public Page<AlertRuleResourceInner> call(ServiceResponse<List<AlertRuleResourceInner>> response) {
-                PageImpl1<AlertRuleResourceInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
-            }
-        });
-    }
-
-    /**
-     * List the alert rules within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AlertRuleResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<AlertRuleResourceInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
@@ -442,7 +418,7 @@ public class AlertRulesInner {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter).map(new Func1<ServiceResponse<List<AlertRuleResourceInner>>, Page<AlertRuleResourceInner>>() {
             @Override
             public Page<AlertRuleResourceInner> call(ServiceResponse<List<AlertRuleResourceInner>> response) {
-                PageImpl1<AlertRuleResourceInner> page = new PageImpl<>();
+                PageImpl1<AlertRuleResourceInner> page = new PageImpl1<>();
                 page.setItems(response.body());
                 return page;
             }
