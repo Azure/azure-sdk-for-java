@@ -18,14 +18,14 @@ public class Sku {
      * The type of Redis cache to deploy. Valid values: (Basic, Standard,
      * Premium). Possible values include: 'Basic', 'Standard', 'Premium'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**
      * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P =
      * Premium). Possible values include: 'C', 'P'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "family", required = true)
     private SkuFamily family;
 
     /**
@@ -33,7 +33,7 @@ public class Sku {
      * (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family
      * (1, 2, 3, 4).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "capacity", required = true)
     private int capacity;
 
     /**
