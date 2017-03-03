@@ -150,6 +150,13 @@ var mappings = {
         'source': 'arm-dns/2016-04-01/swagger/dns.json',
         'package': 'com.microsoft.azure.management.dns',
         'args': '-FT 1'
+    },
+    'monitor': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'arm-monitor/compositeMonitorManagementClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     }
 };
 

@@ -143,6 +143,11 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-monitor</artifactId>
+      <version>1.0.0-beta6-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
       <version>1.0.0-beta6-SNAPSHOT</version>
       <type>test-jar</type>
