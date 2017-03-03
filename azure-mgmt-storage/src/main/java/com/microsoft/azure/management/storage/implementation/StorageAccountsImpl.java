@@ -7,23 +7,24 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends GroupableResourcesImpl<
-            StorageAccount,
-            StorageAccountImpl,
-            StorageAccountInner,
-            StorageAccountsInner,
-            StorageManager>
+        extends ListableResourcesImpl<
+                StorageAccount,
+                StorageAccountImpl,
+                StorageAccountInner,
+                StorageAccountsInner,
+                StorageManager>
         implements StorageAccounts {
 
     StorageAccountsImpl(final StorageManager storageManager) {
@@ -46,8 +47,8 @@ class StorageAccountsImpl
     }
 
     @Override
-    public StorageAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().getProperties(groupName, name));
+    protected Observable<StorageAccountInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getPropertiesAsync(resourceGroupName, name);
     }
 
     @Override

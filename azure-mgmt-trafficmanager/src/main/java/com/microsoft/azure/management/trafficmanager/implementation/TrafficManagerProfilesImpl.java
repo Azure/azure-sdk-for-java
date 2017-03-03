@@ -7,13 +7,14 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
-class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
+class TrafficManagerProfilesImpl extends ListableResourcesImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
@@ -55,8 +56,8 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public TrafficManagerProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<ProfileInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

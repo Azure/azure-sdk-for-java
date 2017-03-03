@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import org.junit.Assert;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -163,7 +164,12 @@ public class GroupPagedListTests {
 
             @Override
             public ResourceGroup refresh() {
-                return null;
+                return refreshAsync().toBlocking().last();
+            }
+
+            @Override
+            public Observable<ResourceGroup> refreshAsync() {
+                return Observable.just(null);
             }
 
             @Override

@@ -34,8 +34,8 @@ class AppServicePlansImpl
     }
 
     @Override
-    public AppServicePlan getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<AppServicePlanInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

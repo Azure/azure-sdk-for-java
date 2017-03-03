@@ -72,9 +72,8 @@ class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRule refresh() {
-        this.innerCollection.getFirewallRule(this.resourceGroupName(), this.sqlServerName(), this.name());
-        return this;
+    protected Observable<ServerFirewallRuleInner> getInnerAsync() {
+        return this.innerCollection.getFirewallRuleAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override

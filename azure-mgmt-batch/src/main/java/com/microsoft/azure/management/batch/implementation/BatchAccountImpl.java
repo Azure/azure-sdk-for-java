@@ -55,13 +55,20 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccount refresh() {
-        BatchAccountInner response =
-                this.manager().inner().batchAccounts().get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        this.applicationsImpl.refresh();
+    public Observable<BatchAccount> refreshAsync() {
+        return super.refreshAsync().map(new Func1<BatchAccount, BatchAccount>() {
+            @Override
+            public BatchAccount call(BatchAccount batchAccount) {
+                BatchAccountImpl impl = (BatchAccountImpl) batchAccount;
+                impl.applicationsImpl.refresh();
+                return impl;
+            }
+        });
+    }
 
-        return this;
+    @Override
+    protected Observable<BatchAccountInner> getInnerAsync() {
+        return this.manager().inner().batchAccounts().getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

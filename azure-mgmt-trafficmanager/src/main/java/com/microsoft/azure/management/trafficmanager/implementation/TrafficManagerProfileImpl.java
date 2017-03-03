@@ -101,12 +101,21 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public TrafficManagerProfile refresh() {
-        ProfileInner inner = this.manager().inner().profiles().get(
+    public Observable<TrafficManagerProfile> refreshAsync() {
+        return super.refreshAsync().map(new Func1<TrafficManagerProfile, TrafficManagerProfile>() {
+            @Override
+            public TrafficManagerProfile call(TrafficManagerProfile trafficManagerProfile) {
+                TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
+                impl.endpoints.refresh();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ProfileInner> getInnerAsync() {
+        return this.manager().inner().profiles().getAsync(
                 this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.endpoints.refresh();
-        return this;
     }
 
     @Override

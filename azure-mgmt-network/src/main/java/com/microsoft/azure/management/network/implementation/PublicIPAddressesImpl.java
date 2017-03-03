@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  *  Implementation for {@link PublicIPAddresses}.
@@ -41,8 +42,8 @@ class PublicIPAddressesImpl
     }
 
     @Override
-    public PublicIPAddressImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<PublicIPAddressInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

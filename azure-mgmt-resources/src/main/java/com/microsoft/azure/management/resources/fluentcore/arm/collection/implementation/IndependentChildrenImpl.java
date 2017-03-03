@@ -23,6 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Base class for independent child collection class.
@@ -65,15 +66,38 @@ public abstract class IndependentChildrenImpl<
     }
 
     @Override
+    public T getByParent(String resourceGroup, String parentName, String name) {
+        return getByParentAsync(resourceGroup, parentName, name).toBlocking().last();
+    }
+
+    @Override
     public T getByParent(ParentT parentResource, String name) {
-        return getByParent(parentResource.resourceGroupName(), parentResource.name(), name);
+        return getByParentAsync(parentResource, name).toBlocking().last();
+    }
+
+    @Override
+    public Observable<T> getByParentAsync(ParentT parentResource, String name) {
+        return getByParentAsync(parentResource.resourceGroupName(), parentResource.name(), name);
     }
 
     @Override
     public T getById(String id) {
-        ResourceId resourceId = ResourceId.fromString(id);
+        return getByIdAsync(id).toBlocking().last();
+    }
 
-        return getByParent(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
+    @Override
+    public Observable<T> getByIdAsync(String id) {
+        ResourceId resourceId = ResourceId.fromString(id);
+        if (resourceId == null) {
+            return null;
+        }
+
+        return getByParentAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
+    }
+
+    @Override
+    public ServiceFuture<T> getByIdAsync(String id, ServiceCallback<T> callback) {
+        return ServiceFuture.fromBody(getByIdAsync(id), callback);
     }
 
     @Override

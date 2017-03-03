@@ -241,17 +241,15 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabase refresh() {
+    protected Observable<DatabaseInner> getInnerAsync() {
         if (this.inner().upgradeHint() != null) {
-            this.setInner(this.manager().inner().databases().get(
-                    this.resourceGroupName(), this.sqlServerName(), this.name()));
+            return this.manager().inner().databases().getAsync(
+                    this.resourceGroupName(), this.sqlServerName(), this.name());
         }
         else {
-            this.setInner(this.manager().inner().databases().get(
-                    this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
+            return this.manager().inner().databases().getAsync(
+                    this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint");
         }
-
-        return this;
     }
 
     @Override

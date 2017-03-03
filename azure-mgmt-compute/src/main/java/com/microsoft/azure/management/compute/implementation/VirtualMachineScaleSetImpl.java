@@ -1141,12 +1141,21 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl refresh() {
-        VirtualMachineScaleSetInner inner = this.manager().inner().virtualMachineScaleSets().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        this.clearCachedProperties();
-        this.initializeChildrenFromInner();
-        return this;
+    public Observable<VirtualMachineScaleSet> refreshAsync() {
+        return super.refreshAsync().map(new Func1<VirtualMachineScaleSet, VirtualMachineScaleSet>() {
+            @Override
+            public VirtualMachineScaleSet call(VirtualMachineScaleSet virtualMachineScaleSet) {
+                VirtualMachineScaleSetImpl impl = (VirtualMachineScaleSetImpl) virtualMachineScaleSet;
+                impl.clearCachedProperties();
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<VirtualMachineScaleSetInner> getInnerAsync() {
+        return this.manager().inner().virtualMachineScaleSets().getAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

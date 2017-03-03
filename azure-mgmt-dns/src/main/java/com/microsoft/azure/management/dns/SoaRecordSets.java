@@ -7,14 +7,14 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
  *  Entry point to SOA record sets in a DNS zone.
  */
 @Fluent
 public interface SoaRecordSets extends
-        SupportsListing<SoaRecordSet>,
+        SupportsListingAsync<SoaRecordSet>,
         SupportsGettingById<SoaRecordSet> {
 }
 

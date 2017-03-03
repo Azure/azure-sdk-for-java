@@ -223,9 +223,8 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         // Below overrides returns null as this is not a real resource in Azure
         // but a dummy resource representing parent of a batch of creatable Azure
         // resources.
-
         @Override
-        public CreatableUpdatableResourcesRoot<ResourceT> refresh() {
+        protected Observable<Object> getInnerAsync() {
             return null;
         }
     }

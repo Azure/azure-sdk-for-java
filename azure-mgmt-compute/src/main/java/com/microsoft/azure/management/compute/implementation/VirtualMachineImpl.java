@@ -162,13 +162,24 @@ class VirtualMachineImpl
     // Verbs
 
     @Override
-    public VirtualMachine refresh() {
-        VirtualMachineInner response = this.manager().inner().virtualMachines().get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        clearCachedRelatedResources();
-        initializeDataDisks();
-        this.virtualMachineExtensions.refresh();
-        return this;
+    public Observable<VirtualMachine> refreshAsync() {
+        return super.refreshAsync().map(new Func1<VirtualMachine, VirtualMachine>() {
+            @Override
+            public VirtualMachine call(VirtualMachine virtualMachine) {
+                final VirtualMachineImpl impl = (VirtualMachineImpl) virtualMachine;
+                impl.clearCachedRelatedResources();
+                impl.initializeDataDisks();
+                // TODO - ans - We need to call refreshAsync here.
+                impl.virtualMachineExtensions.refresh();
+
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<VirtualMachineInner> getInnerAsync() {
+        return this.manager().inner().virtualMachines().getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

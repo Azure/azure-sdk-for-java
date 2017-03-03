@@ -110,10 +110,7 @@ public class ApplicationPackageImpl
     }
 
     @Override
-    public ApplicationPackage refresh() {
-        ApplicationPackageInner inner =
-                this.client.get(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name());
-        this.setInner(inner);
-        return this;
+    protected Observable<ApplicationPackageInner> getInnerAsync() {
+        return this.client.getAsync(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name());
     }
 }

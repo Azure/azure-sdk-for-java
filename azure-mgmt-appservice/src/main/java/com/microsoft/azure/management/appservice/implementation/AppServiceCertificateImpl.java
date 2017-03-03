@@ -121,9 +121,8 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public AppServiceCertificate refresh() {
-        this.setInner(this.manager().inner().certificates().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<CertificateInner> getInnerAsync() {
+        return this.manager().inner().certificates().getAsync(resourceGroupName(), name());
     }
 
     @Override

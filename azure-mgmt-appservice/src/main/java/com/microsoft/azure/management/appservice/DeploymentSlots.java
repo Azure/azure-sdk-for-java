@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
  * Entry point for storage accounts management API.
@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DeploymentSlots extends
         SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
-        SupportsListing<DeploymentSlot>,
+        SupportsListingAsync<DeploymentSlot>,
         SupportsGettingByName<DeploymentSlot>,
         SupportsDeletingById,
         SupportsGettingById<DeploymentSlot>,

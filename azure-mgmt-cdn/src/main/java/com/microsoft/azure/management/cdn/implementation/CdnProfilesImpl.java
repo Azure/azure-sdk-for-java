@@ -14,9 +14,10 @@ import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.cdn.ResourceUsage;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @LangDefinition
 class CdnProfilesImpl
-        extends GroupableResourcesImpl<
+        extends ListableResourcesImpl<
             CdnProfile,
             CdnProfileImpl,
             ProfileInner,
@@ -48,8 +49,8 @@ class CdnProfilesImpl
     }
 
     @Override
-    public CdnProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<ProfileInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

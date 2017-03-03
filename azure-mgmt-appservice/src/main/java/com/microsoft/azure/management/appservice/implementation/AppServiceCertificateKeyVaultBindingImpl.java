@@ -72,9 +72,8 @@ class AppServiceCertificateKeyVaultBindingImpl
     }
 
     @Override
-    public AppServiceCertificateKeyVaultBinding refresh() {
-        setInner(parent.manager().inner().appServiceCertificateOrders().getCertificate(
-                parent.resourceGroupName(), parent.name(), name()));
-        return this;
+    protected Observable<AppServiceCertificateInner> getInnerAsync() {
+        return parent.manager().inner().appServiceCertificateOrders().getCertificateAsync(
+                parent.resourceGroupName(), parent.name(), name());
     }
 }

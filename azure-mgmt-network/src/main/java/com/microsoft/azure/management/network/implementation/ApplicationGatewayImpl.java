@@ -82,11 +82,20 @@ class ApplicationGatewayImpl
     // Verbs
 
     @Override
-    public ApplicationGatewayImpl refresh() {
-        ApplicationGatewayInner inner = this.manager().inner().applicationGateways().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<ApplicationGateway> refreshAsync() {
+        return super.refreshAsync().map(new Func1<ApplicationGateway, ApplicationGateway>() {
+            @Override
+            public ApplicationGateway call(ApplicationGateway applicationGateway) {
+                ApplicationGatewayImpl impl = (ApplicationGatewayImpl) applicationGateway;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ApplicationGatewayInner> getInnerAsync() {
+        return this.manager().inner().applicationGateways().getAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

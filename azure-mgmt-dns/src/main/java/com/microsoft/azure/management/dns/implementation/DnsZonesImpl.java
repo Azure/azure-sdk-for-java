@@ -9,14 +9,15 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Implementation of DnsZones.
  */
 @LangDefinition
-class DnsZonesImpl extends GroupableResourcesImpl<
+class DnsZonesImpl extends ListableResourcesImpl<
         DnsZone,
         DnsZoneImpl,
         ZoneInner,
@@ -39,8 +40,8 @@ class DnsZonesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public DnsZone getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+    protected Observable<ZoneInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

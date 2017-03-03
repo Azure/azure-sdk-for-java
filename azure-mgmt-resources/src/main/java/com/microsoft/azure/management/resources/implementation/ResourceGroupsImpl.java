@@ -110,4 +110,9 @@ final class ResourceGroupsImpl
     public Completable deleteByIdAsync(String id) {
         return deleteByNameAsync(ResourceUtils.nameFromResourceId(id));
     }
+
+    @Override
+    public Observable<ResourceGroup> listAsync() {
+        return wrapPageAsync(this.client.listAsync());
+    }
 }

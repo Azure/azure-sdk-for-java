@@ -134,11 +134,8 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnProfileImpl refresh() {
-        ProfileInner cdnProfileInner =
-                this.manager().inner().profiles().get(this.resourceGroupName(), this.name());
-        this.setInner(cdnProfileInner);
-        return this;
+    protected Observable<ProfileInner> getInnerAsync() {
+        return this.manager().inner().profiles().getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

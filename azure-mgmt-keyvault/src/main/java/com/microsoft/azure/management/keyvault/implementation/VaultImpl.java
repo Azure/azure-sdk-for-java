@@ -257,8 +257,7 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl refresh() {
-        setInner(this.manager().inner().vaults().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<VaultInner> getInnerAsync() {
+        return this.manager().inner().vaults().getAsync(resourceGroupName(), name());
     }
 }

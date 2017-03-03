@@ -77,11 +77,20 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySet refresh() {
-        AvailabilitySetInner response = this.manager().inner().availabilitySets().get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        this.idOfVMsInSet = null;
-        return this;
+    public Observable<AvailabilitySet> refreshAsync() {
+        return super.refreshAsync().map(new Func1<AvailabilitySet, AvailabilitySet>() {
+            @Override
+            public AvailabilitySet call(AvailabilitySet availabilitySet) {
+                AvailabilitySetImpl impl = (AvailabilitySetImpl) availabilitySet;
+                impl.idOfVMsInSet = null;
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<AvailabilitySetInner> getInnerAsync() {
+        return this.manager().inner().availabilitySets().getAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

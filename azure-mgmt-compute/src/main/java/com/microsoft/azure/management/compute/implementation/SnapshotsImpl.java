@@ -11,20 +11,21 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
-        extends GroupableResourcesImpl<
-            Snapshot,
-            SnapshotImpl,
-            SnapshotInner,
-            SnapshotsInner,
-            ComputeManager>
+        extends ListableResourcesImpl<
+                    Snapshot,
+                    SnapshotImpl,
+                    SnapshotInner,
+                    SnapshotsInner,
+                    ComputeManager>
         implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {
@@ -54,9 +55,8 @@ class SnapshotsImpl
     }
 
     @Override
-    public Snapshot getByGroup(String resourceGroupName, String name) {
-        SnapshotInner inner = this.inner().get(resourceGroupName, name);
-        return wrapModel(inner);
+    protected Observable<SnapshotInner> getAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override

@@ -8,14 +8,14 @@ package com.microsoft.azure.management.dns;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
  *  Entry point to TXT record sets in a DNS zone.
  */
 @Fluent
 public interface TxtRecordSets extends
-        SupportsListing<TxtRecordSet>,
+        SupportsListingAsync<TxtRecordSet>,
         SupportsGettingByName<TxtRecordSet>,
         HasParent<DnsZone> {
 }

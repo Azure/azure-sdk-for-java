@@ -87,7 +87,7 @@ class PizzaImpl
     }
 
     @Override
-    public IPizza refresh() {
-        return this;
+    protected Observable<PizzaInner> getInnerAsync() {
+        return Observable.just(this.inner());
     }
 }

@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.model;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
+import rx.Observable;
 
 /**
  * Base class for resources that can be refreshed to get the latest state.
@@ -23,4 +24,12 @@ public interface Refreshable<T> {
      */
     @Method
     T refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the Observable to refreshed resource
+     */
+    @Method
+    Observable<T> refreshAsync();
 }

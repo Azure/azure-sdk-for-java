@@ -163,9 +163,8 @@ class SqlElasticPoolImpl
     }
 
     @Override
-    public SqlElasticPool refresh() {
-        this.manager().inner().elasticPools().get(this.resourceGroupName(), this.sqlServerName(), this.name());
-        return this;
+    protected Observable<ElasticPoolInner> getInnerAsync() {
+        return this.manager().inner().elasticPools().getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override

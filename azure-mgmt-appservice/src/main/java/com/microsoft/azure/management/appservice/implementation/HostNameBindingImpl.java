@@ -136,12 +136,30 @@ class HostNameBindingImpl<
 
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> refresh() {
-        if (parent instanceof DeploymentSlot) {
-            this.setInner(this.parent().manager().inner().webApps().getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name()));
-        } else {
-            this.setInner(this.parent().manager().inner().webApps().getHostNameBinding(parent().resourceGroupName(), parent().name(), name()));
-        }
+
         return this;
+    }
+
+    @Override
+    public Observable<HostNameBinding> refreshAsync() {
+        final HostNameBindingImpl<FluentT, FluentImplT> self = this;
+        Observable<HostNameBindingInner> observable = null;
+
+        if (parent instanceof DeploymentSlot) {
+            observable = this.parent().manager().inner().webApps().getHostNameBindingSlotAsync(
+                    parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name());
+        } else {
+            observable = this.parent().manager().inner().webApps().getHostNameBindingAsync(parent().resourceGroupName(),
+                    parent().name(), name());
+        }
+
+        return observable.map(new Func1<HostNameBindingInner, HostNameBinding>() {
+            @Override
+            public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
+                self.setInner(hostNameBindingInner);
+                return self;
+            }
+        });
     }
 
     @Override

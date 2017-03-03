@@ -89,4 +89,9 @@ class UsersImpl
     public UsersInner inner() {
         return this.innerCollection;
     }
+
+    @Override
+    public Observable<User> listAsync() {
+        return wrapPageAsync(this.inner().listAsync());
+    }
 }

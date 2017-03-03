@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of ARecordSets.
@@ -51,5 +52,13 @@ class ARecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
+    }
+
+    @Override
+    public Observable<ARecordSet> listAsync() {
+        return super.wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.A));
     }
 }

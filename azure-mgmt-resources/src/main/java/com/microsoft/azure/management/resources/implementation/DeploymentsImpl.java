@@ -11,12 +11,16 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByGroupImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -24,6 +28,7 @@ import java.util.List;
  * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
+    extends SupportsGettingByGroupImpl<Deployment>
     implements Deployments,
     HasManager<ResourceManager> {
 
@@ -68,8 +73,13 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment getByGroup(String groupName, String name) {
-        return createFluentModel(this.manager().inner().deployments().get(groupName, name));
+    public Observable<Deployment> getByGroupAsync(String groupName, String name) {
+        return this.manager().inner().deployments().getAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
+            @Override
+            public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                return createFluentModel(deploymentExtendedInner);
+            }
+        });
     }
 
     @Override
@@ -132,5 +142,28 @@ final class DeploymentsImpl
     @Override
     public ResourceManager manager() {
         return this.resourceManager;
+    }
+
+    @Override
+    public Observable<Deployment> listAsync() {
+        return this.manager().resourceGroups().listAsync().flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
+            @Override
+            public Observable<Deployment> call(ResourceGroup resourceGroup) {
+                return listByGroupAsync(resourceGroup.name());
+            }
+        });
+    }
+
+
+    @Override
+    public Observable<Deployment> listByGroupAsync(String resourceGroupName) {
+        final DeploymentsInner client = this.manager().inner().deployments();
+        return ReadableWrappersImpl.convertPageToInnerAsync(client.listAsync(resourceGroupName))
+                .map(new Func1<DeploymentExtendedInner, Deployment>() {
+                    @Override
+                    public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
+                        return createFluentModel(deploymentExtendedInner);
+                    }
+        });
     }
 }
