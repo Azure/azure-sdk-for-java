@@ -12,6 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.microsoft.azure.management.monitor.implementation.RuleActionInner;
 
 /**
  * Specifies the action to post to service when the rule condition is
@@ -19,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
-public class RuleWebhookAction extends RuleAction {
+public class RuleWebhookAction extends RuleActionInner {
     /**
      * the service uri to Post the notitication when the alert activates or
      * resolves.

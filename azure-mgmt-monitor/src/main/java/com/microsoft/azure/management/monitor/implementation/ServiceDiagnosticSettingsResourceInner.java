@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.monitor.MetricSettings;
-import com.microsoft.azure.management.monitor.LogSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -40,13 +38,13 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * the list of metric settings.
      */
     @JsonProperty(value = "properties.metrics")
-    private List<MetricSettings> metrics;
+    private List<MetricSettingsInner> metrics;
 
     /**
      * the list of logs settings.
      */
     @JsonProperty(value = "properties.logs")
-    private List<LogSettings> logs;
+    private List<LogSettingsInner> logs;
 
     /**
      * The workspace ID (resource ID of a Log Analytics workspace) for a Log
@@ -102,7 +100,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      *
      * @return the metrics value
      */
-    public List<MetricSettings> metrics() {
+    public List<MetricSettingsInner> metrics() {
         return this.metrics;
     }
 
@@ -112,7 +110,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * @param metrics the metrics value to set
      * @return the ServiceDiagnosticSettingsResourceInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withMetrics(List<MetricSettings> metrics) {
+    public ServiceDiagnosticSettingsResourceInner withMetrics(List<MetricSettingsInner> metrics) {
         this.metrics = metrics;
         return this;
     }
@@ -122,7 +120,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      *
      * @return the logs value
      */
-    public List<LogSettings> logs() {
+    public List<LogSettingsInner> logs() {
         return this.logs;
     }
 
@@ -132,7 +130,7 @@ public class ServiceDiagnosticSettingsResourceInner extends Resource {
      * @param logs the logs value to set
      * @return the ServiceDiagnosticSettingsResourceInner object itself.
      */
-    public ServiceDiagnosticSettingsResourceInner withLogs(List<LogSettings> logs) {
+    public ServiceDiagnosticSettingsResourceInner withLogs(List<LogSettingsInner> logs) {
         this.logs = logs;
         return this;
     }

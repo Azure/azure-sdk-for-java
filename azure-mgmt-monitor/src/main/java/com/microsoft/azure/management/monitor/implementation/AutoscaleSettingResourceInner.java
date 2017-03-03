@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.monitor.AutoscaleProfile;
-import com.microsoft.azure.management.monitor.AutoscaleNotification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -26,13 +24,13 @@ public class AutoscaleSettingResourceInner extends Resource {
      * can be specified.
      */
     @JsonProperty(value = "properties.profiles", required = true)
-    private List<AutoscaleProfile> profiles;
+    private List<AutoscaleProfileInner> profiles;
 
     /**
      * the collection of notifications.
      */
     @JsonProperty(value = "properties.notifications")
-    private List<AutoscaleNotification> notifications;
+    private List<AutoscaleNotificationInner> notifications;
 
     /**
      * the enabled flag. Specifies whether automatic scaling is enabled for the
@@ -59,7 +57,7 @@ public class AutoscaleSettingResourceInner extends Resource {
      *
      * @return the profiles value
      */
-    public List<AutoscaleProfile> profiles() {
+    public List<AutoscaleProfileInner> profiles() {
         return this.profiles;
     }
 
@@ -69,7 +67,7 @@ public class AutoscaleSettingResourceInner extends Resource {
      * @param profiles the profiles value to set
      * @return the AutoscaleSettingResourceInner object itself.
      */
-    public AutoscaleSettingResourceInner withProfiles(List<AutoscaleProfile> profiles) {
+    public AutoscaleSettingResourceInner withProfiles(List<AutoscaleProfileInner> profiles) {
         this.profiles = profiles;
         return this;
     }
@@ -79,7 +77,7 @@ public class AutoscaleSettingResourceInner extends Resource {
      *
      * @return the notifications value
      */
-    public List<AutoscaleNotification> notifications() {
+    public List<AutoscaleNotificationInner> notifications() {
         return this.notifications;
     }
 
@@ -89,7 +87,7 @@ public class AutoscaleSettingResourceInner extends Resource {
      * @param notifications the notifications value to set
      * @return the AutoscaleSettingResourceInner object itself.
      */
-    public AutoscaleSettingResourceInner withNotifications(List<AutoscaleNotification> notifications) {
+    public AutoscaleSettingResourceInner withNotifications(List<AutoscaleNotificationInner> notifications) {
         this.notifications = notifications;
         return this;
     }
