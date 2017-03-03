@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.DayOfWeek;
@@ -15,6 +17,7 @@ import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.RedisKeyType;
 import com.microsoft.azure.management.redis.Sku;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
@@ -49,7 +52,7 @@ class RedisCacheImpl
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParametersInner createParameters;
     private RedisUpdateParametersInner updateParameters;
-    private Map<DayOfWeek, ScheduleEntryInner> scheduleEntries;
+    private Map<DayOfWeek, ScheduleEntry> scheduleEntries;
 
     RedisCacheImpl(String name,
                    RedisResourceInner innerModel,
@@ -394,39 +397,44 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc) {
-        return this.withPatchSchedule(new ScheduleEntryInner()
+        return this.withPatchSchedule(new ScheduleEntry()
                 .withDayOfWeek(dayOfWeek)
                 .withStartHourUtc(startHourUtc));
     }
 
     @Override
     public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow) {
-        return this.withPatchSchedule(new ScheduleEntryInner()
+        return this.withPatchSchedule(new ScheduleEntry()
                 .withDayOfWeek(dayOfWeek)
                 .withStartHourUtc(startHourUtc)
                 .withMaintenanceWindow(maintenanceWindow));
     }
 
     @Override
-    public RedisCacheImpl withPatchSchedule(List<ScheduleEntryInner> scheduleEntryInners) {
+    public RedisCacheImpl withPatchSchedule(List<ScheduleEntry> scheduleEntries) {
         this.scheduleEntries.clear();
-        for (ScheduleEntryInner entry : scheduleEntryInners) {
+        for (ScheduleEntry entry : scheduleEntries) {
             this.withPatchSchedule(entry);
         }
         return this;
     }
 
     @Override
-    public RedisCacheImpl withPatchSchedule(ScheduleEntryInner scheduleEntryInner) {
-        this.scheduleEntries.put(scheduleEntryInner.dayOfWeek(), scheduleEntryInner);
+    public RedisCacheImpl withPatchSchedule(ScheduleEntry scheduleEntry) {
+        this.scheduleEntries.put(scheduleEntry.dayOfWeek(), scheduleEntry);
         return this;
     }
 
     @Override
-    public List<ScheduleEntryInner> listPatchSchedules() {
+    public List<ScheduleEntry> listPatchSchedules() {
         RedisPatchScheduleInner patchSchedules =  this.manager().inner().patchSchedules().get(resourceGroupName(), name());
         if (patchSchedules != null) {
-            return patchSchedules.scheduleEntries();
+            return Lists.transform(patchSchedules.scheduleEntries(),
+                    new Function<ScheduleEntryInner, ScheduleEntry>() {
+                        public ScheduleEntry apply(ScheduleEntryInner entryInner) {
+                            return new ScheduleEntry(entryInner);
+                        }
+                    });
         }
         return null;
     }
@@ -440,8 +448,11 @@ class RedisCacheImpl
         if (this.scheduleEntries != null && !this.scheduleEntries.isEmpty()) {
             RedisPatchScheduleInner parameters = new RedisPatchScheduleInner()
                     .withScheduleEntries(new ArrayList<ScheduleEntryInner>());
-            for (ScheduleEntryInner entry : this.scheduleEntries.values()) {
-                parameters.scheduleEntries().add(entry);
+            for (ScheduleEntry entry : this.scheduleEntries.values()) {
+                parameters.scheduleEntries().add( new ScheduleEntryInner()
+                        .withDayOfWeek(entry.dayOfWeek())
+                        .withMaintenanceWindow(entry.maintenanceWindow())
+                        .withStartHourUtc(entry.startHourUtc()));
             }
             this.manager().inner().patchSchedules().createOrUpdate(resourceGroupName(), name(), parameters.scheduleEntries());
         }

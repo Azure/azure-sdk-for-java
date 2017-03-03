@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.redis.implementation.ScheduleEntryInner;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import org.joda.time.Period;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -293,18 +293,18 @@ public interface RedisCache extends
             /**
              * Patch schedule on a Premium Cluster Cache.
              *
-             * @param scheduleEntryInner Patch schedule entry for Premium Redis Cache.
+             * @param scheduleEntry Patch schedule entry for Premium Redis Cache.
              * @return the next stage of Redis Cache with Premium SKU definition.
              */
-            WithPremiumSkuCreate withPatchSchedule(ScheduleEntryInner scheduleEntryInner);
+            WithPremiumSkuCreate withPatchSchedule(ScheduleEntry scheduleEntry);
 
             /**
              * Patch schedule on a Premium Cluster Cache.
              *
-             * @param scheduleEntryInner List of patch schedule entries for Premium Redis Cache.
+             * @param scheduleEntry List of patch schedule entries for Premium Redis Cache.
              * @return the next stage of Redis Cache with Premium SKU definition.
              */
-            WithPremiumSkuCreate withPatchSchedule(List<ScheduleEntryInner> scheduleEntryInner);
+            WithPremiumSkuCreate withPatchSchedule(List<ScheduleEntry> scheduleEntry);
         }
     }
 
@@ -478,18 +478,18 @@ public interface RedisCache extends
         /**
          * Patch schedule on a Premium Cluster Cache.
          *
-         * @param scheduleEntryInner Patch schedule entry for Premium Redis Cache.
+         * @param scheduleEntry Patch schedule entry for Premium Redis Cache.
          * @return the next stage of Redis Cache with Premium SKU definition.
          */
-        Update withPatchSchedule(ScheduleEntryInner scheduleEntryInner);
+        Update withPatchSchedule(ScheduleEntry scheduleEntry);
 
         /**
          * Patch schedule on a Premium Cluster Cache.
          *
-         * @param scheduleEntryInner List of patch schedule entries for Premium Redis Cache.
+         * @param scheduleEntry List of patch schedule entries for Premium Redis Cache.
          * @return the next stage of Redis Cache with Premium SKU definition.
          */
-        Update withPatchSchedule(List<ScheduleEntryInner> scheduleEntryInner);
+        Update withPatchSchedule(List<ScheduleEntry> scheduleEntry);
     }
 }
 
