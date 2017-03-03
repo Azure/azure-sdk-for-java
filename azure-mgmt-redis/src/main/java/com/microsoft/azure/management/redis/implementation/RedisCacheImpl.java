@@ -449,7 +449,7 @@ class RedisCacheImpl
             RedisPatchScheduleInner parameters = new RedisPatchScheduleInner()
                     .withScheduleEntries(new ArrayList<ScheduleEntryInner>());
             for (ScheduleEntry entry : this.scheduleEntries.values()) {
-                parameters.scheduleEntries().add( new ScheduleEntryInner()
+                parameters.scheduleEntries().add(new ScheduleEntryInner()
                         .withDayOfWeek(entry.dayOfWeek())
                         .withMaintenanceWindow(entry.maintenanceWindow())
                         .withStartHourUtc(entry.startHourUtc()));

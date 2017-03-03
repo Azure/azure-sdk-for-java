@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
-import com.microsoft.azure.management.redis.ScheduleEntry;
 
 /**
  * An immutable client-side representation of an Azure Redis cache with Premium SKU.
