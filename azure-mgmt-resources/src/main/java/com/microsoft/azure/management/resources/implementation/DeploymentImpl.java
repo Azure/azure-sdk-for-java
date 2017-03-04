@@ -311,7 +311,7 @@ public final class DeploymentImpl extends
 
     @Override
     protected Observable<DeploymentExtendedInner> getInnerAsync() {
-        return this.manager().inner().deployments().getAsync(resourceGroupName(), name());
+        return this.manager().inner().deployments().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

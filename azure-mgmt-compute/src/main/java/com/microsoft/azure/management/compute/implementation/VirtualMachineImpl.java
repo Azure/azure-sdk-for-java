@@ -179,7 +179,7 @@ class VirtualMachineImpl
 
     @Override
     protected Observable<VirtualMachineInner> getInnerAsync() {
-        return this.manager().inner().virtualMachines().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().virtualMachines().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -262,7 +262,7 @@ class VirtualMachineImpl
 
     @Override
     public Observable<VirtualMachineInstanceView> refreshInstanceViewAsync() {
-        return this.manager().inner().virtualMachines().getAsync(this.resourceGroupName(),
+        return this.manager().inner().virtualMachines().getByResourceGroupAsync(this.resourceGroupName(),
                 this.name(),
                 InstanceViewTypes.INSTANCE_VIEW)
                 .map(new Func1<VirtualMachineInner, VirtualMachineInstanceView>() {

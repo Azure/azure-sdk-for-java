@@ -219,7 +219,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     protected Observable<ImageInner> getInnerAsync() {
-        return this.manager().inner().images().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().images().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {

@@ -97,6 +97,9 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().body();
@@ -109,6 +112,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
@@ -121,6 +125,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -138,6 +143,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -164,6 +170,9 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().body();
@@ -176,6 +185,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -205,6 +216,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -250,6 +262,9 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -263,6 +278,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<SubnetInner> serviceCallback) {
@@ -275,6 +291,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -292,6 +309,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<ServiceResponse<SubnetInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
@@ -330,6 +348,9 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -344,6 +365,7 @@ public class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, final ServiceCallback<SubnetInner> serviceCallback) {
@@ -357,6 +379,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -375,6 +398,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<ServiceResponse<SubnetInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -419,6 +443,9 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SubnetInner object if successful.
      */
     public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -433,6 +460,7 @@ public class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
@@ -446,6 +474,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -464,6 +493,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SubnetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -495,6 +525,9 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SubnetInner object if successful.
      */
     public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -509,6 +542,7 @@ public class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
@@ -522,6 +556,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -540,6 +575,7 @@ public class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubnetInner object
      */
     public Observable<ServiceResponse<SubnetInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -587,6 +623,9 @@ public class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
     public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) {
@@ -605,6 +644,7 @@ public class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<SubnetInner> serviceCallback) {
@@ -624,6 +664,7 @@ public class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
     public Observable<Page<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName) {
@@ -641,6 +682,7 @@ public class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String virtualNetworkName) {
@@ -662,6 +704,7 @@ public class SubnetsInner {
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SubnetInner>> * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
@@ -700,6 +743,9 @@ public class SubnetsInner {
      * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
     public PagedList<SubnetInner> listNext(final String nextPageLink) {
@@ -718,6 +764,7 @@ public class SubnetsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SubnetInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SubnetInner>> serviceFuture, final ListOperationCallback<SubnetInner> serviceCallback) {
@@ -736,6 +783,7 @@ public class SubnetsInner {
      * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
     public Observable<Page<SubnetInner>> listNextAsync(final String nextPageLink) {
@@ -752,6 +800,7 @@ public class SubnetsInner {
      * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -772,6 +821,7 @@ public class SubnetsInner {
      * Gets all subnets in a virtual network.
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listNextSinglePageAsync(final String nextPageLink) {

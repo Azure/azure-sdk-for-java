@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -40,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Vaults.
  */
-public class VaultsInner {
+public class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private VaultsService service;
     /** The service client containing this operation class. */
@@ -70,9 +72,9 @@ public class VaultsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("vaultName") String vaultName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.keyvault.Vaults listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults")
@@ -98,6 +100,9 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VaultInner object if successful.
      */
     public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
@@ -111,6 +116,7 @@ public class VaultsInner {
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters, final ServiceCallback<VaultInner> serviceCallback) {
@@ -123,6 +129,7 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VaultInner object
      */
     public Observable<VaultInner> createOrUpdateAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
@@ -140,6 +147,7 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VaultInner object
      */
     public Observable<ServiceResponse<VaultInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
@@ -186,6 +194,9 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String vaultName) {
         deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
@@ -197,6 +208,7 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String vaultName, final ServiceCallback<Void> serviceCallback) {
@@ -208,6 +220,7 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String vaultName) {
@@ -224,6 +237,7 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String vaultName) {
@@ -256,6 +270,7 @@ public class VaultsInner {
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -264,10 +279,13 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VaultInner object if successful.
      */
-    public VaultInner get(String resourceGroupName, String vaultName) {
-        return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
+    public VaultInner getByResourceGroup(String resourceGroupName, String vaultName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().body();
     }
 
     /**
@@ -276,10 +294,11 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VaultInner> getAsync(String resourceGroupName, String vaultName, final ServiceCallback<VaultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
+    public ServiceFuture<VaultInner> getByResourceGroupAsync(String resourceGroupName, String vaultName, final ServiceCallback<VaultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, vaultName), serviceCallback);
     }
 
     /**
@@ -287,10 +306,11 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VaultInner object
      */
-    public Observable<VaultInner> getAsync(String resourceGroupName, String vaultName) {
-        return getWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
+    public Observable<VaultInner> getByResourceGroupAsync(String resourceGroupName, String vaultName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, vaultName).map(new Func1<ServiceResponse<VaultInner>, VaultInner>() {
             @Override
             public VaultInner call(ServiceResponse<VaultInner> response) {
                 return response.body();
@@ -303,9 +323,10 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VaultInner object
      */
-    public Observable<ServiceResponse<VaultInner>> getWithServiceResponseAsync(String resourceGroupName, String vaultName) {
+    public Observable<ServiceResponse<VaultInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String vaultName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -318,12 +339,12 @@ public class VaultsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, vaultName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, vaultName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VaultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VaultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<VaultInner> clientResponse = getDelegate(response);
+                        ServiceResponse<VaultInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -332,7 +353,7 @@ public class VaultsInner {
             });
     }
 
-    private ServiceResponse<VaultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VaultInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<VaultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VaultInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -343,6 +364,9 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName) {
@@ -360,6 +384,7 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VaultInner> serviceCallback) {
@@ -378,6 +403,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<Page<VaultInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -394,6 +420,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -414,6 +441,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -446,6 +474,9 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
     public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
@@ -464,6 +495,7 @@ public class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<VaultInner> serviceCallback) {
@@ -483,6 +515,7 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<Page<VaultInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top) {
@@ -500,6 +533,7 @@ public class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final Integer top) {
@@ -521,6 +555,7 @@ public class VaultsInner {
      *
     ServiceResponse<PageImpl<VaultInner>> * @param resourceGroupName The name of the Resource Group to which the vault belongs.
     ServiceResponse<PageImpl<VaultInner>> * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final Integer top) {
@@ -557,6 +592,9 @@ public class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Resource&gt; object if successful.
      */
     public PagedList<Resource> list() {
@@ -573,6 +611,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<Resource>> listAsync(final ListOperationCallback<Resource> serviceCallback) {
@@ -590,6 +629,7 @@ public class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<Page<Resource>> listAsync() {
@@ -605,6 +645,7 @@ public class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<ServiceResponse<Page<Resource>>> listWithServiceResponseAsync() {
@@ -624,6 +665,7 @@ public class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<Resource>>> listSinglePageAsync() {
@@ -651,6 +693,9 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Resource&gt; object if successful.
      */
     public PagedList<Resource> list(final Integer top) {
@@ -668,6 +713,7 @@ public class VaultsInner {
      *
      * @param top Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<Resource>> listAsync(final Integer top, final ListOperationCallback<Resource> serviceCallback) {
@@ -686,6 +732,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<Page<Resource>> listAsync(final Integer top) {
@@ -702,6 +749,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<ServiceResponse<Page<Resource>>> listWithServiceResponseAsync(final Integer top) {
@@ -722,6 +770,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
     ServiceResponse<PageImpl<Resource>> * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<Resource>>> listSinglePageAsync(final Integer top) {
@@ -755,6 +804,9 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
     public PagedList<VaultInner> listByResourceGroupNext(final String nextPageLink) {
@@ -773,6 +825,7 @@ public class VaultsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VaultInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VaultInner>> serviceFuture, final ListOperationCallback<VaultInner> serviceCallback) {
@@ -791,6 +844,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<Page<VaultInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -807,6 +861,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VaultInner&gt; object
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -827,6 +882,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
     ServiceResponse<PageImpl<VaultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VaultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VaultInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -859,6 +915,9 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;Resource&gt; object if successful.
      */
     public PagedList<Resource> listNext(final String nextPageLink) {
@@ -877,6 +936,7 @@ public class VaultsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<Resource>> listNextAsync(final String nextPageLink, final ServiceFuture<List<Resource>> serviceFuture, final ListOperationCallback<Resource> serviceCallback) {
@@ -895,6 +955,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<Page<Resource>> listNextAsync(final String nextPageLink) {
@@ -911,6 +972,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;Resource&gt; object
      */
     public Observable<ServiceResponse<Page<Resource>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -931,6 +993,7 @@ public class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
     ServiceResponse<PageImpl<Resource>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Resource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<Resource>>> listNextSinglePageAsync(final String nextPageLink) {

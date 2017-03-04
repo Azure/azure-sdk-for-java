@@ -90,7 +90,7 @@ class AvailabilitySetImpl
 
     @Override
     protected Observable<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().inner().availabilitySets().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().availabilitySets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

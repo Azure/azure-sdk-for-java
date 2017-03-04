@@ -48,7 +48,7 @@ class StorageAccountsImpl
 
     @Override
     protected Observable<StorageAccountInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getPropertiesAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

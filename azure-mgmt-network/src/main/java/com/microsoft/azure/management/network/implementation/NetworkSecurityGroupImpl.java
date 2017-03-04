@@ -94,7 +94,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected Observable<NetworkSecurityGroupInner> getInnerAsync() {
-        return this.manager().inner().networkSecurityGroups().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().networkSecurityGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

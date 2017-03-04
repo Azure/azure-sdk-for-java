@@ -314,6 +314,9 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a CDN endpoint.
      *
      * @param name The resource name to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CheckNameAvailabilityOutputInner object if successful.
      */
     public CheckNameAvailabilityOutputInner checkNameAvailability(String name) {
@@ -325,6 +328,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      *
      * @param name The resource name to validate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityOutputInner> serviceCallback) {
@@ -335,6 +339,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a CDN endpoint.
      *
      * @param name The resource name to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityOutputInner object
      */
     public Observable<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name) {
@@ -350,6 +355,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a CDN endpoint.
      *
      * @param name The resource name to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityOutputInner object
      */
     public Observable<ServiceResponse<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
@@ -385,6 +391,9 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
      */
     public PagedList<ResourceUsageInner> checkResourceUsage() {
@@ -401,6 +410,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceUsageInner>> checkResourceUsageAsync(final ListOperationCallback<ResourceUsageInner> serviceCallback) {
@@ -418,6 +428,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<Page<ResourceUsageInner>> checkResourceUsageAsync() {
@@ -433,6 +444,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> checkResourceUsageWithServiceResponseAsync() {
@@ -452,6 +464,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> checkResourceUsageSinglePageAsync() {
@@ -485,6 +498,9 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Lists all of the available CDN REST API operations.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OperationInner&gt; object if successful.
      */
     public PagedList<OperationInner> listOperations() {
@@ -501,6 +517,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<OperationInner>> listOperationsAsync(final ListOperationCallback<OperationInner> serviceCallback) {
@@ -518,6 +535,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Lists all of the available CDN REST API operations.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationInner&gt; object
      */
     public Observable<Page<OperationInner>> listOperationsAsync() {
@@ -533,6 +551,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Lists all of the available CDN REST API operations.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<OperationInner>>> listOperationsWithServiceResponseAsync() {
@@ -552,6 +571,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
     /**
      * Lists all of the available CDN REST API operations.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<OperationInner>>> listOperationsSinglePageAsync() {
@@ -583,6 +603,9 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
      */
     public PagedList<ResourceUsageInner> checkResourceUsageNext(final String nextPageLink) {
@@ -601,6 +624,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceUsageInner>> checkResourceUsageNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceUsageInner>> serviceFuture, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
@@ -619,6 +643,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<Page<ResourceUsageInner>> checkResourceUsageNextAsync(final String nextPageLink) {
@@ -635,6 +660,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> checkResourceUsageNextWithServiceResponseAsync(final String nextPageLink) {
@@ -655,6 +681,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Check the quota and actual usage of the CDN profiles under the given subscription.
      *
     ServiceResponse<PageImpl<ResourceUsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> checkResourceUsageNextSinglePageAsync(final String nextPageLink) {
@@ -687,6 +714,9 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OperationInner&gt; object if successful.
      */
     public PagedList<OperationInner> listOperationsNext(final String nextPageLink) {
@@ -705,6 +735,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<OperationInner>> listOperationsNextAsync(final String nextPageLink, final ServiceFuture<List<OperationInner>> serviceFuture, final ListOperationCallback<OperationInner> serviceCallback) {
@@ -723,6 +754,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationInner&gt; object
      */
     public Observable<Page<OperationInner>> listOperationsNextAsync(final String nextPageLink) {
@@ -739,6 +771,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<OperationInner>>> listOperationsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -759,6 +792,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      * Lists all of the available CDN REST API operations.
      *
     ServiceResponse<PageImpl<OperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<OperationInner>>> listOperationsNextSinglePageAsync(final String nextPageLink) {

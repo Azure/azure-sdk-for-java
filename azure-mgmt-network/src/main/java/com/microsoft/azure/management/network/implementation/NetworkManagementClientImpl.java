@@ -542,6 +542,9 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) {
@@ -553,6 +556,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
@@ -563,6 +567,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location) {
@@ -578,6 +583,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithServiceResponseAsync(String location) {
@@ -608,6 +614,9 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
     public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
@@ -620,6 +629,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
@@ -631,6 +641,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
@@ -647,6 +658,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
     public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithServiceResponseAsync(String location, String domainNameLabel) {

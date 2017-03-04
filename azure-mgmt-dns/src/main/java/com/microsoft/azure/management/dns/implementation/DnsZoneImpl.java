@@ -279,7 +279,7 @@ public class DnsZoneImpl
 
     @Override
     protected Observable<ZoneInner> getInnerAsync() {
-        return this.manager().inner().zones().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().zones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {

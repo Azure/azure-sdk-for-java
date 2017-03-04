@@ -207,7 +207,7 @@ class RedisCacheImpl
 
     @Override
     protected Observable<RedisResourceInner> getInnerAsync() {
-        return this.manager().inner().redis().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().redis().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -476,7 +476,7 @@ class RedisCacheImpl
                         while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
                             SdkContext.sleep(30 * 1000);
 
-                            RedisResourceInner innerResource = self.manager().inner().redis().get(resourceGroupName(), name());
+                            RedisResourceInner innerResource = self.manager().inner().redis().getByResourceGroup(resourceGroupName(), name());
                             ((RedisCacheImpl) redisCache).setInner(innerResource);
                             self.setInner(innerResource);
                         }

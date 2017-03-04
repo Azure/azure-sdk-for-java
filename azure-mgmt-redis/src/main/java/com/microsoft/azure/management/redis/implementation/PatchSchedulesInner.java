@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
@@ -34,7 +35,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PatchSchedules.
  */
-public class PatchSchedulesInner {
+public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private PatchSchedulesService service;
     /** The service client containing this operation class. */
@@ -76,6 +77,9 @@ public class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RedisPatchScheduleInner object if successful.
      */
     public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
@@ -89,6 +93,7 @@ public class PatchSchedulesInner {
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
@@ -101,6 +106,7 @@ public class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
@@ -118,6 +124,7 @@ public class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<ServiceResponse<RedisPatchScheduleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
@@ -165,6 +172,9 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name) {
         deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -176,6 +186,7 @@ public class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -187,6 +198,7 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name) {
@@ -203,6 +215,7 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -236,6 +249,7 @@ public class PatchSchedulesInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -244,6 +258,9 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RedisPatchScheduleInner object if successful.
      */
     public RedisPatchScheduleInner get(String resourceGroupName, String name) {
@@ -256,6 +273,7 @@ public class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
@@ -267,6 +285,7 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name) {
@@ -283,6 +302,7 @@ public class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<ServiceResponse<RedisPatchScheduleInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {

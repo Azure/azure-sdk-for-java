@@ -72,7 +72,7 @@ class RouteTableImpl
 
     @Override
     protected Observable<RouteTableInner> getInnerAsync() {
-        return this.manager().inner().routeTables().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().routeTables().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

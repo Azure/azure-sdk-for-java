@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -43,7 +45,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineScaleSets.
  */
-public class VirtualMachineScaleSetsInner implements InnerSupportsListing<VirtualMachineScaleSetInner> {
+public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMachineScaleSetInner>, InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<VirtualMachineScaleSetInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineScaleSetsService service;
     /** The service client containing this operation class. */
@@ -89,9 +91,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("vmScaleSetName") String vmScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("vmScaleSetName") String vmScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("vmScaleSetName") String vmScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.VirtualMachineScaleSets deleteInstances" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/delete")
@@ -185,6 +187,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineScaleSetInner object if successful.
      */
     public VirtualMachineScaleSetInner createOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -198,6 +203,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualMachineScaleSetInner> createOrUpdateAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters, final ServiceCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -210,6 +216,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<VirtualMachineScaleSetInner> createOrUpdateAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -227,6 +234,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<VirtualMachineScaleSetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -254,6 +262,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineScaleSetInner object if successful.
      */
     public VirtualMachineScaleSetInner beginCreateOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -267,6 +278,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualMachineScaleSetInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters, final ServiceCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -279,6 +291,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInner object
      */
     public Observable<VirtualMachineScaleSetInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -296,6 +309,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the VM scale set to create or update.
      * @param parameters The scale set object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInner object
      */
     public Observable<ServiceResponse<VirtualMachineScaleSetInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
@@ -340,6 +354,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner deallocate(String resourceGroupName, String vmScaleSetName) {
@@ -352,6 +369,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -363,6 +381,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmScaleSetName) {
@@ -379,6 +398,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deallocateWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -404,6 +424,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner deallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -417,6 +440,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -429,6 +453,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deallocateAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -446,6 +471,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deallocateWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -474,6 +500,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDeallocate(String resourceGroupName, String vmScaleSetName) {
@@ -486,6 +515,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -497,6 +527,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName) {
@@ -513,6 +544,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeallocateWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -549,6 +581,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDeallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -562,6 +597,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -574,6 +610,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -591,6 +628,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeallocateWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -637,6 +675,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner delete(String resourceGroupName, String vmScaleSetName) {
@@ -649,6 +690,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -660,6 +702,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmScaleSetName) {
@@ -676,6 +719,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deleteWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -698,6 +742,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDelete(String resourceGroupName, String vmScaleSetName) {
@@ -710,6 +757,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -721,6 +769,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String vmScaleSetName) {
@@ -737,6 +786,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -778,10 +828,13 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineScaleSetInner object if successful.
      */
-    public VirtualMachineScaleSetInner get(String resourceGroupName, String vmScaleSetName) {
-        return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().body();
+    public VirtualMachineScaleSetInner getByResourceGroup(String resourceGroupName, String vmScaleSetName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().body();
     }
 
     /**
@@ -790,10 +843,11 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VirtualMachineScaleSetInner> getAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<VirtualMachineScaleSetInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, vmScaleSetName), serviceCallback);
+    public ServiceFuture<VirtualMachineScaleSetInner> getByResourceGroupAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<VirtualMachineScaleSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, vmScaleSetName), serviceCallback);
     }
 
     /**
@@ -801,10 +855,11 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInner object
      */
-    public Observable<VirtualMachineScaleSetInner> getAsync(String resourceGroupName, String vmScaleSetName) {
-        return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName).map(new Func1<ServiceResponse<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner>() {
+    public Observable<VirtualMachineScaleSetInner> getByResourceGroupAsync(String resourceGroupName, String vmScaleSetName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, vmScaleSetName).map(new Func1<ServiceResponse<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner>() {
             @Override
             public VirtualMachineScaleSetInner call(ServiceResponse<VirtualMachineScaleSetInner> response) {
                 return response.body();
@@ -817,9 +872,10 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInner object
      */
-    public Observable<ServiceResponse<VirtualMachineScaleSetInner>> getWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
+    public Observable<ServiceResponse<VirtualMachineScaleSetInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -830,12 +886,12 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.get(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineScaleSetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualMachineScaleSetInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<VirtualMachineScaleSetInner> clientResponse = getDelegate(response);
+                        ServiceResponse<VirtualMachineScaleSetInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -844,7 +900,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
             });
     }
 
-    private ServiceResponse<VirtualMachineScaleSetInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualMachineScaleSetInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<VirtualMachineScaleSetInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualMachineScaleSetInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -857,6 +913,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner deleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -870,6 +929,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deleteInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -882,6 +942,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deleteInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -899,6 +960,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deleteInstancesWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -928,6 +990,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDeleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -941,6 +1006,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeleteInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -953,6 +1019,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeleteInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -970,6 +1037,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeleteInstancesWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1016,6 +1084,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineScaleSetInstanceViewInner object if successful.
      */
     public VirtualMachineScaleSetInstanceViewInner getInstanceView(String resourceGroupName, String vmScaleSetName) {
@@ -1028,6 +1099,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualMachineScaleSetInstanceViewInner> getInstanceViewAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<VirtualMachineScaleSetInstanceViewInner> serviceCallback) {
@@ -1039,6 +1111,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInstanceViewInner object
      */
     public Observable<VirtualMachineScaleSetInstanceViewInner> getInstanceViewAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1055,6 +1128,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineScaleSetInstanceViewInner object
      */
     public Observable<ServiceResponse<VirtualMachineScaleSetInstanceViewInner>> getInstanceViewWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1093,6 +1167,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetInner> listByResourceGroup(final String resourceGroupName) {
@@ -1110,6 +1187,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -1128,6 +1206,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -1144,6 +1223,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -1164,6 +1244,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -1198,6 +1279,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
     /**
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetInner> list() {
@@ -1214,6 +1298,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetInner>> listAsync(final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -1231,6 +1316,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
     /**
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetInner>> listAsync() {
@@ -1246,6 +1332,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
     /**
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listWithServiceResponseAsync() {
@@ -1265,6 +1352,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
     /**
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listSinglePageAsync() {
@@ -1298,6 +1386,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetSkuInner> listSkus(final String resourceGroupName, final String vmScaleSetName) {
@@ -1316,6 +1407,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetSkuInner>> listSkusAsync(final String resourceGroupName, final String vmScaleSetName, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
@@ -1335,6 +1427,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetSkuInner>> listSkusAsync(final String resourceGroupName, final String vmScaleSetName) {
@@ -1352,6 +1445,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusWithServiceResponseAsync(final String resourceGroupName, final String vmScaleSetName) {
@@ -1373,6 +1467,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusSinglePageAsync(final String resourceGroupName, final String vmScaleSetName) {
@@ -1412,6 +1507,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner powerOff(String resourceGroupName, String vmScaleSetName) {
@@ -1424,6 +1522,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1435,6 +1534,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1451,6 +1551,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> powerOffWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1476,6 +1577,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner powerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1489,6 +1593,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1501,6 +1606,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> powerOffAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1518,6 +1624,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> powerOffWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1546,6 +1653,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginPowerOff(String resourceGroupName, String vmScaleSetName) {
@@ -1558,6 +1668,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1569,6 +1680,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1585,6 +1697,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginPowerOffWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1621,6 +1734,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginPowerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1634,6 +1750,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1646,6 +1763,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginPowerOffAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1663,6 +1781,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginPowerOffWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1709,6 +1828,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner restart(String resourceGroupName, String vmScaleSetName) {
@@ -1721,6 +1843,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1732,6 +1855,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1748,6 +1872,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> restartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1773,6 +1898,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner restart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1786,6 +1914,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1798,6 +1927,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> restartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1815,6 +1945,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> restartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1843,6 +1974,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginRestart(String resourceGroupName, String vmScaleSetName) {
@@ -1855,6 +1989,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1866,6 +2001,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1882,6 +2018,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginRestartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1918,6 +2055,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginRestart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1931,6 +2071,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1943,6 +2084,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginRestartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -1960,6 +2102,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginRestartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2006,6 +2149,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner start(String resourceGroupName, String vmScaleSetName) {
@@ -2018,6 +2164,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2029,6 +2176,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2045,6 +2193,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> startWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2070,6 +2219,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner start(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2083,6 +2235,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2095,6 +2248,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> startAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2112,6 +2266,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> startWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2140,6 +2295,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginStart(String resourceGroupName, String vmScaleSetName) {
@@ -2152,6 +2310,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2163,6 +2322,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2179,6 +2339,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginStartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2215,6 +2376,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginStart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2228,6 +2392,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2240,6 +2405,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginStartAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2257,6 +2423,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginStartWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2304,6 +2471,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner updateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2317,6 +2487,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> updateInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2329,6 +2500,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> updateInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2346,6 +2518,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> updateInstancesWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2375,6 +2548,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginUpdateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2388,6 +2564,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginUpdateInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2400,6 +2577,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginUpdateInstancesAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2417,6 +2595,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceIds The virtual machine scale set instance ids.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginUpdateInstancesWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
@@ -2463,6 +2642,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner reimage(String resourceGroupName, String vmScaleSetName) {
@@ -2475,6 +2657,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> reimageAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2486,6 +2669,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> reimageAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2502,6 +2686,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> reimageWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2524,6 +2709,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginReimage(String resourceGroupName, String vmScaleSetName) {
@@ -2536,6 +2724,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginReimageAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2547,6 +2736,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginReimageAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2563,6 +2753,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginReimageWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2603,6 +2794,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner reimageAll(String resourceGroupName, String vmScaleSetName) {
@@ -2615,6 +2809,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> reimageAllAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2626,6 +2821,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> reimageAllAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2642,6 +2838,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> reimageAllWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2664,6 +2861,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginReimageAll(String resourceGroupName, String vmScaleSetName) {
@@ -2676,6 +2876,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -2687,6 +2888,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2703,6 +2905,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginReimageAllWithServiceResponseAsync(String resourceGroupName, String vmScaleSetName) {
@@ -2742,6 +2945,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetInner> listByResourceGroupNext(final String nextPageLink) {
@@ -2760,6 +2966,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineScaleSetInner>> serviceFuture, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -2778,6 +2985,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -2794,6 +3002,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -2814,6 +3023,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM scale sets under a resource group.
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -2846,6 +3056,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetInner> listNext(final String nextPageLink) {
@@ -2864,6 +3077,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineScaleSetInner>> serviceFuture, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
@@ -2882,6 +3096,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetInner>> listNextAsync(final String nextPageLink) {
@@ -2898,6 +3113,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -2918,6 +3134,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is not null to fetch all the VM Scale Sets.
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -2950,6 +3167,9 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object if successful.
      */
     public PagedList<VirtualMachineScaleSetSkuInner> listSkusNext(final String nextPageLink) {
@@ -2968,6 +3188,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineScaleSetSkuInner>> listSkusNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualMachineScaleSetSkuInner>> serviceFuture, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
@@ -2986,6 +3207,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object
      */
     public Observable<Page<VirtualMachineScaleSetSkuInner>> listSkusNextAsync(final String nextPageLink) {
@@ -3002,6 +3224,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusNextWithServiceResponseAsync(final String nextPageLink) {
@@ -3022,6 +3245,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsListing<Virtua
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
      *
     ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusNextSinglePageAsync(final String nextPageLink) {
