@@ -114,7 +114,7 @@ class TrafficManagerProfileImpl
 
     @Override
     protected Observable<ProfileInner> getInnerAsync() {
-        return this.manager().inner().profiles().getAsync(
+        return this.manager().inner().profiles().getByResourceGroupAsync(
                 this.resourceGroupName(), this.name());
     }
 

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Zones.
  */
-public class ZonesInner implements InnerSupportsListing<ZoneInner> {
+public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsListing<ZoneInner> {
     /** The Retrofit service to perform REST calls. */
     private ZonesService service;
     /** The service client containing this operation class. */
@@ -74,9 +75,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("zoneName") String zoneName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.dns.Zones listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones")
@@ -102,6 +103,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
@@ -115,6 +119,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, final ServiceCallback<ZoneInner> serviceCallback) {
@@ -127,6 +132,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
@@ -144,6 +150,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ServiceResponse<ZoneInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
@@ -187,6 +194,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
@@ -202,6 +212,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch, final ServiceCallback<ZoneInner> serviceCallback) {
@@ -216,6 +227,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
@@ -235,6 +247,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwritting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
     public Observable<ServiceResponse<ZoneInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
@@ -281,6 +294,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName) {
@@ -293,6 +309,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
@@ -304,6 +321,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName) {
@@ -320,6 +338,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName) {
@@ -345,6 +364,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner delete(String resourceGroupName, String zoneName, String ifMatch) {
@@ -358,6 +380,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
@@ -370,6 +393,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ZoneDeleteResultInner> deleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -387,6 +411,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> deleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -411,6 +436,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName) {
@@ -423,6 +451,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
@@ -434,6 +463,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName) {
@@ -450,6 +480,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String zoneName) {
@@ -486,6 +517,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneDeleteResultInner object if successful.
      */
     public ZoneDeleteResultInner beginDelete(String resourceGroupName, String zoneName, String ifMatch) {
@@ -499,6 +533,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch, final ServiceCallback<ZoneDeleteResultInner> serviceCallback) {
@@ -511,6 +546,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ZoneDeleteResultInner> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -528,6 +564,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneDeleteResultInner object
      */
     public Observable<ServiceResponse<ZoneDeleteResultInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -571,10 +608,13 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ZoneInner object if successful.
      */
-    public ZoneInner get(String resourceGroupName, String zoneName) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
+    public ZoneInner getByResourceGroup(String resourceGroupName, String zoneName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName).toBlocking().single().body();
     }
 
     /**
@@ -583,10 +623,11 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ZoneInner> getAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
+    public ServiceFuture<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName, final ServiceCallback<ZoneInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName), serviceCallback);
     }
 
     /**
@@ -594,10 +635,11 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
-    public Observable<ZoneInner> getAsync(String resourceGroupName, String zoneName) {
-        return getWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
+    public Observable<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, zoneName).map(new Func1<ServiceResponse<ZoneInner>, ZoneInner>() {
             @Override
             public ZoneInner call(ServiceResponse<ZoneInner> response) {
                 return response.body();
@@ -610,9 +652,10 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ZoneInner object
      */
-    public Observable<ServiceResponse<ZoneInner>> getWithServiceResponseAsync(String resourceGroupName, String zoneName) {
+    public Observable<ServiceResponse<ZoneInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String zoneName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -625,12 +668,12 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, zoneName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, zoneName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ZoneInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ZoneInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ZoneInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ZoneInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -639,7 +682,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
             });
     }
 
-    private ServiceResponse<ZoneInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ZoneInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ZoneInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ZoneInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -650,6 +693,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName) {
@@ -667,6 +713,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -685,6 +732,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -701,6 +749,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -721,6 +770,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -753,6 +803,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
@@ -771,6 +824,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -790,6 +844,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listByResourceGroupAsync(final String resourceGroupName, final Integer top) {
@@ -807,6 +862,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final Integer top) {
@@ -828,6 +884,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ZoneInner>> * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final Integer top) {
@@ -864,6 +921,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
     /**
      * Lists the DNS zones in all resource groups in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> list() {
@@ -880,6 +940,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listAsync(final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -897,6 +958,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
     /**
      * Lists the DNS zones in all resource groups in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listAsync() {
@@ -912,6 +974,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
     /**
      * Lists the DNS zones in all resource groups in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listWithServiceResponseAsync() {
@@ -931,6 +994,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
     /**
      * Lists the DNS zones in all resource groups in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listSinglePageAsync() {
@@ -959,6 +1023,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> list(final Integer top) {
@@ -976,6 +1043,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      *
      * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listAsync(final Integer top, final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -994,6 +1062,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listAsync(final Integer top) {
@@ -1010,6 +1079,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listWithServiceResponseAsync(final Integer top) {
@@ -1030,6 +1100,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listSinglePageAsync(final Integer top) {
@@ -1064,6 +1135,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1082,6 +1156,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -1100,6 +1175,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1116,6 +1192,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1136,6 +1213,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones within a resource group.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1168,6 +1246,9 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ZoneInner&gt; object if successful.
      */
     public PagedList<ZoneInner> listNext(final String nextPageLink) {
@@ -1186,6 +1267,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ZoneInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ZoneInner>> serviceFuture, final ListOperationCallback<ZoneInner> serviceCallback) {
@@ -1204,6 +1286,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<Page<ZoneInner>> listNextAsync(final String nextPageLink) {
@@ -1220,6 +1303,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ZoneInner&gt; object
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1240,6 +1324,7 @@ public class ZonesInner implements InnerSupportsListing<ZoneInner> {
      * Lists the DNS zones in all resource groups in a subscription.
      *
     ServiceResponse<PageImpl<ZoneInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ZoneInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ZoneInner>>> listNextSinglePageAsync(final String nextPageLink) {

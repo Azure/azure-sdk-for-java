@@ -44,7 +44,7 @@ class PublicIPAddressImpl
 
     @Override
     protected Observable<PublicIPAddressInner> getInnerAsync() {
-        return this.manager().inner().publicIPAddresses().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().publicIPAddresses().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)

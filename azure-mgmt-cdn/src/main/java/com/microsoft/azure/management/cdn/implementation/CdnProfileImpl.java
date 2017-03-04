@@ -135,7 +135,7 @@ class CdnProfileImpl
 
     @Override
     protected Observable<ProfileInner> getInnerAsync() {
-        return this.manager().inner().profiles().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().profiles().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

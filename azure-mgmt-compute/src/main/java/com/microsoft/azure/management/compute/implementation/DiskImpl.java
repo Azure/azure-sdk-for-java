@@ -275,6 +275,6 @@ class DiskImpl
 
     @Override
     protected Observable<DiskInner> getInnerAsync() {
-        return this.manager().inner().disks().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().disks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

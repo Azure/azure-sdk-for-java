@@ -106,6 +106,9 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
     public PacketCaptureResultInner create(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -120,6 +123,7 @@ public class PacketCapturesInner {
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PacketCaptureResultInner> createAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters, final ServiceCallback<PacketCaptureResultInner> serviceCallback) {
@@ -133,6 +137,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<PacketCaptureResultInner> createAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -151,6 +156,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<PacketCaptureResultInner>> createWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -182,6 +188,9 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
     public PacketCaptureResultInner beginCreate(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -196,6 +205,7 @@ public class PacketCapturesInner {
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PacketCaptureResultInner> beginCreateAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters, final ServiceCallback<PacketCaptureResultInner> serviceCallback) {
@@ -209,6 +219,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureResultInner object
      */
     public Observable<PacketCaptureResultInner> beginCreateAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -227,6 +238,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param parameters Parameters that define the create packet capture operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureResultInner object
      */
     public Observable<ServiceResponse<PacketCaptureResultInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, PacketCaptureInner parameters) {
@@ -274,6 +286,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureResultInner object if successful.
      */
     public PacketCaptureResultInner get(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -287,6 +302,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PacketCaptureResultInner> getAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<PacketCaptureResultInner> serviceCallback) {
@@ -299,6 +315,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureResultInner object
      */
     public Observable<PacketCaptureResultInner> getAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -316,6 +333,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureResultInner object
      */
     public Observable<ServiceResponse<PacketCaptureResultInner>> getWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -359,6 +377,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName).toBlocking().last().body();
@@ -371,6 +392,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<Void> serviceCallback) {
@@ -383,6 +405,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -400,6 +423,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -426,6 +450,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName).toBlocking().single().body();
@@ -438,6 +465,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<Void> serviceCallback) {
@@ -450,6 +478,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -467,6 +496,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -511,6 +541,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stop(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         stopWithServiceResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName).toBlocking().last().body();
@@ -523,6 +556,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> stopAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<Void> serviceCallback) {
@@ -535,6 +569,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> stopAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -552,6 +587,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> stopWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -578,6 +614,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginStop(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         beginStopWithServiceResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName).toBlocking().single().body();
@@ -590,6 +629,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginStopAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<Void> serviceCallback) {
@@ -602,6 +642,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginStopAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -619,6 +660,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginStopWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -663,6 +705,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureQueryStatusResultInner object if successful.
      */
     public PacketCaptureQueryStatusResultInner getStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -676,6 +721,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PacketCaptureQueryStatusResultInner> getStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<PacketCaptureQueryStatusResultInner> serviceCallback) {
@@ -688,6 +734,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<PacketCaptureQueryStatusResultInner> getStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -705,6 +752,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<PacketCaptureQueryStatusResultInner>> getStatusWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -731,6 +779,9 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PacketCaptureQueryStatusResultInner object if successful.
      */
     public PacketCaptureQueryStatusResultInner beginGetStatus(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -744,6 +795,7 @@ public class PacketCapturesInner {
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PacketCaptureQueryStatusResultInner> beginGetStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName, final ServiceCallback<PacketCaptureQueryStatusResultInner> serviceCallback) {
@@ -756,6 +808,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureQueryStatusResultInner object
      */
     public Observable<PacketCaptureQueryStatusResultInner> beginGetStatusAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -773,6 +826,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PacketCaptureQueryStatusResultInner object
      */
     public Observable<ServiceResponse<PacketCaptureQueryStatusResultInner>> beginGetStatusWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
@@ -816,6 +870,9 @@ public class PacketCapturesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PacketCaptureResultInner&gt; object if successful.
      */
     public List<PacketCaptureResultInner> list(String resourceGroupName, String networkWatcherName) {
@@ -828,6 +885,7 @@ public class PacketCapturesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PacketCaptureResultInner>> listAsync(String resourceGroupName, String networkWatcherName, final ServiceCallback<List<PacketCaptureResultInner>> serviceCallback) {
@@ -839,6 +897,7 @@ public class PacketCapturesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PacketCaptureResultInner&gt; object
      */
     public Observable<List<PacketCaptureResultInner>> listAsync(String resourceGroupName, String networkWatcherName) {
@@ -855,6 +914,7 @@ public class PacketCapturesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PacketCaptureResultInner&gt; object
      */
     public Observable<ServiceResponse<List<PacketCaptureResultInner>>> listWithServiceResponseAsync(String resourceGroupName, String networkWatcherName) {

@@ -222,6 +222,7 @@ var codegen = function(project, cb) {
                         ' -Input ' + specRoot + '/' + mappings[project].source +
                         ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+                        ' -skipValidation true' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;

@@ -88,6 +88,9 @@ public class OriginsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OriginInner&gt; object if successful.
      */
     public PagedList<OriginInner> listByEndpoint(final String resourceGroupName, final String profileName, final String endpointName) {
@@ -107,6 +110,7 @@ public class OriginsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<OriginInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName, final ListOperationCallback<OriginInner> serviceCallback) {
@@ -127,6 +131,7 @@ public class OriginsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OriginInner&gt; object
      */
     public Observable<Page<OriginInner>> listByEndpointAsync(final String resourceGroupName, final String profileName, final String endpointName) {
@@ -145,6 +150,7 @@ public class OriginsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OriginInner&gt; object
      */
     public Observable<ServiceResponse<Page<OriginInner>>> listByEndpointWithServiceResponseAsync(final String resourceGroupName, final String profileName, final String endpointName) {
@@ -167,6 +173,7 @@ public class OriginsInner {
     ServiceResponse<PageImpl<OriginInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<OriginInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
     ServiceResponse<PageImpl<OriginInner>> * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OriginInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<OriginInner>>> listByEndpointSinglePageAsync(final String resourceGroupName, final String profileName, final String endpointName) {
@@ -213,6 +220,9 @@ public class OriginsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OriginInner object if successful.
      */
     public OriginInner get(String resourceGroupName, String profileName, String endpointName, String originName) {
@@ -227,6 +237,7 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OriginInner> getAsync(String resourceGroupName, String profileName, String endpointName, String originName, final ServiceCallback<OriginInner> serviceCallback) {
@@ -240,6 +251,7 @@ public class OriginsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OriginInner object
      */
     public Observable<OriginInner> getAsync(String resourceGroupName, String profileName, String endpointName, String originName) {
@@ -258,6 +270,7 @@ public class OriginsInner {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OriginInner object
      */
     public Observable<ServiceResponse<OriginInner>> getWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, String originName) {
@@ -308,6 +321,9 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OriginInner object if successful.
      */
     public OriginInner update(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -323,6 +339,7 @@ public class OriginsInner {
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
@@ -337,6 +354,7 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -356,6 +374,7 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OriginInner>> updateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -393,6 +412,9 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OriginInner object if successful.
      */
     public OriginInner beginUpdate(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -408,6 +430,7 @@ public class OriginsInner {
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OriginInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties, final ServiceCallback<OriginInner> serviceCallback) {
@@ -422,6 +445,7 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OriginInner object
      */
     public Observable<OriginInner> beginUpdateAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -441,6 +465,7 @@ public class OriginsInner {
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
      * @param originUpdateProperties Origin properties
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OriginInner object
      */
     public Observable<ServiceResponse<OriginInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, String originName, OriginUpdateParametersInner originUpdateProperties) {
@@ -492,6 +517,9 @@ public class OriginsInner {
      * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;OriginInner&gt; object if successful.
      */
     public PagedList<OriginInner> listByEndpointNext(final String nextPageLink) {
@@ -510,6 +538,7 @@ public class OriginsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<OriginInner>> listByEndpointNextAsync(final String nextPageLink, final ServiceFuture<List<OriginInner>> serviceFuture, final ListOperationCallback<OriginInner> serviceCallback) {
@@ -528,6 +557,7 @@ public class OriginsInner {
      * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OriginInner&gt; object
      */
     public Observable<Page<OriginInner>> listByEndpointNextAsync(final String nextPageLink) {
@@ -544,6 +574,7 @@ public class OriginsInner {
      * Lists all of the existing origins within an endpoint.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OriginInner&gt; object
      */
     public Observable<ServiceResponse<Page<OriginInner>>> listByEndpointNextWithServiceResponseAsync(final String nextPageLink) {
@@ -564,6 +595,7 @@ public class OriginsInner {
      * Lists all of the existing origins within an endpoint.
      *
     ServiceResponse<PageImpl<OriginInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OriginInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<OriginInner>>> listByEndpointNextSinglePageAsync(final String nextPageLink) {

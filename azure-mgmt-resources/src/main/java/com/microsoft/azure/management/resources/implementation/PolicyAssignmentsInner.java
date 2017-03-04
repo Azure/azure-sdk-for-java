@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PolicyAssignments.
  */
-public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssignmentInner> {
+public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignmentInner>, InnerSupportsListing<PolicyAssignmentInner> {
     /** The Retrofit service to perform REST calls. */
     private PolicyAssignmentsService service;
     /** The service client containing this operation class. */
@@ -117,6 +118,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner delete(String scope, String policyAssignmentName) {
@@ -129,6 +133,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -140,6 +145,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName) {
@@ -156,6 +162,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> deleteWithServiceResponseAsync(String scope, String policyAssignmentName) {
@@ -196,6 +203,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner create(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
@@ -210,6 +220,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -223,6 +234,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
@@ -241,6 +253,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> createWithServiceResponseAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
@@ -283,6 +296,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner get(String scope, String policyAssignmentName) {
@@ -295,6 +311,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -306,6 +323,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
@@ -322,6 +340,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> getWithServiceResponseAsync(String scope, String policyAssignmentName) {
@@ -359,6 +378,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName) {
@@ -376,6 +398,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -394,6 +417,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -410,6 +434,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -430,6 +455,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -462,6 +488,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName, final String filter) {
@@ -480,6 +509,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -499,6 +529,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter) {
@@ -516,6 +547,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
@@ -537,6 +569,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceGroupName The name of the resource group that contains policy assignments.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
@@ -578,6 +611,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param parentResourcePath The parent resource path.
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
@@ -599,6 +635,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -621,6 +658,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param parentResourcePath The parent resource path.
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
@@ -641,6 +679,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param parentResourcePath The parent resource path.
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
@@ -665,6 +704,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param parentResourcePath The parent resource path.
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
@@ -713,6 +753,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
@@ -735,6 +778,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -758,6 +802,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
@@ -779,6 +824,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
@@ -804,6 +850,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceType The resource type.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceName The name of the resource with policy assignments.
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
@@ -852,6 +899,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
     /**
      * Gets all the policy assignments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> list() {
@@ -868,6 +918,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -885,6 +936,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
     /**
      * Gets all the policy assignments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listAsync() {
@@ -900,6 +952,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
     /**
      * Gets all the policy assignments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync() {
@@ -919,6 +972,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
     /**
      * Gets all the policy assignments for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync() {
@@ -947,6 +1001,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> list(final String filter) {
@@ -964,6 +1021,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -982,6 +1040,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listAsync(final String filter) {
@@ -998,6 +1057,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync(final String filter) {
@@ -1018,6 +1078,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync(final String filter) {
@@ -1053,6 +1114,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner deleteById(String policyAssignmentId) {
@@ -1065,6 +1129,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1076,6 +1141,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId) {
@@ -1092,6 +1158,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> deleteByIdWithServiceResponseAsync(String policyAssignmentId) {
@@ -1128,6 +1195,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner createById(String policyAssignmentId, PolicyAssignmentInner parameters) {
@@ -1141,6 +1211,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1153,6 +1224,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
@@ -1170,6 +1242,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> createByIdWithServiceResponseAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
@@ -1209,6 +1282,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner getById(String policyAssignmentId) {
@@ -1221,6 +1297,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      *
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1232,6 +1309,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
@@ -1248,6 +1326,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
      *
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
     public Observable<ServiceResponse<PolicyAssignmentInner>> getByIdWithServiceResponseAsync(String policyAssignmentId) {
@@ -1282,6 +1361,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1300,6 +1382,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1318,6 +1401,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1334,6 +1418,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1354,6 +1439,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for the resource group.
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1386,6 +1472,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for a resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResourceNext(final String nextPageLink) {
@@ -1404,6 +1493,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1422,6 +1512,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for a resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink) {
@@ -1438,6 +1529,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for a resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1458,6 +1550,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets policy assignments for a resource.
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceNextSinglePageAsync(final String nextPageLink) {
@@ -1490,6 +1583,9 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listNext(final String nextPageLink) {
@@ -1508,6 +1604,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyAssignmentInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
@@ -1526,6 +1623,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listNextAsync(final String nextPageLink) {
@@ -1542,6 +1640,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1562,6 +1661,7 @@ public class PolicyAssignmentsInner implements InnerSupportsListing<PolicyAssign
      * Gets all the policy assignments for a subscription.
      *
     ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -135,6 +135,9 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void moveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
         moveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().last().body();
@@ -147,6 +150,7 @@ public class ResourcesInner {
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters, final ServiceCallback<Void> serviceCallback) {
@@ -159,6 +163,7 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -176,6 +181,7 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> moveResourcesWithServiceResponseAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -202,6 +208,9 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginMoveResources(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
         beginMoveResourcesWithServiceResponseAsync(sourceResourceGroupName, parameters).toBlocking().single().body();
@@ -214,6 +223,7 @@ public class ResourcesInner {
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters, final ServiceCallback<Void> serviceCallback) {
@@ -226,6 +236,7 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -243,6 +254,7 @@ public class ResourcesInner {
      *
      * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
      * @param parameters Parameters for moving resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginMoveResourcesWithServiceResponseAsync(String sourceResourceGroupName, ResourcesMoveInfoInner parameters) {
@@ -277,12 +289,16 @@ public class ResourcesInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
      * Get all the resources in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
     public PagedList<GenericResourceInner> list() {
@@ -299,6 +315,7 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<GenericResourceInner>> listAsync(final ListOperationCallback<GenericResourceInner> serviceCallback) {
@@ -316,6 +333,7 @@ public class ResourcesInner {
     /**
      * Get all the resources in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<Page<GenericResourceInner>> listAsync() {
@@ -331,6 +349,7 @@ public class ResourcesInner {
     /**
      * Get all the resources in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listWithServiceResponseAsync() {
@@ -350,6 +369,7 @@ public class ResourcesInner {
     /**
      * Get all the resources in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listSinglePageAsync() {
@@ -382,6 +402,9 @@ public class ResourcesInner {
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
      * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
     public PagedList<GenericResourceInner> list(final String filter, final String expand, final Integer top) {
@@ -401,6 +424,7 @@ public class ResourcesInner {
      * @param expand The $expand query parameter.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
@@ -421,6 +445,7 @@ public class ResourcesInner {
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
      * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<Page<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top) {
@@ -439,6 +464,7 @@ public class ResourcesInner {
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter.
      * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listWithServiceResponseAsync(final String filter, final String expand, final Integer top) {
@@ -461,6 +487,7 @@ public class ResourcesInner {
     ServiceResponse<PageImpl<GenericResourceInner>> * @param filter The filter to apply on the operation.
     ServiceResponse<PageImpl<GenericResourceInner>> * @param expand The $expand query parameter.
     ServiceResponse<PageImpl<GenericResourceInner>> * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listSinglePageAsync(final String filter, final String expand, final Integer top) {
@@ -500,6 +527,9 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -516,6 +546,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Boolean> serviceCallback) {
@@ -531,6 +562,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -551,6 +583,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -606,6 +639,9 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().last().body();
@@ -621,6 +657,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
@@ -636,6 +673,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -656,6 +694,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -693,6 +732,9 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().body();
@@ -708,6 +750,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
@@ -723,6 +766,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -743,6 +787,7 @@ public class ResourcesInner {
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -786,6 +831,7 @@ public class ResourcesInner {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -799,6 +845,9 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -816,6 +865,7 @@ public class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -832,6 +882,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -853,6 +904,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<GenericResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -895,6 +947,9 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner beginCreateOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -912,6 +967,7 @@ public class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -928,6 +984,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -949,6 +1006,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Parameters for creating or updating the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
@@ -1009,6 +1067,9 @@ public class ResourcesInner {
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1025,6 +1086,7 @@ public class ResourcesInner {
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -1040,6 +1102,7 @@ public class ResourcesInner {
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1060,6 +1123,7 @@ public class ResourcesInner {
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -1110,11 +1174,13 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
     public boolean checkExistenceById(String resourceId, String apiVersion) {
-        Boolean result = checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
-        return (result != null) ? result.booleanValue() : false;
+        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
     }
 
     /**
@@ -1123,6 +1189,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Boolean> serviceCallback) {
@@ -1134,6 +1201,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
@@ -1150,6 +1218,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1186,6 +1255,9 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteById(String resourceId, String apiVersion) {
         deleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().last().body();
@@ -1197,6 +1269,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
@@ -1208,6 +1281,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteByIdAsync(String resourceId, String apiVersion) {
@@ -1224,6 +1298,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1242,6 +1317,9 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDeleteById(String resourceId, String apiVersion) {
         beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().body();
@@ -1253,6 +1331,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
@@ -1264,6 +1343,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
@@ -1280,6 +1360,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1308,6 +1389,7 @@ public class ResourcesInner {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1317,6 +1399,9 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1330,6 +1415,7 @@ public class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -1342,6 +1428,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1359,6 +1446,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<GenericResourceInner>> createOrUpdateByIdWithServiceResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1382,6 +1470,9 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner beginCreateOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1395,6 +1486,7 @@ public class ResourcesInner {
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -1407,6 +1499,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1424,6 +1517,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param parameters Create or update resource parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithServiceResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1465,6 +1559,9 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner getById(String resourceId, String apiVersion) {
@@ -1477,6 +1574,7 @@ public class ResourcesInner {
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, final ServiceCallback<GenericResourceInner> serviceCallback) {
@@ -1488,6 +1586,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
@@ -1504,6 +1603,7 @@ public class ResourcesInner {
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
      * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> getByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
@@ -1538,6 +1638,9 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
     public PagedList<GenericResourceInner> listNext(final String nextPageLink) {
@@ -1556,6 +1659,7 @@ public class ResourcesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<GenericResourceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<GenericResourceInner>> serviceFuture, final ListOperationCallback<GenericResourceInner> serviceCallback) {
@@ -1574,6 +1678,7 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<Page<GenericResourceInner>> listNextAsync(final String nextPageLink) {
@@ -1590,6 +1695,7 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1610,6 +1716,7 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
     ServiceResponse<PageImpl<GenericResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listNextSinglePageAsync(final String nextPageLink) {

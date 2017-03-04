@@ -70,6 +70,9 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param location The location for which resource usage is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> list(final String location) {
@@ -87,6 +90,7 @@ public class UsagesInner {
      *
      * @param location The location for which resource usage is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UsageInner>> listAsync(final String location, final ListOperationCallback<UsageInner> serviceCallback) {
@@ -105,6 +109,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param location The location for which resource usage is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listAsync(final String location) {
@@ -121,6 +126,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param location The location for which resource usage is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWithServiceResponseAsync(final String location) {
@@ -141,6 +147,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
     ServiceResponse<PageImpl1<UsageInner>> * @param location The location for which resource usage is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listSinglePageAsync(final String location) {
@@ -176,6 +183,9 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> listNext(final String nextPageLink) {
@@ -194,6 +204,7 @@ public class UsagesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UsageInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<UsageInner>> serviceFuture, final ListOperationCallback<UsageInner> serviceCallback) {
@@ -212,6 +223,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listNextAsync(final String nextPageLink) {
@@ -228,6 +240,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -248,6 +261,7 @@ public class UsagesInner {
      * Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
      *
     ServiceResponse<PageImpl1<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listNextSinglePageAsync(final String nextPageLink) {

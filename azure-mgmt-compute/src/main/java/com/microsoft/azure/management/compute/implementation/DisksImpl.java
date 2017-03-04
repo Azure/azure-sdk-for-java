@@ -57,7 +57,7 @@ class DisksImpl
 
     @Override
     protected Observable<DiskInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

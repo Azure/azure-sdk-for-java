@@ -69,6 +69,9 @@ public class BgpServiceCommunitiesInner {
     /**
      * Gets all the available bgp service communities.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BgpServiceCommunityInner&gt; object if successful.
      */
     public PagedList<BgpServiceCommunityInner> list() {
@@ -85,6 +88,7 @@ public class BgpServiceCommunitiesInner {
      * Gets all the available bgp service communities.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BgpServiceCommunityInner>> listAsync(final ListOperationCallback<BgpServiceCommunityInner> serviceCallback) {
@@ -102,6 +106,7 @@ public class BgpServiceCommunitiesInner {
     /**
      * Gets all the available bgp service communities.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BgpServiceCommunityInner&gt; object
      */
     public Observable<Page<BgpServiceCommunityInner>> listAsync() {
@@ -117,6 +122,7 @@ public class BgpServiceCommunitiesInner {
     /**
      * Gets all the available bgp service communities.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BgpServiceCommunityInner&gt; object
      */
     public Observable<ServiceResponse<Page<BgpServiceCommunityInner>>> listWithServiceResponseAsync() {
@@ -136,6 +142,7 @@ public class BgpServiceCommunitiesInner {
     /**
      * Gets all the available bgp service communities.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BgpServiceCommunityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BgpServiceCommunityInner>>> listSinglePageAsync() {
@@ -168,6 +175,9 @@ public class BgpServiceCommunitiesInner {
      * Gets all the available bgp service communities.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BgpServiceCommunityInner&gt; object if successful.
      */
     public PagedList<BgpServiceCommunityInner> listNext(final String nextPageLink) {
@@ -186,6 +196,7 @@ public class BgpServiceCommunitiesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BgpServiceCommunityInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<BgpServiceCommunityInner>> serviceFuture, final ListOperationCallback<BgpServiceCommunityInner> serviceCallback) {
@@ -204,6 +215,7 @@ public class BgpServiceCommunitiesInner {
      * Gets all the available bgp service communities.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BgpServiceCommunityInner&gt; object
      */
     public Observable<Page<BgpServiceCommunityInner>> listNextAsync(final String nextPageLink) {
@@ -220,6 +232,7 @@ public class BgpServiceCommunitiesInner {
      * Gets all the available bgp service communities.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BgpServiceCommunityInner&gt; object
      */
     public Observable<ServiceResponse<Page<BgpServiceCommunityInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -240,6 +253,7 @@ public class BgpServiceCommunitiesInner {
      * Gets all the available bgp service communities.
      *
     ServiceResponse<PageImpl<BgpServiceCommunityInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BgpServiceCommunityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BgpServiceCommunityInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -44,7 +46,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Profiles.
  */
-public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
+public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ProfileInner> {
     /** The Retrofit service to perform REST calls. */
     private ProfilesService service;
     /** The service client containing this operation class. */
@@ -74,9 +76,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.Profiles create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
@@ -127,6 +129,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /**
      * Lists all of the CDN profiles within an Azure subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> list() {
@@ -143,6 +148,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listAsync(final ListOperationCallback<ProfileInner> serviceCallback) {
@@ -160,6 +166,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /**
      * Lists all of the CDN profiles within an Azure subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listAsync() {
@@ -175,6 +182,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /**
      * Lists all of the CDN profiles within an Azure subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listWithServiceResponseAsync() {
@@ -194,6 +202,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /**
      * Lists all of the CDN profiles within an Azure subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listSinglePageAsync() {
@@ -228,6 +237,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> listByResourceGroup(final String resourceGroupName) {
@@ -245,6 +257,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ProfileInner> serviceCallback) {
@@ -263,6 +276,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -279,6 +293,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -299,6 +314,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -337,10 +353,13 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
-    public ProfileInner get(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
+    public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -349,10 +368,11 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -360,10 +380,11 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
-    public Observable<ProfileInner> getAsync(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
+    public Observable<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
                 return response.body();
@@ -376,9 +397,10 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
-    public Observable<ServiceResponse<ProfileInner>> getWithServiceResponseAsync(String resourceGroupName, String profileName) {
+    public Observable<ServiceResponse<ProfileInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String profileName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -391,12 +413,12 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ProfileInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ProfileInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -405,7 +427,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
             });
     }
 
-    private ServiceResponse<ProfileInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<ProfileInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProfileInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -418,6 +440,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -431,6 +456,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -443,6 +469,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -460,6 +487,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ProfileInner>> createWithServiceResponseAsync(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -489,6 +517,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner beginCreate(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -502,6 +533,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> beginCreateAsync(String resourceGroupName, String profileName, ProfileInner profile, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -514,6 +546,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ProfileInner> beginCreateAsync(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -531,6 +564,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ServiceResponse<ProfileInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -579,6 +613,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner update(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -592,6 +629,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -604,6 +642,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -621,6 +660,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ProfileInner>> updateWithServiceResponseAsync(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -652,6 +692,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner beginUpdate(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -665,6 +708,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> beginUpdateAsync(String resourceGroupName, String profileName, Map<String, String> tags, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -677,6 +721,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ProfileInner> beginUpdateAsync(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -694,6 +739,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ServiceResponse<ProfileInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String profileName, Map<String, String> tags) {
@@ -742,6 +788,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String profileName) {
         deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().last().body();
@@ -753,6 +802,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
@@ -764,6 +814,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String profileName) {
@@ -780,6 +831,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName) {
@@ -804,6 +856,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String profileName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
@@ -815,6 +870,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
@@ -826,6 +882,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String profileName) {
@@ -842,6 +899,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String profileName) {
@@ -884,6 +942,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SsoUriInner object if successful.
      */
     public SsoUriInner generateSsoUri(String resourceGroupName, String profileName) {
@@ -896,6 +957,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName, final ServiceCallback<SsoUriInner> serviceCallback) {
@@ -907,6 +969,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsoUriInner object
      */
     public Observable<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName) {
@@ -923,6 +986,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsoUriInner object
      */
     public Observable<ServiceResponse<SsoUriInner>> generateSsoUriWithServiceResponseAsync(String resourceGroupName, String profileName) {
@@ -964,6 +1028,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
      */
     public PagedList<ResourceUsageInner> listResourceUsage(final String resourceGroupName, final String profileName) {
@@ -982,6 +1049,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
@@ -1001,6 +1069,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<Page<ResourceUsageInner>> listResourceUsageAsync(final String resourceGroupName, final String profileName) {
@@ -1018,6 +1087,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageWithServiceResponseAsync(final String resourceGroupName, final String profileName) {
@@ -1039,6 +1109,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
     ServiceResponse<PageImpl<ResourceUsageInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<ResourceUsageInner>> * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageSinglePageAsync(final String resourceGroupName, final String profileName) {
@@ -1079,6 +1150,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> listNext(final String nextPageLink) {
@@ -1097,6 +1171,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ProfileInner>> serviceFuture, final ListOperationCallback<ProfileInner> serviceCallback) {
@@ -1115,6 +1190,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listNextAsync(final String nextPageLink) {
@@ -1131,6 +1207,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within an Azure subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1151,6 +1228,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within an Azure subscription.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -1183,6 +1261,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProfileInner&gt; object if successful.
      */
     public PagedList<ProfileInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1201,6 +1282,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProfileInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ProfileInner>> serviceFuture, final ListOperationCallback<ProfileInner> serviceCallback) {
@@ -1219,6 +1301,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<Page<ProfileInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1235,6 +1318,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProfileInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1255,6 +1339,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all of the CDN profiles within a resource group.
      *
     ServiceResponse<PageImpl<ProfileInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProfileInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1287,6 +1372,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceUsageInner&gt; object if successful.
      */
     public PagedList<ResourceUsageInner> listResourceUsageNext(final String nextPageLink) {
@@ -1305,6 +1393,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceUsageInner>> serviceFuture, final ListOperationCallback<ResourceUsageInner> serviceCallback) {
@@ -1323,6 +1412,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<Page<ResourceUsageInner>> listResourceUsageNextAsync(final String nextPageLink) {
@@ -1339,6 +1429,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceUsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1359,6 +1450,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
     ServiceResponse<PageImpl<ResourceUsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceUsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceUsageInner>>> listResourceUsageNextSinglePageAsync(final String nextPageLink) {

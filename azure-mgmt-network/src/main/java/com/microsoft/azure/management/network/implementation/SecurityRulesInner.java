@@ -97,6 +97,9 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last().body();
@@ -109,6 +112,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -121,6 +125,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -138,6 +143,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -164,6 +170,9 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().body();
@@ -176,6 +185,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -205,6 +216,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -250,6 +262,9 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -263,6 +278,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<SecurityRuleInner> serviceCallback) {
@@ -275,6 +291,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -292,6 +309,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<ServiceResponse<SecurityRuleInner>> getWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
@@ -336,6 +354,9 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -350,6 +371,7 @@ public class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
@@ -363,6 +385,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -381,6 +404,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SecurityRuleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -412,6 +436,9 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -426,6 +453,7 @@ public class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
@@ -439,6 +467,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -457,6 +486,7 @@ public class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<ServiceResponse<SecurityRuleInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -504,6 +534,9 @@ public class SecurityRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
     public PagedList<SecurityRuleInner> list(final String resourceGroupName, final String networkSecurityGroupName) {
@@ -522,6 +555,7 @@ public class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
@@ -541,6 +575,7 @@ public class SecurityRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
     public Observable<Page<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName) {
@@ -558,6 +593,7 @@ public class SecurityRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String networkSecurityGroupName) {
@@ -579,6 +615,7 @@ public class SecurityRulesInner {
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listSinglePageAsync(final String resourceGroupName, final String networkSecurityGroupName) {
@@ -617,6 +654,9 @@ public class SecurityRulesInner {
      * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
     public PagedList<SecurityRuleInner> listNext(final String nextPageLink) {
@@ -635,6 +675,7 @@ public class SecurityRulesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SecurityRuleInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SecurityRuleInner>> serviceFuture, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
@@ -653,6 +694,7 @@ public class SecurityRulesInner {
      * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
     public Observable<Page<SecurityRuleInner>> listNextAsync(final String nextPageLink) {
@@ -669,6 +711,7 @@ public class SecurityRulesInner {
      * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -689,6 +732,7 @@ public class SecurityRulesInner {
      * Gets all security rules in a network security group.
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextSinglePageAsync(final String nextPageLink) {

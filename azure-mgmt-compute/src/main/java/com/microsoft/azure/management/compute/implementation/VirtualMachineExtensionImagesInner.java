@@ -73,6 +73,9 @@ public class VirtualMachineExtensionImagesInner {
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineExtensionImageInner object if successful.
      */
     public VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version) {
@@ -87,6 +90,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param type the String value
      * @param version the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImageInner> serviceCallback) {
@@ -100,6 +104,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineExtensionImageInner object
      */
     public Observable<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type, String version) {
@@ -118,6 +123,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineExtensionImageInner object
      */
     public Observable<ServiceResponse<VirtualMachineExtensionImageInner>> getWithServiceResponseAsync(String location, String publisherName, String type, String version) {
@@ -163,6 +169,9 @@ public class VirtualMachineExtensionImagesInner {
      *
      * @param location the String value
      * @param publisherName the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listTypes(String location, String publisherName) {
@@ -175,6 +184,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
@@ -186,6 +196,7 @@ public class VirtualMachineExtensionImagesInner {
      *
      * @param location the String value
      * @param publisherName the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName) {
@@ -202,6 +213,7 @@ public class VirtualMachineExtensionImagesInner {
      *
      * @param location the String value
      * @param publisherName the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineExtensionImageInner>>> listTypesWithServiceResponseAsync(String location, String publisherName) {
@@ -242,6 +254,9 @@ public class VirtualMachineExtensionImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param type the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
@@ -255,6 +270,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param publisherName the String value
      * @param type the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
@@ -267,6 +283,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param type the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type) {
@@ -284,6 +301,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param type the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineExtensionImageInner>>> listVersionsWithServiceResponseAsync(String location, String publisherName, String type) {
@@ -326,6 +344,9 @@ public class VirtualMachineExtensionImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
     public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) {
@@ -342,6 +363,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineExtensionImageInner>> serviceCallback) {
@@ -357,6 +379,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, String filter, Integer top, String orderby) {
@@ -377,6 +400,7 @@ public class VirtualMachineExtensionImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineExtensionImageInner>>> listVersionsWithServiceResponseAsync(String location, String publisherName, String type, String filter, Integer top, String orderby) {

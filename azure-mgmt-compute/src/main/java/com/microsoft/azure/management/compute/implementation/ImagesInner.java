@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Images.
  */
-public class ImagesInner implements InnerSupportsListing<ImageInner> {
+public class ImagesInner implements InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<ImageInner> {
     /** The Retrofit service to perform REST calls. */
     private ImagesService service;
     /** The service client containing this operation class. */
@@ -78,9 +79,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("imageName") String imageName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Images get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Images getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("imageName") String imageName, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("imageName") String imageName, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Images listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images")
@@ -106,6 +107,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageInner object if successful.
      */
     public ImageInner createOrUpdate(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -119,6 +123,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
@@ -131,6 +136,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -148,6 +154,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ImageInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -175,6 +182,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageInner object if successful.
      */
     public ImageInner beginCreateOrUpdate(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -188,6 +198,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters, final ServiceCallback<ImageInner> serviceCallback) {
@@ -200,6 +211,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
     public Observable<ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -217,6 +229,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
     public Observable<ServiceResponse<ImageInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -261,6 +274,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner delete(String resourceGroupName, String imageName) {
@@ -273,6 +289,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -284,6 +301,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String imageName) {
@@ -300,6 +318,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deleteWithServiceResponseAsync(String resourceGroupName, String imageName) {
@@ -322,6 +341,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDelete(String resourceGroupName, String imageName) {
@@ -334,6 +356,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String imageName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -345,6 +368,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String imageName) {
@@ -361,6 +385,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String imageName) {
@@ -402,10 +427,13 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageInner object if successful.
      */
-    public ImageInner get(String resourceGroupName, String imageName) {
-        return getWithServiceResponseAsync(resourceGroupName, imageName).toBlocking().single().body();
+    public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName).toBlocking().single().body();
     }
 
     /**
@@ -414,10 +442,11 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageInner> getAsync(String resourceGroupName, String imageName, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
+    public ServiceFuture<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName), serviceCallback);
     }
 
     /**
@@ -425,10 +454,11 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
-    public Observable<ImageInner> getAsync(String resourceGroupName, String imageName) {
-        return getWithServiceResponseAsync(resourceGroupName, imageName).map(new Func1<ServiceResponse<ImageInner>, ImageInner>() {
+    public Observable<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName).map(new Func1<ServiceResponse<ImageInner>, ImageInner>() {
             @Override
             public ImageInner call(ServiceResponse<ImageInner> response) {
                 return response.body();
@@ -441,9 +471,10 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
-    public Observable<ServiceResponse<ImageInner>> getWithServiceResponseAsync(String resourceGroupName, String imageName) {
+    public Observable<ServiceResponse<ImageInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String imageName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -455,12 +486,12 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
         }
         final String apiVersion = "2016-04-30-preview";
         final String expand = null;
-        return service.get(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ImageInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -475,10 +506,13 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageInner object if successful.
      */
-    public ImageInner get(String resourceGroupName, String imageName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, imageName, expand).toBlocking().single().body();
+    public ImageInner getByResourceGroup(String resourceGroupName, String imageName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName, expand).toBlocking().single().body();
     }
 
     /**
@@ -488,10 +522,11 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageInner> getAsync(String resourceGroupName, String imageName, String expand, final ServiceCallback<ImageInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, imageName, expand), serviceCallback);
+    public ServiceFuture<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand, final ServiceCallback<ImageInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName, expand), serviceCallback);
     }
 
     /**
@@ -500,10 +535,11 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
-    public Observable<ImageInner> getAsync(String resourceGroupName, String imageName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, imageName, expand).map(new Func1<ServiceResponse<ImageInner>, ImageInner>() {
+    public Observable<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, imageName, expand).map(new Func1<ServiceResponse<ImageInner>, ImageInner>() {
             @Override
             public ImageInner call(ServiceResponse<ImageInner> response) {
                 return response.body();
@@ -517,9 +553,10 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInner object
      */
-    public Observable<ServiceResponse<ImageInner>> getWithServiceResponseAsync(String resourceGroupName, String imageName, String expand) {
+    public Observable<ServiceResponse<ImageInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String imageName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -530,12 +567,12 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.get(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ImageInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ImageInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -544,7 +581,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
             });
     }
 
-    private ServiceResponse<ImageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ImageInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ImageInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ImageInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -555,6 +592,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ImageInner&gt; object if successful.
      */
     public PagedList<ImageInner> listByResourceGroup(final String resourceGroupName) {
@@ -572,6 +612,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ImageInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ImageInner> serviceCallback) {
@@ -590,6 +631,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<Page<ImageInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -606,6 +648,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -626,6 +669,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
     ServiceResponse<PageImpl1<ImageInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ImageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -660,6 +704,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
     /**
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ImageInner&gt; object if successful.
      */
     public PagedList<ImageInner> list() {
@@ -676,6 +723,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ImageInner>> listAsync(final ListOperationCallback<ImageInner> serviceCallback) {
@@ -693,6 +741,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
     /**
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<Page<ImageInner>> listAsync() {
@@ -708,6 +757,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
     /**
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listWithServiceResponseAsync() {
@@ -727,6 +777,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
     /**
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ImageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listSinglePageAsync() {
@@ -759,6 +810,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ImageInner&gt; object if successful.
      */
     public PagedList<ImageInner> listByResourceGroupNext(final String nextPageLink) {
@@ -777,6 +831,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ImageInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ImageInner>> serviceFuture, final ListOperationCallback<ImageInner> serviceCallback) {
@@ -795,6 +850,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<Page<ImageInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -811,6 +867,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -831,6 +888,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of images under a resource group.
      *
     ServiceResponse<PageImpl1<ImageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ImageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -863,6 +921,9 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ImageInner&gt; object if successful.
      */
     public PagedList<ImageInner> listNext(final String nextPageLink) {
@@ -881,6 +942,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ImageInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ImageInner>> serviceFuture, final ListOperationCallback<ImageInner> serviceCallback) {
@@ -899,6 +961,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<Page<ImageInner>> listNextAsync(final String nextPageLink) {
@@ -915,6 +978,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ImageInner&gt; object
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -935,6 +999,7 @@ public class ImagesInner implements InnerSupportsListing<ImageInner> {
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is not null to fetch all the Images.
      *
     ServiceResponse<PageImpl1<ImageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ImageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ImageInner>>> listNextSinglePageAsync(final String nextPageLink) {

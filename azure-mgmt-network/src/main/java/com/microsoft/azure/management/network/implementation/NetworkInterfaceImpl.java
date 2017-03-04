@@ -101,7 +101,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected Observable<NetworkInterfaceInner> getInnerAsync() {
-        return this.manager().inner().networkInterfaces().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().networkInterfaces().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)
