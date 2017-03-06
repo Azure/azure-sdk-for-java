@@ -5,49 +5,26 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 
 /**
  *  Implementation for {@link LoadBalancers}.
  */
 @LangDefinition
 class LoadBalancersImpl
-        extends GroupableResourcesImpl<
-            LoadBalancer,
-            LoadBalancerImpl,
-            LoadBalancerInner,
-            LoadBalancersInner,
-            NetworkManager>
+        extends TopLevelCrudableResourcesImpl<
+                                    LoadBalancer,
+                                    LoadBalancerImpl,
+                                    LoadBalancerInner,
+                                    LoadBalancersInner,
+                                    NetworkManager>
         implements LoadBalancers {
 
     LoadBalancersImpl(final NetworkManager networkManager) {
         super(networkManager.inner().loadBalancers(), networkManager);
-    }
-
-    @Override
-    public PagedList<LoadBalancer> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<LoadBalancer> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<LoadBalancerInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

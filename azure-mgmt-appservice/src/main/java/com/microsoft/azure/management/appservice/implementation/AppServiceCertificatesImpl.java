@@ -32,8 +32,14 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    protected Observable<CertificateInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<CertificateInner> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getAsync(resourceGroupName, name);
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
+
     }
 
     @Override
@@ -57,10 +63,5 @@ class AppServiceCertificatesImpl
     @Override
     public AppServiceCertificateImpl define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

@@ -69,7 +69,7 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<T> getByIdAsync(String id) {
+    public final Observable<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
 
         if (resourceId == null) {
@@ -80,18 +80,23 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public ServiceFuture<T> getByIdAsync(String id, ServiceCallback<T> callback) {
+    public final ServiceFuture<T> getByIdAsync(String id, ServiceCallback<T> callback) {
         return ServiceFuture.fromBody(getByIdAsync(id), callback);
     }
 
     @Override
-    public void deleteByGroup(String groupName, String name) {
+    public final void deleteByGroup(String groupName, String name) {
         deleteByGroupAsync(groupName, name).await();
     }
 
     @Override
-    public ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+    public final ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.deleteInnerAsync(groupName, name);
     }
 
     @Override
@@ -106,7 +111,7 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public Observable<T> getByGroupAsync(String resourceGroupName, String name) {
-        return this.getAsync(resourceGroupName, name).map(new Func1<InnerT, T>() {
+        return this.getInnerAsync(resourceGroupName, name).map(new Func1<InnerT, T>() {
             @Override
             public T call(InnerT innerT) {
                 return wrapModel(innerT);
@@ -119,5 +124,7 @@ public abstract class GroupableResourcesImpl<
         return ServiceFuture.fromBody(getByGroupAsync(resourceGroupName, name), callback);
     }
 
-    protected abstract Observable<InnerT> getAsync(String resourceGroupName, String name);
+    protected abstract Observable<InnerT> getInnerAsync(String resourceGroupName, String name);
+
+    protected abstract Completable deleteInnerAsync(String resourceGroupName, String name);
 }

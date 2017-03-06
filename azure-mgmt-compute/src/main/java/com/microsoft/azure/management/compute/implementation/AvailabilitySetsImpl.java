@@ -50,7 +50,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    protected Observable<AvailabilitySetInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<AvailabilitySetInner> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
@@ -60,7 +60,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 

@@ -5,47 +5,30 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.Set;
-
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 import rx.Completable;
-import rx.Observable;
+
+import java.util.Set;
 
 /**
  *  Implementation for NetworkSecurityGroups.
  */
 @LangDefinition
 class NetworkSecurityGroupsImpl
-        extends GroupableResourcesImpl<
-            NetworkSecurityGroup,
-            NetworkSecurityGroupImpl,
-            NetworkSecurityGroupInner,
-            NetworkSecurityGroupsInner,
-            NetworkManager>
+        extends TopLevelCrudableResourcesImpl<
+                            NetworkSecurityGroup,
+                            NetworkSecurityGroupImpl,
+                            NetworkSecurityGroupInner,
+                            NetworkSecurityGroupsInner,
+                            NetworkManager>
         implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkSecurityGroups(), networkManager);
-    }
-
-    @Override
-    public PagedList<NetworkSecurityGroup> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<NetworkSecurityGroup> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
@@ -68,7 +51,7 @@ class NetworkSecurityGroupsImpl
             }
         }
 
-        return this.inner().deleteAsync(groupName, name).toCompletable();
+        return this.deleteInnerAsync(groupName, name);
     }
 
     @Override

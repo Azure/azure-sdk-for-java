@@ -5,50 +5,27 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddresses;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 
 /**
  *  Implementation for {@link PublicIPAddresses}.
  */
 @LangDefinition
 class PublicIPAddressesImpl
-        extends GroupableResourcesImpl<
-            PublicIPAddress,
-            PublicIPAddressImpl,
-            PublicIPAddressInner,
-            PublicIPAddressesInner,
-            NetworkManager>
+        extends TopLevelCrudableResourcesImpl<
+                            PublicIPAddress,
+                            PublicIPAddressImpl,
+                            PublicIPAddressInner,
+                            PublicIPAddressesInner,
+                            NetworkManager>
         implements PublicIPAddresses {
 
     PublicIPAddressesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().publicIPAddresses(), networkManager);
-    }
-
-    @Override
-    public PagedList<PublicIPAddress> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<PublicIPAddress> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<PublicIPAddressInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

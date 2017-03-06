@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Zones.
  */
-public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsListing<ZoneInner> {
+public class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsDelete<ZoneDeleteResultInner>, InnerSupportsListing<ZoneInner> {
     /** The Retrofit service to perform REST calls. */
     private ZonesService service;
     /** The service client containing this operation class. */
