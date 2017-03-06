@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworks.
  */
-public class VirtualNetworksInner implements InnerSupportsDelete<Void>, InnerSupportsListing<VirtualNetworkInner> {
+public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInner>, InnerSupportsDelete<Void>, InnerSupportsListing<VirtualNetworkInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworksService service;
     /** The service client containing this operation class. */

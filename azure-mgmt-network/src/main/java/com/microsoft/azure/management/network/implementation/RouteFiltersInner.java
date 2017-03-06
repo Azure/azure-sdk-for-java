@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -42,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in RouteFilters.
  */
-public class RouteFiltersInner implements InnerSupportsDelete<Void>, InnerSupportsListing<RouteFilterInner> {
+public class RouteFiltersInner implements InnerSupportsGet<RouteFilterInner>, InnerSupportsDelete<Void>, InnerSupportsListing<RouteFilterInner> {
     /** The Retrofit service to perform REST calls. */
     private RouteFiltersService service;
     /** The service client containing this operation class. */

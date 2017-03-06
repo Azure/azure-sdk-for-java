@@ -38,11 +38,6 @@ class AppServiceCertificateOrdersImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteCertificateOrderAsync(groupName, name).toCompletable();
-    }
-
-    @Override
     public PagedList<AppServiceCertificateOrder> listByGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
@@ -66,7 +61,12 @@ class AppServiceCertificateOrdersImpl
     }
 
     @Override
-    protected Observable<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<AppServiceCertificateOrderInner> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getAsync(resourceGroupName, name);
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteCertificateOrderAsync(resourceGroupName, name).toCompletable();
     }
 }

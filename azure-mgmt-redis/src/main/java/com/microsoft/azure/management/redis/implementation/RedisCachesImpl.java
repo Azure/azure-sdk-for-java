@@ -6,25 +6,23 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 import rx.Completable;
-import rx.Observable;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
 @LangDefinition
 class RedisCachesImpl
-        extends GroupableResourcesImpl<
-                RedisCache,
-                RedisCacheImpl,
-                RedisResourceInner,
-                RedisInner,
-                RedisManager>
+        extends TopLevelCrudableResourcesImpl<
+                                        RedisCache,
+                                        RedisCacheImpl,
+                                        RedisResourceInner,
+                                        RedisInner,
+                                        RedisManager>
         implements RedisCaches {
 
     RedisCachesImpl(final RedisManager redisManager) {
@@ -32,22 +30,7 @@ class RedisCachesImpl
     }
 
     @Override
-    public PagedList<RedisCache> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<RedisCache> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<RedisResourceInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 

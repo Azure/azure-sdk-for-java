@@ -6,21 +6,19 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 import com.microsoft.azure.management.sql.ServerVersion;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlServers;
 import rx.Completable;
-import rx.Observable;
 
 /**
  * Implementation for SqlServers and its parent interfaces.
  */
 @LangDefinition
 class SqlServersImpl
-        extends ListableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+        extends TopLevelCrudableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 
     protected SqlServersImpl(SqlServerManager manager) {
@@ -28,7 +26,7 @@ class SqlServersImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
@@ -37,16 +35,6 @@ class SqlServersImpl
         ServerInner inner = new ServerInner();
         inner.withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
         return new SqlServerImpl(name, inner, this.manager());
-    }
-
-    @Override
-    public PagedList<SqlServer> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<SqlServer> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -61,10 +49,5 @@ class SqlServersImpl
     @Override
     public SqlServer.DefinitionStages.Blank define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    protected Observable<ServerInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 }

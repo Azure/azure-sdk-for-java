@@ -13,9 +13,7 @@ import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 
 import java.util.ArrayList;
 
@@ -24,36 +22,16 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworkInterfacesImpl
-        extends GroupableResourcesImpl<
-            NetworkInterface,
-            NetworkInterfaceImpl,
-            NetworkInterfaceInner,
-            NetworkInterfacesInner,
-            NetworkManager>
+        extends TopLevelCrudableResourcesImpl<
+                                    NetworkInterface,
+                                    NetworkInterfaceImpl,
+                                    NetworkInterfaceInner,
+                                    NetworkInterfacesInner,
+                                    NetworkManager>
         implements NetworkInterfaces {
 
     NetworkInterfacesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkInterfaces(), networkManager);
-    }
-
-    @Override
-    public PagedList<NetworkInterface> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<NetworkInterface> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<NetworkInterfaceInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

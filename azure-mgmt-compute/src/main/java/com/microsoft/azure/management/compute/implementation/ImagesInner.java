@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Images.
  */
-public class ImagesInner implements InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<ImageInner> {
+public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<ImageInner> {
     /** The Retrofit service to perform REST calls. */
     private ImagesService service;
     /** The service client containing this operation class. */

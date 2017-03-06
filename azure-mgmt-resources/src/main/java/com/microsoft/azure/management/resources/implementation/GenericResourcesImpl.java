@@ -170,13 +170,13 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<GenericResourceInner> getAsync(String groupName, String name) {
+    public Observable<GenericResourceInner> getInnerAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
     }

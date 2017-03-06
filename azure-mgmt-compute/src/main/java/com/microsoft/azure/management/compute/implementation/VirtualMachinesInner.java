@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -43,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachines.
  */
-public class VirtualMachinesInner implements InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<VirtualMachineInner> {
+public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInner>, InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<VirtualMachineInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachinesService service;
     /** The service client containing this operation class. */
