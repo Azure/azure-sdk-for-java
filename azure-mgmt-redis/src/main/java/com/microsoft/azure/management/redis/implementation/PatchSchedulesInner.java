@@ -8,12 +8,11 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.ScheduleEntry;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -35,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in PatchSchedules.
  */
-public final class PatchSchedulesInner {
+public class PatchSchedulesInner {
     /** The Retrofit service to perform REST calls. */
     private PatchSchedulesService service;
     /** The service client containing this operation class. */
@@ -79,7 +78,7 @@ public final class PatchSchedulesInner {
      * @param scheduleEntries List of patch schedules for a Redis cache.
      * @return the RedisPatchScheduleInner object if successful.
      */
-    public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+    public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().body();
     }
 
@@ -92,7 +91,7 @@ public final class PatchSchedulesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
+    public ServiceFuture<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries, final ServiceCallback<RedisPatchScheduleInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries), serviceCallback);
     }
 
@@ -104,7 +103,7 @@ public final class PatchSchedulesInner {
      * @param scheduleEntries List of patch schedules for a Redis cache.
      * @return the observable to the RedisPatchScheduleInner object
      */
-    public Observable<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+    public Observable<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).map(new Func1<ServiceResponse<RedisPatchScheduleInner>, RedisPatchScheduleInner>() {
             @Override
             public RedisPatchScheduleInner call(ServiceResponse<RedisPatchScheduleInner> response) {
@@ -121,7 +120,7 @@ public final class PatchSchedulesInner {
      * @param scheduleEntries List of patch schedules for a Redis cache.
      * @return the observable to the RedisPatchScheduleInner object
      */
-    public Observable<ServiceResponse<RedisPatchScheduleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntry> scheduleEntries) {
+    public Observable<ServiceResponse<RedisPatchScheduleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
