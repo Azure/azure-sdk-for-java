@@ -23,8 +23,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        WEBAPP_NAME_2 = generateRandomResourceName("java-webapp-", 20);
+        WEBAPP_NAME_1 = generateRandomResourceName("java-func-", 20);
+        WEBAPP_NAME_2 = generateRandomResourceName("java-func-", 20);
         APP_SERVICE_PLAN_NAME_1 = generateRandomResourceName("java-asp-", 20);
         APP_SERVICE_PLAN_NAME_2 = generateRandomResourceName("java-asp-", 20);
         RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);

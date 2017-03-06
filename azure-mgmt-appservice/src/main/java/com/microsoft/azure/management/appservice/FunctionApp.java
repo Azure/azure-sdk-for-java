@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
@@ -31,7 +32,8 @@ public interface FunctionApp extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithAppServicePlan,
-        DefinitionStages.WithNewAppServicePlan {
+        DefinitionStages.WithNewAppServicePlan,
+        DefinitionStages.WithCreate {
     }
 
     /**
@@ -68,7 +70,7 @@ public interface FunctionApp extends
              * @param appServicePlan the existing app service plan
              * @return the next stage of the function app definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<FunctionApp> withExistingAppServicePlan(AppServicePlan appServicePlan);
+            WithCreate withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
         /**
@@ -79,20 +81,29 @@ public interface FunctionApp extends
              * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
              * @return the next stage of the function app definition
              */
-            WebAppBase.DefinitionStages.WithCreate<FunctionApp> withFreePricingTier();
+            WithCreate withFreePricingTier();
 
             /**
              * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
              * @return the next stage of the function app definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<FunctionApp> withDynamicPricingTier();
+            WithCreate withDynamicPricingTier();
 
             /**
              * Creates a new app service plan to use.
              * @param pricingTier the pricing tier to use
              * @return the next stage of the function app definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<FunctionApp> withPricingTier(AppServicePricingTier pricingTier);
+            WithCreate withPricingTier(AppServicePricingTier pricingTier);
+        }
+
+        interface WithCreate extends
+            Creatable<FunctionApp>,
+            GroupableResource.DefinitionWithTags<WithCreate>,
+            WebAppBase.DefinitionStages.WithCreate<FunctionApp>,
+            WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
+            WebAppBase.DefinitionStages.WithAppSettings<WithCreate>,
+            WebAppBase.DefinitionStages.WithConnectionString<WithCreate> {
         }
     }
 
@@ -150,6 +161,9 @@ public interface FunctionApp extends
     interface Update extends
         WebAppBase.Update<FunctionApp>,
         UpdateStages.WithAppServicePlan,
-        UpdateStages.WithNewAppServicePlan {
+        UpdateStages.WithNewAppServicePlan,
+        WebAppBase.UpdateStages.WithSiteConfigs<Update>,
+        WebAppBase.UpdateStages.WithAppSettings<Update>,
+        WebAppBase.UpdateStages.WithConnectionString<Update> {
     }
 }

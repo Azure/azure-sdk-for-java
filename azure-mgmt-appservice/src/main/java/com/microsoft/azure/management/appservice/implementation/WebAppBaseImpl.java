@@ -58,7 +58,9 @@ import java.util.Set;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class WebAppBaseImpl<
         FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
+        FluentWithCreateT,
+        FluentUpdateT>
         extends GroupableResourceImpl<
             FluentT,
             SiteInner,
@@ -66,9 +68,8 @@ abstract class WebAppBaseImpl<
             AppServiceManager>
         implements
             WebAppBase,
-            WebAppBase.Definition<FluentT>,
-            WebAppBase.Update<FluentT>,
-            WebAppBase.UpdateStages.WithWebContainer<FluentT> {
+            WebAppBase.DefinitionStages.WithCreate<FluentT>,
+            WebAppBase.Update<FluentT> {
 
     private Map<String, AppSetting> cachedAppSettings;
     private Map<String, ConnectionString> cachedConnectionStrings;
@@ -705,14 +706,13 @@ abstract class WebAppBaseImpl<
         });
     }
 
-    WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
+    WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
         if (hostNameSslBinding.newCertificate() != null) {
             sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         }
         return this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
         for (String hostname : hostnames) {
@@ -733,7 +733,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public HostNameBindingImpl<FluentT, FluentImplT> defineHostnameBinding() {
         HostNameBindingInner inner = new HostNameBindingInner();
@@ -745,7 +744,6 @@ abstract class WebAppBaseImpl<
         return new HostNameBindingImpl<>(inner, (FluentImplT) this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withThirdPartyHostnameBinding(String domain, String... hostnames) {
         for (String hostname : hostnames) {
@@ -758,14 +756,12 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutHostnameBinding(String hostname) {
         hostNameBindingsToDelete.add(hostname);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutSslBinding(String hostname) {
         if (hostNameSslStateMap.containsKey(hostname)) {
@@ -782,41 +778,35 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppDisabledOnCreation() {
         inner().withEnabled(false);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withScmSiteAlsoStopped(boolean scmSiteAlsoStopped) {
         inner().withScmSiteAlsoStopped(scmSiteAlsoStopped);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withClientAffinityEnabled(boolean enabled) {
         inner().withClientAffinityEnabled(enabled);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withClientCertEnabled(boolean enabled) {
         inner().withClientCertEnabled(enabled);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
         return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNetFrameworkVersion(NetFrameworkVersion version) {
         if (inner().siteConfig() == null) {
@@ -826,7 +816,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPhpVersion(PhpVersion version) {
         if (inner().siteConfig() == null) {
@@ -836,12 +825,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutPhp() {
         return withPhpVersion(new PhpVersion(""));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withJavaVersion(JavaVersion version) {
         if (inner().siteConfig() == null) {
@@ -851,12 +838,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutJava() {
         return withJavaVersion(new JavaVersion("")).withWebContainer(null);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebContainer(WebContainer webContainer) {
         if (inner().siteConfig() == null) {
@@ -873,7 +858,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPythonVersion(PythonVersion version) {
         if (inner().siteConfig() == null) {
@@ -883,12 +867,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutPython() {
         return withPythonVersion(new PythonVersion(""));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPlatformArchitecture(PlatformArchitecture platform) {
         if (inner().siteConfig() == null) {
@@ -898,7 +880,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebSocketsEnabled(boolean enabled) {
         if (inner().siteConfig() == null) {
@@ -908,7 +889,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebAppAlwaysOn(boolean alwaysOn) {
         if (inner().siteConfig() == null) {
@@ -918,7 +898,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedPipelineMode(ManagedPipelineMode managedPipelineMode) {
         if (inner().siteConfig() == null) {
@@ -928,7 +907,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAutoSwapSlotName(String slotName) {
         if (inner().siteConfig() == null) {
@@ -938,7 +916,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion) {
         if (inner().siteConfig() == null) {
@@ -949,7 +926,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingDisabled() {
         if (inner().siteConfig() == null) {
@@ -959,7 +935,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocument(String document) {
         if (inner().siteConfig() == null) {
@@ -972,7 +947,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocuments(List<String> documents) {
         if (inner().siteConfig() == null) {
@@ -985,7 +959,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutDefaultDocument(String document) {
         if (inner().siteConfig() == null) {
@@ -997,27 +970,23 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSetting(String key, String value) {
         appSettingsToAdd.put(key, value);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSettings(Map<String, String> settings) {
         appSettingsToAdd.putAll(settings);
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withStickyAppSetting(String key, String value) {
         withAppSetting(key, value);
         return withAppSettingStickiness(key, true);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withStickyAppSettings(Map<String, String> settings) {
         withAppSettings(settings);
@@ -1030,7 +999,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutAppSetting(String key) {
         appSettingsToRemove.add(key);
@@ -1038,21 +1006,18 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSettingStickiness(String key, boolean sticky) {
         appSettingStickiness.put(key, sticky);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withConnectionString(String name, String value, ConnectionStringType type) {
         connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withStickyConnectionString(String name, String value, ConnectionStringType type) {
         connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
@@ -1060,7 +1025,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutConnectionString(String name) {
         connectionStringsToRemove.add(name);
@@ -1068,7 +1032,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withConnectionStringStickiness(String name, boolean stickiness) {
         connectionStringStickiness.put(name, stickiness);
@@ -1081,14 +1044,12 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
         SiteSourceControlInner sourceControlInner = new SiteSourceControlInner();
         sourceControlInner.withLocation(regionName());
         return new WebAppSourceControlImpl<>(sourceControlInner, this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withLocalGitSourceControl() {
         if (inner().siteConfig() == null) {
@@ -1098,7 +1059,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutSourceControl() {
         sourceControlToDelete = true;

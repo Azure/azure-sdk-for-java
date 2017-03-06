@@ -9,18 +9,20 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.appservice.WebAppBase;
 
 /**
  * The implementation for WebApp.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppImpl
-        extends AppServiceBaseImpl<WebApp, WebAppImpl>
+        extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
         implements
             WebApp,
             WebApp.Definition,
             WebApp.Update,
-            WebApp.UpdateStages.WithNewAppServicePlan {
+            WebAppBase.DefinitionStages.WithWebContainer<WebApp.DefinitionStages.WithCreate>,
+            WebAppBase.UpdateStages.WithWebContainer<WebApp.Update> {
 
     private DeploymentSlots deploymentSlots;
 

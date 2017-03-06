@@ -36,13 +36,13 @@ import java.util.regex.Pattern;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class HostNameBindingImpl<
             FluentT extends WebAppBase,
-            FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+            FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT, ?, ?>>
         extends
             IndexableWrapperImpl<HostNameBindingInner>
         implements
             Creatable<HostNameBinding>,
             HostNameBinding,
-            HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
+            HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
             HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
     private final FluentImplT parent;
     private String domainName;

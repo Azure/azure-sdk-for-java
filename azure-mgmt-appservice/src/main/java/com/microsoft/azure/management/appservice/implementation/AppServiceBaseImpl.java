@@ -37,8 +37,10 @@ import java.util.Map;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class AppServiceBaseImpl<
     FluentT extends WebAppBase,
-    FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT>>
-        extends WebAppBaseImpl<FluentT, FluentImplT> {
+    FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
+    FluentWithCreateT,
+    FluentUpdateT>
+        extends WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT> {
 
     private AppServicePlanImpl appServicePlan;
 
@@ -213,10 +215,6 @@ abstract class AppServiceBaseImpl<
 
     public FluentImplT withFreePricingTier() {
         return withPricingTier(AppServicePricingTier.FREE_F1);
-    }
-
-    public FluentImplT withDynamicPricingTier() {
-        return withPricingTier(new AppServicePricingTier("Dynamic", "Y1"));
     }
 
     @SuppressWarnings("unchecked")

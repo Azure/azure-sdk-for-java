@@ -9,6 +9,8 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
@@ -35,7 +37,8 @@ public interface WebApp extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithAppServicePlan,
-            DefinitionStages.WithNewAppServicePlan {
+            DefinitionStages.WithNewAppServicePlan,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -72,7 +75,7 @@ public interface WebApp extends
              * @param appServicePlan the existing app service plan
              * @return the next stage of the web app definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(AppServicePlan appServicePlan);
+            WithCreate withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
         /**
@@ -83,14 +86,32 @@ public interface WebApp extends
              * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
              * @return the next stage of the web app definition
              */
-            WebAppBase.DefinitionStages.WithCreate<WebApp> withFreePricingTier();
+            WithCreate withFreePricingTier();
 
             /**
              * Creates a new app service plan to use.
              * @param pricingTier the pricing tier to use
              * @return the next stage of the web app definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withPricingTier(AppServicePricingTier pricingTier);
+            WithCreate withPricingTier(AppServicePricingTier pricingTier);
+        }
+
+        /**
+         * A site definition with sufficient inputs to create a new web app /
+         * deployments slot in the cloud, but exposing additional optional
+         * inputs to specify.
+         */
+        interface WithCreate extends
+            Creatable<WebApp>,
+            GroupableResource.DefinitionWithTags<WithCreate>,
+            WebAppBase.DefinitionStages.WithCreate<WebApp>,
+            WebAppBase.DefinitionStages.WithSiteEnabled<WithCreate>,
+            WebAppBase.DefinitionStages.WithScmSiteAlsoStopped<WithCreate>,
+            WebAppBase.DefinitionStages.WithClientAffinityEnabled<WithCreate>,
+            WebAppBase.DefinitionStages.WithClientCertEnabled<WithCreate>,
+            WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
+            WebAppBase.DefinitionStages.WithAppSettings<WithCreate>,
+            WebAppBase.DefinitionStages.WithConnectionString<WithCreate> {
         }
     }
 
@@ -140,8 +161,17 @@ public interface WebApp extends
      * The template for a web app update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            WebAppBase.Update<WebApp>,
-            UpdateStages.WithAppServicePlan,
-            UpdateStages.WithNewAppServicePlan {
+        Appliable<WebApp>,
+        GroupableResource.UpdateWithTags<Update>,
+        UpdateStages.WithAppServicePlan,
+        UpdateStages.WithNewAppServicePlan,
+        WebAppBase.Update<WebApp>,
+        WebAppBase.UpdateStages.WithClientAffinityEnabled<Update>,
+        WebAppBase.UpdateStages.WithClientCertEnabled<Update>,
+        WebAppBase.UpdateStages.WithScmSiteAlsoStopped<Update>,
+        WebAppBase.UpdateStages.WithSiteEnabled<Update>,
+        WebAppBase.UpdateStages.WithSiteConfigs<Update>,
+        WebAppBase.UpdateStages.WithAppSettings<Update>,
+        WebAppBase.UpdateStages.WithConnectionString<Update> {
     }
 }

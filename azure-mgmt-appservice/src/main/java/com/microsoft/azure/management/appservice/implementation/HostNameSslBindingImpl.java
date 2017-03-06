@@ -41,11 +41,11 @@ import java.security.cert.X509Certificate;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class HostNameSslBindingImpl<
         FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT, ?, ?>>
     extends IndexableWrapperImpl<HostNameSslState>
     implements
         HostNameSslBinding,
-        HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
+        HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         HostNameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private Observable<AppServiceCertificate> newCertificate;
