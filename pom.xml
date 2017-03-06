@@ -351,7 +351,8 @@
     <module>./azure-mgmt-trafficmanager</module>
     <module>./azure-mgmt-dns</module>
     <module>./azure-mgmt-sql</module>
-    <module>./azure-mgmt-cdn</module>  
+    <module>./azure-mgmt-cdn</module>
+    <module>./azure-mgmt-monitor</module>  
     <module>./azure-mgmt-redis</module>
   </modules>
 </project>
