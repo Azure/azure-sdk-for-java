@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -647,6 +648,14 @@ public class TestApplicationGateway {
                             .withExistingPublicIPAddress(pip)
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
+                            .defineProbe("probe1")
+                                .withHost("microsoft.com")
+                                .withPath("/")
+                                .withHttp()
+                                .withTimeoutInSeconds(10)
+                                .withTimeBetweenProbesInSeconds(9)
+                                .withRetriesBeforeUnhealthy(5)
+                                .attach()
                             .create();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -664,94 +673,105 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
-            Assert.assertTrue(appGateway != null);
+            Assert.assertNotNull(appGateway);
             Assert.assertTrue(appGateway.isPublic());
             Assert.assertTrue(!appGateway.isPrivate());
-            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
-            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(appGateway.size()));
-            Assert.assertTrue(appGateway.instanceCount() == 2);
-            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
+            Assert.assertEquals(ApplicationGatewayTier.STANDARD, appGateway.tier());
+            Assert.assertEquals(ApplicationGatewaySkuName.STANDARD_MEDIUM, appGateway.size());
+            Assert.assertEquals(2, appGateway.instanceCount());
+            Assert.assertEquals(1, appGateway.ipConfigurations().size());
 
             // Verify frontend ports
-            Assert.assertTrue(appGateway.frontendPorts().size() == 3);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(80) != null);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(443) != null);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(9000) != null);
+            Assert.assertEquals(3, appGateway.frontendPorts().size());
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(80));
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(443));
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(9000));
 
             // Verify frontends
-            Assert.assertTrue(appGateway.frontends().size() == 1);
-            Assert.assertTrue(appGateway.publicFrontends().size() == 1);
-            Assert.assertTrue(appGateway.privateFrontends().size() == 0);
+            Assert.assertEquals(1, appGateway.frontends().size());
+            Assert.assertEquals(1, appGateway.publicFrontends().size());
+            Assert.assertEquals(0, appGateway.privateFrontends().size());
             ApplicationGatewayFrontend frontend = appGateway.publicFrontends().values().iterator().next();
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
 
             // Verify listeners
-            Assert.assertTrue(appGateway.listeners().size() == 3);
+            Assert.assertEquals(3, appGateway.listeners().size());
             ApplicationGatewayListener listener = appGateway.listeners().get("listener1");
-            Assert.assertTrue(listener != null);
-            Assert.assertTrue(listener.frontendPortNumber() == 9000);
+            Assert.assertNotNull(listener);
+            Assert.assertEquals(9000, listener.frontendPortNumber());
             Assert.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostName()));
             Assert.assertTrue(listener.requiresServerNameIndication());
-            Assert.assertTrue(listener.frontend() != null);
+            Assert.assertNotNull(listener.frontend());
             Assert.assertTrue(!listener.frontend().isPrivate());
             Assert.assertTrue(listener.frontend().isPublic());
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(listener.protocol()));
-            Assert.assertTrue(appGateway.listenerByPortNumber(80) != null);
-            Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, listener.protocol());
+            Assert.assertNotNull(appGateway.listenerByPortNumber(80));
+            Assert.assertNotNull(appGateway.listenerByPortNumber(443));
 
             // Verify certificates
-            Assert.assertTrue(appGateway.sslCertificates().size() == 2);
+            Assert.assertEquals(2, appGateway.sslCertificates().size());
 
             // Verify backend HTTP settings configs
-            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
+            Assert.assertEquals(2, appGateway.backendHttpConfigurations().size());
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
-            Assert.assertTrue(config != null);
-            Assert.assertTrue(config.port() == 8081);
-            Assert.assertTrue(config.requestTimeout() == 45);
+            Assert.assertNotNull(config);
+            Assert.assertEquals(8081, config.port());
+            Assert.assertEquals(45, config.requestTimeout());
 
             // Verify backends
-            Assert.assertTrue(appGateway.backends().size() == 2);
+            Assert.assertEquals(2, appGateway.backends().size());
             ApplicationGatewayBackend backend = appGateway.backends().get("backend1");
-            Assert.assertTrue(backend != null);
-            Assert.assertTrue(backend.addresses().size() == 2);
+            Assert.assertNotNull(backend);
+            Assert.assertEquals(2, backend.addresses().size());
 
             // Verify request routing rules
-            Assert.assertTrue(appGateway.requestRoutingRules().size() == 3);
+            Assert.assertEquals(3, appGateway.requestRoutingRules().size());
             ApplicationGatewayRequestRoutingRule rule;
 
             rule = appGateway.requestRoutingRules().get("rule80");
-            Assert.assertTrue(rule != null);
+            Assert.assertNotNull(rule);
             Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIPAddressId()));
-            Assert.assertTrue(rule.frontendPort() == 80);
-            Assert.assertTrue(rule.backendPort() == 8080);
+            Assert.assertEquals(80, rule.frontendPort());
+            Assert.assertEquals(8080, rule.backendPort());
             Assert.assertTrue(rule.cookieBasedAffinity());
-            Assert.assertTrue(rule.backendAddresses().size() == 4);
+            Assert.assertEquals(4, rule.backendAddresses().size());
             Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.2"));
             Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.1"));
             Assert.assertTrue(rule.backend().containsFqdn("www.microsoft.com"));
             Assert.assertTrue(rule.backend().containsFqdn("www.example.com"));
 
             rule = appGateway.requestRoutingRules().get("rule443");
-            Assert.assertTrue(rule != null);
+            Assert.assertNotNull(rule);
             Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIPAddressId()));
-            Assert.assertTrue(rule.frontendPort() == 443);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
-            Assert.assertTrue(rule.sslCertificate() != null);
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertEquals(443, rule.frontendPort());
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, rule.frontendProtocol());
+            Assert.assertNotNull(rule.sslCertificate());
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
             rule = appGateway.requestRoutingRules().get("rule9000");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.listener() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.listener());
             Assert.assertTrue(rule.listener().name().equalsIgnoreCase("listener1"));
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
+            // Verify probes
+            Assert.assertEquals(1, appGateway.probes().size());
+            ApplicationGatewayProbe probe;
+            probe = appGateway.probes().get("probe1");
+            Assert.assertNotNull(probe);
+            Assert.assertEquals("microsoft.com", probe.host().toLowerCase());
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTP, probe.protocol());
+            Assert.assertEquals("/", probe.path());
+            Assert.assertEquals(5,  probe.retriesBeforeUnhealthy());
+            Assert.assertEquals(9, probe.timeBetweenProbesInSeconds());
+            Assert.assertEquals(10, probe.timeoutInSeconds());
             creationThread.join();
 
             return appGateway;
@@ -1082,6 +1102,18 @@ public class TestApplicationGateway {
                 if (listener.sslCertificate() != null) {
                     info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
                 }
+        }
+
+        // Show probes
+        Map<String, ApplicationGatewayProbe> probes = resource.probes();
+        info.append("\n\tProbes: ").append(probes.size());
+        for (ApplicationGatewayProbe probe : probes.values()) {
+            info.append("\n\t\tName: ").append(probe.name())
+                .append("\n\t\tProtocol:").append(probe.protocol().toString())
+                .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
+                .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
+                .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
+                .append("\n\t\tHost: ").append(probe.host());
         }
 
         // Show request routing rules

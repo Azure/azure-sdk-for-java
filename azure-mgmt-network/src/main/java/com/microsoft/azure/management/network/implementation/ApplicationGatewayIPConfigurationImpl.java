@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for ApplicationGatewayIpConfiguration.
  */
 @LangDefinition
-class ApplicationGatewayIpConfigurationImpl
+class ApplicationGatewayIPConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayIpConfiguration,
@@ -26,7 +26,7 @@ class ApplicationGatewayIpConfigurationImpl
         ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayIpConfiguration.Update {
 
-    ApplicationGatewayIpConfigurationImpl(ApplicationGatewayIPConfigurationInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayIPConfigurationImpl(ApplicationGatewayIPConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -39,17 +39,17 @@ class ApplicationGatewayIpConfigurationImpl
     // Fluent setters
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Subnet subnet) {
+    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(Subnet subnet) {
         return this.withExistingSubnet(subnet.parent().id(), subnet.name());
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Network network, String subnetName) {
+    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(Network network, String subnetName) {
         return this.withExistingSubnet(network.id(), subnetName);
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
+    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
