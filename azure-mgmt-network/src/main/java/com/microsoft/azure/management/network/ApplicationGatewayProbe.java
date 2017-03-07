@@ -172,7 +172,6 @@ public interface ApplicationGatewayProbe extends
     interface UpdateStages {
         /**
          * Stage of an application gateway probe update allowing to specify the host to send the probe to.
-         * @param <ParentT> the stage of the parent application gateway update to return to
          */
         interface WithHost {
             /**
@@ -225,7 +224,6 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe update allowing to specify the time interval between consecutive probes.
-         * @param <ParentT> the stage of the parent application gateway update to return to
          */
         interface WithInterval {
             /**

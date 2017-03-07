@@ -56,7 +56,7 @@ class ApplicationGatewayProbeImpl
 
     @Override
     public int retriesBeforeUnhealthy() {
-        return (this.inner().unhealthyThreshold() != null) ? this.inner().unhealthyThreshold(): 0;
+        return (this.inner().unhealthyThreshold() != null) ? this.inner().unhealthyThreshold() : 0;
     }
 
     @Override
