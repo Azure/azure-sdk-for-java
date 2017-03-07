@@ -313,7 +313,7 @@ public interface WebAppBase extends
     interface DefinitionStages {
         /**
          * A web app definition stage allowing host name binding to be specified.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameBinding<FluentT> {
             /**
@@ -344,7 +344,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing SSL binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameSslBinding<FluentT> {
             /**
@@ -357,7 +357,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing disabling the web app upon creation.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithSiteEnabled<FluentWithCreateT> {
             /**
@@ -369,7 +369,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithScmSiteAlsoStopped<FluentWithCreateT> {
             /**
@@ -382,7 +382,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if client affinity is enabled.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithClientAffinityEnabled<FluentWithCreateT> {
             /**
@@ -395,7 +395,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if client cert is enabled.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithClientCertEnabled<FluentWithCreateT> {
             /**
@@ -409,7 +409,7 @@ public interface WebAppBase extends
         /**
          * A web app definition stage allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithWebContainer<FluentWithCreateT> {
             /**
@@ -423,7 +423,7 @@ public interface WebAppBase extends
         /**
          * A web app definition stage allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithSiteConfigs<FluentWithCreateT> {
             /**
@@ -532,7 +532,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing app settings to be set.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithAppSettings<FluentWithCreateT> {
             /**
@@ -570,7 +570,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing connection strings to be set.
-         * @param <FluentWithCreateT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentWithCreateT> the type of the resource
          */
         interface WithConnectionString<FluentWithCreateT> {
             /**
@@ -595,7 +595,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing source control to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSourceControl<FluentT> {
             /**
@@ -612,6 +612,12 @@ public interface WebAppBase extends
             WithCreate<FluentT> withLocalGitSourceControl();
         }
 
+        /**
+         * A site definition with sufficient inputs to create a new web app /
+         * deployments slot in the cloud, but exposing additional optional
+         * inputs to specify.
+         * @param <FluentT> the type of the resource
+         */
         interface WithCreate<FluentT> extends
             Creatable<FluentT>,
             WithSourceControl<FluentT>,
@@ -626,7 +632,7 @@ public interface WebAppBase extends
     interface UpdateStages {
         /**
          * The stage of the web app update allowing host name binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameBinding<FluentT> {
             /**
@@ -664,7 +670,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing SSL binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameSslBinding<FluentT> {
             /**
@@ -684,7 +690,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing disabling the web app upon creation.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithSiteEnabled<UpdateT> {
             /**
@@ -696,7 +702,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithScmSiteAlsoStopped<UpdateT> {
             /**
@@ -709,7 +715,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if client affinity is enabled.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithClientAffinityEnabled<UpdateT> {
             /**
@@ -722,7 +728,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if client cert is enabled.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithClientCertEnabled<UpdateT> {
             /**
@@ -736,7 +742,7 @@ public interface WebAppBase extends
         /**
          * The stage of the web app update allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithWebContainer<UpdateT> {
             /**
@@ -750,7 +756,7 @@ public interface WebAppBase extends
         /**
          * The stage of the web app update allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithSiteConfigs<UpdateT> {
             /**
@@ -865,7 +871,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing app settings to be set.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithAppSettings<UpdateT> {
             /**
@@ -918,7 +924,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing connection strings to be set.
-         * @param <UpdateT> the type of the resource, either a web app or a deployment slot
+         * @param <UpdateT> the type of the resource
          */
         interface WithConnectionString<UpdateT> {
             /**
@@ -958,7 +964,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing source control to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSourceControl<FluentT> {
             /**
@@ -983,6 +989,10 @@ public interface WebAppBase extends
         }
     }
 
+    /**
+     * The template for a site update operation, containing all the settings that can be modified.
+     * @param <FluentT> the type of the resource
+     */
     interface Update<FluentT> extends
         Appliable<FluentT>,
         UpdateStages.WithSourceControl<FluentT>,

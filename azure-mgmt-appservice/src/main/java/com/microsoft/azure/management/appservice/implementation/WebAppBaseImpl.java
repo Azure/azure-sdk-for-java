@@ -52,8 +52,10 @@ import java.util.Set;
 
 /**
  * The implementation for WebAppBase.
- *  @param <FluentT> the fluent interface of the web app or deployment slot
- *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
+ * @param <FluentT> the fluent interface of the web app or deployment slot or function app
+ * @param <FluentImplT> the fluent implementation of the web app or deployment slot or function app
+ * @param <FluentWithCreateT> the definition stage that derives from Creatable
+ * @param <FluentUpdateT> The definition stage that derives from Appliable
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class WebAppBaseImpl<

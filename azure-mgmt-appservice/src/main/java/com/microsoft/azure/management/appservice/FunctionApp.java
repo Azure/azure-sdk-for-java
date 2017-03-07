@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.storage.*;
+import com.microsoft.azure.management.storage.StorageAccount;
 
 /**
  * An immutable client-side representation of an Azure Function App.
@@ -115,15 +115,21 @@ public interface FunctionApp extends
          */
         interface WithStorageAccount {
             /**
-             * Creates a new storage account to use for the function app
+             * Creates a new storage account to use for the function app.
              * @return the next stage of the function app definition.
              */
             WithCreate withNewStorageAccount();
 
+            /**
+             * Creates a new storage account to use for the function app.
+             * @param name the name of the storage account
+             * @param sku the sku of the storage account
+             * @return the next stage of the function app definition.
+             */
             WithCreate withNewStorageAccount(String name, com.microsoft.azure.management.storage.SkuName sku);
 
             /**
-             * Specifies the storage account to use for the function app
+             * Specifies the storage account to use for the function app.
              * @param storageAccount the storage account to use
              * @return the next stage of the function app definition.
              */
@@ -148,6 +154,11 @@ public interface FunctionApp extends
             WithCreate withLatestRuntimeVersion();
         }
 
+        /**
+         * A function app definition with sufficient inputs to create a new
+         * function app in the cloud, but exposing additional optional
+         * inputs to specify.
+         */
         interface WithCreate extends
             Creatable<FunctionApp>,
             DefinitionStages.WithRuntimeVersion,

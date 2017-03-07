@@ -32,7 +32,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The implementation for WebApp.
+ * The base implementation for web apps and function apps.
+ *
+ * @param <FluentT> the fluent interface, WebApp or FunctionApp
+ * @param <FluentImplT> the implementation class for FluentT
+ * @param <FluentWithCreateT> the definition stage that derives from Creatable
+ * @param <FluentUpdateT> The definition stage that derives from Appliable
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class AppServiceBaseImpl<
