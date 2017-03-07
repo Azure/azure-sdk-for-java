@@ -791,6 +791,7 @@ public class TestApplicationGateway {
                     .fromListener("listener1")
                     .parent()
                 .withoutRequestRoutingRule("rule9000")
+                .withoutProbe("probe1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -812,6 +813,9 @@ public class TestApplicationGateway {
             ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule443");
             Assert.assertTrue(rule != null);
             Assert.assertTrue("listener1".equalsIgnoreCase(rule.listener().name()));
+
+            // Verify probes
+            Assert.assertTrue(resource.probes().isEmpty());
 
             return resource;
         }
