@@ -5,16 +5,13 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
-import rx.Completable;
-import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -22,7 +19,7 @@ import java.util.ArrayList;
  * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
-class TrafficManagerProfilesImpl extends ListableResourcesImpl<
+class TrafficManagerProfilesImpl extends TopLevelCrudableResourcesImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
@@ -43,26 +40,6 @@ class TrafficManagerProfilesImpl extends ListableResourcesImpl<
         return new CheckProfileDnsNameAvailabilityResult(this
                 .inner()
                 .checkTrafficManagerRelativeDnsNameAvailability(parameter));
-    }
-
-    @Override
-    public PagedList<TrafficManagerProfile> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<TrafficManagerProfile> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<ProfileInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

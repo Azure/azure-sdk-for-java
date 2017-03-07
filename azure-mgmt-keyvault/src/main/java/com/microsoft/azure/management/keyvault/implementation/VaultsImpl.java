@@ -49,8 +49,13 @@ class VaultsImpl
     }
 
     @Override
-    protected Observable<VaultInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<VaultInner> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getByResourceGroupAsync(resourceGroupName, name);
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override

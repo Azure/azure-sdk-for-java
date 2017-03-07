@@ -6,26 +6,23 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 
 /**
  * The implementation for Disks.
  */
 @LangDefinition
 class DisksImpl
-        extends ListableResourcesImpl<
-                Disk,
-                DiskImpl,
-                DiskInner,
-                DisksInner,
-                ComputeManager>
+        extends TopLevelCrudableResourcesImpl<
+                                Disk,
+                                DiskImpl,
+                                DiskInner,
+                                DisksInner,
+                                ComputeManager>
         implements Disks {
 
     DisksImpl(ComputeManager computeManager) {
@@ -48,26 +45,6 @@ class DisksImpl
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
         this.inner().revokeAccess(resourceGroupName, diskName);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
-    protected Observable<DiskInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public PagedList<Disk> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
-    public PagedList<Disk> list() {
-        return wrapList(this.inner().list());
     }
 
     @Override

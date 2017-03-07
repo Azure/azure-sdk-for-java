@@ -14,10 +14,8 @@ import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.cdn.ResourceUsage;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import rx.Completable;
-import rx.Observable;
 
 import java.util.List;
 
@@ -26,31 +24,16 @@ import java.util.List;
  */
 @LangDefinition
 class CdnProfilesImpl
-        extends ListableResourcesImpl<
-            CdnProfile,
-            CdnProfileImpl,
-            ProfileInner,
-            ProfilesInner,
-            CdnManager>
+        extends TopLevelCrudableResourcesImpl<
+                            CdnProfile,
+                            CdnProfileImpl,
+                            ProfileInner,
+                            ProfilesInner,
+                            CdnManager>
         implements CdnProfiles {
 
     CdnProfilesImpl(final CdnManager cdnManager) {
         super(cdnManager.inner().profiles(), cdnManager);
-    }
-
-    @Override
-    public PagedList<CdnProfile> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<CdnProfile> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    protected Observable<ProfileInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
@@ -130,10 +113,5 @@ class CdnProfilesImpl
     @Override
     public void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.manager().inner().endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

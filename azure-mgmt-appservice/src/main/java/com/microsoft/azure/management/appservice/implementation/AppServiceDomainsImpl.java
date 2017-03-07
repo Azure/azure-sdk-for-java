@@ -34,12 +34,12 @@ class AppServiceDomainsImpl
     }
 
     @Override
-    protected Observable<DomainInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<DomainInner> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getAsync(resourceGroupName, name);
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 

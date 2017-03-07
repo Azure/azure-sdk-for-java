@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
@@ -41,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in NetworkSecurityGroups.
  */
-public class NetworkSecurityGroupsInner implements InnerSupportsDelete<Void>, InnerSupportsListing<NetworkSecurityGroupInner> {
+public class NetworkSecurityGroupsInner implements InnerSupportsGet<NetworkSecurityGroupInner>, InnerSupportsDelete<Void>, InnerSupportsListing<NetworkSecurityGroupInner> {
     /** The Retrofit service to perform REST calls. */
     private NetworkSecurityGroupsService service;
     /** The service client containing this operation class. */

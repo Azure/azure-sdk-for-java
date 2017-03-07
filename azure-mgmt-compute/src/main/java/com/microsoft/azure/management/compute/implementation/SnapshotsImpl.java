@@ -6,26 +6,23 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
 
 /**
  * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
-        extends ListableResourcesImpl<
-                    Snapshot,
-                    SnapshotImpl,
-                    SnapshotInner,
-                    SnapshotsInner,
-                    ComputeManager>
+        extends TopLevelCrudableResourcesImpl<
+                                    Snapshot,
+                                    SnapshotImpl,
+                                    SnapshotInner,
+                                    SnapshotsInner,
+                                    ComputeManager>
         implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {
@@ -47,26 +44,6 @@ class SnapshotsImpl
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
         this.inner().revokeAccess(resourceGroupName, diskName);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
-    protected Observable<SnapshotInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    public PagedList<Snapshot> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
-    public PagedList<Snapshot> list() {
-        return wrapList(this.inner().list());
     }
 
     @Override

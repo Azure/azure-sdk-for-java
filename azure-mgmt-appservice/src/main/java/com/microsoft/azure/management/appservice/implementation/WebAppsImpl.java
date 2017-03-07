@@ -71,9 +71,14 @@ class WebAppsImpl
     }
 
     @Override
-    protected Observable<SiteInner> getAsync(String resourceGroupName, String name) {
+    protected Observable<SiteInner> getInnerAsync(String resourceGroupName, String name) {
         // Not implemented.
         return null;
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
@@ -98,10 +103,5 @@ class WebAppsImpl
     @Override
     public WebAppImpl define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

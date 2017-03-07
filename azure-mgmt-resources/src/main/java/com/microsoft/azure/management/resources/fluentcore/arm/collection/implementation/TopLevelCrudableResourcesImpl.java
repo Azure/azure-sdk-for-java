@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -13,9 +14,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -27,11 +31,11 @@ import rx.Observable;
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
  */
-public abstract class ListableResourcesImpl<
+public abstract class TopLevelCrudableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,
         ImplT extends T,
         InnerT extends Resource,
-        InnerCollectionT extends InnerSupportsListing<InnerT>,
+        InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete,
         ManagerT extends ManagerBase>
     extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
     implements
@@ -43,8 +47,18 @@ public abstract class ListableResourcesImpl<
         SupportsListingAsync<T>,
         SupportsListingByGroupAsync<T> {
 
-    protected ListableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
+    protected TopLevelCrudableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
+    }
+
+    @Override
+    protected final Observable<InnerT> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
@@ -55,5 +69,15 @@ public abstract class ListableResourcesImpl<
     @Override
     public Observable<T> listByGroupAsync(String resourceGroupName) {
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
+    }
+
+    @Override
+    public final PagedList<T> list() {
+        return wrapList(inner().list());
+    }
+
+    @Override
+    public final PagedList<T> listByGroup(String resourceGroupName) {
+        return wrapList(inner().listByResourceGroup(resourceGroupName));
     }
 }
