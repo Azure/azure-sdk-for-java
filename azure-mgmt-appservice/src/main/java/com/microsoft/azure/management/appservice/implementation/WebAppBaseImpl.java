@@ -443,252 +443,68 @@ abstract class WebAppBaseImpl<
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
-        final boolean emptyConfig = inner().siteConfig() == null;
-        if (emptyConfig) {
-            inner().withSiteConfig(new SiteConfigInner());
-        }
-        inner().siteConfig().withLocation(inner().location());
-        // Construct web app observable
-        return createOrUpdateInner(inner())
-        .map(new Func1<SiteInner, SiteInner>() {
-            @Override
-            public SiteInner call(SiteInner siteInner) {
-                if (emptyConfig) {
-                    inner().withSiteConfig(null);
-                }
-                return siteInner;
-            }
-        })
+        return submitSite(inner())
         // Submit hostname bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner site) {
-                List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
-                for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
-                    bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync()));
-                }
-                for (String binding: hostNameBindingsToDelete) {
-                    bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {
-                        @Override
-                        public HostNameBinding call(Object o) {
-                            return null;
-                        }
-                    }));
-                }
-                if (bindingObservables.isEmpty()) {
-                    return Observable.just(site);
-                } else {
-                    return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
-                        @Override
-                        public SiteInner call(Object... args) {
-                            return site;
-                        }
-                    });
-                }
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitHostNameBindings(inner);
             }
         })
         // refresh after hostname bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(SiteInner site) {
+            public Observable<SiteInner> call(SiteInner inner) {
                 return getInner();
             }
         })
         // Submit SSL bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
-                for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
-                    certs.add(binding.newCertificate());
-                    hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
-                }
-                siteInner.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
-                if (certs.isEmpty()) {
-                    return Observable.just(siteInner);
-                } else {
-                    return Observable.zip(certs, new FuncN<SiteInner>() {
-                        @Override
-                        public SiteInner call(Object... args) {
-                            return siteInner;
-                        }
-                    }).flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                        @Override
-                        public Observable<SiteInner> call(SiteInner inner) {
-                            return createOrUpdateInner(inner);
-                        }
-                    });
-                }
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSslBindings(inner);
             }
         })
         // submit config
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                if (inner().siteConfig() == null) {
-                    return Observable.just(siteInner);
-                }
-                return createOrUpdateSiteConfig(inner().siteConfig())
-                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
-                            @Override
-                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                siteInner.withSiteConfig(siteConfigInner);
-                                return Observable.just(siteInner);
-                            }
-                        });
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSiteConfig(inner, inner().siteConfig());
             }
         })
         // app settings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
-                    observable = listAppSettings()
-                            .flatMap(new Func1<StringDictionaryInner, Observable<StringDictionaryInner>>() {
-                                @Override
-                                public Observable<StringDictionaryInner> call(StringDictionaryInner stringDictionaryInner) {
-                                    if (stringDictionaryInner == null) {
-                                        stringDictionaryInner = new StringDictionaryInner();
-                                        stringDictionaryInner.withLocation(regionName());
-                                    }
-                                    if (stringDictionaryInner.properties() == null) {
-                                        stringDictionaryInner.withProperties(new HashMap<String, String>());
-                                    }
-                                    stringDictionaryInner.properties().putAll(appSettingsToAdd);
-                                    for (String appSettingKey : appSettingsToRemove) {
-                                        stringDictionaryInner.properties().remove(appSettingKey);
-                                    }
-                                    return updateAppSettings(stringDictionaryInner);
-                                }
-                            }).map(new Func1<StringDictionaryInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(StringDictionaryInner stringDictionaryInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
+                return submitAppSettings(inner);
             }
         })
         // connection strings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
-                    observable = listConnectionStrings()
-                            .flatMap(new Func1<ConnectionStringDictionaryInner, Observable<ConnectionStringDictionaryInner>>() {
-                                @Override
-                                public Observable<ConnectionStringDictionaryInner> call(ConnectionStringDictionaryInner dictionaryInner) {
-                                    if (dictionaryInner == null) {
-                                        dictionaryInner = new ConnectionStringDictionaryInner();
-                                        dictionaryInner.withLocation(regionName());
-                                    }
-                                    if (dictionaryInner.properties() == null) {
-                                        dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
-                                    }
-                                    dictionaryInner.properties().putAll(connectionStringsToAdd);
-                                    for (String connectionString : connectionStringsToRemove) {
-                                        dictionaryInner.properties().remove(connectionString);
-                                    }
-                                    return updateConnectionStrings(dictionaryInner);
-                                }
-                            }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(ConnectionStringDictionaryInner stringDictionaryInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
+                return submitConnectionStrings(inner);
             }
         })
         // app setting & connection string stickiness
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
-                    observable = listSlotConfigurations()
-                            .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
-                                @Override
-                                public Observable<SlotConfigNamesResourceInner> call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
-                                    if (slotConfigNamesResourceInner == null) {
-                                        slotConfigNamesResourceInner = new SlotConfigNamesResourceInner();
-                                        slotConfigNamesResourceInner.withLocation(regionName());
-                                    }
-                                    if (slotConfigNamesResourceInner.appSettingNames() == null) {
-                                        slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
-                                    }
-                                    if (slotConfigNamesResourceInner.connectionStringNames() == null) {
-                                        slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<String>());
-                                    }
-                                    Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
-                                    Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
-                                    for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
-                                        if (stickiness.getValue()) {
-                                            stickyAppSettingKeys.add(stickiness.getKey());
-                                        } else {
-                                            stickyAppSettingKeys.remove(stickiness.getKey());
-                                        }
-                                    }
-                                    for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
-                                        if (stickiness.getValue()) {
-                                            stickyConnectionStringNames.add(stickiness.getKey());
-                                        } else {
-                                            stickyConnectionStringNames.remove(stickiness.getKey());
-                                        }
-                                    }
-                                    slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
-                                    slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
-                                    return updateSlotConfigurations(slotConfigNamesResourceInner);
-                                }
-                            }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
+                return submitStickiness(inner);
             }
         })
         // create source control
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                if (sourceControl == null || sourceControlToDelete) {
-                    return Observable.just(inner);
-                }
-                return sourceControl.registerGithubAccessToken()
-                .flatMap(new Func1<SourceControlInner, Observable<SiteSourceControlInner>>() {
-                    @Override
-                    public Observable<SiteSourceControlInner> call(SourceControlInner sourceControlInner) {
-                        return createOrUpdateSourceControl(sourceControl.inner());
-                    }
-                })
-                .map(new Func1<SiteSourceControlInner, SiteInner>() {
-                    @Override
-                    public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
-                        return inner;
-                    }
-                });
+                return submitSourceControlToCreate(inner);
             }
         })
         // delete source control
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                if (!sourceControlToDelete) {
-                    return Observable.just(inner);
-                }
-                return deleteSourceControl().map(new Func1<Void, SiteInner>() {
-                    @Override
-                    public SiteInner call(Void aVoid) {
-                        return inner;
-                    }
-                });
+                return submitSourceControlToDelete(inner);
             }
         })
         // convert from inner
@@ -702,6 +518,226 @@ abstract class WebAppBaseImpl<
             @Override
             public Observable<FluentT> call(FluentT fluentT) {
                 return cacheAppSettingsAndConnectionStrings();
+            }
+        });
+    }
+
+    Observable<SiteInner> submitSite(final SiteInner site) {
+        final boolean emptyConfig = site.siteConfig() == null;
+        if (emptyConfig) {
+            site.withSiteConfig(new SiteConfigInner());
+        }
+        site.siteConfig().withLocation(site.location());
+        // Construct web app observable
+        return createOrUpdateInner(site)
+            .map(new Func1<SiteInner, SiteInner>() {
+                @Override
+                public SiteInner call(SiteInner siteInner) {
+                    if (emptyConfig) {
+                        site.withSiteConfig(null);
+                    }
+                    return siteInner;
+                }
+            });
+    }
+
+    Observable<SiteInner> submitHostNameBindings(final SiteInner site) {
+        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
+        for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
+            bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync()));
+        }
+        for (String binding: hostNameBindingsToDelete) {
+            bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {
+                @Override
+                public HostNameBinding call(Object o) {
+                    return null;
+                }
+            }));
+        }
+        if (bindingObservables.isEmpty()) {
+            return Observable.just(site);
+        } else {
+            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
+                @Override
+                public SiteInner call(Object... args) {
+                    return site;
+                }
+            });
+        }
+    }
+
+    Observable<SiteInner> submitSslBindings(final SiteInner site) {
+        List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
+        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
+            certs.add(binding.newCertificate());
+            hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
+        }
+        site.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+        if (certs.isEmpty()) {
+            return Observable.just(site);
+        } else {
+            return Observable.zip(certs, new FuncN<SiteInner>() {
+                @Override
+                public SiteInner call(Object... args) {
+                    return site;
+                }
+            }).flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                @Override
+                public Observable<SiteInner> call(SiteInner inner) {
+                    return createOrUpdateInner(inner);
+                }
+            });
+        }
+    }
+
+    Observable<SiteInner> submitSiteConfig(final SiteInner site, final SiteConfigInner config) {
+        if (config == null) {
+            return Observable.just(site);
+        }
+        return createOrUpdateSiteConfig(config)
+            .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                @Override
+                public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
+                    site.withSiteConfig(siteConfigInner);
+                    return Observable.just(site);
+                }
+            });
+    }
+
+    Observable<SiteInner> submitAppSettings(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
+            observable = listAppSettings()
+                .flatMap(new Func1<StringDictionaryInner, Observable<StringDictionaryInner>>() {
+                    @Override
+                    public Observable<StringDictionaryInner> call(StringDictionaryInner stringDictionaryInner) {
+                        if (stringDictionaryInner == null) {
+                            stringDictionaryInner = new StringDictionaryInner();
+                            stringDictionaryInner.withLocation(regionName());
+                        }
+                        if (stringDictionaryInner.properties() == null) {
+                            stringDictionaryInner.withProperties(new HashMap<String, String>());
+                        }
+                        stringDictionaryInner.properties().putAll(appSettingsToAdd);
+                        for (String appSettingKey : appSettingsToRemove) {
+                            stringDictionaryInner.properties().remove(appSettingKey);
+                        }
+                        return updateAppSettings(stringDictionaryInner);
+                    }
+                }).map(new Func1<StringDictionaryInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(StringDictionaryInner stringDictionaryInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitConnectionStrings(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
+            observable = listConnectionStrings()
+                .flatMap(new Func1<ConnectionStringDictionaryInner, Observable<ConnectionStringDictionaryInner>>() {
+                    @Override
+                    public Observable<ConnectionStringDictionaryInner> call(ConnectionStringDictionaryInner dictionaryInner) {
+                        if (dictionaryInner == null) {
+                            dictionaryInner = new ConnectionStringDictionaryInner();
+                            dictionaryInner.withLocation(regionName());
+                        }
+                        if (dictionaryInner.properties() == null) {
+                            dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
+                        }
+                        dictionaryInner.properties().putAll(connectionStringsToAdd);
+                        for (String connectionString : connectionStringsToRemove) {
+                            dictionaryInner.properties().remove(connectionString);
+                        }
+                        return updateConnectionStrings(dictionaryInner);
+                    }
+                }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(ConnectionStringDictionaryInner stringDictionaryInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitStickiness(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
+            observable = listSlotConfigurations()
+                .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
+                    @Override
+                    public Observable<SlotConfigNamesResourceInner> call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                        if (slotConfigNamesResourceInner == null) {
+                            slotConfigNamesResourceInner = new SlotConfigNamesResourceInner();
+                            slotConfigNamesResourceInner.withLocation(regionName());
+                        }
+                        if (slotConfigNamesResourceInner.appSettingNames() == null) {
+                            slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
+                        }
+                        if (slotConfigNamesResourceInner.connectionStringNames() == null) {
+                            slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<String>());
+                        }
+                        Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
+                        Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
+                        for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
+                            if (stickiness.getValue()) {
+                                stickyAppSettingKeys.add(stickiness.getKey());
+                            } else {
+                                stickyAppSettingKeys.remove(stickiness.getKey());
+                            }
+                        }
+                        for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
+                            if (stickiness.getValue()) {
+                                stickyConnectionStringNames.add(stickiness.getKey());
+                            } else {
+                                stickyConnectionStringNames.remove(stickiness.getKey());
+                            }
+                        }
+                        slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
+                        slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
+                        return updateSlotConfigurations(slotConfigNamesResourceInner);
+                    }
+                }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitSourceControlToCreate(final SiteInner site) {
+        if (sourceControl == null || sourceControlToDelete) {
+            return Observable.just(site);
+        }
+        return sourceControl.registerGithubAccessToken()
+            .flatMap(new Func1<SourceControlInner, Observable<SiteSourceControlInner>>() {
+                @Override
+                public Observable<SiteSourceControlInner> call(SourceControlInner sourceControlInner) {
+                    return createOrUpdateSourceControl(sourceControl.inner());
+                }
+            })
+            .map(new Func1<SiteSourceControlInner, SiteInner>() {
+                @Override
+                public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
+                    return site;
+                }
+            });
+    }
+
+    Observable<SiteInner> submitSourceControlToDelete(final SiteInner site) {
+        if (!sourceControlToDelete) {
+            return Observable.just(site);
+        }
+        return deleteSourceControl().map(new Func1<Void, SiteInner>() {
+            @Override
+            public SiteInner call(Void aVoid) {
+                return site;
             }
         });
     }

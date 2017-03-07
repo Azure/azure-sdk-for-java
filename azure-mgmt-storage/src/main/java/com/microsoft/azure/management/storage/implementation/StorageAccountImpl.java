@@ -115,6 +115,18 @@ class StorageAccountImpl
     }
 
     @Override
+    public Observable<StorageAccountKey> getKeysAsync() {
+        return this.manager().inner().storageAccounts().listKeysAsync(
+            this.resourceGroupName(), this.name())
+            .flatMapIterable(new Func1<StorageAccountListKeysResultInner, Iterable<StorageAccountKey>>() {
+                @Override
+                public Iterable<StorageAccountKey> call(StorageAccountListKeysResultInner storageAccountListKeysResultInner) {
+                    return storageAccountListKeysResultInner.keys();
+                }
+            });
+    }
+
+    @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
         StorageAccountListKeysResultInner response =
                 this.manager().inner().storageAccounts().regenerateKey(

@@ -42,10 +42,10 @@ public class FunctionAppsTests extends AppServiceTest {
     @Test
     public void canCRUDFunctionApp() throws Exception {
         // Create with new app service plan
-        FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
+        FunctionApp functionApp1 = appServiceManager.functionApps().define("delete-no-storage-6")
                 .withNewResourceGroup(RG_NAME_1, Region.US_WEST)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_1, Region.US_WEST)
-                .withDynamicPricingTier()
+                .withNewConsumptionPlan(Region.US_WEST)
+                .withNewStorageAccount()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
                 .create();
         Assert.assertNotNull(functionApp1);

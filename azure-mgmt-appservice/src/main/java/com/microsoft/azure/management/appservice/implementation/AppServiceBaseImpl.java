@@ -236,9 +236,7 @@ abstract class AppServiceBaseImpl<
 
     @SuppressWarnings("unchecked")
     public FluentImplT withNewAppServicePlan(String name, Region region) {
-        withNewAppServicePlan(name).withRegion(region);
-        appServicePlan.withRegion(region);
-        return (FluentImplT) this;
+        return withNewAppServicePlan(name, region.name());
     }
 
     @SuppressWarnings("unchecked")

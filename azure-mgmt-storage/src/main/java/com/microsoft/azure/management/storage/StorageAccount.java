@@ -16,8 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.List;
 
@@ -102,6 +102,13 @@ public interface StorageAccount extends
      * @return the access keys for this storage account
      */
     List<StorageAccountKey> getKeys();
+
+    /**
+     * Fetch the up-to-date access keys from Azure for this storage account.
+     *
+     * @return the access keys for this storage account
+     */
+    Observable<StorageAccountKey> getKeysAsync();
 
     /**
      * Regenerates the access keys for this storage account.
