@@ -13,7 +13,7 @@ import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 
@@ -22,12 +22,12 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworkInterfacesImpl
-        extends TopLevelCrudableResourcesImpl<
-                                    NetworkInterface,
-                                    NetworkInterfaceImpl,
-                                    NetworkInterfaceInner,
-                                    NetworkInterfacesInner,
-                                    NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                            NetworkInterface,
+                                            NetworkInterfaceImpl,
+                                            NetworkInterfaceInner,
+                                            NetworkInterfacesInner,
+                                            NetworkManager>
         implements NetworkInterfaces {
 
     NetworkInterfacesImpl(final NetworkManager networkManager) {

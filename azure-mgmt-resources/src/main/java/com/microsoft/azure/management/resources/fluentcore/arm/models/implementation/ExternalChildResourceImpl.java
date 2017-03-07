@@ -56,9 +56,6 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     }
 
     @Override
-    public abstract String id();
-
-    @Override
     public String name() {
         return this.name;
     }

@@ -61,6 +61,9 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func0;
@@ -184,17 +187,47 @@ class VirtualMachineImpl
 
     @Override
     public void deallocate() {
-        this.manager().inner().virtualMachines().deallocate(this.resourceGroupName(), this.name());
+        this.deallocateAsync().await();
+    }
+
+    @Override
+    public Completable deallocateAsync() {
+        return this.manager().inner().virtualMachines().deallocateAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.deallocateAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void generalize() {
-        this.manager().inner().virtualMachines().generalize(this.resourceGroupName(), this.name());
+        this.generalizeAsync().await();
+    }
+
+    @Override
+    public Completable generalizeAsync() {
+        return this.manager().inner().virtualMachines().generalizeAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> generalizeAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.generalizeAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void powerOff() {
-        this.manager().inner().virtualMachines().powerOff(this.resourceGroupName(), this.name());
+        this.powerOffAsync().await();
+    }
+
+    @Override
+    public Completable powerOffAsync() {
+        return this.manager().inner().virtualMachines().powerOffAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.powerOffAsync().<Void>toObservable(), callback);
     }
 
     @Override
@@ -203,13 +236,43 @@ class VirtualMachineImpl
     }
 
     @Override
+    public Completable restartAsync() {
+        return null;
+    }
+
+    @Override
+    public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) {
+        return null;
+    }
+
+    @Override
     public void start() {
-        this.manager().inner().virtualMachines().start(this.resourceGroupName(), this.name());
+        this.startAsync().await();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return this.manager().inner().virtualMachines().startAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void redeploy() {
-        this.manager().inner().virtualMachines().redeploy(this.resourceGroupName(), this.name());
+        this.redeployAsync().await();
+    }
+
+    @Override
+    public Completable redeployAsync() {
+        return this.manager().inner().virtualMachines().redeployAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> redeployAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.redeployAsync().<Void>toObservable(), callback);
     }
 
     @Override

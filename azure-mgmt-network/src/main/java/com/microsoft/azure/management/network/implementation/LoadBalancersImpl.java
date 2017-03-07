@@ -8,19 +8,19 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  *  Implementation for {@link LoadBalancers}.
  */
 @LangDefinition
 class LoadBalancersImpl
-        extends TopLevelCrudableResourcesImpl<
-                                    LoadBalancer,
-                                    LoadBalancerImpl,
-                                    LoadBalancerInner,
-                                    LoadBalancersInner,
-                                    NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                            LoadBalancer,
+                                            LoadBalancerImpl,
+                                            LoadBalancerInner,
+                                            LoadBalancersInner,
+                                            NetworkManager>
         implements LoadBalancers {
 
     LoadBalancersImpl(final NetworkManager networkManager) {

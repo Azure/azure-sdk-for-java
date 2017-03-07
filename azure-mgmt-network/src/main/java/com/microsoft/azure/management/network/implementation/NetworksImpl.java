@@ -10,7 +10,7 @@ import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 
@@ -19,12 +19,12 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworksImpl
-        extends TopLevelCrudableResourcesImpl<
-                                    Network,
-                                    NetworkImpl,
-                                    VirtualNetworkInner,
-                                    VirtualNetworksInner,
-                                    NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                            Network,
+                                            NetworkImpl,
+                                            VirtualNetworkInner,
+                                            VirtualNetworksInner,
+                                            NetworkManager>
         implements Networks {
 
     NetworksImpl(final NetworkManager networkManager) {

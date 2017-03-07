@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 /**
@@ -18,7 +18,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
  */
 @LangDefinition
 public class BatchAccountsImpl
-        extends TopLevelCrudableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
+        extends TopLevelModifiableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
 

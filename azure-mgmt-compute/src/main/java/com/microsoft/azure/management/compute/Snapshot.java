@@ -15,6 +15,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
+import rx.Observable;
 
 /**
  * An immutable client-side representation of an Azure managed snapshot.
@@ -58,9 +62,40 @@ public interface Snapshot extends
     String grantAccess(int accessDurationInSeconds);
 
     /**
+     * Grants access to the snapshot asynchronously.
+     *
+     * @param accessDurationInSeconds the access duration in seconds
+     * @return the observable to readonly SAS uri to the disk
+     */
+    Observable<String> grantAccessAsync(int accessDurationInSeconds);
+
+    /**
+     * Grants access to the snapshot asynchronously.
+     *
+     * @param accessDurationInSeconds the access duration in seconds
+     * @param callback the callback to call on success or failure, on success it will pass readonly SAS uri to the disk in callback
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<String> grantAccessAsync(int accessDurationInSeconds, ServiceCallback<String> callback);
+
+    /**
      * Revoke access granted to the snapshot.
      */
     void revokeAccess();
+
+    /**
+     * Revoke access granted to the snapshot asynchronously.
+     *
+     * @return a completable indicates completion or exception of the request
+     */
+    Completable revokeAccessAsync();
+
+    /**
+     * Revoke access granted to the snapshot asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request     */
+    ServiceFuture<Void> revokeAccessAsync(ServiceCallback<Void> callback);
 
     /**
      * The entirety of the managed snapshot definition.

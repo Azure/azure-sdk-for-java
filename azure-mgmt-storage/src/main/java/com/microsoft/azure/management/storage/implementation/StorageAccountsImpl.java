@@ -6,23 +6,26 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import rx.Completable;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends TopLevelCrudableResourcesImpl<
-                                StorageAccount,
-                                StorageAccountImpl,
-                                StorageAccountInner,
-                                StorageAccountsInner,
-                                StorageManager>
+        extends TopLevelModifiableResourcesImpl<
+                                        StorageAccount,
+                                        StorageAccountImpl,
+                                        StorageAccountInner,
+                                        StorageAccountsInner,
+                                        StorageManager>
         implements StorageAccounts {
 
     StorageAccountsImpl(final StorageManager storageManager) {
@@ -31,12 +34,22 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResult(this.inner().checkNameAvailability(name));
+        return this.checkNameAvailabilityAsync(name).toBlocking().last();
     }
 
     @Override
-    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
+    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+        return this.inner().checkNameAvailabilityAsync(name).map(new Func1<CheckNameAvailabilityResultInner, CheckNameAvailabilityResult>() {
+            @Override
+            public CheckNameAvailabilityResult call(CheckNameAvailabilityResultInner checkNameAvailabilityResultInner) {
+                return new CheckNameAvailabilityResult(checkNameAvailabilityResultInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback) {
+        return ServiceFuture.fromBody(this.checkNameAvailabilityAsync(name), callback);
     }
 
     @Override

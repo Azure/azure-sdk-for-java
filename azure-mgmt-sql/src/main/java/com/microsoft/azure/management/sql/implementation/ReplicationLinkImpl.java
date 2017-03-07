@@ -13,7 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ReplicationLink;
 import com.microsoft.azure.management.sql.ReplicationRole;
 import com.microsoft.azure.management.sql.ReplicationState;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -102,20 +105,40 @@ class ReplicationLinkImpl
 
     @Override
     public void failover() {
-        this.innerCollection.failoverReplicationLink(
+        this.failoverAsync().await();
+    }
+
+    @Override
+    public Completable failoverAsync() {
+        return this.innerCollection.failoverReplicationLinkAsync(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.name());
+                this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> failoverAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.failoverAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void forceFailoverAllowDataLoss() {
-        this.innerCollection.failoverReplicationLinkAllowDataLoss(
+        this.forceFailoverAllowDataLossAsync().await();
+    }
+
+    @Override
+    public Completable forceFailoverAllowDataLossAsync() {
+        return this.innerCollection.failoverReplicationLinkAllowDataLossAsync(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.name());
+                this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> forceFailoverAllowDataLossAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.forceFailoverAllowDataLossAsync().<Void>toObservable(), callback);
     }
 
     @Override

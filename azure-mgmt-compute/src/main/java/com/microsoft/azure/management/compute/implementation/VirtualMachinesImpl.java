@@ -18,7 +18,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.exceptions.Exceptions;
 
@@ -29,12 +29,12 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class VirtualMachinesImpl
-    extends TopLevelCrudableResourcesImpl<
-                    VirtualMachine,
-                    VirtualMachineImpl,
-                    VirtualMachineInner,
-                    VirtualMachinesInner,
-                    ComputeManager>
+    extends TopLevelModifiableResourcesImpl<
+                        VirtualMachine,
+                        VirtualMachineImpl,
+                        VirtualMachineInner,
+                        VirtualMachinesInner,
+                        ComputeManager>
     implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

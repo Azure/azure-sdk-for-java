@@ -24,6 +24,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -180,12 +183,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     public Observable<Void> deleteAsync() {
         return this.parent().manager().inner().endpoints().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name()).map(new Func1<Void, Void>() {
-            @Override
-            public Void call(Void result) {
-                return result;
-            }
-        });
+                this.name());
     }
 
     @Override
@@ -338,23 +336,73 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
+    public Completable startAsync() {
+        return this.parent().startEndpointAsync(this.name());
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
     public void stop() {
-        this.parent().stopEndpoint(this.name());
+        this.stopAsync().await();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return this.parent().stopEndpointAsync(this.name());
+    }
+
+    @Override
+    public ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.stopAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void purgeContent(List<String> contentPaths) {
-        this.parent().purgeEndpointContent(this.name(), contentPaths);
+        this.purgeContentAsync(contentPaths).await();
+    }
+
+    @Override
+    public Completable purgeContentAsync(List<String> contentPaths) {
+        return this.parent().purgeEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public ServiceFuture<Void> purgeContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.purgeContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
     public void loadContent(List<String> contentPaths) {
-        this.parent().loadEndpointContent(this.name(), contentPaths);
+        this.loadContentAsync(contentPaths).await();
+    }
+
+    @Override
+    public Completable loadContentAsync(List<String> contentPaths) {
+        return this.parent().loadEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public ServiceFuture<Void> loadContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.loadContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
     public CustomDomainValidationResult validateCustomDomain(String hostName) {
-        return this.parent().validateEndpointCustomDomain(this.name(), hostName);
+        return this.validateCustomDomainAsync(hostName).toBlocking().last();
+    }
+
+    @Override
+    public Observable<CustomDomainValidationResult> validateCustomDomainAsync(String hostName) {
+        return this.parent().validateEndpointCustomDomainAsync(this.name(), hostName);
+    }
+
+    @Override
+    public ServiceFuture<CustomDomainValidationResult> validateCustomDomainAsync(String hostName, ServiceCallback<CustomDomainValidationResult> callback) {
+        return ServiceFuture.fromBody(this.validateCustomDomainAsync(hostName), callback);
     }
 
     @Override

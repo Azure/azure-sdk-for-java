@@ -9,29 +9,23 @@ package com.microsoft.azure.management.redis.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
 @LangDefinition
 class RedisCachesImpl
-        extends TopLevelCrudableResourcesImpl<
-                                        RedisCache,
-                                        RedisCacheImpl,
-                                        RedisResourceInner,
-                                        RedisInner,
-                                        RedisManager>
+        extends TopLevelModifiableResourcesImpl<
+                                                RedisCache,
+                                                RedisCacheImpl,
+                                                RedisResourceInner,
+                                                RedisInner,
+                                                RedisManager>
         implements RedisCaches {
 
     RedisCachesImpl(final RedisManager redisManager) {
         super(redisManager.inner().redis(), redisManager);
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

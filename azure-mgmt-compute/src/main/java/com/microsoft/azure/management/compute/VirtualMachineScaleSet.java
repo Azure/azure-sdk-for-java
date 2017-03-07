@@ -23,6 +23,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +65,29 @@ public interface VirtualMachineScaleSet extends
     void deallocate() throws CloudException, IOException, InterruptedException;
 
     /**
+     * Shuts down the virtual machines in the scale set and releases its compute resources asynchronously.
+     *
+     * @return a completable indicates completion or exception of the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    Completable deallocateAsync() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Shuts down the virtual machines in the scale set and releases its compute resources asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
+
+    /**
      * Powers off (stops) the virtual machines in the scale set.
      *
      * @throws CloudException thrown for an invalid response from the service
@@ -69,6 +95,28 @@ public interface VirtualMachineScaleSet extends
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
     void powerOff() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Powers off (stops) the virtual machines in the scale set asynchronously.
+     * @return a completable indicates completion or exception of the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    Completable powerOffAsync() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Powers off (stops) the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
      * Restarts the virtual machines in the scale set.
@@ -80,6 +128,29 @@ public interface VirtualMachineScaleSet extends
     void restart() throws CloudException, IOException, InterruptedException;
 
     /**
+     * Restarts the virtual machines in the scale set asynchronously.
+     *
+     * @return a completable indicates completion or exception of the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    Completable restartAsync() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Restarts the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
+
+    /**
      * Starts the virtual machines in the scale set.
      *
      * @throws CloudException thrown for an invalid response from the service
@@ -87,6 +158,28 @@ public interface VirtualMachineScaleSet extends
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
     void start() throws CloudException, IOException, InterruptedException;
+    /**
+     * Starts the virtual machines in the scale set asynchronously.
+     *
+     * @return a completable indicates completion or exception of the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    Completable startAsync() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Starts the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
      * Re-images (updates the version of the installed operating system) the virtual machines in the scale set.
@@ -96,6 +189,29 @@ public interface VirtualMachineScaleSet extends
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
     void reimage() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
+     *
+     * @return a completable indicates completion or exception of the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    Completable reimageAsync() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     *
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     // Getters
     //
