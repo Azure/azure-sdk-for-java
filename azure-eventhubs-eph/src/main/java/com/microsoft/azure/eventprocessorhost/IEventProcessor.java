@@ -47,10 +47,14 @@ public interface IEventProcessor
     /**
      * Called by the processor host when a batch of events has arrived.
      * 
-     * This is where the real work of the event processor is done.
+     * This is where the real work of the event processor is done. It is normally called when one
+     * or more events have arrived. If the EventProcessorHost instance was set up with an EventProcessorOptions
+     * on which setInvokeProcessorAfterReceiveTimeout(true) has been called, then if a receive times out,
+     * it will be called with an empty iterable. By default this option is false and receive timeouts do not
+     * cause a call to this method.
      * 
      * @param context	Information about the partition.
-     * @param messages	The events to be processed.
+     * @param messages	The events to be processed. May be empty.
      * @throws Exception
      */
     public void onEvents(PartitionContext context, Iterable<EventData> messages) throws Exception;

@@ -113,6 +113,36 @@ public class SmokeTest extends TestBase
 	}
 	
 	@Test
+	public void receiveInvokeOnTimeout() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("receiveInvokeOnTimeout");
+		settings.inOptions.setInvokeProcessorAfterReceiveTimeout(true);
+		settings.inTelltaleOnTimeout = true;
+		settings.inHasSenders = false;
+		settings = testSetup(settings);
+		
+		waitForTelltale(settings, "0");
+		
+		testFinish(settings, SmokeTest.SKIP_COUNT_CHECK);
+	}
+	
+	@Test
+	public void receiveNotInvokeOnTimeout() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("receiveNotInvokeOnTimeout");
+		settings = testSetup(settings);
+
+		// Receive timeout is one minute. If event processor is invoked on timeout, it will
+		// record an error that will fail the case on shutdown.
+		Thread.sleep(120 * 1000);
+		
+		settings.outUtils.sendToAny(settings.outTelltale);
+		waitForTelltale(settings);
+		
+		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+	}
+	
+	@Test
 	public void receiveAllPartitionsTest() throws Exception
 	{
 		// Save "now" to avoid race with sender startup.
