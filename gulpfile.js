@@ -150,6 +150,13 @@ var mappings = {
         'source': 'arm-dns/2016-04-01/swagger/dns.json',
         'package': 'com.microsoft.azure.management.dns',
         'args': '-FT 1'
+    },
+    'monitor': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'arm-monitor/compositeMonitorManagementClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     }
 };
 
@@ -222,6 +229,7 @@ var codegen = function(project, cb) {
                         ' -Input ' + specRoot + '/' + mappings[project].source +
                         ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+                        ' -skipValidation true' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;

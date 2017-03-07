@@ -72,7 +72,7 @@ class NetworkImpl
 
     @Override
     protected Observable<VirtualNetworkInner> getInnerAsync() {
-        return this.manager().inner().virtualNetworks().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().virtualNetworks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

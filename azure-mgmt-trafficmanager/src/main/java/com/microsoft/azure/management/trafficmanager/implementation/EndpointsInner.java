@@ -82,6 +82,9 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner update(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -97,6 +100,7 @@ public class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
@@ -111,6 +115,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -130,6 +135,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> updateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -183,6 +189,9 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -197,6 +206,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<EndpointInner> serviceCallback) {
@@ -210,6 +220,7 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -228,6 +239,7 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> getWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -278,6 +290,9 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointInner object if successful.
      */
     public EndpointInner createOrUpdate(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -293,6 +308,7 @@ public class EndpointsInner {
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters, final ServiceCallback<EndpointInner> serviceCallback) {
@@ -307,6 +323,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -326,6 +343,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
      * @param parameters The Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointInner object
      */
     public Observable<ServiceResponse<EndpointInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, EndpointInner parameters) {
@@ -380,6 +398,9 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String profileName, String endpointType, String endpointName) {
         deleteWithServiceResponseAsync(resourceGroupName, profileName, endpointType, endpointName).toBlocking().single().body();
@@ -393,6 +414,7 @@ public class EndpointsInner {
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName, final ServiceCallback<Void> serviceCallback) {
@@ -406,6 +428,7 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -424,6 +447,7 @@ public class EndpointsInner {
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointType, String endpointName) {
@@ -463,6 +487,7 @@ public class EndpointsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 

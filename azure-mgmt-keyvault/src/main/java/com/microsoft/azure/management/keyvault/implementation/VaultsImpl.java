@@ -50,7 +50,7 @@ class VaultsImpl
 
     @Override
     protected Observable<VaultInner> getAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

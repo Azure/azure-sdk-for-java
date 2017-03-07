@@ -106,6 +106,9 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String routeFilterName, String ruleName) {
         deleteWithServiceResponseAsync(resourceGroupName, routeFilterName, ruleName).toBlocking().last().body();
@@ -118,6 +121,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String routeFilterName, String ruleName, final ServiceCallback<Void> serviceCallback) {
@@ -130,6 +134,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -147,6 +152,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -173,6 +179,9 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String routeFilterName, String ruleName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, routeFilterName, ruleName).toBlocking().single().body();
@@ -185,6 +194,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String routeFilterName, String ruleName, final ServiceCallback<Void> serviceCallback) {
@@ -197,6 +207,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -214,6 +225,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -259,6 +271,9 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteFilterRuleInner object if successful.
      */
     public RouteFilterRuleInner get(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -272,6 +287,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteFilterRuleInner> getAsync(String resourceGroupName, String routeFilterName, String ruleName, final ServiceCallback<RouteFilterRuleInner> serviceCallback) {
@@ -284,6 +300,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<RouteFilterRuleInner> getAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -301,6 +318,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<ServiceResponse<RouteFilterRuleInner>> getWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName) {
@@ -345,6 +363,9 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteFilterRuleInner object if successful.
      */
     public RouteFilterRuleInner createOrUpdate(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -359,6 +380,7 @@ public class RouteFilterRulesInner {
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteFilterRuleInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters, final ServiceCallback<RouteFilterRuleInner> serviceCallback) {
@@ -372,6 +394,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RouteFilterRuleInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -390,6 +413,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteFilterRuleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -421,6 +445,9 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteFilterRuleInner object if successful.
      */
     public RouteFilterRuleInner beginCreateOrUpdate(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -435,6 +462,7 @@ public class RouteFilterRulesInner {
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteFilterRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters, final ServiceCallback<RouteFilterRuleInner> serviceCallback) {
@@ -448,6 +476,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<RouteFilterRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -466,6 +495,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the create or update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<ServiceResponse<RouteFilterRuleInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters) {
@@ -515,6 +545,9 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteFilterRuleInner object if successful.
      */
     public RouteFilterRuleInner update(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -529,6 +562,7 @@ public class RouteFilterRulesInner {
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteFilterRuleInner> updateAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters, final ServiceCallback<RouteFilterRuleInner> serviceCallback) {
@@ -542,6 +576,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RouteFilterRuleInner> updateAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -560,6 +595,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteFilterRuleInner>> updateWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -591,6 +627,9 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteFilterRuleInner object if successful.
      */
     public RouteFilterRuleInner beginUpdate(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -605,6 +644,7 @@ public class RouteFilterRulesInner {
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteFilterRuleInner> beginUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters, final ServiceCallback<RouteFilterRuleInner> serviceCallback) {
@@ -618,6 +658,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<RouteFilterRuleInner> beginUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -636,6 +677,7 @@ public class RouteFilterRulesInner {
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
      * @param routeFilterRuleParameters Parameters supplied to the update route filter rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteFilterRuleInner object
      */
     public Observable<ServiceResponse<RouteFilterRuleInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String routeFilterName, String ruleName, PatchRouteFilterRuleInner routeFilterRuleParameters) {
@@ -682,6 +724,9 @@ public class RouteFilterRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteFilterRuleInner&gt; object if successful.
      */
     public PagedList<RouteFilterRuleInner> listByRouteFilter(final String resourceGroupName, final String routeFilterName) {
@@ -700,6 +745,7 @@ public class RouteFilterRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteFilterRuleInner>> listByRouteFilterAsync(final String resourceGroupName, final String routeFilterName, final ListOperationCallback<RouteFilterRuleInner> serviceCallback) {
@@ -719,6 +765,7 @@ public class RouteFilterRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteFilterRuleInner&gt; object
      */
     public Observable<Page<RouteFilterRuleInner>> listByRouteFilterAsync(final String resourceGroupName, final String routeFilterName) {
@@ -736,6 +783,7 @@ public class RouteFilterRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteFilterRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteFilterRuleInner>>> listByRouteFilterWithServiceResponseAsync(final String resourceGroupName, final String routeFilterName) {
@@ -757,6 +805,7 @@ public class RouteFilterRulesInner {
      *
     ServiceResponse<PageImpl<RouteFilterRuleInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<RouteFilterRuleInner>> * @param routeFilterName The name of the route filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteFilterRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteFilterRuleInner>>> listByRouteFilterSinglePageAsync(final String resourceGroupName, final String routeFilterName) {
@@ -795,6 +844,9 @@ public class RouteFilterRulesInner {
      * Gets all RouteFilterRules in a route filter.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteFilterRuleInner&gt; object if successful.
      */
     public PagedList<RouteFilterRuleInner> listByRouteFilterNext(final String nextPageLink) {
@@ -813,6 +865,7 @@ public class RouteFilterRulesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteFilterRuleInner>> listByRouteFilterNextAsync(final String nextPageLink, final ServiceFuture<List<RouteFilterRuleInner>> serviceFuture, final ListOperationCallback<RouteFilterRuleInner> serviceCallback) {
@@ -831,6 +884,7 @@ public class RouteFilterRulesInner {
      * Gets all RouteFilterRules in a route filter.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteFilterRuleInner&gt; object
      */
     public Observable<Page<RouteFilterRuleInner>> listByRouteFilterNextAsync(final String nextPageLink) {
@@ -847,6 +901,7 @@ public class RouteFilterRulesInner {
      * Gets all RouteFilterRules in a route filter.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteFilterRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteFilterRuleInner>>> listByRouteFilterNextWithServiceResponseAsync(final String nextPageLink) {
@@ -867,6 +922,7 @@ public class RouteFilterRulesInner {
      * Gets all RouteFilterRules in a route filter.
      *
     ServiceResponse<PageImpl<RouteFilterRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteFilterRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteFilterRuleInner>>> listByRouteFilterNextSinglePageAsync(final String nextPageLink) {

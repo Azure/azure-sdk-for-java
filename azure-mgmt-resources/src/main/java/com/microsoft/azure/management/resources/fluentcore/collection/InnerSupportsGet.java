@@ -27,7 +27,7 @@ public interface InnerSupportsGet<InnerT> {
      *
      * @return specific resource.
      */
-    InnerT get(String resourceGroupName, String resourceName);
+    InnerT getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Returns the specific resource asynchronously.
@@ -37,7 +37,7 @@ public interface InnerSupportsGet<InnerT> {
      *
      * @return Observable to specific resource.
      */
-    Observable<InnerT> getAsync(String resourceGroupName, String resourceName);
+    Observable<InnerT> getByResourceGroupAsync(String resourceGroupName, String resourceName);
 
     /**
      * Returns the specific resource asynchronously.
@@ -48,5 +48,5 @@ public interface InnerSupportsGet<InnerT> {
 
      * @return ServiceFuture to specific resource.
      */
-    ServiceFuture<InnerT> getAsync(String resourceGroupName, String resourceName, ServiceCallback<InnerT> serviceCallback);
+    ServiceFuture<InnerT> getByResourceGroupAsync(String resourceGroupName, String resourceName, ServiceCallback<InnerT> serviceCallback);
 }

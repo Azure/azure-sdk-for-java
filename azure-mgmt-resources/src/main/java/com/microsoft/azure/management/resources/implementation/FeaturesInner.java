@@ -87,6 +87,9 @@ public class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
     public PagedList<FeatureResultInner> list() {
@@ -103,6 +106,7 @@ public class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FeatureResultInner>> listAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
@@ -120,6 +124,7 @@ public class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<Page<FeatureResultInner>> listAsync() {
@@ -135,6 +140,7 @@ public class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listWithServiceResponseAsync() {
@@ -154,6 +160,7 @@ public class FeaturesInner {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listSinglePageAsync() {
@@ -188,6 +195,9 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
     public PagedList<FeatureResultInner> list1(final String resourceProviderNamespace) {
@@ -205,6 +215,7 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FeatureResultInner>> list1Async(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
@@ -223,6 +234,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<Page<FeatureResultInner>> list1Async(final String resourceProviderNamespace) {
@@ -239,6 +251,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> list1WithServiceResponseAsync(final String resourceProviderNamespace) {
@@ -259,6 +272,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider for getting features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> list1SinglePageAsync(final String resourceProviderNamespace) {
@@ -297,6 +311,9 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
@@ -309,6 +326,7 @@ public class FeaturesInner {
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
@@ -320,6 +338,7 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeatureResultInner object
      */
     public Observable<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
@@ -336,6 +355,7 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeatureResultInner object
      */
     public Observable<ServiceResponse<FeatureResultInner>> getWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
@@ -377,6 +397,9 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FeatureResultInner object if successful.
      */
     public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
@@ -389,6 +412,7 @@ public class FeaturesInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
@@ -400,6 +424,7 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeatureResultInner object
      */
     public Observable<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
@@ -416,6 +441,7 @@ public class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeatureResultInner object
      */
     public Observable<ServiceResponse<FeatureResultInner>> registerWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
@@ -456,6 +482,9 @@ public class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
     public PagedList<FeatureResultInner> listNext(final String nextPageLink) {
@@ -474,6 +503,7 @@ public class FeaturesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<FeatureResultInner>> serviceFuture, final ListOperationCallback<FeatureResultInner> serviceCallback) {
@@ -492,6 +522,7 @@ public class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<Page<FeatureResultInner>> listNextAsync(final String nextPageLink) {
@@ -508,6 +539,7 @@ public class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -528,6 +560,7 @@ public class FeaturesInner {
      * Gets all the preview features that are available through AFEC for the subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -560,6 +593,9 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
     public PagedList<FeatureResultInner> list1Next(final String nextPageLink) {
@@ -578,6 +614,7 @@ public class FeaturesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<FeatureResultInner>> list1NextAsync(final String nextPageLink, final ServiceFuture<List<FeatureResultInner>> serviceFuture, final ListOperationCallback<FeatureResultInner> serviceCallback) {
@@ -596,6 +633,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<Page<FeatureResultInner>> list1NextAsync(final String nextPageLink) {
@@ -612,6 +650,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> list1NextWithServiceResponseAsync(final String nextPageLink) {
@@ -632,6 +671,7 @@ public class FeaturesInner {
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> list1NextSinglePageAsync(final String nextPageLink) {

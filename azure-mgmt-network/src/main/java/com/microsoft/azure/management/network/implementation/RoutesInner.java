@@ -97,6 +97,9 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String routeTableName, String routeName) {
         deleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().last().body();
@@ -109,6 +112,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
@@ -121,6 +125,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -138,6 +143,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -164,6 +170,9 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String routeTableName, String routeName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName, routeName).toBlocking().single().body();
@@ -176,6 +185,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -205,6 +216,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -250,6 +262,9 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner get(String resourceGroupName, String routeTableName, String routeName) {
@@ -263,6 +278,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<RouteInner> serviceCallback) {
@@ -275,6 +291,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -292,6 +309,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<ServiceResponse<RouteInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName) {
@@ -336,6 +354,9 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -350,6 +371,7 @@ public class RoutesInner {
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
@@ -363,6 +385,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -381,6 +404,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -412,6 +436,9 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteInner object if successful.
      */
     public RouteInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -426,6 +453,7 @@ public class RoutesInner {
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
@@ -439,6 +467,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<RouteInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -457,6 +486,7 @@ public class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create or update route operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteInner object
      */
     public Observable<ServiceResponse<RouteInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
@@ -504,6 +534,9 @@ public class RoutesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteInner&gt; object if successful.
      */
     public PagedList<RouteInner> list(final String resourceGroupName, final String routeTableName) {
@@ -522,6 +555,7 @@ public class RoutesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName, final ListOperationCallback<RouteInner> serviceCallback) {
@@ -541,6 +575,7 @@ public class RoutesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<Page<RouteInner>> listAsync(final String resourceGroupName, final String routeTableName) {
@@ -558,6 +593,7 @@ public class RoutesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String routeTableName) {
@@ -579,6 +615,7 @@ public class RoutesInner {
      *
     ServiceResponse<PageImpl<RouteInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<RouteInner>> * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listSinglePageAsync(final String resourceGroupName, final String routeTableName) {
@@ -617,6 +654,9 @@ public class RoutesInner {
      * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteInner&gt; object if successful.
      */
     public PagedList<RouteInner> listNext(final String nextPageLink) {
@@ -635,6 +675,7 @@ public class RoutesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RouteInner>> serviceFuture, final ListOperationCallback<RouteInner> serviceCallback) {
@@ -653,6 +694,7 @@ public class RoutesInner {
      * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<Page<RouteInner>> listNextAsync(final String nextPageLink) {
@@ -669,6 +711,7 @@ public class RoutesInner {
      * Gets all routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -689,6 +732,7 @@ public class RoutesInner {
      * Gets all routes in a route table.
      *
     ServiceResponse<PageImpl<RouteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listNextSinglePageAsync(final String nextPageLink) {

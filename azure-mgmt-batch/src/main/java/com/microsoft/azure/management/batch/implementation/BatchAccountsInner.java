@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -45,7 +47,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in BatchAccounts.
  */
-public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInner> {
+public class BatchAccountsInner implements InnerSupportsGet<BatchAccountInner>, InnerSupportsDelete<Void>, InnerSupportsListing<BatchAccountInner> {
     /** The Retrofit service to perform REST calls. */
     private BatchAccountsService service;
     /** The service client containing this operation class. */
@@ -87,9 +89,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batch.BatchAccounts list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts")
@@ -127,6 +129,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -140,6 +145,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
@@ -152,6 +158,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<BatchAccountInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -169,6 +176,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -198,6 +206,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -211,6 +222,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
@@ -223,6 +235,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
     public Observable<BatchAccountInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -240,6 +253,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
     public Observable<ServiceResponseWithHeaders<BatchAccountInner, BatchAccountCreateHeadersInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
@@ -287,6 +301,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountInner object if successful.
      */
     public BatchAccountInner update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
@@ -300,6 +317,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BatchAccountInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters, final ServiceCallback<BatchAccountInner> serviceCallback) {
@@ -312,6 +330,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
     public Observable<BatchAccountInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
@@ -329,6 +348,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
     public Observable<ServiceResponse<BatchAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
@@ -374,6 +394,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String accountName) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
@@ -385,6 +408,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
@@ -396,6 +420,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
@@ -412,6 +437,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -436,6 +462,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String accountName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
@@ -447,6 +476,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
@@ -458,6 +488,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String accountName) {
@@ -474,6 +505,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, BatchAccountDeleteHeadersInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -516,10 +548,13 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountInner object if successful.
      */
-    public BatchAccountInner get(String resourceGroupName, String accountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public BatchAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -528,10 +563,11 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BatchAccountInner> getAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    public ServiceFuture<BatchAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -539,10 +575,11 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
-    public Observable<BatchAccountInner> getAsync(String resourceGroupName, String accountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
+    public Observable<BatchAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccountInner>() {
             @Override
             public BatchAccountInner call(ServiceResponse<BatchAccountInner> response) {
                 return response.body();
@@ -555,9 +592,10 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountInner object
      */
-    public Observable<ServiceResponse<BatchAccountInner>> getWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<BatchAccountInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -570,12 +608,12 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BatchAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BatchAccountInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<BatchAccountInner> clientResponse = getDelegate(response);
+                        ServiceResponse<BatchAccountInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -584,7 +622,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
             });
     }
 
-    private ServiceResponse<BatchAccountInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BatchAccountInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<BatchAccountInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<BatchAccountInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -594,6 +632,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BatchAccountInner&gt; object if successful.
      */
     public PagedList<BatchAccountInner> list() {
@@ -610,6 +651,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BatchAccountInner>> listAsync(final ListOperationCallback<BatchAccountInner> serviceCallback) {
@@ -627,6 +669,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<Page<BatchAccountInner>> listAsync() {
@@ -642,6 +685,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listWithServiceResponseAsync() {
@@ -661,6 +705,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BatchAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listSinglePageAsync() {
@@ -695,6 +740,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BatchAccountInner&gt; object if successful.
      */
     public PagedList<BatchAccountInner> listByResourceGroup(final String resourceGroupName) {
@@ -712,6 +760,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BatchAccountInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<BatchAccountInner> serviceCallback) {
@@ -730,6 +779,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<Page<BatchAccountInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -746,6 +796,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -766,6 +817,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
     ServiceResponse<PageImpl<BatchAccountInner>> * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BatchAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -804,6 +856,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
         synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
@@ -815,6 +870,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
@@ -826,6 +882,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName) {
@@ -842,6 +899,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> synchronizeAutoStorageKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -884,6 +942,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountKeysInner object if successful.
      */
     public BatchAccountKeysInner regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) {
@@ -897,6 +958,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BatchAccountKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
@@ -909,6 +971,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
     public Observable<BatchAccountKeysInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName) {
@@ -926,6 +989,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
     public Observable<ServiceResponse<BatchAccountKeysInner>> regenerateKeyWithServiceResponseAsync(String resourceGroupName, String accountName, AccountKeyType keyName) {
@@ -972,6 +1036,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BatchAccountKeysInner object if successful.
      */
     public BatchAccountKeysInner getKeys(String resourceGroupName, String accountName) {
@@ -984,6 +1051,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountKeysInner> serviceCallback) {
@@ -995,6 +1063,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
     public Observable<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName) {
@@ -1011,6 +1080,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BatchAccountKeysInner object
      */
     public Observable<ServiceResponse<BatchAccountKeysInner>> getKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
@@ -1051,6 +1121,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BatchAccountInner&gt; object if successful.
      */
     public PagedList<BatchAccountInner> listNext(final String nextPageLink) {
@@ -1069,6 +1142,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BatchAccountInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<BatchAccountInner>> serviceFuture, final ListOperationCallback<BatchAccountInner> serviceCallback) {
@@ -1087,6 +1161,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<Page<BatchAccountInner>> listNextAsync(final String nextPageLink) {
@@ -1103,6 +1178,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1123,6 +1199,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated with the subscription.
      *
     ServiceResponse<PageImpl<BatchAccountInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BatchAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -1155,6 +1232,9 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BatchAccountInner&gt; object if successful.
      */
     public PagedList<BatchAccountInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1173,6 +1253,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BatchAccountInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<BatchAccountInner>> serviceFuture, final ListOperationCallback<BatchAccountInner> serviceCallback) {
@@ -1191,6 +1272,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<Page<BatchAccountInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1207,6 +1289,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BatchAccountInner&gt; object
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1227,6 +1310,7 @@ public class BatchAccountsInner implements InnerSupportsListing<BatchAccountInne
      * Gets information about the Batch accounts associated within the specified resource group.
      *
     ServiceResponse<PageImpl<BatchAccountInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BatchAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BatchAccountInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {

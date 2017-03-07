@@ -90,7 +90,7 @@ class LoadBalancerImpl
 
     @Override
     protected Observable<LoadBalancerInner> getInnerAsync() {
-        return this.manager().inner().loadBalancers().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().loadBalancers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

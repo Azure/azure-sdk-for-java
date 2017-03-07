@@ -68,7 +68,7 @@ public class BatchAccountImpl
 
     @Override
     protected Observable<BatchAccountInner> getInnerAsync() {
-        return this.manager().inner().batchAccounts().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().batchAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

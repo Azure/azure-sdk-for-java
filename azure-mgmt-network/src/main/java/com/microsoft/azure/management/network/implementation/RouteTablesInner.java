@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in RouteTables.
  */
-public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
+public class RouteTablesInner implements InnerSupportsDelete<Void>, InnerSupportsListing<RouteTableInner> {
     /** The Retrofit service to perform REST calls. */
     private RouteTablesService service;
     /** The service client containing this operation class. */
@@ -70,9 +71,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.RouteTables createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
@@ -105,6 +106,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String routeTableName) {
         deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().body();
@@ -116,6 +120,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
@@ -127,6 +132,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String routeTableName) {
@@ -143,6 +149,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
@@ -165,6 +172,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String routeTableName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
@@ -176,6 +186,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
@@ -187,6 +198,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String routeTableName) {
@@ -203,6 +215,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
@@ -244,10 +257,13 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner get(String resourceGroupName, String routeTableName) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
+    public RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().body();
     }
 
     /**
@@ -256,10 +272,11 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
+    public ServiceFuture<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName, final ServiceCallback<RouteTableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
@@ -267,10 +284,11 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
-    public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+    public Observable<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
                 return response.body();
@@ -283,9 +301,10 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
-    public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
+    public Observable<ServiceResponse<RouteTableInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -297,12 +316,12 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
         }
         final String apiVersion = "2016-12-01";
         final String expand = null;
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RouteTableInner> clientResponse = getDelegate(response);
+                        ServiceResponse<RouteTableInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -317,10 +336,13 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().body();
+    public RouteTableInner getByResourceGroup(String resourceGroupName, String routeTableName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().body();
     }
 
     /**
@@ -330,10 +352,11 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, routeTableName, expand), serviceCallback);
+    public ServiceFuture<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName, expand), serviceCallback);
     }
 
     /**
@@ -342,10 +365,11 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
-    public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+    public Observable<RouteTableInner> getByResourceGroupAsync(String resourceGroupName, String routeTableName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, routeTableName, expand).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
             @Override
             public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
                 return response.body();
@@ -359,9 +383,10 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
-    public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String expand) {
+    public Observable<ServiceResponse<RouteTableInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String routeTableName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -372,12 +397,12 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-12-01";
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RouteTableInner> clientResponse = getDelegate(response);
+                        ServiceResponse<RouteTableInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -386,7 +411,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
             });
     }
 
-    private ServiceResponse<RouteTableInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RouteTableInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RouteTableInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RouteTableInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -399,6 +424,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -412,6 +440,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
@@ -424,6 +453,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -441,6 +471,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteTableInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -468,6 +499,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -481,6 +515,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
@@ -493,6 +528,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
     public Observable<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -510,6 +546,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RouteTableInner object
      */
     public Observable<ServiceResponse<RouteTableInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -553,6 +590,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listByResourceGroup(final String resourceGroupName) {
@@ -570,6 +610,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteTableInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RouteTableInner> serviceCallback) {
@@ -588,6 +629,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<Page<RouteTableInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -604,6 +646,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -624,6 +667,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -658,6 +702,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
     /**
      * Gets all route tables in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> list() {
@@ -674,6 +721,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteTableInner>> listAsync(final ListOperationCallback<RouteTableInner> serviceCallback) {
@@ -691,6 +739,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
     /**
      * Gets all route tables in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<Page<RouteTableInner>> listAsync() {
@@ -706,6 +755,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
     /**
      * Gets all route tables in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listWithServiceResponseAsync() {
@@ -725,6 +775,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
     /**
      * Gets all route tables in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listSinglePageAsync() {
@@ -757,6 +808,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listByResourceGroupNext(final String nextPageLink) {
@@ -775,6 +829,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteTableInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<RouteTableInner>> serviceFuture, final ListOperationCallback<RouteTableInner> serviceCallback) {
@@ -793,6 +848,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<Page<RouteTableInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -809,6 +865,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -829,6 +886,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -861,6 +919,9 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
     public PagedList<RouteTableInner> listNext(final String nextPageLink) {
@@ -879,6 +940,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RouteTableInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RouteTableInner>> serviceFuture, final ListOperationCallback<RouteTableInner> serviceCallback) {
@@ -897,6 +959,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<Page<RouteTableInner>> listNextAsync(final String nextPageLink) {
@@ -913,6 +976,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -933,6 +997,7 @@ public class RouteTablesInner implements InnerSupportsListing<RouteTableInner> {
      * Gets all route tables in a subscription.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listNextSinglePageAsync(final String nextPageLink) {

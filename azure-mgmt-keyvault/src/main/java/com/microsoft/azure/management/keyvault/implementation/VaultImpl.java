@@ -258,6 +258,6 @@ class VaultImpl
 
     @Override
     protected Observable<VaultInner> getInnerAsync() {
-        return this.manager().inner().vaults().getAsync(resourceGroupName(), name());
+        return this.manager().inner().vaults().getByResourceGroupAsync(resourceGroupName(), name());
     }
 }

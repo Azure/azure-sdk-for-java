@@ -97,6 +97,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String circuitName, String authorizationName) {
         deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().body();
@@ -109,6 +112,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
@@ -121,6 +125,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -138,6 +143,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -164,6 +170,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().body();
@@ -176,6 +185,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -205,6 +216,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -250,6 +262,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) {
@@ -263,6 +278,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
@@ -275,6 +291,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -292,6 +309,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> getWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
@@ -336,6 +354,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -350,6 +371,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
@@ -363,6 +385,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -381,6 +404,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -412,6 +436,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -426,6 +453,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
@@ -439,6 +467,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -457,6 +486,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -504,6 +534,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) {
@@ -522,6 +555,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
@@ -541,6 +575,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName) {
@@ -558,6 +593,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String circuitName) {
@@ -579,6 +615,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param circuitName The name of the circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
@@ -617,6 +654,9 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) {
@@ -635,6 +675,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ExpressRouteCircuitAuthorizationInner>> serviceFuture, final ListOperationCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
@@ -653,6 +694,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink) {
@@ -669,6 +711,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -689,6 +732,7 @@ public class ExpressRouteCircuitAuthorizationsInner {
      * Gets all authorizations in an express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextSinglePageAsync(final String nextPageLink) {

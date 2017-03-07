@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -39,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in LocalNetworkGateways.
  */
-public class LocalNetworkGatewaysInner {
+public class LocalNetworkGatewaysInner implements InnerSupportsGet<LocalNetworkGatewayInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private LocalNetworkGatewaysService service;
     /** The service client containing this operation class. */
@@ -69,9 +71,9 @@ public class LocalNetworkGatewaysInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body LocalNetworkGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.LocalNetworkGateways delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}", method = "DELETE", hasBody = true)
@@ -97,6 +99,9 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -110,6 +115,7 @@ public class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
@@ -122,6 +128,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -139,6 +146,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<LocalNetworkGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -166,6 +174,9 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -179,6 +190,7 @@ public class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<LocalNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
@@ -191,6 +203,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LocalNetworkGatewayInner object
      */
     public Observable<LocalNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -208,6 +221,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LocalNetworkGatewayInner object
      */
     public Observable<ServiceResponse<LocalNetworkGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -252,10 +266,13 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LocalNetworkGatewayInner object if successful.
      */
-    public LocalNetworkGatewayInner get(String resourceGroupName, String localNetworkGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().body();
+    public LocalNetworkGatewayInner getByResourceGroup(String resourceGroupName, String localNetworkGatewayName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -264,10 +281,11 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<LocalNetworkGatewayInner> getAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
+    public ServiceFuture<LocalNetworkGatewayInner> getByResourceGroupAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -275,10 +293,11 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LocalNetworkGatewayInner object
      */
-    public Observable<LocalNetworkGatewayInner> getAsync(String resourceGroupName, String localNetworkGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
+    public Observable<LocalNetworkGatewayInner> getByResourceGroupAsync(String resourceGroupName, String localNetworkGatewayName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
             @Override
             public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
                 return response.body();
@@ -291,9 +310,10 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LocalNetworkGatewayInner object
      */
-    public Observable<ServiceResponse<LocalNetworkGatewayInner>> getWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
+    public Observable<ServiceResponse<LocalNetworkGatewayInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -304,12 +324,12 @@ public class LocalNetworkGatewaysInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-12-01";
-        return service.get(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LocalNetworkGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LocalNetworkGatewayInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<LocalNetworkGatewayInner> clientResponse = getDelegate(response);
+                        ServiceResponse<LocalNetworkGatewayInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -318,7 +338,7 @@ public class LocalNetworkGatewaysInner {
             });
     }
 
-    private ServiceResponse<LocalNetworkGatewayInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<LocalNetworkGatewayInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<LocalNetworkGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<LocalNetworkGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -330,6 +350,9 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String localNetworkGatewayName) {
         deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last().body();
@@ -341,6 +364,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -352,6 +376,7 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName) {
@@ -368,6 +393,7 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
@@ -390,6 +416,9 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String localNetworkGatewayName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().body();
@@ -401,6 +430,7 @@ public class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -412,6 +442,7 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName) {
@@ -428,6 +459,7 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
@@ -468,6 +500,9 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
     public PagedList<LocalNetworkGatewayInner> listByResourceGroup(final String resourceGroupName) {
@@ -485,6 +520,7 @@ public class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<LocalNetworkGatewayInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
@@ -503,6 +539,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
     public Observable<Page<LocalNetworkGatewayInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -519,6 +556,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -539,6 +577,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -574,6 +613,9 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
     public PagedList<LocalNetworkGatewayInner> listByResourceGroupNext(final String nextPageLink) {
@@ -592,6 +634,7 @@ public class LocalNetworkGatewaysInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<LocalNetworkGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<LocalNetworkGatewayInner>> serviceFuture, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
@@ -610,6 +653,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
     public Observable<Page<LocalNetworkGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -626,6 +670,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -646,6 +691,7 @@ public class LocalNetworkGatewaysInner {
      * Gets all the local network gateways in a resource group.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {

@@ -84,6 +84,9 @@ public class ProvidersInner {
      * Unregisters a subscription from a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProviderInner object if successful.
      */
     public ProviderInner unregister(String resourceProviderNamespace) {
@@ -95,6 +98,7 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProviderInner> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
@@ -105,6 +109,7 @@ public class ProvidersInner {
      * Unregisters a subscription from a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ProviderInner> unregisterAsync(String resourceProviderNamespace) {
@@ -120,6 +125,7 @@ public class ProvidersInner {
      * Unregisters a subscription from a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ServiceResponse<ProviderInner>> unregisterWithServiceResponseAsync(String resourceProviderNamespace) {
@@ -157,6 +163,9 @@ public class ProvidersInner {
      * Registers a subscription with a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProviderInner object if successful.
      */
     public ProviderInner register(String resourceProviderNamespace) {
@@ -168,6 +177,7 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProviderInner> registerAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
@@ -178,6 +188,7 @@ public class ProvidersInner {
      * Registers a subscription with a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ProviderInner> registerAsync(String resourceProviderNamespace) {
@@ -193,6 +204,7 @@ public class ProvidersInner {
      * Registers a subscription with a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ServiceResponse<ProviderInner>> registerWithServiceResponseAsync(String resourceProviderNamespace) {
@@ -229,6 +241,9 @@ public class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
     public PagedList<ProviderInner> list() {
@@ -245,6 +260,7 @@ public class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProviderInner>> listAsync(final ListOperationCallback<ProviderInner> serviceCallback) {
@@ -262,6 +278,7 @@ public class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<Page<ProviderInner>> listAsync() {
@@ -277,6 +294,7 @@ public class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listWithServiceResponseAsync() {
@@ -296,6 +314,7 @@ public class ProvidersInner {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listSinglePageAsync() {
@@ -326,6 +345,9 @@ public class ProvidersInner {
      *
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
     public PagedList<ProviderInner> list(final Integer top, final String expand) {
@@ -344,6 +366,7 @@ public class ProvidersInner {
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProviderInner>> listAsync(final Integer top, final String expand, final ListOperationCallback<ProviderInner> serviceCallback) {
@@ -363,6 +386,7 @@ public class ProvidersInner {
      *
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<Page<ProviderInner>> listAsync(final Integer top, final String expand) {
@@ -380,6 +404,7 @@ public class ProvidersInner {
      *
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listWithServiceResponseAsync(final Integer top, final String expand) {
@@ -401,6 +426,7 @@ public class ProvidersInner {
      *
     ServiceResponse<PageImpl<ProviderInner>> * @param top The number of results to return. If null is passed returns all deployments.
     ServiceResponse<PageImpl<ProviderInner>> * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query string to retrieve resource provider metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listSinglePageAsync(final Integer top, final String expand) {
@@ -435,6 +461,9 @@ public class ProvidersInner {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProviderInner object if successful.
      */
     public ProviderInner get(String resourceProviderNamespace) {
@@ -446,6 +475,7 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProviderInner> getAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
@@ -456,6 +486,7 @@ public class ProvidersInner {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ProviderInner> getAsync(String resourceProviderNamespace) {
@@ -471,6 +502,7 @@ public class ProvidersInner {
      * Gets the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ServiceResponse<ProviderInner>> getWithServiceResponseAsync(String resourceProviderNamespace) {
@@ -503,6 +535,9 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProviderInner object if successful.
      */
     public ProviderInner get(String resourceProviderNamespace, String expand) {
@@ -515,6 +550,7 @@ public class ProvidersInner {
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProviderInner> getAsync(String resourceProviderNamespace, String expand, final ServiceCallback<ProviderInner> serviceCallback) {
@@ -526,6 +562,7 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ProviderInner> getAsync(String resourceProviderNamespace, String expand) {
@@ -542,6 +579,7 @@ public class ProvidersInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProviderInner object
      */
     public Observable<ServiceResponse<ProviderInner>> getWithServiceResponseAsync(String resourceProviderNamespace, String expand) {
@@ -579,6 +617,9 @@ public class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
     public PagedList<ProviderInner> listNext(final String nextPageLink) {
@@ -597,6 +638,7 @@ public class ProvidersInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ProviderInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ProviderInner>> serviceFuture, final ListOperationCallback<ProviderInner> serviceCallback) {
@@ -615,6 +657,7 @@ public class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<Page<ProviderInner>> listNextAsync(final String nextPageLink) {
@@ -631,6 +674,7 @@ public class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -651,6 +695,7 @@ public class ProvidersInner {
      * Gets all resource providers for a subscription.
      *
     ServiceResponse<PageImpl<ProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {

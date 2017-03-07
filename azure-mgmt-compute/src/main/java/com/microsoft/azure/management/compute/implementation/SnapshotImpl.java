@@ -258,6 +258,6 @@ class SnapshotImpl
 
     @Override
     protected Observable<SnapshotInner> getInnerAsync() {
-        return this.manager().inner().snapshots().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().snapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

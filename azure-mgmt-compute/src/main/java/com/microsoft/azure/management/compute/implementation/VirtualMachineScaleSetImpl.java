@@ -1155,7 +1155,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     protected Observable<VirtualMachineScaleSetInner> getInnerAsync() {
-        return this.manager().inner().virtualMachineScaleSets().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().virtualMachineScaleSets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

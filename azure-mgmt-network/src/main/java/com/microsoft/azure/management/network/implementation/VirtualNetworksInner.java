@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -40,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworks.
  */
-public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetworkInner> {
+public class VirtualNetworksInner implements InnerSupportsDelete<Void>, InnerSupportsListing<VirtualNetworkInner> {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworksService service;
     /** The service client containing this operation class. */
@@ -70,9 +71,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.VirtualNetworks createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}")
@@ -109,6 +110,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String virtualNetworkName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().last().body();
@@ -120,6 +124,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
@@ -131,6 +136,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String virtualNetworkName) {
@@ -147,6 +153,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
@@ -169,6 +176,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String virtualNetworkName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
@@ -180,6 +190,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<Void> serviceCallback) {
@@ -191,6 +202,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName) {
@@ -207,6 +219,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
@@ -248,10 +261,13 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
+    public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
     }
 
     /**
@@ -260,10 +276,11 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
     }
 
     /**
@@ -271,10 +288,11 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
-    public Observable<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
+    public Observable<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
                 return response.body();
@@ -287,9 +305,10 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
-    public Observable<ServiceResponse<VirtualNetworkInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
+    public Observable<ServiceResponse<VirtualNetworkInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -301,12 +320,12 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
         }
         final String apiVersion = "2016-12-01";
         final String expand = null;
-        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<VirtualNetworkInner> clientResponse = getDelegate(response);
+                        ServiceResponse<VirtualNetworkInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -321,10 +340,13 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).toBlocking().single().body();
+    public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).toBlocking().single().body();
     }
 
     /**
@@ -334,10 +356,11 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, String expand, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand), serviceCallback);
+    public ServiceFuture<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName, String expand, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand), serviceCallback);
     }
 
     /**
@@ -346,10 +369,11 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
-    public Observable<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
+    public Observable<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName, String expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).map(new Func1<ServiceResponse<VirtualNetworkInner>, VirtualNetworkInner>() {
             @Override
             public VirtualNetworkInner call(ServiceResponse<VirtualNetworkInner> response) {
                 return response.body();
@@ -363,9 +387,10 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
-    public Observable<ServiceResponse<VirtualNetworkInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String expand) {
+    public Observable<ServiceResponse<VirtualNetworkInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -376,12 +401,12 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-12-01";
-        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<VirtualNetworkInner> clientResponse = getDelegate(response);
+                        ServiceResponse<VirtualNetworkInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -390,7 +415,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
             });
     }
 
-    private ServiceResponse<VirtualNetworkInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualNetworkInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<VirtualNetworkInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<VirtualNetworkInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -403,6 +428,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -416,6 +444,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
@@ -428,6 +457,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -445,6 +475,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<VirtualNetworkInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -472,6 +503,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -485,6 +519,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, final ServiceCallback<VirtualNetworkInner> serviceCallback) {
@@ -497,6 +532,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -514,6 +550,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<ServiceResponse<VirtualNetworkInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -556,6 +593,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
     /**
      * Gets all virtual networks in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
     public PagedList<VirtualNetworkInner> list() {
@@ -572,6 +612,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualNetworkInner>> listAsync(final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
@@ -589,6 +630,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
     /**
      * Gets all virtual networks in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<Page<VirtualNetworkInner>> listAsync() {
@@ -604,6 +646,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
     /**
      * Gets all virtual networks in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listWithServiceResponseAsync() {
@@ -623,6 +666,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
     /**
      * Gets all virtual networks in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listSinglePageAsync() {
@@ -655,6 +699,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
     public PagedList<VirtualNetworkInner> listByResourceGroup(final String resourceGroupName) {
@@ -672,6 +719,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualNetworkInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
@@ -690,6 +738,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<Page<VirtualNetworkInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -706,6 +755,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -726,6 +776,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -762,6 +813,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
     public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName) {
@@ -774,6 +828,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
@@ -785,6 +840,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IPAddressAvailabilityResultInner object
      */
     public Observable<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName) {
@@ -801,6 +857,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IPAddressAvailabilityResultInner object
      */
     public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> checkIPAddressAvailabilityWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
@@ -835,6 +892,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
     public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName, String ipAddress) {
@@ -848,6 +908,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
@@ -860,6 +921,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IPAddressAvailabilityResultInner object
      */
     public Observable<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress) {
@@ -877,6 +939,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IPAddressAvailabilityResultInner object
      */
     public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> checkIPAddressAvailabilityWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String ipAddress) {
@@ -915,6 +978,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
     public PagedList<VirtualNetworkInner> listNext(final String nextPageLink) {
@@ -933,6 +999,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualNetworkInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkInner>> serviceFuture, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
@@ -951,6 +1018,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<Page<VirtualNetworkInner>> listNextAsync(final String nextPageLink) {
@@ -967,6 +1035,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -987,6 +1056,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a subscription.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -1019,6 +1089,9 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
     public PagedList<VirtualNetworkInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1037,6 +1110,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualNetworkInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<VirtualNetworkInner>> serviceFuture, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
@@ -1055,6 +1129,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<Page<VirtualNetworkInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1071,6 +1146,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1091,6 +1167,7 @@ public class VirtualNetworksInner implements InnerSupportsListing<VirtualNetwork
      * Gets all virtual networks in a resource group.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {

@@ -165,7 +165,7 @@ class LinuxDiskVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonito
         return this.computeManager
                 .inner()
                 .virtualMachines()
-                .getAsync(rgName, vmName)
+                .getByResourceGroupAsync(rgName, vmName)
                 .flatMap(new Func1<VirtualMachineInner, Observable<VirtualMachineExtensionInner>>() {
                     @Override
                     public Observable<VirtualMachineExtensionInner> call(VirtualMachineInner virtualMachine) {

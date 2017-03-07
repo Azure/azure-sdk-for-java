@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -62,10 +63,18 @@ public class UsagesInner {
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @return the List&lt;UsageInner&gt; object if successful.
+     * @return the PagedList<UsageInner> object if successful.
      */
-    public List<UsageInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<UsageInner> list() {
+        PageImpl<UsageInner> page = new PageImpl<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<UsageInner>(page) {
+            @Override
+            public Page<UsageInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**

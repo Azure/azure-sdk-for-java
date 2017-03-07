@@ -136,8 +136,7 @@ class StorageAccountImpl
 
     @Override
     protected Observable<StorageAccountInner> getInnerAsync() {
-        return this.manager().inner().storageAccounts().getPropertiesAsync(
-                this.resourceGroupName(), this.name());
+        return this.manager().inner().storageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -239,7 +238,7 @@ class StorageAccountImpl
                 .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
                     @Override
                     public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
-                        return client.getPropertiesAsync(resourceGroupName(), name());
+                        return client.getByResourceGroupAsync(resourceGroupName(), name());
                     }
                 })
                 .map(innerToFluentMap(this))

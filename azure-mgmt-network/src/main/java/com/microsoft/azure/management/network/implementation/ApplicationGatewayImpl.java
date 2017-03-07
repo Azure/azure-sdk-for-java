@@ -97,7 +97,7 @@ class ApplicationGatewayImpl
 
     @Override
     protected Observable<ApplicationGatewayInner> getInnerAsync() {
-        return this.manager().inner().applicationGateways().getAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().applicationGateways().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers

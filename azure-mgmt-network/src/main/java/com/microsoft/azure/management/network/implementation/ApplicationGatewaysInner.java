@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -41,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ApplicationGateways.
  */
-public class ApplicationGatewaysInner implements InnerSupportsListing<ApplicationGatewayInner> {
+public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGatewayInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ApplicationGatewayInner> {
     /** The Retrofit service to perform REST calls. */
     private ApplicationGatewaysService service;
     /** The service client containing this operation class. */
@@ -71,9 +73,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.ApplicationGateways createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
@@ -130,6 +132,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String applicationGatewayName) {
         deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
@@ -141,6 +146,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -152,6 +158,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String applicationGatewayName) {
@@ -168,6 +175,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -190,6 +198,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String applicationGatewayName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
@@ -201,6 +212,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -212,6 +224,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName) {
@@ -228,6 +241,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -269,10 +283,13 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayInner object if successful.
      */
-    public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
+    public ApplicationGatewayInner getByResourceGroup(String resourceGroupName, String applicationGatewayName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
     }
 
     /**
@@ -281,10 +298,11 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    public ServiceFuture<ApplicationGatewayInner> getByResourceGroupAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -292,10 +310,11 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayInner object
      */
-    public Observable<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName) {
-        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
+    public Observable<ApplicationGatewayInner> getByResourceGroupAsync(String resourceGroupName, String applicationGatewayName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
             @Override
             public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
                 return response.body();
@@ -308,9 +327,10 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayInner object
      */
-    public Observable<ServiceResponse<ApplicationGatewayInner>> getWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<ServiceResponse<ApplicationGatewayInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -321,12 +341,12 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-12-01";
-        return service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationGatewayInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ApplicationGatewayInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ApplicationGatewayInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -335,7 +355,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
             });
     }
 
-    private ServiceResponse<ApplicationGatewayInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ApplicationGatewayInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ApplicationGatewayInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -348,6 +368,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -361,6 +384,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
@@ -373,6 +397,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -390,6 +415,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ApplicationGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -417,6 +443,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -430,6 +459,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
@@ -442,6 +472,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayInner object
      */
     public Observable<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -459,6 +490,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayInner object
      */
     public Observable<ServiceResponse<ApplicationGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -502,6 +534,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
     public PagedList<ApplicationGatewayInner> listByResourceGroup(final String resourceGroupName) {
@@ -519,6 +554,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ApplicationGatewayInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
@@ -537,6 +573,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<Page<ApplicationGatewayInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -553,6 +590,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -573,6 +611,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -607,6 +646,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
     /**
      * Gets all the application gateways in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
     public PagedList<ApplicationGatewayInner> list() {
@@ -623,6 +665,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Gets all the application gateways in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ApplicationGatewayInner>> listAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
@@ -640,6 +683,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
     /**
      * Gets all the application gateways in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<Page<ApplicationGatewayInner>> listAsync() {
@@ -655,6 +699,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
     /**
      * Gets all the application gateways in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listWithServiceResponseAsync() {
@@ -674,6 +719,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
     /**
      * Gets all the application gateways in a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listSinglePageAsync() {
@@ -707,6 +753,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void start(String resourceGroupName, String applicationGatewayName) {
         startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
@@ -718,6 +767,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> startAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -729,6 +779,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> startAsync(String resourceGroupName, String applicationGatewayName) {
@@ -745,6 +796,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -767,6 +819,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginStart(String resourceGroupName, String applicationGatewayName) {
         beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
@@ -778,6 +833,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -789,6 +845,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
@@ -805,6 +862,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginStartWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -845,6 +903,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stop(String resourceGroupName, String applicationGatewayName) {
         stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().body();
@@ -856,6 +917,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> stopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -867,6 +929,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> stopAsync(String resourceGroupName, String applicationGatewayName) {
@@ -883,6 +946,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> stopWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -905,6 +969,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginStop(String resourceGroupName, String applicationGatewayName) {
         beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().body();
@@ -916,6 +983,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
@@ -927,6 +995,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
@@ -943,6 +1012,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginStopWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -983,6 +1053,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName) {
@@ -995,6 +1068,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
@@ -1006,6 +1080,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName) {
@@ -1022,6 +1097,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> backendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -1045,6 +1121,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1058,6 +1137,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
@@ -1070,6 +1150,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1087,6 +1168,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> backendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1109,6 +1191,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName) {
@@ -1121,6 +1206,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
@@ -1132,6 +1218,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayBackendHealthInner object
      */
     public Observable<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName) {
@@ -1148,6 +1235,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayBackendHealthInner object
      */
     public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> beginBackendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
@@ -1182,6 +1270,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationGatewayBackendHealthInner object if successful.
      */
     public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1195,6 +1286,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
@@ -1207,6 +1299,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayBackendHealthInner object
      */
     public Observable<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1224,6 +1317,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationGatewayBackendHealthInner object
      */
     public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> beginBackendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, String expand) {
@@ -1263,6 +1357,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
     public PagedList<ApplicationGatewayInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1281,6 +1378,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ApplicationGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
@@ -1299,6 +1397,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<Page<ApplicationGatewayInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1315,6 +1414,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1335,6 +1435,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Lists all application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1367,6 +1468,9 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
     public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) {
@@ -1385,6 +1489,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ApplicationGatewayInner>> serviceFuture, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
@@ -1403,6 +1508,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<Page<ApplicationGatewayInner>> listNextAsync(final String nextPageLink) {
@@ -1419,6 +1525,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1439,6 +1546,7 @@ public class ApplicationGatewaysInner implements InnerSupportsListing<Applicatio
      * Gets all the application gateways in a subscription.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {

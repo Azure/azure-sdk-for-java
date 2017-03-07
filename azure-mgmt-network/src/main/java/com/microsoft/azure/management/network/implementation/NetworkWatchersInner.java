@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -17,6 +19,7 @@ import com.microsoft.azure.management.network.QueryTroubleshootingParameters;
 import com.microsoft.azure.management.network.SecurityGroupViewParameters;
 import com.microsoft.azure.management.network.TopologyParameters;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -41,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in NetworkWatchers.
  */
-public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcherInner> {
+public class NetworkWatchersInner implements InnerSupportsGet<NetworkWatcherInner>, InnerSupportsDelete<Void>, InnerSupportsListing<NetworkWatcherInner> {
     /** The Retrofit service to perform REST calls. */
     private NetworkWatchersService service;
     /** The service client containing this operation class. */
@@ -67,9 +70,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Body NetworkWatcherInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkWatchers get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkWatchers getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("networkWatcherName") String networkWatcherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.NetworkWatchers delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}", method = "DELETE", hasBody = true)
@@ -155,6 +158,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
     public NetworkWatcherInner createOrUpdate(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
@@ -168,6 +174,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<NetworkWatcherInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, final ServiceCallback<NetworkWatcherInner> serviceCallback) {
@@ -180,6 +187,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkWatcherInner object
      */
     public Observable<NetworkWatcherInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
@@ -197,6 +205,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkWatcherInner object
      */
     public Observable<ServiceResponse<NetworkWatcherInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
@@ -241,10 +250,13 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkWatcherInner object if successful.
      */
-    public NetworkWatcherInner get(String resourceGroupName, String networkWatcherName) {
-        return getWithServiceResponseAsync(resourceGroupName, networkWatcherName).toBlocking().single().body();
+    public NetworkWatcherInner getByResourceGroup(String resourceGroupName, String networkWatcherName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, networkWatcherName).toBlocking().single().body();
     }
 
     /**
@@ -253,10 +265,11 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NetworkWatcherInner> getAsync(String resourceGroupName, String networkWatcherName, final ServiceCallback<NetworkWatcherInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, networkWatcherName), serviceCallback);
+    public ServiceFuture<NetworkWatcherInner> getByResourceGroupAsync(String resourceGroupName, String networkWatcherName, final ServiceCallback<NetworkWatcherInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, networkWatcherName), serviceCallback);
     }
 
     /**
@@ -264,10 +277,11 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkWatcherInner object
      */
-    public Observable<NetworkWatcherInner> getAsync(String resourceGroupName, String networkWatcherName) {
-        return getWithServiceResponseAsync(resourceGroupName, networkWatcherName).map(new Func1<ServiceResponse<NetworkWatcherInner>, NetworkWatcherInner>() {
+    public Observable<NetworkWatcherInner> getByResourceGroupAsync(String resourceGroupName, String networkWatcherName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, networkWatcherName).map(new Func1<ServiceResponse<NetworkWatcherInner>, NetworkWatcherInner>() {
             @Override
             public NetworkWatcherInner call(ServiceResponse<NetworkWatcherInner> response) {
                 return response.body();
@@ -280,9 +294,10 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkWatcherInner object
      */
-    public Observable<ServiceResponse<NetworkWatcherInner>> getWithServiceResponseAsync(String resourceGroupName, String networkWatcherName) {
+    public Observable<ServiceResponse<NetworkWatcherInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String networkWatcherName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -293,12 +308,12 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-12-01";
-        return service.get(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkWatcherInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NetworkWatcherInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NetworkWatcherInner> clientResponse = getDelegate(response);
+                        ServiceResponse<NetworkWatcherInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -307,7 +322,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
             });
     }
 
-    private ServiceResponse<NetworkWatcherInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NetworkWatcherInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<NetworkWatcherInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NetworkWatcherInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -319,6 +334,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String networkWatcherName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkWatcherName).toBlocking().last().body();
@@ -330,6 +348,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String networkWatcherName, final ServiceCallback<Void> serviceCallback) {
@@ -341,6 +360,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String networkWatcherName) {
@@ -357,6 +377,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String networkWatcherName) {
@@ -379,6 +400,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String networkWatcherName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkWatcherName).toBlocking().single().body();
@@ -390,6 +414,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName, final ServiceCallback<Void> serviceCallback) {
@@ -401,6 +426,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName) {
@@ -417,6 +443,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String networkWatcherName) {
@@ -456,10 +483,18 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * Gets all network watchers by resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;NetworkWatcherInner&gt; object if successful.
+     * @return the PagedList<NetworkWatcherInner> object if successful.
      */
-    public List<NetworkWatcherInner> listByResourceGroup(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public PagedList<NetworkWatcherInner> listByResourceGroup(String resourceGroupName) {
+        PageImpl1<NetworkWatcherInner> page = new PageImpl1<>();
+        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<NetworkWatcherInner>(page) {
+            @Override
+            public Page<NetworkWatcherInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -483,7 +518,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<NetworkWatcherInner>>, Page<NetworkWatcherInner>>() {
             @Override
             public Page<NetworkWatcherInner> call(ServiceResponse<List<NetworkWatcherInner>> response) {
-                PageImpl<NetworkWatcherInner> page = new PageImpl<>();
+                PageImpl1<NetworkWatcherInner> page = new PageImpl1<>();
                 page.setItems(response.body());
                 return page;
             }
@@ -529,10 +564,18 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
     /**
      * Gets all network watchers by subscription.
      *
-     * @return the List&lt;NetworkWatcherInner&gt; object if successful.
+     * @return the PagedList<NetworkWatcherInner> object if successful.
      */
-    public List<NetworkWatcherInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<NetworkWatcherInner> list() {
+        PageImpl1<NetworkWatcherInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<NetworkWatcherInner>(page) {
+            @Override
+            public Page<NetworkWatcherInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -554,7 +597,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<NetworkWatcherInner>>, Page<NetworkWatcherInner>>() {
             @Override
             public Page<NetworkWatcherInner> call(ServiceResponse<List<NetworkWatcherInner>> response) {
-                PageImpl<NetworkWatcherInner> page = new PageImpl<>();
+                PageImpl1<NetworkWatcherInner> page = new PageImpl1<>();
                 page.setItems(response.body());
                 return page;
             }
@@ -599,6 +642,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceGroupName The name of the target resource group to perform topology on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopologyInner object if successful.
      */
     public TopologyInner getTopology(String resourceGroupName, String networkWatcherName, String targetResourceGroupName) {
@@ -612,6 +658,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceGroupName The name of the target resource group to perform topology on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TopologyInner> getTopologyAsync(String resourceGroupName, String networkWatcherName, String targetResourceGroupName, final ServiceCallback<TopologyInner> serviceCallback) {
@@ -624,6 +671,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceGroupName The name of the target resource group to perform topology on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopologyInner object
      */
     public Observable<TopologyInner> getTopologyAsync(String resourceGroupName, String networkWatcherName, String targetResourceGroupName) {
@@ -641,6 +689,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceGroupName The name of the target resource group to perform topology on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopologyInner object
      */
     public Observable<ServiceResponse<TopologyInner>> getTopologyWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceGroupName) {
@@ -686,6 +735,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
     public VerificationIPFlowResultInner verifyIPFlow(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -699,6 +751,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VerificationIPFlowResultInner> verifyIPFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters, final ServiceCallback<VerificationIPFlowResultInner> serviceCallback) {
@@ -711,6 +764,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<VerificationIPFlowResultInner> verifyIPFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -728,6 +782,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<VerificationIPFlowResultInner>> verifyIPFlowWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -755,6 +810,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerificationIPFlowResultInner object if successful.
      */
     public VerificationIPFlowResultInner beginVerifyIPFlow(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -768,6 +826,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VerificationIPFlowResultInner> beginVerifyIPFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters, final ServiceCallback<VerificationIPFlowResultInner> serviceCallback) {
@@ -780,6 +839,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerificationIPFlowResultInner object
      */
     public Observable<VerificationIPFlowResultInner> beginVerifyIPFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -797,6 +857,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerificationIPFlowResultInner object
      */
     public Observable<ServiceResponse<VerificationIPFlowResultInner>> beginVerifyIPFlowWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, VerificationIPFlowParametersInner parameters) {
@@ -842,6 +903,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
     public NextHopResultInner getNextHop(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -855,6 +919,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<NextHopResultInner> getNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters, final ServiceCallback<NextHopResultInner> serviceCallback) {
@@ -867,6 +932,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<NextHopResultInner> getNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -884,6 +950,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<NextHopResultInner>> getNextHopWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -911,6 +978,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NextHopResultInner object if successful.
      */
     public NextHopResultInner beginGetNextHop(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -924,6 +994,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<NextHopResultInner> beginGetNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters, final ServiceCallback<NextHopResultInner> serviceCallback) {
@@ -936,6 +1007,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NextHopResultInner object
      */
     public Observable<NextHopResultInner> beginGetNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -953,6 +1025,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NextHopResultInner object
      */
     public Observable<ServiceResponse<NextHopResultInner>> beginGetNextHopWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, NextHopParametersInner parameters) {
@@ -998,6 +1071,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
     public SecurityGroupViewResultInner getVMSecurityRules(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1011,6 +1087,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SecurityGroupViewResultInner> getVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<SecurityGroupViewResultInner> serviceCallback) {
@@ -1023,6 +1100,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SecurityGroupViewResultInner> getVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1040,6 +1118,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SecurityGroupViewResultInner>> getVMSecurityRulesWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1068,6 +1147,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SecurityGroupViewResultInner object if successful.
      */
     public SecurityGroupViewResultInner beginGetVMSecurityRules(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1081,6 +1163,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SecurityGroupViewResultInner> beginGetVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<SecurityGroupViewResultInner> serviceCallback) {
@@ -1093,6 +1176,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityGroupViewResultInner object
      */
     public Observable<SecurityGroupViewResultInner> beginGetVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1110,6 +1194,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SecurityGroupViewResultInner object
      */
     public Observable<ServiceResponse<SecurityGroupViewResultInner>> beginGetVMSecurityRulesWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1156,6 +1241,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
     public TroubleshootingResultInner getTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1169,6 +1257,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TroubleshootingResultInner> getTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters, final ServiceCallback<TroubleshootingResultInner> serviceCallback) {
@@ -1181,6 +1270,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<TroubleshootingResultInner> getTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1198,6 +1288,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<TroubleshootingResultInner>> getTroubleshootingWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1225,6 +1316,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
     public TroubleshootingResultInner beginGetTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1238,6 +1332,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TroubleshootingResultInner> beginGetTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters, final ServiceCallback<TroubleshootingResultInner> serviceCallback) {
@@ -1250,6 +1345,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TroubleshootingResultInner object
      */
     public Observable<TroubleshootingResultInner> beginGetTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1267,6 +1363,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TroubleshootingResultInner object
      */
     public Observable<ServiceResponse<TroubleshootingResultInner>> beginGetTroubleshootingWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParametersInner parameters) {
@@ -1312,6 +1409,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
     public TroubleshootingResultInner getTroubleshootingResult(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1325,6 +1425,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TroubleshootingResultInner> getTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<TroubleshootingResultInner> serviceCallback) {
@@ -1337,6 +1438,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<TroubleshootingResultInner> getTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1354,6 +1456,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<TroubleshootingResultInner>> getTroubleshootingResultWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1382,6 +1485,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TroubleshootingResultInner object if successful.
      */
     public TroubleshootingResultInner beginGetTroubleshootingResult(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1395,6 +1501,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TroubleshootingResultInner> beginGetTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<TroubleshootingResultInner> serviceCallback) {
@@ -1407,6 +1514,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TroubleshootingResultInner object
      */
     public Observable<TroubleshootingResultInner> beginGetTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1424,6 +1532,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TroubleshootingResultInner object
      */
     public Observable<ServiceResponse<TroubleshootingResultInner>> beginGetTroubleshootingResultWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1470,6 +1579,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
     public FlowLogInformationInner setFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1483,6 +1595,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FlowLogInformationInner> setFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, final ServiceCallback<FlowLogInformationInner> serviceCallback) {
@@ -1495,6 +1608,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<FlowLogInformationInner> setFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1512,6 +1626,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<FlowLogInformationInner>> setFlowLogConfigurationWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1539,6 +1654,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
     public FlowLogInformationInner beginSetFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1552,6 +1670,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FlowLogInformationInner> beginSetFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, final ServiceCallback<FlowLogInformationInner> serviceCallback) {
@@ -1564,6 +1683,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FlowLogInformationInner object
      */
     public Observable<FlowLogInformationInner> beginSetFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1581,6 +1701,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FlowLogInformationInner object
      */
     public Observable<ServiceResponse<FlowLogInformationInner>> beginSetFlowLogConfigurationWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
@@ -1626,6 +1747,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
     public FlowLogInformationInner getFlowLogStatus(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1639,6 +1763,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FlowLogInformationInner> getFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<FlowLogInformationInner> serviceCallback) {
@@ -1651,6 +1776,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<FlowLogInformationInner> getFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1668,6 +1794,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<FlowLogInformationInner>> getFlowLogStatusWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1696,6 +1823,9 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FlowLogInformationInner object if successful.
      */
     public FlowLogInformationInner beginGetFlowLogStatus(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1709,6 +1839,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<FlowLogInformationInner> beginGetFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, String targetResourceId, final ServiceCallback<FlowLogInformationInner> serviceCallback) {
@@ -1721,6 +1852,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FlowLogInformationInner object
      */
     public Observable<FlowLogInformationInner> beginGetFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
@@ -1738,6 +1870,7 @@ public class NetworkWatchersInner implements InnerSupportsListing<NetworkWatcher
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow logging status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FlowLogInformationInner object
      */
     public Observable<ServiceResponse<FlowLogInformationInner>> beginGetFlowLogStatusWithServiceResponseAsync(String resourceGroupName, String networkWatcherName, String targetResourceId) {
