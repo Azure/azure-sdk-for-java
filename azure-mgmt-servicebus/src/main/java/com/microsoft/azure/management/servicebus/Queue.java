@@ -25,69 +25,84 @@ public interface Queue extends
         IndependentChildResource<ServiceBusManager, QueueResourceInner>,
         Refreshable<Queue>,
         Updatable<Queue.Update> {
-
     /**
-     * The duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String lockDuration();
-    /**
-     * Last time a message was sent, or the last time there was a receive request to this queue.
-     */
-    DateTime accessedAt();
-    /**
-     * the TimeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String autoDeleteOnIdle();
-    /**
-     * The exact time the message was created.
+     * @return the exact time the message was created.
      */
     DateTime createdAt();
     /**
-     * The default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+     * @return last time a message was sent, or the last time there was a receive request to this queue
      */
-    String defaultMessageTimeToLive();
+    DateTime accessedAt();
     /**
-     * TimeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
+     * @return the exact time the message was updated
      */
-    String duplicateDetectionHistoryTimeWindow();
+    DateTime updatedAt();
     /**
-     * A value that indicates whether server-side batched operations are enabled.
+     * the maximum size of memory allocated for the queue in megabytes.
      */
-    boolean enableBatchedOperations();
+    int maxSizeInMB();
     /**
-     * A value that indicates whether this queue has dead letter support when a message expires.
+     * @return current size of the queue, in bytes
      */
-    boolean deadLetteringOnMessageExpiration();
+    int currentSizeInBytes();
     /**
-     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage.
+     * @return indicates whether server-side batched operations are enabled
      */
-    boolean enableExpress();
+    boolean isBatchedOperationsEnabled();
     /**
-     * A value that indicates whether the queue is to be partitioned across multiple message brokers.
+     * @return indicates whether this queue has dead letter support when a message expires
      */
-    boolean enablePartitioning();
+    boolean isDeadLetteringEnabledForExpiredMessages();
     /**
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries.
+     * @return indicates whether express entities are enabled
      */
-    int maxDeliveryCount();
+    boolean isExpressEnabled();
     /**
-     * The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @return indicates whether the queue is to be partitioned across multiple message brokers
      */
-    int maxSizeInMegabytes();
+    boolean isPartitioningEnabled();
     /**
-     * The number of messages in the queue.
+     * @return indicates whether the queue supports sessions
+     */
+    boolean isSessionEnabled();
+    /**
+     * indicates if this queue requires duplicate detection.
+     */
+    boolean isDuplicateDetectionEnabled();
+    /**
+     * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
+     */
+    int lockDurationInSeconds();
+    /**
+     * @return the idle duration after which the queue is automatically deleted.
+     */
+    int deleteOnIdleDurationInMinutes();
+    /**
+     * @return the duration after which the message expires, starting from when the message is sent to queue.
+     */
+    Period defaultMessageTtlDuration();
+    /**
+     * @return the duration of the duplicate detection history.
+     */
+    Period duplicateMessageDetectionHistoryDuration();
+    /**
+     * @return the maximum number of a message delivery before marking it as dead-lettered
+     */
+    int maxDeliveryCountBeforeDeadLetteringMessage();
+    /**
+     * @return the number of messages in the queue
      */
     int messageCount();
     /**
-     * Number of active messages in the queue, topic, or subscription.
+     * @return number of active messages in the queue, topic, or subscription
      */
     int activeMessageCount();
     /**
-     * Number of messages that are dead lettered.
+     * @return number of messages that are dead lettered
      */
     int deadLetterMessageCount();
     /**
-     * Number of scheduled messages.
+     * @return number of scheduled messages
      */
     int scheduledMessageCount();
     /**
@@ -95,33 +110,13 @@ public interface Queue extends
      */
     int transferDeadLetterMessageCount();
     /**
-     * Number of messages transferred to another queue, topic, or subscription.
+     * @return number of messages transferred to another queue, topic, or subscription
      */
     int transferMessageCount();
     /**
-     * A value indicating if this queue requires duplicate detection.
-     */
-    boolean requiresDuplicateDetection();
-    /**
-     * A value that indicates whether the queue supports the concept of sessions.
-     */
-    boolean requiresSession();
-    /**
-     * The size of the queue, in bytes.
-     */
-    int sizeInBytes();
-    /**
-     * Enumerates the possible values for the status of a messaging entity.
+     * @return the current status of the queue
      */
     EntityStatus status();
-    /**
-     * A value that indicates whether the queue supports ordering.
-     */
-    boolean supportOrdering();
-    /**
-     * The exact time the message was updated.
-     */
-    DateTime updatedAt();
 
     /**
      * The entirety of the queue definition.
@@ -166,7 +161,16 @@ public interface Queue extends
          */
         interface WithPartitioning {
             /**
+             * Specifies that partitioning should be enabled on this queue.
+             *
+             * @return the next stage of queue definition
+             */
+            WithCreate withPartitioning();
+
+            /**
              * Specifies that the default partitioning should be disabled on this queue.
+             * Note: if the parent service bus is Premium SKU then partition cannot be
+             * disabled
              *
              * @return the next stage of queue definition
              */
@@ -179,6 +183,8 @@ public interface Queue extends
         interface WithDeleteOnIdle {
             /**
              * The idle interval after which the queue is automatically deleted.
+             * Note: unless it is explicitly overridden the default delete on idle duration
+             * is infinite (TimeSpan.Max).
              *
              * @param durationInMinutes idle duration in minutes
              * @return the next stage of queue definition
@@ -192,6 +198,8 @@ public interface Queue extends
         interface WithMessageLockDuration {
             /**
              * Specifies the amount of time that the message is locked for other receivers.
+             * Note: unless it is explicitly overridden the default lock duration is 60 seconds,
+             * the maximum allowed value is 300 seconds.
              *
              * @param durationInSeconds duration of a lock in seconds
              * @return the next stage of queue definition
@@ -205,6 +213,7 @@ public interface Queue extends
         interface WithDefaultMessageTTL {
             /**
              * Specifies the duration after which the message expires.
+             * Note: unless it is explicitly overridden the default ttl is infinite (TimeSpan.Max).
              *
              * @param ttl time to live duration
              * @return the next stage of queue definition
@@ -231,6 +240,7 @@ public interface Queue extends
             /**
              * Specifies that messages in this queue are express hence they can be cached in memory
              * for some time before storing it in messaging store.
+             * Note: By default queue is not express.
              *
              * @return the next stage of queue definition
              */
@@ -250,8 +260,6 @@ public interface Queue extends
              */
             WithCreate withoutMessageBatching();
         }
-
-        // TODO MessageOrdering
 
         /**
          * The stage of the queue definition allowing to specify duration of the duplicate message
@@ -349,6 +357,9 @@ public interface Queue extends
             Queue.UpdateStages.WithAuthorizationRule {
     }
 
+    /**
+     * Grouping of queue update stages.
+     */
     interface UpdateStages {
         /**
          * The stage of the queue definition allowing to specify size.
@@ -358,7 +369,7 @@ public interface Queue extends
              * Specifies the maximum size of memory allocated for the queue.
              *
              * @param sizeInMB size in MB
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withSizeInMB(int sizeInMB);
         }
@@ -371,7 +382,7 @@ public interface Queue extends
              * The idle interval after which the queue is automatically deleted.
              *
              * @param durationInMinutes idle duration in minutes
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withDeleteOnIdleDurationInMinutes(int durationInMinutes);
         }
@@ -384,7 +395,7 @@ public interface Queue extends
              * Specifies the amount of time that the message is locked for other receivers.
              *
              * @param durationInSeconds duration of a lock in seconds
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withMessageLockDurationInSeconds(int durationInSeconds);
         }
@@ -397,7 +408,7 @@ public interface Queue extends
              * Specifies the duration after which the message expires.
              *
              * @param ttl time to live duration
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withDefaultMessageTTL(Period ttl);
         }
@@ -409,14 +420,14 @@ public interface Queue extends
             /**
              * Specifies that session support should be enabled for the queue.
              *
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withSession();
 
             /**
              * Specifies that session support should be disabled for the queue.
              *
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withoutSession();
         }
@@ -463,8 +474,6 @@ public interface Queue extends
             Update withoutMessageBatching();
         }
 
-        // TODO MessageOrdering
-
         /**
          * The stage of the queue definition allowing to specify duration of the duplicate message
          * detection history.
@@ -474,9 +483,16 @@ public interface Queue extends
              * Specifies the duration of the duplicate message detection history.
              *
              * @param duration duration of the history
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withDuplicateMessageDetectionHistoryDuration(Period duration);
+
+            /**
+             * Specifies that duplicate message detection needs to be disabled.
+             *
+             * @return the next stage of queue update
+             */
+            Update withoutDuplicateMessageDetection();
         }
 
         /**
@@ -487,14 +503,14 @@ public interface Queue extends
             /**
              * Specifies that expired message must be moved to dead-letter queue.
              *
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withExpiredMessageMovedToDeadLetterQueue();
 
             /**
              * Specifies that expired message should not be moved to dead-letter queue.
              *
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withoutExpiredMessageMovedToDeadLetterQueue();
         }
@@ -509,7 +525,7 @@ public interface Queue extends
              * message will be moved to dead-letter queue.
              *
              * @param deliveryCount maximum delivery count
-             * @return the next stage of queue definition
+             * @return the next stage of queue update
              */
             Update withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount);
         }
@@ -524,10 +540,9 @@ public interface Queue extends
              *
              * @param name rule name
              * @param rights rule rights
-             * @return next stage of the queue definition
+             * @return next stage of the queue update
              */
             Update withNewAuthorizationRule(String name, AccessRights... rights);
         }
     }
-
 }
