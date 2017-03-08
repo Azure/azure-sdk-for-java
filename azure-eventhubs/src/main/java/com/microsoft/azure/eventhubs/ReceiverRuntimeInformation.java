@@ -52,7 +52,7 @@ public final class ReceiverRuntimeInformation {
     }
     
     /**
-     * Get offset of the {@link Eventdata}, that is written at the end of the Partition Stream.
+     * Get offset of the {@link EventData}, that is written at the end of the Partition Stream.
      * @return last enqueued offset
      */
     public String getLastEnqueuedOffset() {
