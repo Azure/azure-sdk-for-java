@@ -116,7 +116,7 @@ public interface FunctionApp extends
         interface WithStorageAccount {
             /**
              * Creates a new storage account to use for the function app.
-             * @return the next stage of the function app definition.
+             * @return the next stage of the function app definition
              */
             WithCreate withNewStorageAccount();
 
@@ -124,14 +124,14 @@ public interface FunctionApp extends
              * Creates a new storage account to use for the function app.
              * @param name the name of the storage account
              * @param sku the sku of the storage account
-             * @return the next stage of the function app definition.
+             * @return the next stage of the function app definition
              */
             WithCreate withNewStorageAccount(String name, com.microsoft.azure.management.storage.SkuName sku);
 
             /**
              * Specifies the storage account to use for the function app.
              * @param storageAccount the storage account to use
-             * @return the next stage of the function app definition.
+             * @return the next stage of the function app definition
              */
             WithCreate withExistingStorageAccount(StorageAccount storageAccount);
         }
@@ -155,6 +155,24 @@ public interface FunctionApp extends
         }
 
         /**
+         * A function app definition allowing daily usage quota to be specified.
+         */
+        interface WithDailyUsageQuota {
+            /**
+             * Specifies the daily usage data cap.
+             * @param quota the daily usage quota
+             * @return the next stage of the function app definition
+             */
+            WithCreate withDailyUsageQuota(int quota);
+
+            /**
+             * Specifies the daily usage data cap.
+             * @return the next stage of the function app definition
+             */
+            WithCreate removeDailyUsageQuota();
+        }
+
+        /**
          * A function app definition with sufficient inputs to create a new
          * function app in the cloud, but exposing additional optional
          * inputs to specify.
@@ -162,6 +180,7 @@ public interface FunctionApp extends
         interface WithCreate extends
             Creatable<FunctionApp>,
             DefinitionStages.WithRuntimeVersion,
+            DefinitionStages.WithDailyUsageQuota,
             GroupableResource.DefinitionWithTags<WithCreate>,
             WebAppBase.DefinitionStages.WithCreate<FunctionApp>,
             WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
@@ -234,6 +253,52 @@ public interface FunctionApp extends
              */
             Update withLatestRuntimeVersion();
         }
+
+        /**
+         * A function app definition allowing storage account to be specified.
+         * A storage account is required for storing function execution runtime,
+         * triggers, and logs.
+         */
+        interface WithStorageAccount {
+            /**
+             * Creates a new storage account to use for the function app.
+             * @return the next stage of the function app update
+             */
+            Update withNewStorageAccount();
+
+            /**
+             * Creates a new storage account to use for the function app.
+             * @param name the name of the storage account
+             * @param sku the sku of the storage account
+             * @return the next stage of the function app update
+             */
+            Update withNewStorageAccount(String name, com.microsoft.azure.management.storage.SkuName sku);
+
+            /**
+             * Specifies the storage account to use for the function app.
+             * @param storageAccount the storage account to use
+             * @return the next stage of the function app update
+             */
+            Update withExistingStorageAccount(StorageAccount storageAccount);
+        }
+
+        /**
+         * A function app definition allowing daily usage quota to be specified.
+         */
+        interface WithDailyUsageQuota {
+            /**
+             * Specifies the daily usage data cap.
+             * @param quota the daily usage quota
+             * @return the next stage of the function app definition
+             */
+            Update withDailyUsageQuota(int quota);
+
+            /**
+             * Specifies the daily usage data cap.
+             * @return the next stage of the function app definition
+             */
+            Update removeDailyUsageQuota();
+        }
     }
 
     /**
@@ -244,6 +309,8 @@ public interface FunctionApp extends
         UpdateStages.WithAppServicePlan,
         UpdateStages.WithNewAppServicePlan,
         UpdateStages.WithRuntimeVersion,
+        UpdateStages.WithStorageAccount,
+        UpdateStages.WithDailyUsageQuota,
         WebAppBase.UpdateStages.WithSiteConfigs<Update>,
         WebAppBase.UpdateStages.WithAppSettings<Update>,
         WebAppBase.UpdateStages.WithConnectionString<Update> {

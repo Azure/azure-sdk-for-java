@@ -139,4 +139,15 @@ class FunctionAppImpl
         this.existingStorageAccount = storageAccount;
         return this;
     }
+
+    @Override
+    public FunctionAppImpl withDailyUsageQuota(int quota) {
+        inner().withDailyMemoryTimeQuota(quota);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl removeDailyUsageQuota() {
+        return withDailyUsageQuota(0);
+    }
 }
