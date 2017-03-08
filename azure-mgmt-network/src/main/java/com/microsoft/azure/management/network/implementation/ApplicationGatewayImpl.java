@@ -41,6 +41,8 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -1234,5 +1236,29 @@ class ApplicationGatewayImpl
     @Override
     public Update withoutPublicIPAddress() {
         return this.withoutPublicFrontend();
+    }
+
+    // Actions
+
+    @Override
+    public void start() {
+        this.startAsync().await();
+        this.refresh();
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().await();
+        this.refresh();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return this.manager().inner().applicationGateways().startAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return this.manager().inner().applicationGateways().stopAsync(this.resourceGroupName(),  this.name()).toCompletable();
     }
 }
