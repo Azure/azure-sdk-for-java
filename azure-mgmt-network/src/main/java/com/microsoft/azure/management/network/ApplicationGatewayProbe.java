@@ -40,7 +40,7 @@ public interface ApplicationGatewayProbe extends
 
     /**
      * @return the number of failed retry probes before the backend server is marked as being down
-     * <p/>Acceptable values are from 1 second to 20.
+     * <p>Acceptable values are from 1 second to 20.
      */
     int retriesBeforeUnhealthy();
 
@@ -67,6 +67,7 @@ public interface ApplicationGatewayProbe extends
         interface WithHost<ParentT> {
             /**
              * Specifies the host name to send the probe to.
+             * @param host a host name
              * @return the next stage of the definition
              */
             WithPath<ParentT> withHost(String host);
@@ -80,7 +81,7 @@ public interface ApplicationGatewayProbe extends
             /**
              * Specifies the relative path for the probe to call.
              * <p>A probe is sent to &lt;protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
-
+             * @param path a relative path
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> withPath(String path);
@@ -111,6 +112,7 @@ public interface ApplicationGatewayProbe extends
         interface WithTimeout<ParentT> {
             /**
              * Specifies the amount of time in seconds waiting for a response before the probe is considered failed.
+             * @param seconds a number of seconds, between 1 and 86400
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeoutInSeconds(int seconds);
@@ -123,6 +125,7 @@ public interface ApplicationGatewayProbe extends
         interface WithInterval<ParentT> {
             /**
              * Specifies the time interval in seconds between consecutive probes.
+             * @param seconds a number of seconds between 1 and 86400
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeBetweenProbesInSeconds(int seconds);
@@ -135,6 +138,7 @@ public interface ApplicationGatewayProbe extends
         interface WithRetries<ParentT> {
             /**
              * Specifies the number of retries before the server is considered unhealthy.
+             * @param retryCount a number between 1 and 20
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRetriesBeforeUnhealthy(int retryCount);
@@ -176,6 +180,7 @@ public interface ApplicationGatewayProbe extends
         interface WithHost {
             /**
              * Specifies the host name to send the probe to.
+             * @param host a host name
              * @return the next stage of the update
              */
             Update withHost(String host);
@@ -205,7 +210,7 @@ public interface ApplicationGatewayProbe extends
             /**
              * Specifies the relative path for the probe to call.
              * <p>A probe is sent to &lt;protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
-
+             * @param path a relative path
              * @return the next stage of the update
              */
             Update withPath(String path);
@@ -217,6 +222,7 @@ public interface ApplicationGatewayProbe extends
         interface WithTimeout {
             /**
              * Specifies the amount of time in seconds waiting for a response before the probe is considered failed.
+             * @param seconds a number of seconds between 1 and 86400
              * @return the next stage of the update
              */
             Update withTimeoutInSeconds(int seconds);
@@ -228,6 +234,7 @@ public interface ApplicationGatewayProbe extends
         interface WithInterval {
             /**
              * Specifies the time interval in seconds between consecutive probes.
+             * @param seconds a number of seconds between 1 and 86400
              * @return the next stage of the update
              */
             Update withTimeBetweenProbesInSeconds(int seconds);
@@ -239,6 +246,7 @@ public interface ApplicationGatewayProbe extends
         interface WithRetries {
             /**
              * Specifies the number of retries before the server is considered unhealthy.
+             * @param retryCount a number between 1 and 20
              * @return the next stage of the update
              */
             Update withRetriesBeforeUnhealthy(int retryCount);
@@ -276,6 +284,7 @@ public interface ApplicationGatewayProbe extends
         interface WithHost<ParentT> {
             /**
              * Specifies the host name to send the probe to.
+             * @param host a host name
              * @return the next stage of the definition
              */
             WithPath<ParentT> withHost(String host);
@@ -306,6 +315,7 @@ public interface ApplicationGatewayProbe extends
         interface WithTimeout<ParentT> {
             /**
              * Specifies the amount of time in seconds waiting for a response before the probe is considered failed.
+             * @param seconds a number of seconds between 1 and 86400
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeoutInSeconds(int seconds);
@@ -319,7 +329,7 @@ public interface ApplicationGatewayProbe extends
             /**
              * Specifies the relative path for the probe to call.
              * <p>A probe is sent to &lt;protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
-
+             * @param path a relative path
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> withPath(String path);
@@ -332,6 +342,7 @@ public interface ApplicationGatewayProbe extends
         interface WithInterval<ParentT> {
             /**
              * Specifies the time interval in seconds between consecutive probes.
+             * @param seconds a number of seconds between 1 and 86400
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeBetweenProbesInSeconds(int seconds);
@@ -344,6 +355,7 @@ public interface ApplicationGatewayProbe extends
         interface WithRetries<ParentT> {
             /**
              * Specifies the number of retries before the server is considered unhealthy.
+             * @param retryCount a number between 1 and 20
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRetriesBeforeUnhealthy(int retryCount);
