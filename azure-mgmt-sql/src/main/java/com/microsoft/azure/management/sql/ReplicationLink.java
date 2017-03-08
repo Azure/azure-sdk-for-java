@@ -92,7 +92,7 @@ public interface ReplicationLink extends
 
     /**
      * Fails over the Azure SQL Database Replication Link.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable failoverAsync();
 
@@ -110,7 +110,7 @@ public interface ReplicationLink extends
 
     /**
      * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable forceFailoverAllowDataLossAsync();
 

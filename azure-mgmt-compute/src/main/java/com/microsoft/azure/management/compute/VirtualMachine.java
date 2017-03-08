@@ -51,7 +51,7 @@ public interface VirtualMachine extends
      * <p>
      * You are not billed for the compute resources that this Virtual Machine uses
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deallocateAsync();
 
@@ -73,7 +73,7 @@ public interface VirtualMachine extends
     /**
      * Generalize the Virtual Machine asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable generalizeAsync();
 
@@ -97,7 +97,7 @@ public interface VirtualMachine extends
      * <p>
      * You will be billed for the compute resources that this Virtual Machine uses.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable powerOffAsync();
 
@@ -119,7 +119,7 @@ public interface VirtualMachine extends
     /**
      * Restart the virtual machine asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable restartAsync();
 
@@ -139,7 +139,7 @@ public interface VirtualMachine extends
     /**
      * Start the virtual machine asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable startAsync();
 
@@ -159,7 +159,7 @@ public interface VirtualMachine extends
     /**
      * Redeploy the virtual machine asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable redeployAsync();
 

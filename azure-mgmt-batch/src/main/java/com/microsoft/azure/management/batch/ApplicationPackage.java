@@ -59,7 +59,7 @@ public interface ApplicationPackage extends
      * Activates the application package asynchronously.
      *
      * @param format format of the uploaded package supported values zip, tar
-     * @return a completable indicates completion or exception of the request.
+     * @return a representation of the deferred computation of this call.
      */
     Completable activateAsync(String format);
 

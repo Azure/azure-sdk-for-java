@@ -25,7 +25,7 @@ public interface SqlWarehouse extends
     /**
      * Pause an Azure SQL Data Warehouse database asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable pauseDataWarehouseAsync();
 
@@ -45,7 +45,7 @@ public interface SqlWarehouse extends
     /**
      * Resume an Azure SQL Data Warehouse database asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable resumeDataWarehouseAsync();
 

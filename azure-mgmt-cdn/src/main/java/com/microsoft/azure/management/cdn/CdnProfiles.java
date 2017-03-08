@@ -76,7 +76,7 @@ public interface CdnProfiles extends
      *
      * @param name the endpoint resource name to validate.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 

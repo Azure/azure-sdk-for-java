@@ -85,7 +85,7 @@ public interface CdnProfile extends
      * Starts stopped CDN endpoint in current profile asynchronously.
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable startEndpointAsync(String endpointName);
 
@@ -95,7 +95,7 @@ public interface CdnProfile extends
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback);
 
@@ -110,7 +110,7 @@ public interface CdnProfile extends
      * Stops running CDN endpoint in the current profile asynchronously.
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable stopEndpointAsync(String endpointName);
 
@@ -119,7 +119,7 @@ public interface CdnProfile extends
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback);
 
@@ -136,7 +136,7 @@ public interface CdnProfile extends
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable purgeEndpointContentAsync(String endpointName, List<String> contentPaths);
 
@@ -146,7 +146,7 @@ public interface CdnProfile extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
 
@@ -163,7 +163,7 @@ public interface CdnProfile extends
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable loadEndpointContentAsync(String endpointName, List<String> contentPaths);
 
@@ -173,7 +173,7 @@ public interface CdnProfile extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<Void> loadEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
 
@@ -202,7 +202,7 @@ public interface CdnProfile extends
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param hostName the host name of the custom domain. Must be a domain name.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName, ServiceCallback<CustomDomainValidationResult> callback);
 
@@ -227,7 +227,7 @@ public interface CdnProfile extends
      *
      * @param name the endpoint resource name to validate.
      * @param callback the callback to call on success or failure
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 

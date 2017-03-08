@@ -117,7 +117,7 @@ public interface CdnEndpoint extends
     /**
      * Starts current stopped CDN endpoint asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable startAsync();
 
@@ -137,7 +137,7 @@ public interface CdnEndpoint extends
     /**
      * Stops current running CDN endpoint asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable stopAsync();
 
@@ -161,7 +161,7 @@ public interface CdnEndpoint extends
      * Forcibly purges current CDN endpoint content asynchronously.
      *
      * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable purgeContentAsync(List<String> contentPaths);
 
@@ -186,7 +186,7 @@ public interface CdnEndpoint extends
      * Forcibly pre-loads current CDN endpoint content asynchronously. Available for Verizon Profiles.
      *
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable loadContentAsync(List<String> contentPaths);
 

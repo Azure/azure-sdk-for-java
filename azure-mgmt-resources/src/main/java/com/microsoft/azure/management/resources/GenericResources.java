@@ -109,7 +109,7 @@ public interface GenericResources extends
      * @param targetResourceGroup target resource group, can be in a different subscription
      * @param resources the list of IDs of the resources to move
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources);
 
@@ -147,7 +147,7 @@ public interface GenericResources extends
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
      * @param apiVersion the String value
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 

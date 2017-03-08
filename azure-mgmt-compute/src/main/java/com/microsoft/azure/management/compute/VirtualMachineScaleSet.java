@@ -67,7 +67,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * Shuts down the virtual machines in the scale set and releases its compute resources asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      *
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization
@@ -98,7 +98,7 @@ public interface VirtualMachineScaleSet extends
 
     /**
      * Powers off (stops) the virtual machines in the scale set asynchronously.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      *
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization
@@ -130,7 +130,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * Restarts the virtual machines in the scale set asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      *
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization
@@ -161,7 +161,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * Starts the virtual machines in the scale set asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      *
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization
@@ -193,7 +193,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * Re-images (updates the version of the installed operating system) the virtual machines in the scale set asynchronously.
      *
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      *
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization

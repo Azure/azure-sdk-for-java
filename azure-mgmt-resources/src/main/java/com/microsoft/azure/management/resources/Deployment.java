@@ -118,7 +118,7 @@ public interface Deployment extends
 
     /**
      * Cancel a currently running template deployment asynchronously.
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable cancelAsync();
 
