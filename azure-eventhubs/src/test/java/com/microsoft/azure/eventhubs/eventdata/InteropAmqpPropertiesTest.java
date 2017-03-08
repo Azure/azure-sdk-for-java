@@ -18,6 +18,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -36,7 +37,7 @@ import com.microsoft.azure.servicebus.MessagingFactory;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
-public class InteropTest extends ApiTestBase
+public class InteropAmqpPropertiesTest extends ApiTestBase
 {
 	static EventHubClient ehClient;
 	static MessagingFactory msgFactory;
@@ -83,8 +84,8 @@ public class InteropTest extends ApiTestBase
 					&& eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID).equals(originalMessage.getReplyToGroupId()));
 			Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_REPLY_TO)
 					&& eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_REPLY_TO).equals(originalMessage.getReplyTo()));
-			Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_time)
-					&& eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_time).equals(originalMessage.getExpiryTime()));
+			Assert.assertTrue(eData.getSystemProperties().containsKey(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME)
+					&& eData.getSystemProperties().get(AmqpConstants.AMQP_PROPERTY_ABSOLUTE_EXPRITY_TIME).equals(originalMessage.getExpiryTime()));
 			
 			Assert.assertTrue(eData.getSystemProperties().containsKey(msgAnnotation)
 					&& eData.getSystemProperties().get(msgAnnotation).equals(originalMessage.getMessageAnnotations().getValue().get(Symbol.getSymbol(msgAnnotation))));
