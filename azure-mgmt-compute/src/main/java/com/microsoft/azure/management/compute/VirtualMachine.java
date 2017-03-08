@@ -1137,6 +1137,7 @@ public interface VirtualMachine extends
              *
              * @param disk the managed disk
              * @param lun the disk lun
+             * @param cachingType a caching type
              * @return the next stage of virtual machine definition
              */
             WithManagedCreate withExistingDataDisk(Disk disk,
@@ -1149,6 +1150,7 @@ public interface VirtualMachine extends
              * @param disk the managed disk
              * @param newSizeInGB the disk resize size in GB
              * @param lun the disk lun
+             * @param cachingType a caching type
              * @return the next stage of virtual machine definition
              */
             WithManagedCreate withExistingDataDisk(Disk disk,
@@ -1530,6 +1532,7 @@ public interface VirtualMachine extends
              *
              * @param disk the managed disk
              * @param lun the disk lun
+             * @param cachingType a caching type
              * @return the next stage of virtual machine update
              */
             Update withExistingDataDisk(Disk disk,
@@ -1542,6 +1545,7 @@ public interface VirtualMachine extends
              * @param disk the managed disk
              * @param newSizeInGB the disk resize size in GB
              * @param lun the disk lun
+             * @param cachingType a caching type
              * @return the next stage of virtual machine update
              */
             Update withExistingDataDisk(Disk disk,
