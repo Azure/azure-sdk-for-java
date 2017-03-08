@@ -164,7 +164,6 @@ public interface WebApp extends
         Appliable<WebApp>,
         GroupableResource.UpdateWithTags<Update>,
         UpdateStages.WithAppServicePlan,
-        UpdateStages.WithNewAppServicePlan,
         WebAppBase.Update<WebApp>,
         WebAppBase.UpdateStages.WithClientAffinityEnabled<Update>,
         WebAppBase.UpdateStages.WithClientCertEnabled<Update>,

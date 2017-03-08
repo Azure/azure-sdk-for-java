@@ -23,6 +23,8 @@ public interface FunctionApp extends
     Refreshable<FunctionApp>,
     Updatable<FunctionApp.Update> {
 
+    StorageAccount storageAccount();
+
     /**************************************************************
      * Fluent interfaces to provision a Function App
      **************************************************************/
@@ -307,7 +309,6 @@ public interface FunctionApp extends
     interface Update extends
         WebAppBase.Update<FunctionApp>,
         UpdateStages.WithAppServicePlan,
-        UpdateStages.WithNewAppServicePlan,
         UpdateStages.WithRuntimeVersion,
         UpdateStages.WithStorageAccount,
         UpdateStages.WithDailyUsageQuota,

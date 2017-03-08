@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.FunctionApp;
+import com.microsoft.azure.management.appservice.SkuDescription;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -36,7 +37,8 @@ class FunctionAppImpl
         WebAppBase.UpdateStages.WithWebContainer<FunctionApp.Update> {
 
     private Creatable<StorageAccount> storageAccountCreatable;
-    private StorageAccount existingStorageAccount;
+    private StorageAccount storageAccountToSet;
+    private StorageAccount currentStorageAccount;
 
     FunctionAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
@@ -46,8 +48,7 @@ class FunctionAppImpl
     @Override
     public FunctionAppImpl withNewConsumptionPlan(String regionName) {
         return withNewAppServicePlan(SdkContext.randomResourceName(regionName + "Plan", 32), regionName)
-            .withPricingTier(new AppServicePricingTier("Dynamic", "Y1"))
-            .withWebAppAlwaysOn(false);
+            .withPricingTier(new AppServicePricingTier("Dynamic", "Y1"));
     }
 
     @Override
@@ -73,17 +74,17 @@ class FunctionAppImpl
     @Override
     Observable<SiteInner> submitAppSettings(final SiteInner site) {
         if (storageAccountCreatable != null && createdResource(storageAccountCreatable.key()) != null) {
-            existingStorageAccount = (StorageAccount) createdResource(storageAccountCreatable.key());
+            storageAccountToSet = (StorageAccount) createdResource(storageAccountCreatable.key());
         }
-        if (existingStorageAccount == null) {
+        if (storageAccountToSet == null) {
             return super.submitAppSettings(site);
         } else {
-            return existingStorageAccount.getKeysAsync()
+            return storageAccountToSet.getKeysAsync()
                 .first().flatMap(new Func1<StorageAccountKey, Observable<SiteInner>>() {
                 @Override
                 public Observable<SiteInner> call(StorageAccountKey storageAccountKey) {
                     String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                        existingStorageAccount.name(), storageAccountKey.value());
+                        storageAccountToSet.name(), storageAccountKey.value());
                     withAppSetting("AzureWebJobsStorage", connectionString);
                     withAppSetting("AzureWebJobsDashboard", connectionString);
                     withAppSetting("WEBSITE_CONTENTAZUREFILECONNECTIONSTRING", connectionString);
@@ -93,22 +94,37 @@ class FunctionAppImpl
             }).doOnCompleted(new Action0() {
                     @Override
                     public void call() {
-                        existingStorageAccount = null;
+                        currentStorageAccount = storageAccountToSet;
+                        storageAccountToSet = null;
                         storageAccountCreatable = null;
                     }
                 });
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
-    public FunctionAppImpl withNewAppServicePlan(String name) {
-        return super.withNewAppServicePlan(name).withWebAppAlwaysOn(true);
+    public FunctionAppImpl withPricingTier(AppServicePricingTier pricingTier) {
+        super.withPricingTier(pricingTier);
+        return autoSetAlwaysOn(pricingTier);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FunctionAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
-        return super.withExistingAppServicePlan(appServicePlan).withWebAppAlwaysOn(true);
+        super.withExistingAppServicePlan(appServicePlan);
+        return autoSetAlwaysOn(appServicePlan.pricingTier());
+    }
+
+    private FunctionAppImpl autoSetAlwaysOn(AppServicePricingTier pricingTier) {
+        SkuDescription description = pricingTier.toSkuDescription();
+        if (description.tier().equalsIgnoreCase("Basic")
+                || description.tier().equalsIgnoreCase("Standard")
+                || description.tier().equalsIgnoreCase("Premium")) {
+            return withWebAppAlwaysOn(true);
+        } else {
+            return withWebAppAlwaysOn(false);
+        }
     }
 
     @Override
@@ -136,7 +152,7 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withExistingStorageAccount(StorageAccount storageAccount) {
-        this.existingStorageAccount = storageAccount;
+        this.storageAccountToSet = storageAccount;
         return this;
     }
 
@@ -149,5 +165,10 @@ class FunctionAppImpl
     @Override
     public FunctionAppImpl removeDailyUsageQuota() {
         return withDailyUsageQuota(0);
+    }
+
+    @Override
+    public StorageAccount storageAccount() {
+        return currentStorageAccount;
     }
 }

@@ -21,6 +21,7 @@ class WebAppImpl
             WebApp,
             WebApp.Definition,
             WebApp.Update,
+            WebApp.UpdateStages.WithNewAppServicePlan,
             WebAppBase.DefinitionStages.WithWebContainer<WebApp.DefinitionStages.WithCreate>,
             WebAppBase.UpdateStages.WithWebContainer<WebApp.Update> {
 
