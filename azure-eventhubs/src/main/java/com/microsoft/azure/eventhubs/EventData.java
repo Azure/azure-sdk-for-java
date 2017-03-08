@@ -32,6 +32,7 @@ import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 public class EventData implements Serializable
 {
 	private static final long serialVersionUID = -5631628195600014255L;
+        private static final int BODY_DATA_NULL = -1;
 
 	transient private Binary bodyData;
 	
@@ -322,8 +323,9 @@ public class EventData implements Serializable
 	{
 		out.defaultWriteObject();
 		
-		out.writeInt(this.bodyData.getLength());
-		out.write(this.bodyData.getArray(), this.bodyData.getArrayOffset(), this.bodyData.getLength());
+                out.writeInt(this.bodyData == null ? BODY_DATA_NULL : this.bodyData.getLength());
+                if (this.bodyData != null)
+                    out.write(this.bodyData.getArray(), this.bodyData.getArrayOffset(), this.bodyData.getLength());
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
@@ -331,9 +333,12 @@ public class EventData implements Serializable
 		in.defaultReadObject();
 		
 		final int length = in.readInt();
-		final byte[] data = new byte[length];
-		in.read(data, 0, length);
-		this.bodyData = new Binary(data, 0, length);
+		if (length != BODY_DATA_NULL) {
+                    
+                    final byte[] data = new byte[length];
+                    in.readFully(data, 0, length);
+                    this.bodyData = new Binary(data, 0, length);
+                }
 	}
 
 	public static class SystemProperties extends HashMap<String, Object>
