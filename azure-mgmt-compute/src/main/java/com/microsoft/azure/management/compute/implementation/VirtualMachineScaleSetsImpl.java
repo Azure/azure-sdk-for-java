@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
@@ -15,9 +14,8 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfi
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import rx.Completable;
 
 import java.util.ArrayList;
 
@@ -26,12 +24,12 @@ import java.util.ArrayList;
  */
 @LangDefinition
 public class VirtualMachineScaleSetsImpl
-        extends ListableResourcesImpl<
-                VirtualMachineScaleSet,
-                VirtualMachineScaleSetImpl,
-                VirtualMachineScaleSetInner,
-                VirtualMachineScaleSetsInner,
-                ComputeManager>
+        extends TopLevelModifiableResourcesImpl<
+                                        VirtualMachineScaleSet,
+                                        VirtualMachineScaleSetImpl,
+                                        VirtualMachineScaleSetInner,
+                                        VirtualMachineScaleSetsInner,
+                                        ComputeManager>
         implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -43,26 +41,6 @@ public class VirtualMachineScaleSetsImpl
         super(computeManager.inner().virtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-    }
-
-    @Override
-    public VirtualMachineScaleSet getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
-    }
-
-    @Override
-    public PagedList<VirtualMachineScaleSet> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    public PagedList<VirtualMachineScaleSet> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

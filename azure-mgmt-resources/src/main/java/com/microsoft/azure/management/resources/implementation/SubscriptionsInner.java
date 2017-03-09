@@ -80,6 +80,9 @@ public class SubscriptionsInner {
      * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LocationInner&gt; object if successful.
      */
     public List<LocationInner> listLocations(String subscriptionId) {
@@ -92,6 +95,7 @@ public class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<LocationInner>> listLocationsAsync(String subscriptionId, final ServiceCallback<List<LocationInner>> serviceCallback) {
@@ -103,6 +107,7 @@ public class SubscriptionsInner {
      * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LocationInner&gt; object
      */
     public Observable<List<LocationInner>> listLocationsAsync(String subscriptionId) {
@@ -119,6 +124,7 @@ public class SubscriptionsInner {
      * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LocationInner&gt; object
      */
     public Observable<ServiceResponse<List<LocationInner>>> listLocationsWithServiceResponseAsync(String subscriptionId) {
@@ -154,6 +160,9 @@ public class SubscriptionsInner {
      * Gets details about a specified subscription.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SubscriptionInner object if successful.
      */
     public SubscriptionInner get(String subscriptionId) {
@@ -165,6 +174,7 @@ public class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SubscriptionInner> getAsync(String subscriptionId, final ServiceCallback<SubscriptionInner> serviceCallback) {
@@ -175,6 +185,7 @@ public class SubscriptionsInner {
      * Gets details about a specified subscription.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubscriptionInner object
      */
     public Observable<SubscriptionInner> getAsync(String subscriptionId) {
@@ -190,6 +201,7 @@ public class SubscriptionsInner {
      * Gets details about a specified subscription.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SubscriptionInner object
      */
     public Observable<ServiceResponse<SubscriptionInner>> getWithServiceResponseAsync(String subscriptionId) {
@@ -223,6 +235,9 @@ public class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
     public PagedList<SubscriptionInner> list() {
@@ -239,6 +254,7 @@ public class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SubscriptionInner>> listAsync(final ListOperationCallback<SubscriptionInner> serviceCallback) {
@@ -256,6 +272,7 @@ public class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
     public Observable<Page<SubscriptionInner>> listAsync() {
@@ -271,6 +288,7 @@ public class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listWithServiceResponseAsync() {
@@ -290,6 +308,7 @@ public class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listSinglePageAsync() {
@@ -321,6 +340,9 @@ public class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
     public PagedList<SubscriptionInner> listNext(final String nextPageLink) {
@@ -339,6 +361,7 @@ public class SubscriptionsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SubscriptionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SubscriptionInner>> serviceFuture, final ListOperationCallback<SubscriptionInner> serviceCallback) {
@@ -357,6 +380,7 @@ public class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
     public Observable<Page<SubscriptionInner>> listNextAsync(final String nextPageLink) {
@@ -373,6 +397,7 @@ public class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -393,6 +418,7 @@ public class SubscriptionsInner {
      * Gets all subscriptions for a tenant.
      *
     ServiceResponse<PageImpl1<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextSinglePageAsync(final String nextPageLink) {

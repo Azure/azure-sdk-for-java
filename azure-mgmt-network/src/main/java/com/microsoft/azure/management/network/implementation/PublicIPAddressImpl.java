@@ -43,10 +43,8 @@ class PublicIPAddressImpl
     // Verbs
 
     @Override
-    public PublicIPAddress refresh() {
-        PublicIPAddressInner response = this.manager().inner().publicIPAddresses().get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        return this;
+    protected Observable<PublicIPAddressInner> getInnerAsync() {
+        return this.manager().inner().publicIPAddresses().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)

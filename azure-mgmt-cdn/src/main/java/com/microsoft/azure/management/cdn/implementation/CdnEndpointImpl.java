@@ -8,6 +8,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
@@ -23,6 +24,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -179,27 +183,36 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     public Observable<Void> deleteAsync() {
         return this.parent().manager().inner().endpoints().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name()).map(new Func1<Void, Void>() {
+                this.name());
+    }
+
+    @Override
+    public Observable<CdnEndpoint> refreshAsync() {
+        final CdnEndpointImpl self = this;
+        return refreshAsync().flatMap(new Func1<CdnEndpoint, Observable<CdnEndpoint>>() {
             @Override
-            public Void call(Void result) {
-                return result;
+            public Observable<CdnEndpoint> call(CdnEndpoint cdnEndpoint) {
+                self.customDomainList.clear();
+                self.deletedCustomDomainList.clear();
+                return self.parent().manager().inner().customDomains().listByEndpointAsync(
+                        self.parent().resourceGroupName(),
+                        self.parent().name(),
+                        self.name()).flatMap(new Func1<Page<CustomDomainInner>, Observable<CdnEndpoint>>() {
+                    @Override
+                    public Observable<CdnEndpoint> call(Page<CustomDomainInner> customDomainInnerPage) {
+                        self.customDomainList.addAll(customDomainInnerPage.items());
+                        return Observable.just((CdnEndpoint) self);
+                    }
+                });
             }
         });
     }
 
     @Override
-    public CdnEndpointImpl refresh() {
-        EndpointInner inner = this.parent().manager().inner().endpoints().get(this.parent().resourceGroupName(),
+    protected Observable<EndpointInner> getInnerAsync() {
+        return this.parent().manager().inner().endpoints().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
-        this.setInner(inner);
-        this.customDomainList.clear();
-        this.deletedCustomDomainList.clear();
-        this.customDomainList.addAll(this.parent().manager().inner().customDomains().listByEndpoint(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name()));
-        return this;
     }
 
     @Override
@@ -323,23 +336,73 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
+    public Completable startAsync() {
+        return this.parent().startEndpointAsync(this.name());
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
+    }
+
+    @Override
     public void stop() {
-        this.parent().stopEndpoint(this.name());
+        this.stopAsync().await();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return this.parent().stopEndpointAsync(this.name());
+    }
+
+    @Override
+    public ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.stopAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void purgeContent(List<String> contentPaths) {
-        this.parent().purgeEndpointContent(this.name(), contentPaths);
+        this.purgeContentAsync(contentPaths).await();
+    }
+
+    @Override
+    public Completable purgeContentAsync(List<String> contentPaths) {
+        return this.parent().purgeEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public ServiceFuture<Void> purgeContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.purgeContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
     public void loadContent(List<String> contentPaths) {
-        this.parent().loadEndpointContent(this.name(), contentPaths);
+        this.loadContentAsync(contentPaths).await();
+    }
+
+    @Override
+    public Completable loadContentAsync(List<String> contentPaths) {
+        return this.parent().loadEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public ServiceFuture<Void> loadContentAsync(List<String> contentPaths, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.loadContentAsync(contentPaths).<Void>toObservable(), callback);
     }
 
     @Override
     public CustomDomainValidationResult validateCustomDomain(String hostName) {
-        return this.parent().validateEndpointCustomDomain(this.name(), hostName);
+        return this.validateCustomDomainAsync(hostName).toBlocking().last();
+    }
+
+    @Override
+    public Observable<CustomDomainValidationResult> validateCustomDomainAsync(String hostName) {
+        return this.parent().validateEndpointCustomDomainAsync(this.name(), hostName);
+    }
+
+    @Override
+    public ServiceFuture<CustomDomainValidationResult> validateCustomDomainAsync(String hostName, ServiceCallback<CustomDomainValidationResult> callback) {
+        return ServiceFuture.fromBody(this.validateCustomDomainAsync(hostName), callback);
     }
 
     @Override

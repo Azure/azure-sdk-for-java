@@ -77,6 +77,9 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentOperationInner object if successful.
      */
     public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
@@ -90,6 +93,7 @@ public class DeploymentOperationsInner {
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId, final ServiceCallback<DeploymentOperationInner> serviceCallback) {
@@ -102,6 +106,7 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentOperationInner object
      */
     public Observable<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId) {
@@ -119,6 +124,7 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentOperationInner object
      */
     public Observable<ServiceResponse<DeploymentOperationInner>> getWithServiceResponseAsync(String resourceGroupName, String deploymentName, String operationId) {
@@ -163,6 +169,9 @@ public class DeploymentOperationsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> listByResourceGroup(final String resourceGroupName, final String deploymentName) {
@@ -181,6 +190,7 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentOperationInner>> listByResourceGroupAsync(final String resourceGroupName, final String deploymentName, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
@@ -200,6 +210,7 @@ public class DeploymentOperationsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<Page<DeploymentOperationInner>> listByResourceGroupAsync(final String resourceGroupName, final String deploymentName) {
@@ -217,6 +228,7 @@ public class DeploymentOperationsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String deploymentName) {
@@ -238,6 +250,7 @@ public class DeploymentOperationsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String deploymentName) {
@@ -274,6 +287,9 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> listByResourceGroup(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -293,6 +309,7 @@ public class DeploymentOperationsInner {
      * @param deploymentName The name of the deployment with the operation to get.
      * @param top The number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentOperationInner>> listByResourceGroupAsync(final String resourceGroupName, final String deploymentName, final Integer top, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
@@ -313,6 +330,7 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<Page<DeploymentOperationInner>> listByResourceGroupAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -331,6 +349,7 @@ public class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment with the operation to get.
      * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -353,6 +372,7 @@ public class DeploymentOperationsInner {
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param deploymentName The name of the deployment with the operation to get.
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param top The number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String deploymentName, final Integer top) {
@@ -393,6 +413,9 @@ public class DeploymentOperationsInner {
      * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
     public PagedList<DeploymentOperationInner> listByResourceGroupNext(final String nextPageLink) {
@@ -411,6 +434,7 @@ public class DeploymentOperationsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentOperationInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentOperationInner>> serviceFuture, final ListOperationCallback<DeploymentOperationInner> serviceCallback) {
@@ -429,6 +453,7 @@ public class DeploymentOperationsInner {
      * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<Page<DeploymentOperationInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -445,6 +470,7 @@ public class DeploymentOperationsInner {
      * Gets all deployments operations for a deployment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentOperationInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -465,6 +491,7 @@ public class DeploymentOperationsInner {
      * Gets all deployments operations for a deployment.
      *
     ServiceResponse<PageImpl<DeploymentOperationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentOperationInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {

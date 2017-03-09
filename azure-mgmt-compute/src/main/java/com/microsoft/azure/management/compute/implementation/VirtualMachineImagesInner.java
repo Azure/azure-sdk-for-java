@@ -82,6 +82,9 @@ public class VirtualMachineImagesInner {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VirtualMachineImageInner object if successful.
      */
     public VirtualMachineImageInner get(String location, String publisherName, String offer, String skus, String version) {
@@ -97,6 +100,7 @@ public class VirtualMachineImagesInner {
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
@@ -111,6 +115,7 @@ public class VirtualMachineImagesInner {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineImageInner object
      */
     public Observable<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version) {
@@ -130,6 +135,7 @@ public class VirtualMachineImagesInner {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param version A valid image SKU version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineImageInner object
      */
     public Observable<ServiceResponse<VirtualMachineImageInner>> getWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String version) {
@@ -180,6 +186,9 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus) {
@@ -194,6 +203,7 @@ public class VirtualMachineImagesInner {
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
@@ -207,6 +217,7 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus) {
@@ -225,6 +236,7 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus) {
@@ -271,6 +283,9 @@ public class VirtualMachineImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
@@ -288,6 +303,7 @@ public class VirtualMachineImagesInner {
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
@@ -304,6 +320,7 @@ public class VirtualMachineImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
@@ -325,6 +342,7 @@ public class VirtualMachineImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
@@ -370,6 +388,9 @@ public class VirtualMachineImagesInner {
      *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listOffers(String location, String publisherName) {
@@ -382,6 +403,7 @@ public class VirtualMachineImagesInner {
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
@@ -393,6 +415,7 @@ public class VirtualMachineImagesInner {
      *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName) {
@@ -409,6 +432,7 @@ public class VirtualMachineImagesInner {
      *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listOffersWithServiceResponseAsync(String location, String publisherName) {
@@ -447,6 +471,9 @@ public class VirtualMachineImagesInner {
      * Gets a list of virtual machine image publishers for the specified Azure location.
      *
      * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listPublishers(String location) {
@@ -458,6 +485,7 @@ public class VirtualMachineImagesInner {
      *
      * @param location The name of a supported Azure region.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
@@ -468,6 +496,7 @@ public class VirtualMachineImagesInner {
      * Gets a list of virtual machine image publishers for the specified Azure location.
      *
      * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location) {
@@ -483,6 +512,7 @@ public class VirtualMachineImagesInner {
      * Gets a list of virtual machine image publishers for the specified Azure location.
      *
      * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listPublishersWithServiceResponseAsync(String location) {
@@ -520,6 +550,9 @@ public class VirtualMachineImagesInner {
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
     public List<VirtualMachineImageResourceInner> listSkus(String location, String publisherName, String offer) {
@@ -533,6 +566,7 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
@@ -545,6 +579,7 @@ public class VirtualMachineImagesInner {
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer) {
@@ -562,6 +597,7 @@ public class VirtualMachineImagesInner {
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listSkusWithServiceResponseAsync(String location, String publisherName, String offer) {

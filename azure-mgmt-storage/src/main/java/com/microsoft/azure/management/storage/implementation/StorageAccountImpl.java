@@ -17,6 +17,8 @@ import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Action1;
@@ -108,28 +110,61 @@ class StorageAccountImpl
 
     @Override
     public List<StorageAccountKey> getKeys() {
-        StorageAccountListKeysResultInner response =
-                this.manager().inner().storageAccounts().listKeys(
-                        this.resourceGroupName(), this.name());
-        return response.keys();
+        return this.getKeysAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<List<StorageAccountKey>> getKeysAsync() {
+        return this.manager().inner().storageAccounts().listKeysAsync(
+                this.resourceGroupName(), this.name()).map(new Func1<StorageAccountListKeysResultInner, List<StorageAccountKey>>() {
+            @Override
+            public List<StorageAccountKey> call(StorageAccountListKeysResultInner storageAccountListKeysResultInner) {
+                return storageAccountListKeysResultInner.keys();
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<List<StorageAccountKey>> getKeysAsync(ServiceCallback<List<StorageAccountKey>> callback) {
+        return ServiceFuture.fromBody(this.getKeysAsync(), callback);
     }
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
-        StorageAccountListKeysResultInner response =
-                this.manager().inner().storageAccounts().regenerateKey(
-                        this.resourceGroupName(), this.name(), keyName);
-        return response.keys();
+        return this.regenerateKeyAsync(keyName).toBlocking().last();
     }
 
     @Override
-    public StorageAccountImpl refresh() {
-        StorageAccountInner response =
-            this.manager().inner().storageAccounts().getProperties(
-                    this.resourceGroupName(), this.name());
-        this.setInner(response);
-        clearWrapperProperties();
-        return this;
+    public Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
+        return this.manager().inner().storageAccounts().regenerateKeyAsync(
+                this.resourceGroupName(), this.name(), keyName).map(new Func1<StorageAccountListKeysResultInner, List<StorageAccountKey>>() {
+            @Override
+            public List<StorageAccountKey> call(StorageAccountListKeysResultInner storageAccountListKeysResultInner) {
+                return storageAccountListKeysResultInner.keys();
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<List<StorageAccountKey>> regenerateKeyAsync(String keyName, ServiceCallback<List<StorageAccountKey>> callback) {
+        return ServiceFuture.fromBody(this.regenerateKeyAsync(keyName), callback);
+    }
+
+    @Override
+    public Observable<StorageAccount> refreshAsync() {
+        return super.refreshAsync().map(new Func1<StorageAccount, StorageAccount>() {
+            @Override
+            public StorageAccount call(StorageAccount storageAccount) {
+                StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
+                impl.clearWrapperProperties();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<StorageAccountInner> getInnerAsync() {
+        return this.manager().inner().storageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -231,7 +266,7 @@ class StorageAccountImpl
                 .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
                     @Override
                     public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
-                        return client.getPropertiesAsync(resourceGroupName(), name());
+                        return client.getByResourceGroupAsync(resourceGroupName(), name());
                     }
                 })
                 .map(innerToFluentMap(this))

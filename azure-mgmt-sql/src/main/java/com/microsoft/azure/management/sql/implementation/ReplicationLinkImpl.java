@@ -8,19 +8,23 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ReplicationLink;
 import com.microsoft.azure.management.sql.ReplicationRole;
 import com.microsoft.azure.management.sql.ReplicationState;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
+import rx.Observable;
 
 /**
  * Implementation for SqlServer and its parent interfaces.
  */
 @LangDefinition
 class ReplicationLinkImpl
-        extends WrapperImpl<ReplicationLinkInner>
+        extends RefreshableWrapperImpl<ReplicationLinkInner, ReplicationLink>
         implements ReplicationLink {
     private final DatabasesInner innerCollection;
     private final ResourceId resourceId;
@@ -32,14 +36,12 @@ class ReplicationLinkImpl
     }
 
     @Override
-    public ReplicationLink refresh() {
-        this.setInner(this.innerCollection.getReplicationLink(
+    protected Observable<ReplicationLinkInner> getInnerAsync() {
+        return this.innerCollection.getReplicationLinkAsync(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.name()));
-
-        return this;
+                this.name());
     }
 
     @Override
@@ -103,20 +105,40 @@ class ReplicationLinkImpl
 
     @Override
     public void failover() {
-        this.innerCollection.failoverReplicationLink(
+        this.failoverAsync().await();
+    }
+
+    @Override
+    public Completable failoverAsync() {
+        return this.innerCollection.failoverReplicationLinkAsync(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.name());
+                this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> failoverAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.failoverAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void forceFailoverAllowDataLoss() {
-        this.innerCollection.failoverReplicationLinkAllowDataLoss(
+        this.forceFailoverAllowDataLossAsync().await();
+    }
+
+    @Override
+    public Completable forceFailoverAllowDataLossAsync() {
+        return this.innerCollection.failoverReplicationLinkAllowDataLossAsync(
                 this.resourceGroupName(),
                 this.sqlServerName(),
                 this.databaseName(),
-                this.name());
+                this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> forceFailoverAllowDataLossAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.forceFailoverAllowDataLossAsync().<Void>toObservable(), callback);
     }
 
     @Override

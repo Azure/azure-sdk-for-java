@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -17,6 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Base class for resource collection classes.
@@ -62,23 +65,66 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public T getById(String id) {
-        return this.getByGroup(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(id));
+        return getByIdAsync(id).toBlocking().last();
     }
 
     @Override
-    public void deleteByGroup(String groupName, String name) {
+    public final Observable<T> getByIdAsync(String id) {
+        ResourceId resourceId = ResourceId.fromString(id);
+
+        if (resourceId == null) {
+            return null;
+        }
+
+        return getByGroupAsync(resourceId.resourceGroupName(), resourceId.name());
+    }
+
+    @Override
+    public final ServiceFuture<T> getByIdAsync(String id, ServiceCallback<T> callback) {
+        return ServiceFuture.fromBody(getByIdAsync(id), callback);
+    }
+
+    @Override
+    public final void deleteByGroup(String groupName, String name) {
         deleteByGroupAsync(groupName, name).await();
     }
 
     @Override
-    public ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+    public final ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
+    }
+
+    @Override
+    public Completable deleteByGroupAsync(String groupName, String name) {
+        return this.deleteInnerAsync(groupName, name);
     }
 
     @Override
     public Completable deleteByIdAsync(String id) {
         return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
+
+    @Override
+    public T getByGroup(String resourceGroupName, String name) {
+        return getByGroupAsync(resourceGroupName, name).toBlocking().last();
+    }
+
+    @Override
+    public Observable<T> getByGroupAsync(String resourceGroupName, String name) {
+        return this.getInnerAsync(resourceGroupName, name).map(new Func1<InnerT, T>() {
+            @Override
+            public T call(InnerT innerT) {
+                return wrapModel(innerT);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<T> getByGroupAsync(String resourceGroupName, String name, ServiceCallback<T> callback) {
+        return ServiceFuture.fromBody(getByGroupAsync(resourceGroupName, name), callback);
+    }
+
+    protected abstract Observable<InnerT> getInnerAsync(String resourceGroupName, String name);
+
+    protected abstract Completable deleteInnerAsync(String resourceGroupName, String name);
 }

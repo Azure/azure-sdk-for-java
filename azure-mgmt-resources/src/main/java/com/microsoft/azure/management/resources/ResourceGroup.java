@@ -17,6 +17,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
 
 /**
  * An immutable client-side representation of an Azure resource group.
@@ -42,6 +45,24 @@ public interface ResourceGroup extends
      * @return the exported template result
      */
     ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options);
+
+    /**
+     * Captures the specified resource group as a template asynchronously.
+     *
+     * @param options the export options
+     * @return observable to the exported template result
+     */
+    Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
+
+    /**
+     * Captures the specified resource group as a template asynchronously.
+     *
+     * @param options the export options
+     * @param callback the callback to call on success or failure with result as parameter
+     *
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback);
 
     /**************************************************************
      * Fluent interfaces to provision a ResourceGroup

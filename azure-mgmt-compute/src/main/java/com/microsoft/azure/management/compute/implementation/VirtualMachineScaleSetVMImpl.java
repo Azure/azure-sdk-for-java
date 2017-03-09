@@ -29,6 +29,7 @@ import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInter
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -403,119 +404,95 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public void reimage() {
-        this.reimageAsync().toBlocking().last();
+        this.reimageAsync().await();
     }
 
     @Override
-    public Observable<Void> reimageAsync() {
+    public Completable reimageAsync() {
         return this.client.reimageAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.instanceId()).toCompletable();
     }
 
     @Override
     public void deallocate() {
-        this.deallocateAsync().toBlocking().last();
+        this.deallocateAsync().await();
     }
 
     @Override
-    public Observable<Void> deallocateAsync() {
+    public Completable deallocateAsync() {
         return this.client.deallocateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.instanceId()).toCompletable();
     }
 
     @Override
     public void powerOff() {
-        this.powerOffAsync().toBlocking().last();
+        this.powerOffAsync().await();
     }
 
     @Override
-    public Observable<Void> powerOffAsync() {
+    public Completable powerOffAsync() {
         return this.client.powerOffAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.instanceId()).toCompletable();
     }
 
     @Override
     public void start() {
-        this.startAsync().toBlocking().last();
+        this.startAsync().await();
     }
 
     @Override
-    public Observable<Void> startAsync() {
+    public Completable startAsync() {
         return this.client.startAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.instanceId()).toCompletable();
     }
 
     @Override
     public void restart() {
-        this.restartAsync().toBlocking().last();
+        this.restartAsync().await();
     }
 
     @Override
-    public Observable<Void> restartAsync() {
+    public Completable restartAsync() {
         return this.client.restartAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                .toCompletable();
     }
 
     @Override
     public void delete() {
-        deleteAsync().toBlocking().last();
+        deleteAsync().await();
     }
 
     @Override
-    public Observable<Void> deleteAsync() {
+    public Completable deleteAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.instanceId()).toCompletable();
     }
 
     @Override
     public VirtualMachineScaleSetVM refresh() {
-        this.setInner(this.client.get(this.parent().resourceGroupName(),
+        return this.refreshAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<VirtualMachineScaleSetVM> refreshAsync() {
+        final VirtualMachineScaleSetVMImpl self = this;
+        return this.client.getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.instanceId()));
-        this.clearCachedRelatedResources();
-        return this;
+                this.instanceId()).map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
+            @Override
+            public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner virtualMachineScaleSetVMInner) {
+                self.setInner(virtualMachineScaleSetVMInner);
+                self.clearCachedRelatedResources();
+                return self;
+            }
+        });
     }
 
     @Override

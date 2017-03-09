@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
@@ -60,6 +61,7 @@ class ApplicationGatewayImpl
 
     private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
     private Map<String, ApplicationGatewayFrontend> frontends;
+    private Map<String, ApplicationGatewayProbe> probes;
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
     private Map<String, ApplicationGatewayListener> listeners;
@@ -82,11 +84,20 @@ class ApplicationGatewayImpl
     // Verbs
 
     @Override
-    public ApplicationGatewayImpl refresh() {
-        ApplicationGatewayInner inner = this.manager().inner().applicationGateways().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<ApplicationGateway> refreshAsync() {
+        return super.refreshAsync().map(new Func1<ApplicationGateway, ApplicationGateway>() {
+            @Override
+            public ApplicationGateway call(ApplicationGateway applicationGateway) {
+                ApplicationGatewayImpl impl = (ApplicationGatewayImpl) applicationGateway;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<ApplicationGatewayInner> getInnerAsync() {
+        return this.manager().inner().applicationGateways().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers
@@ -95,6 +106,7 @@ class ApplicationGatewayImpl
     protected void initializeChildrenFromInner() {
         initializeConfigsFromInner();
         initializeFrontendsFromInner();
+        initializeProbesFromInner();
         initializeBackendsFromInner();
         initializeBackendHttpConfigsFromInner();
         initializeHttpListenersFromInner();
@@ -123,6 +135,17 @@ class ApplicationGatewayImpl
             for (ApplicationGatewayFrontendIPConfigurationInner inner : inners) {
                 ApplicationGatewayFrontendImpl frontend = new ApplicationGatewayFrontendImpl(inner, this);
                 this.frontends.put(inner.name(), frontend);
+            }
+        }
+    }
+
+    private void initializeProbesFromInner() {
+        this.probes = new TreeMap<>();
+        List<ApplicationGatewayProbeInner> inners = this.inner().probes();
+        if (inners != null) {
+            for (ApplicationGatewayProbeInner inner : inners) {
+                ApplicationGatewayProbeImpl probe = new ApplicationGatewayProbeImpl(inner, this);
+                this.probes.put(inner.name(), probe);
             }
         }
     }
@@ -176,7 +199,7 @@ class ApplicationGatewayImpl
         List<ApplicationGatewayIPConfigurationInner> inners = this.inner().gatewayIPConfigurations();
         if (inners != null) {
             for (ApplicationGatewayIPConfigurationInner inner : inners) {
-                ApplicationGatewayIpConfigurationImpl config = new ApplicationGatewayIpConfigurationImpl(inner, this);
+                ApplicationGatewayIPConfigurationImpl config = new ApplicationGatewayIPConfigurationImpl(inner, this);
                 this.ipConfigs.put(inner.name(), config);
             }
         }
@@ -195,7 +218,11 @@ class ApplicationGatewayImpl
         ensureDefaultIpConfig();
         this.inner().withGatewayIPConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
+        // Reset and update frontends
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
+
+        // Reset and update probes
+        this.inner().withProbes(innersFromWrappers(this.probes.values()));
 
         // Reset and update backends
         this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
@@ -265,8 +292,8 @@ class ApplicationGatewayImpl
     protected void afterCreating() {
     }
 
-    private ApplicationGatewayIpConfigurationImpl ensureDefaultIpConfig() {
-        ApplicationGatewayIpConfigurationImpl ipConfig = (ApplicationGatewayIpConfigurationImpl) defaultIpConfiguration();
+    private ApplicationGatewayIPConfigurationImpl ensureDefaultIpConfig() {
+        ApplicationGatewayIPConfigurationImpl ipConfig = (ApplicationGatewayIPConfigurationImpl) defaultIpConfiguration();
         if (ipConfig == null) {
             String name = SdkContext.randomResourceName("ipcfg", 11);
             ipConfig = this.defineIpConfiguration(name);
@@ -329,7 +356,7 @@ class ApplicationGatewayImpl
     }
 
     private static ApplicationGatewayFrontendImpl useSubnetFromIpConfigForFrontend(
-            ApplicationGatewayIpConfigurationImpl ipConfig,
+            ApplicationGatewayIPConfigurationImpl ipConfig,
             ApplicationGatewayFrontendImpl frontend) {
         if (frontend != null) {
             frontend.withExistingSubnet(ipConfig.networkId(), ipConfig.subnetName());
@@ -363,7 +390,7 @@ class ApplicationGatewayImpl
         }
 
         // Determine if default VNet should be created
-        final ApplicationGatewayIpConfigurationImpl defaultIpConfig = ensureDefaultIpConfig();
+        final ApplicationGatewayIPConfigurationImpl defaultIpConfig = ensureDefaultIpConfig();
         final ApplicationGatewayFrontendImpl defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
         final Observable<Resource> networkObservable;
         if (defaultIpConfig.subnetName() != null) {
@@ -479,6 +506,13 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    ApplicationGatewayImpl withProbe(ApplicationGatewayProbeImpl probe) {
+        if (probe != null) {
+            this.probes.put(probe.name(), probe);
+        }
+        return this;
+    }
+
     ApplicationGatewayImpl withBackend(ApplicationGatewayBackendImpl backend) {
         if (backend != null) {
             this.backends.put(backend.name(), backend);
@@ -549,7 +583,7 @@ class ApplicationGatewayImpl
         return this;
     }
 
-    ApplicationGatewayImpl withConfig(ApplicationGatewayIpConfigurationImpl config) {
+    ApplicationGatewayImpl withConfig(ApplicationGatewayIPConfigurationImpl config) {
         if (config != null) {
             this.ipConfigs.put(config.name(), config);
         }
@@ -569,14 +603,14 @@ class ApplicationGatewayImpl
     }
 
     //TODO @Override - since app gateways don't support more than one today, no need to expose this
-    private ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
+    private ApplicationGatewayIPConfigurationImpl defineIpConfiguration(String name) {
         ApplicationGatewayIpConfiguration config = this.ipConfigs.get(name);
         if (config == null) {
             ApplicationGatewayIPConfigurationInner inner = new ApplicationGatewayIPConfigurationInner()
                     .withName(name);
-            return new ApplicationGatewayIpConfigurationImpl(inner, this);
+            return new ApplicationGatewayIPConfigurationImpl(inner, this);
         } else {
-            return (ApplicationGatewayIpConfigurationImpl) config;
+            return (ApplicationGatewayIPConfigurationImpl) config;
         }
     }
 
@@ -601,6 +635,17 @@ class ApplicationGatewayImpl
             return new ApplicationGatewayBackendImpl(inner, this);
         } else {
             return (ApplicationGatewayBackendImpl) backend;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl defineProbe(String name) {
+        ApplicationGatewayProbe probe = this.probes.get(name);
+        if (probe == null) {
+            ApplicationGatewayProbeInner inner = new ApplicationGatewayProbeInner().withName(name);
+            return new ApplicationGatewayProbeImpl(inner, this);
+        } else {
+            return (ApplicationGatewayProbeImpl) probe;
         }
     }
 
@@ -837,6 +882,12 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayImpl withoutProbe(String name) {
+        this.probes.remove(name);
+        return this;
+    }
+
+    @Override
     public ApplicationGatewayImpl withoutListener(String name) {
         this.listeners.remove(name);
         return this;
@@ -893,17 +944,22 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl updateIpConfiguration(String ipConfigurationName) {
-        return (ApplicationGatewayIpConfigurationImpl) this.ipConfigs.get(ipConfigurationName);
+    public ApplicationGatewayIPConfigurationImpl updateIpConfiguration(String ipConfigurationName) {
+        return (ApplicationGatewayIPConfigurationImpl) this.ipConfigs.get(ipConfigurationName);
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl updateDefaultIpConfiguration() {
-        return (ApplicationGatewayIpConfigurationImpl) this.defaultIpConfiguration();
+    public ApplicationGatewayProbeImpl updateProbe(String name) {
+        return (ApplicationGatewayProbeImpl) this.probes.get(name);
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl defineDefaultIpConfiguration() {
+    public ApplicationGatewayIPConfigurationImpl updateDefaultIpConfiguration() {
+        return (ApplicationGatewayIPConfigurationImpl) this.defaultIpConfiguration();
+    }
+
+    @Override
+    public ApplicationGatewayIPConfigurationImpl defineDefaultIpConfiguration() {
         return ensureDefaultIpConfig();
     }
 
@@ -990,6 +1046,11 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayFrontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayProbe> probes() {
+        return Collections.unmodifiableMap(this.probes);
     }
 
     @Override

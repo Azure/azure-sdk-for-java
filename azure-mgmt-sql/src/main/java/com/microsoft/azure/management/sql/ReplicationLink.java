@@ -13,7 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourc
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.sql.implementation.ReplicationLinkInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 
 
 /**
@@ -88,8 +91,34 @@ public interface ReplicationLink extends
     void failover();
 
     /**
+     * Fails over the Azure SQL Database Replication Link.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable failoverAsync();
+
+    /**
+     * Fails over the Azure SQL Database Replication Link.
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> failoverAsync(ServiceCallback<Void> callback);
+
+    /**
      * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
      */
     void forceFailoverAllowDataLoss();
+
+    /**
+     * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable forceFailoverAllowDataLossAsync();
+
+    /**
+     * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> forceFailoverAllowDataLossAsync(ServiceCallback<Void> callback);
 }
 

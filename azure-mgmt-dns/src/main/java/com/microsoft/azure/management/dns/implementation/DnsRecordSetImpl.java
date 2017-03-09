@@ -298,12 +298,11 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl refresh() {
-        this.setInner(this.parent().manager().inner().recordSets().get(this.parent().resourceGroupName(),
+    protected Observable<RecordSetInner> getInnerAsync() {
+        return this.parent().manager().inner().recordSets().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
-                this.recordType()));
-        return this;
+                this.recordType());
     }
 
     private Observable<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {

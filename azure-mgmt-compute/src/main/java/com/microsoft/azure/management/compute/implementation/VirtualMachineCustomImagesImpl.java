@@ -6,18 +6,16 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for VirtualMachineCustomImages.
  */
 @LangDefinition
-class VirtualMachineCustomImagesImpl extends ListableResourcesImpl<
+class VirtualMachineCustomImagesImpl extends TopLevelModifiableResourcesImpl<
         VirtualMachineCustomImage,
         VirtualMachineCustomImageImpl,
         ImageInner,
@@ -27,21 +25,6 @@ class VirtualMachineCustomImagesImpl extends ListableResourcesImpl<
 
     VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
         super(computeManager.inner().images(), computeManager);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
-    public VirtualMachineCustomImage getByGroup(String resourceGroupName, String name) {
-        return wrapModel(this.inner().get(resourceGroupName, name));
-    }
-
-    @Override
-    public PagedList<VirtualMachineCustomImage> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -57,10 +40,5 @@ class VirtualMachineCustomImagesImpl extends ListableResourcesImpl<
     @Override
     public VirtualMachineCustomImageImpl define(String name) {
         return this.wrapModel(name);
-    }
-
-    @Override
-    public PagedList<VirtualMachineCustomImage> list() {
-        return wrapList(this.inner().list());
     }
 }

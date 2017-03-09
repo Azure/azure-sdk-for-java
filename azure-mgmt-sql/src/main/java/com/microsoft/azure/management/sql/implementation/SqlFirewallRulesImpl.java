@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlServer;
 
 import org.apache.commons.lang3.NotImplementedException;
 import rx.Completable;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -45,8 +47,13 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public SqlFirewallRule getByParent(String resourceGroup, String parentName, String name) {
-        return wrapModel(this.innerCollection.getFirewallRule(resourceGroup, parentName, name));
+    public Observable<SqlFirewallRule> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return this.innerCollection.getFirewallRuleAsync(resourceGroup, parentName, name).map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
+            @Override
+            public SqlFirewallRule call(ServerFirewallRuleInner serverFirewallRuleInner) {
+                return wrapModel(serverFirewallRuleInner);
+            }
+        });
     }
 
     @Override

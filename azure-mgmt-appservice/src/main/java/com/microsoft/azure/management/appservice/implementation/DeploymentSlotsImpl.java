@@ -79,13 +79,23 @@ class DeploymentSlotsImpl
     }
 
     @Override
-    public DeploymentSlot getByParent(String resourceGroup, String parentName, String name) {
-        SiteInner siteInner = innerCollection.getSlot(resourceGroup, parentName, name);
-        if (siteInner == null) {
-            return null;
-        }
-        siteInner.withSiteConfig(innerCollection.getConfigurationSlot(resourceGroup, parentName, name));
-        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+    public Observable<DeploymentSlot> getByParentAsync(final String resourceGroup, final String parentName, final String name) {
+        return innerCollection.getSlotAsync(resourceGroup, parentName, name).flatMap(new Func1<SiteInner, Observable<DeploymentSlot>>() {
+            @Override
+            public Observable<DeploymentSlot> call(final SiteInner siteInner) {
+                if (siteInner == null) {
+                    return null;
+                }
+                return innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name)
+                        .flatMap(new Func1<SiteConfigInner, Observable<DeploymentSlot>>() {
+                    @Override
+                    public Observable<DeploymentSlot> call(SiteConfigInner siteConfigInner) {
+                        siteInner.withSiteConfig(siteConfigInner);
+                        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings();
+                    }
+                });
+            }
+        });
     }
 
     @Override

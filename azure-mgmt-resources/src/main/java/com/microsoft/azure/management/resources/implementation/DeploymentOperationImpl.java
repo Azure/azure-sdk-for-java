@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.TargetResource;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 /**
  * The implementation of {@link DeploymentOperation}.
@@ -77,8 +78,7 @@ final class DeploymentOperationImpl extends
     }
 
     @Override
-    public DeploymentOperation refresh() {
-        this.setInner(client.get(resourceGroupName, deploymentName, operationId()));
-        return this;
+    protected Observable<DeploymentOperationInner> getInnerAsync() {
+        return client.getAsync(resourceGroupName, deploymentName, operationId());
     }
 }

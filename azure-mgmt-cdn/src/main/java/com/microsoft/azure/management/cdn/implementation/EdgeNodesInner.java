@@ -68,6 +68,9 @@ public class EdgeNodesInner {
     /**
      * Lists all the edge nodes of a CDN service.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EdgeNodeInner&gt; object if successful.
      */
     public PagedList<EdgeNodeInner> list() {
@@ -84,6 +87,7 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<EdgeNodeInner>> listAsync(final ListOperationCallback<EdgeNodeInner> serviceCallback) {
@@ -101,6 +105,7 @@ public class EdgeNodesInner {
     /**
      * Lists all the edge nodes of a CDN service.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;EdgeNodeInner&gt; object
      */
     public Observable<Page<EdgeNodeInner>> listAsync() {
@@ -116,6 +121,7 @@ public class EdgeNodesInner {
     /**
      * Lists all the edge nodes of a CDN service.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;EdgeNodeInner&gt; object
      */
     public Observable<ServiceResponse<Page<EdgeNodeInner>>> listWithServiceResponseAsync() {
@@ -135,6 +141,7 @@ public class EdgeNodesInner {
     /**
      * Lists all the edge nodes of a CDN service.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;EdgeNodeInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<EdgeNodeInner>>> listSinglePageAsync() {
@@ -166,6 +173,9 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;EdgeNodeInner&gt; object if successful.
      */
     public PagedList<EdgeNodeInner> listNext(final String nextPageLink) {
@@ -184,6 +194,7 @@ public class EdgeNodesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<EdgeNodeInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<EdgeNodeInner>> serviceFuture, final ListOperationCallback<EdgeNodeInner> serviceCallback) {
@@ -202,6 +213,7 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;EdgeNodeInner&gt; object
      */
     public Observable<Page<EdgeNodeInner>> listNextAsync(final String nextPageLink) {
@@ -218,6 +230,7 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;EdgeNodeInner&gt; object
      */
     public Observable<ServiceResponse<Page<EdgeNodeInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -238,6 +251,7 @@ public class EdgeNodesInner {
      * Lists all the edge nodes of a CDN service.
      *
     ServiceResponse<PageImpl<EdgeNodeInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;EdgeNodeInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<EdgeNodeInner>>> listNextSinglePageAsync(final String nextPageLink) {

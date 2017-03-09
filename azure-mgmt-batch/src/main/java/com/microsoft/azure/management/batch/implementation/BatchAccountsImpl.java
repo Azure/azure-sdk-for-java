@@ -6,21 +6,19 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import rx.Completable;
 
 /**
  * Implementation for BatchAccounts and its parent interfaces.
  */
 @LangDefinition
 public class BatchAccountsImpl
-        extends ListableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
+        extends TopLevelModifiableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
 
@@ -30,25 +28,10 @@ public class BatchAccountsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
     protected BatchAccountImpl wrapModel(String name) {
         BatchAccountInner inner = new BatchAccountInner();
 
         return new BatchAccountImpl(name, inner, this.manager(), this.storageManager);
-    }
-
-    @Override
-    public PagedList<BatchAccount> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<BatchAccount> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -66,11 +49,6 @@ public class BatchAccountsImpl
     @Override
     public BatchAccount.DefinitionStages.Blank define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public BatchAccount getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override

@@ -6,25 +6,23 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Disks.
  */
 @LangDefinition
 class DisksImpl
-        extends ListableResourcesImpl<
-                Disk,
-                DiskImpl,
-                DiskInner,
-                DisksInner,
-                ComputeManager>
+        extends TopLevelModifiableResourcesImpl<
+                                        Disk,
+                                        DiskImpl,
+                                        DiskInner,
+                                        DisksInner,
+                                        ComputeManager>
         implements Disks {
 
     DisksImpl(ComputeManager computeManager) {
@@ -47,27 +45,6 @@ class DisksImpl
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
         this.inner().revokeAccess(resourceGroupName, diskName);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
-    public Disk getByGroup(String resourceGroupName, String name) {
-        DiskInner inner = this.inner().get(resourceGroupName, name);
-        return wrapModel(inner);
-    }
-
-    @Override
-    public PagedList<Disk> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
-    public PagedList<Disk> list() {
-        return wrapList(this.inner().list());
     }
 
     @Override

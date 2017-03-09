@@ -88,6 +88,9 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner createOrUpdate(String policyDefinitionName, PolicyDefinitionInner parameters) {
@@ -100,6 +103,7 @@ public class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
@@ -111,6 +115,7 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
     public Observable<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters) {
@@ -127,6 +132,7 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
     public Observable<ServiceResponse<PolicyDefinitionInner>> createOrUpdateWithServiceResponseAsync(String policyDefinitionName, PolicyDefinitionInner parameters) {
@@ -168,6 +174,9 @@ public class PolicyDefinitionsInner {
      * Deletes a policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String policyDefinitionName) {
         deleteWithServiceResponseAsync(policyDefinitionName).toBlocking().single().body();
@@ -178,6 +187,7 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public class PolicyDefinitionsInner {
      * Deletes a policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String policyDefinitionName) {
@@ -203,6 +214,7 @@ public class PolicyDefinitionsInner {
      * Deletes a policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String policyDefinitionName) {
@@ -233,6 +245,7 @@ public class PolicyDefinitionsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -240,6 +253,9 @@ public class PolicyDefinitionsInner {
      * Gets the policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner get(String policyDefinitionName) {
@@ -251,6 +267,7 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyDefinitionInner> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
@@ -261,6 +278,7 @@ public class PolicyDefinitionsInner {
      * Gets the policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
     public Observable<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
@@ -276,6 +294,7 @@ public class PolicyDefinitionsInner {
      * Gets the policy definition.
      *
      * @param policyDefinitionName The name of the policy definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
     public Observable<ServiceResponse<PolicyDefinitionInner>> getWithServiceResponseAsync(String policyDefinitionName) {
@@ -312,6 +331,9 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> list() {
@@ -328,6 +350,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
@@ -345,6 +368,7 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<Page<PolicyDefinitionInner>> listAsync() {
@@ -360,6 +384,7 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listWithServiceResponseAsync() {
@@ -379,6 +404,7 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listSinglePageAsync() {
@@ -407,6 +433,9 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> list(final String filter) {
@@ -424,6 +453,7 @@ public class PolicyDefinitionsInner {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final String filter, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
@@ -442,6 +472,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<Page<PolicyDefinitionInner>> listAsync(final String filter) {
@@ -458,6 +489,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listWithServiceResponseAsync(final String filter) {
@@ -478,6 +510,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
     ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param filter The filter to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listSinglePageAsync(final String filter) {
@@ -512,6 +545,9 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> listNext(final String nextPageLink) {
@@ -530,6 +566,7 @@ public class PolicyDefinitionsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PolicyDefinitionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyDefinitionInner>> serviceFuture, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
@@ -548,6 +585,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<Page<PolicyDefinitionInner>> listNextAsync(final String nextPageLink) {
@@ -564,6 +602,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -584,6 +623,7 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
     ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listNextSinglePageAsync(final String nextPageLink) {

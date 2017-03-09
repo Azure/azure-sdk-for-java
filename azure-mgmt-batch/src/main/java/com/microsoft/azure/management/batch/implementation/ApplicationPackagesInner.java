@@ -82,6 +82,9 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void activate(String resourceGroupName, String accountName, String applicationId, String version, String format) {
         activateWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version, format).toBlocking().single().body();
@@ -96,6 +99,7 @@ public class ApplicationPackagesInner {
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format, final ServiceCallback<Void> serviceCallback) {
@@ -110,6 +114,7 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> activateAsync(String resourceGroupName, String accountName, String applicationId, String version, String format) {
@@ -129,6 +134,7 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> activateWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version, String format) {
@@ -183,6 +189,9 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner create(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -197,6 +206,7 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
@@ -210,6 +220,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ApplicationPackageInner> createAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -228,6 +239,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ServiceResponse<ApplicationPackageInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -277,6 +289,9 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String accountName, String applicationId, String version) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().body();
@@ -290,6 +305,7 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<Void> serviceCallback) {
@@ -303,6 +319,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -321,6 +338,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -370,6 +388,9 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ApplicationPackageInner object if successful.
      */
     public ApplicationPackageInner get(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -384,6 +405,7 @@ public class ApplicationPackagesInner {
      * @param applicationId The ID of the application.
      * @param version The version of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version, final ServiceCallback<ApplicationPackageInner> serviceCallback) {
@@ -397,6 +419,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ApplicationPackageInner> getAsync(String resourceGroupName, String accountName, String applicationId, String version) {
@@ -415,6 +438,7 @@ public class ApplicationPackagesInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The ID of the application.
      * @param version The version of the application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationPackageInner object
      */
     public Observable<ServiceResponse<ApplicationPackageInner>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String applicationId, String version) {

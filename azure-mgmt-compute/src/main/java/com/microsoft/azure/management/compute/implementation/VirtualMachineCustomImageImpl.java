@@ -218,10 +218,8 @@ class VirtualMachineCustomImageImpl
     }
 
     @Override
-    public VirtualMachineCustomImage refresh() {
-        ImageInner imageInner = this.manager().inner().images().get(this.resourceGroupName(), this.name());
-        this.setInner(imageInner);
-        return this;
+    protected Observable<ImageInner> getInnerAsync() {
+        return this.manager().inner().images().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private ImageOSDisk ensureOsDiskImage() {

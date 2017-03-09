@@ -62,6 +62,9 @@ public class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> list(String location) {
@@ -73,6 +76,7 @@ public class VirtualMachineSizesInner {
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineSizeInner>> listAsync(String location, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
@@ -83,6 +87,7 @@ public class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
     public Observable<List<VirtualMachineSizeInner>> listAsync(String location) {
@@ -98,6 +103,7 @@ public class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listWithServiceResponseAsync(String location) {

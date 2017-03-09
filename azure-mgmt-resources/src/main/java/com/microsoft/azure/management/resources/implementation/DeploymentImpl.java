@@ -22,8 +22,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +36,7 @@ import java.util.List;
 /**
  * The implementation of {@link Deployment} and its nested interfaces.
  */
-final class DeploymentImpl extends
+public final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
@@ -51,6 +55,7 @@ final class DeploymentImpl extends
         this.objectMapper = new ObjectMapper();
     }
 
+    @Override
     public String resourceGroupName() {
         return this.resourceGroupName;
     }
@@ -159,13 +164,37 @@ final class DeploymentImpl extends
 
     @Override
     public void cancel() {
-        this.manager().inner().deployments().cancel(resourceGroupName, name());
+        this.cancelAsync().await();
+    }
+
+    @Override
+    public Completable cancelAsync() {
+        return this.manager().inner().deployments().cancelAsync(resourceGroupName, name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> cancelAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.cancelAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public DeploymentExportResult exportTemplate() {
-        DeploymentExportResultInner inner = this.manager().inner().deployments().exportTemplate(resourceGroupName(), name());
-        return new DeploymentExportResultImpl(inner);
+        return this.exportTemplateAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<DeploymentExportResult> exportTemplateAsync() {
+        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name()).map(new Func1<DeploymentExportResultInner, DeploymentExportResult>() {
+            @Override
+            public DeploymentExportResult call(DeploymentExportResultInner deploymentExportResultInner) {
+                return new DeploymentExportResultImpl(deploymentExportResultInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<DeploymentExportResult> exportTemplateAsync(ServiceCallback<DeploymentExportResult> callback) {
+        return ServiceFuture.fromBody(this.exportTemplateAsync(), callback);
     }
 
     // Withers
@@ -309,9 +338,8 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment refresh() {
-        setInner(this.manager().inner().deployments().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<DeploymentExtendedInner> getInnerAsync() {
+        return this.manager().inner().deployments().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

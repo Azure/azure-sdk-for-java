@@ -8,11 +8,14 @@
 
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -38,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Profiles.
  */
-public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
+public class ProfilesInner implements InnerSupportsGet<ProfileInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ProfileInner> {
     /** The Retrofit service to perform REST calls. */
     private ProfilesService service;
     /** The service client containing this operation class. */
@@ -72,9 +75,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.trafficmanager.Profiles createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
@@ -94,6 +97,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrafficManagerNameAvailabilityInner object if successful.
      */
     public TrafficManagerNameAvailabilityInner checkTrafficManagerRelativeDnsNameAvailability(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
@@ -105,6 +111,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters, final ServiceCallback<TrafficManagerNameAvailabilityInner> serviceCallback) {
@@ -115,6 +122,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrafficManagerNameAvailabilityInner object
      */
     public Observable<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
@@ -130,6 +138,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrafficManagerNameAvailabilityInner object
      */
     public Observable<ServiceResponse<TrafficManagerNameAvailabilityInner>> checkTrafficManagerRelativeDnsNameAvailabilityWithServiceResponseAsync(CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameters) {
@@ -168,10 +177,18 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * Lists all Traffic Manager profiles within a resource group.
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
-     * @return the List&lt;ProfileInner&gt; object if successful.
+     * @return the PagedList<ProfileInner> object if successful.
      */
-    public List<ProfileInner> listByResourceGroup(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public PagedList<ProfileInner> listByResourceGroup(String resourceGroupName) {
+        PageImpl<ProfileInner> page = new PageImpl<>();
+        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<ProfileInner>(page) {
+            @Override
+            public Page<ProfileInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -243,10 +260,18 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
     /**
      * Lists all Traffic Manager profiles within a subscription.
      *
-     * @return the List&lt;ProfileInner&gt; object if successful.
+     * @return the PagedList<ProfileInner> object if successful.
      */
-    public List<ProfileInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<ProfileInner> list() {
+        PageImpl<ProfileInner> page = new PageImpl<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<ProfileInner>(page) {
+            @Override
+            public Page<ProfileInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
@@ -314,10 +339,13 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
-    public ProfileInner get(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
+    public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
     }
 
     /**
@@ -326,10 +354,11 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProfileInner> getAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
+    public ServiceFuture<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName, final ServiceCallback<ProfileInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName), serviceCallback);
     }
 
     /**
@@ -337,10 +366,11 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
-    public Observable<ProfileInner> getAsync(String resourceGroupName, String profileName) {
-        return getWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
+    public Observable<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
                 return response.body();
@@ -353,9 +383,10 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
-    public Observable<ServiceResponse<ProfileInner>> getWithServiceResponseAsync(String resourceGroupName, String profileName) {
+    public Observable<ServiceResponse<ProfileInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String profileName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -368,12 +399,12 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, profileName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProfileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProfileInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ProfileInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ProfileInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -382,7 +413,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
             });
     }
 
-    private ServiceResponse<ProfileInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ProfileInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProfileInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProfileInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -395,6 +426,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters) {
@@ -408,6 +442,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -420,6 +455,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters) {
@@ -437,6 +473,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ServiceResponse<ProfileInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String profileName, ProfileInner parameters) {
@@ -483,6 +520,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String profileName) {
         deleteWithServiceResponseAsync(resourceGroupName, profileName).toBlocking().single().body();
@@ -494,6 +534,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String profileName, final ServiceCallback<Void> serviceCallback) {
@@ -505,6 +546,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String profileName) {
@@ -521,6 +563,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
      * @param profileName The name of the Traffic Manager profile to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String profileName) {
@@ -554,6 +597,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -563,6 +607,9 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProfileInner object if successful.
      */
     public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters) {
@@ -576,6 +623,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters, final ServiceCallback<ProfileInner> serviceCallback) {
@@ -588,6 +636,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters) {
@@ -605,6 +654,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner> {
      * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
     public Observable<ServiceResponse<ProfileInner>> updateWithServiceResponseAsync(String resourceGroupName, String profileName, ProfileInner parameters) {

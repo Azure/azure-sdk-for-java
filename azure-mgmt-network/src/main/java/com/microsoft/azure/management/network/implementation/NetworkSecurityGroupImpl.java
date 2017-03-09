@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.Collections;
 import java.util.List;
@@ -79,11 +80,21 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl refresh() {
-        NetworkSecurityGroupInner response = this.manager().inner().networkSecurityGroups().get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<NetworkSecurityGroup> refreshAsync() {
+        return super.refreshAsync().map(new Func1<NetworkSecurityGroup, NetworkSecurityGroup>() {
+            @Override
+            public NetworkSecurityGroup call(NetworkSecurityGroup networkSecurityGroup) {
+                NetworkSecurityGroupImpl impl = (NetworkSecurityGroupImpl) networkSecurityGroup;
+
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<NetworkSecurityGroupInner> getInnerAsync() {
+        return this.manager().inner().networkSecurityGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

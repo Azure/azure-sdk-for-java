@@ -47,12 +47,20 @@ public class UserCreateParametersInner {
     private String mailNickname;
 
     /**
-     * This must be specified if you are using a federated domain for the
-     * user's userPrincipalName (UPN) property when creating a new user
-     * account. It is used to associate an on-premises Active Directory user
-     * account with their Azure AD user object.
+     * This must be specified if you are using a federated domain for the user's
+     * userPrincipalName (UPN) property when creating a new user account. It is
+     * used to associate an on-premises Active Directory user account with their
+     * Azure AD user object.
      */
     private String immutableId;
+
+    /**
+     * A two letter country code (ISO standard 3166). Required for users that
+     * will be assigned licenses due to legal requirement to check for
+     * availability of services in countries. Examples include: "US", "JP", and
+     * "GB".
+     */
+    private String usageLocation;
 
     /**
      * Get the accountEnabled value.
@@ -66,7 +74,8 @@ public class UserCreateParametersInner {
     /**
      * Set the accountEnabled value.
      *
-     * @param accountEnabled the accountEnabled value to set
+     * @param accountEnabled
+     *            the accountEnabled value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withAccountEnabled(boolean accountEnabled) {
@@ -86,7 +95,8 @@ public class UserCreateParametersInner {
     /**
      * Set the displayName value.
      *
-     * @param displayName the displayName value to set
+     * @param displayName
+     *            the displayName value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withDisplayName(String displayName) {
@@ -106,7 +116,8 @@ public class UserCreateParametersInner {
     /**
      * Set the passwordProfile value.
      *
-     * @param passwordProfile the passwordProfile value to set
+     * @param passwordProfile
+     *            the passwordProfile value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withPasswordProfile(PasswordProfile passwordProfile) {
@@ -126,7 +137,8 @@ public class UserCreateParametersInner {
     /**
      * Set the userPrincipalName value.
      *
-     * @param userPrincipalName the userPrincipalName value to set
+     * @param userPrincipalName
+     *            the userPrincipalName value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withUserPrincipalName(String userPrincipalName) {
@@ -146,7 +158,8 @@ public class UserCreateParametersInner {
     /**
      * Set the mailNickname value.
      *
-     * @param mailNickname the mailNickname value to set
+     * @param mailNickname
+     *            the mailNickname value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withMailNickname(String mailNickname) {
@@ -166,11 +179,33 @@ public class UserCreateParametersInner {
     /**
      * Set the immutableId value.
      *
-     * @param immutableId the immutableId value to set
+     * @param immutableId
+     *            the immutableId value to set
      * @return the UserCreateParametersInner object itself.
      */
     public UserCreateParametersInner withImmutableId(String immutableId) {
         this.immutableId = immutableId;
+        return this;
+    }
+
+    /**
+     * Get the usageLocation value.
+     *
+     * @return the usageLocation value
+     */
+    public String usageLocation() {
+        return this.usageLocation;
+    }
+
+    /**
+     * Set the usageLocation value.
+     *
+     * @param usageLocation
+     *            the usageLocation value to set
+     * @return the UserInner object itself.
+     */
+    public UserCreateParametersInner withUsageLocation(String usageLocation) {
+        this.usageLocation = usageLocation;
         return this;
     }
 

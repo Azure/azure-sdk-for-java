@@ -153,12 +153,7 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
-                this.name()).map(new Func1<Void, Void>() {
-            @Override
-            public Void call(Void result) {
-                return result;
-            }
-        });
+                this.name());
     }
 
     @Override
@@ -167,12 +162,10 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public TrafficManagerEndpointImpl refresh() {
-        EndpointInner inner = this.client.get(this.parent().resourceGroupName(),
+    protected Observable<EndpointInner> getInnerAsync() {
+        return this.client.getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().toString(),
                 this.name());
-        this.setInner(inner);
-        return this;
     }
 }

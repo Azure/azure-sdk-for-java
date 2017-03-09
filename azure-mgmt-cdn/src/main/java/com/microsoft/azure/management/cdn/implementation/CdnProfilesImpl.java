@@ -14,9 +14,12 @@ import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.EdgeNode;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.cdn.ResourceUsage;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ListableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import rx.Completable;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -25,31 +28,16 @@ import java.util.List;
  */
 @LangDefinition
 class CdnProfilesImpl
-        extends ListableResourcesImpl<
-            CdnProfile,
-            CdnProfileImpl,
-            ProfileInner,
-            ProfilesInner,
-            CdnManager>
+        extends TopLevelModifiableResourcesImpl<
+                        CdnProfile,
+                        CdnProfileImpl,
+                        ProfileInner,
+                        ProfilesInner,
+                        CdnManager>
         implements CdnProfiles {
 
     CdnProfilesImpl(final CdnManager cdnManager) {
         super(cdnManager.inner().profiles(), cdnManager);
-    }
-
-    @Override
-    public PagedList<CdnProfile> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<CdnProfile> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    public CdnProfile getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
     }
 
     @Override
@@ -78,7 +66,22 @@ class CdnProfilesImpl
 
     @Override
     public CheckNameAvailabilityResult checkEndpointNameAvailability(String name) {
-        return new CheckNameAvailabilityResult(this.manager().inner().checkNameAvailability(name));
+        return this.checkEndpointNameAvailabilityAsync(name).toBlocking().last();
+    }
+
+    @Override
+    public Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
+        return this.manager().inner().checkNameAvailabilityAsync(name).map(new Func1<CheckNameAvailabilityOutputInner, CheckNameAvailabilityResult>() {
+            @Override
+            public CheckNameAvailabilityResult call(CheckNameAvailabilityOutputInner checkNameAvailabilityOutputInner) {
+                return new CheckNameAvailabilityResult(checkNameAvailabilityOutputInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback) {
+        return ServiceFuture.fromBody(this.checkEndpointNameAvailabilityAsync(name), callback);
     }
 
     @Override
@@ -129,10 +132,5 @@ class CdnProfilesImpl
     @Override
     public void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.manager().inner().endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

@@ -10,7 +10,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.batch.implementation.ApplicationPackageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 
 /**
  * An immutable client-side representation of an Azure batch account application.
@@ -51,6 +54,23 @@ public interface ApplicationPackage extends
      * @param format format of the uploaded package supported values zip, tar
      */
     void activate(String format);
+
+    /**
+     * Activates the application package asynchronously.
+     *
+     * @param format format of the uploaded package supported values zip, tar
+     * @return a representation of the deferred computation of this call.
+     */
+    Completable activateAsync(String format);
+
+    /**
+     * Activates the application package asynchronously.
+     *
+     * @param format format of the uploaded package supported values zip, tar
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> activateAsync(String format, ServiceCallback<Void> callback);
 
     /**
      * Deletes the application package.

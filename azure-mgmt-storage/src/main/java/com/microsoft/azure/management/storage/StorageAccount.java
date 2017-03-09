@@ -17,7 +17,10 @@ import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.List;
 
@@ -104,12 +107,44 @@ public interface StorageAccount extends
     List<StorageAccountKey> getKeys();
 
     /**
+     * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
+     *
+     * @return observable to the access keys for this storage account
+     */
+    Observable<List<StorageAccountKey>> getKeysAsync();
+
+    /**
+     * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
+     *
+     * @param callback the callback to call on success or failure, with access keys as parameter.
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<List<StorageAccountKey>> getKeysAsync(ServiceCallback<List<StorageAccountKey>> callback);
+
+    /**
      * Regenerates the access keys for this storage account.
      *
      * @param keyName if the key name
      * @return the generated access keys for this storage account
      */
     List<StorageAccountKey> regenerateKey(String keyName);
+
+    /**
+     * Regenerates the access keys for this storage account asynchronously.
+     *
+     * @param keyName if the key name
+     * @return observable to the access keys for this storage account
+     */
+    Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
+
+    /**
+     * Regenerates the access keys for this storage account asynchronously.
+     *
+     * @param keyName if the key name
+     * @param callback the callback to call on success or failure, with access keys as parameter.
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<List<StorageAccountKey>> regenerateKeyAsync(String keyName, ServiceCallback<List<StorageAccountKey>> callback);
 
     /**
      * Container interface for all the definitions that need to be implemented.

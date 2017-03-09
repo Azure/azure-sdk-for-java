@@ -95,9 +95,8 @@ class AppServiceDomainImpl
     }
 
     @Override
-    public AppServiceDomainImpl refresh() {
-        this.setInner(this.manager().inner().domains().get(resourceGroupName(), name()));
-        return this;
+    protected Observable<DomainInner> getInnerAsync() {
+        return this.manager().inner().domains().getAsync(resourceGroupName(), name());
     }
 
     @Override

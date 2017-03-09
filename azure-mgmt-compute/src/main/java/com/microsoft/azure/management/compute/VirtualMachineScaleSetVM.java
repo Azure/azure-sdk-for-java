@@ -13,9 +13,9 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineScale
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import rx.Completable;
 
 import java.util.List;
 import java.util.Map;
@@ -220,7 +220,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the reimage action
      */
     @Method
-    Observable<Void> reimageAsync();
+    Completable reimageAsync();
 
     /**
      * Shuts down the virtual machine instance and releases the associated compute resources.
@@ -233,7 +233,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the deallocate action
      */
     @Method
-    Observable<Void> deallocateAsync();
+    Completable deallocateAsync();
 
     /**
      * Stops the virtual machine instance.
@@ -246,7 +246,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the poweroff action
      */
     @Method
-    Observable<Void> powerOffAsync();
+    Completable powerOffAsync();
 
     /**
      * Starts the virtual machine instance.
@@ -259,7 +259,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the start action
      */
     @Method
-    Observable<Void> startAsync();
+    Completable startAsync();
 
     /**
      * Restarts the virtual machine instance.
@@ -272,7 +272,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the restart action
      */
     @Method
-    Observable<Void> restartAsync();
+    Completable restartAsync();
 
     /**
      * Deletes the virtual machine instance.
@@ -285,7 +285,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the delete action
      */
     @Method
-    Observable<Void> deleteAsync();
+    Completable deleteAsync();
 
     /**
      * Gets the instance view of the virtual machine instance.
