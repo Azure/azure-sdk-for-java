@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.FunctionApps;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Completable;
+import rx.Observable;
 
 /**
  * The implementation for WebApps.
@@ -54,6 +55,16 @@ class FunctionAppsImpl
         }
         siteInner.withSiteConfig(this.inner().getConfiguration(groupName, name));
         return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+    }
+
+    @Override
+    protected Observable<SiteInner> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getAsync(resourceGroupName, name);
+    }
+
+    @Override
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
