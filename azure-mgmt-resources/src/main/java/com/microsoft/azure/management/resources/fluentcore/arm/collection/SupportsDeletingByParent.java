@@ -42,7 +42,7 @@ public interface SupportsDeletingByParent {
      * @param groupName The group the resource is part of
      * @param parentName the name of parent resource.
      * @param name The name of the resource
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deleteByParentAsync(String groupName, String parentName, String name);
 }

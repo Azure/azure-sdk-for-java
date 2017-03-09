@@ -8,6 +8,9 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
 
 /**
  * Entry point to features management API.
@@ -23,4 +26,22 @@ public interface Features extends
      * @return the immutable client-side feature object created
      */
     Feature register(String resourceProviderName, String featureName);
+    /**
+     * Registers a feature in a resource provider asynchronously.
+     *
+     * @param resourceProviderName the name of the resource provider
+     * @param featureName the name of the feature
+     * @return observable to the immutable client-side feature object created
+     */
+    Observable<Feature> registerAsync(String resourceProviderName, String featureName);
+
+    /**
+     * Registers a feature in a resource provider asynchronously.
+     *
+     * @param resourceProviderName the name of the resource provider
+     * @param featureName the name of the feature
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Feature> registerAsync(String resourceProviderName, String featureName, ServiceCallback<Feature> callback);
 }

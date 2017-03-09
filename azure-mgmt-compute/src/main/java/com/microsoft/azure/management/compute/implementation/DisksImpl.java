@@ -10,19 +10,19 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Disk;
 import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Disks.
  */
 @LangDefinition
 class DisksImpl
-        extends TopLevelCrudableResourcesImpl<
-                                Disk,
-                                DiskImpl,
-                                DiskInner,
-                                DisksInner,
-                                ComputeManager>
+        extends TopLevelModifiableResourcesImpl<
+                                        Disk,
+                                        DiskImpl,
+                                        DiskInner,
+                                        DisksInner,
+                                        ComputeManager>
         implements Disks {
 
     DisksImpl(ComputeManager computeManager) {

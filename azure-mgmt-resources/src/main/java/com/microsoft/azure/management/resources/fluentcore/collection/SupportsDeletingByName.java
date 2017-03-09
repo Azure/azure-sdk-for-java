@@ -38,7 +38,7 @@ public interface SupportsDeletingByName {
      * Asynchronously delete a resource from Azure, identifying it by its resource name.
      *
      * @param name the name of the resource to delete
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deleteByNameAsync(String name);
 }

@@ -10,19 +10,19 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
-        extends TopLevelCrudableResourcesImpl<
-                                    Snapshot,
-                                    SnapshotImpl,
-                                    SnapshotInner,
-                                    SnapshotsInner,
-                                    ComputeManager>
+        extends TopLevelModifiableResourcesImpl<
+                                            Snapshot,
+                                            SnapshotImpl,
+                                            SnapshotInner,
+                                            SnapshotsInner,
+                                            ComputeManager>
         implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {

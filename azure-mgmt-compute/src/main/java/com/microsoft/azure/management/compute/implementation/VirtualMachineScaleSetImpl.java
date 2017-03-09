@@ -55,6 +55,9 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -167,27 +170,77 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public void deallocate() throws CloudException, IOException, InterruptedException {
-        this.manager().inner().virtualMachineScaleSets().deallocate(this.resourceGroupName(), this.name());
+        this.deallocateAsync().await();
+    }
+
+    @Override
+    public Completable deallocateAsync() throws CloudException, IOException, InterruptedException {
+        return this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+        return ServiceFuture.fromBody(this.deallocateAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void powerOff() throws CloudException, IOException, InterruptedException {
-        this.manager().inner().virtualMachineScaleSets().powerOff(this.resourceGroupName(), this.name());
+        this.powerOffAsync().await();
+    }
+
+    @Override
+    public Completable powerOffAsync() throws CloudException, IOException, InterruptedException {
+        return this.manager().inner().virtualMachineScaleSets().powerOffAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+        return ServiceFuture.fromBody(this.powerOffAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void restart() throws CloudException, IOException, InterruptedException {
-        this.manager().inner().virtualMachineScaleSets().restart(this.resourceGroupName(), this.name());
+        this.restartAsync().await();
+    }
+
+    @Override
+    public Completable restartAsync() throws CloudException, IOException, InterruptedException {
+        return this.manager().inner().virtualMachineScaleSets().restartAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+        return ServiceFuture.fromBody(this.restartAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void start() throws CloudException, IOException, InterruptedException {
-        this.manager().inner().virtualMachineScaleSets().start(this.resourceGroupName(), this.name());
+        this.startAsync().await();
+    }
+
+    @Override
+    public Completable startAsync() throws CloudException, IOException, InterruptedException {
+        return this.manager().inner().virtualMachineScaleSets().startAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public void reimage() throws CloudException, IOException, InterruptedException {
-        this.manager().inner().virtualMachineScaleSets().reimage(this.resourceGroupName(), this.name());
+        this.reimageAsync().await();
+    }
+
+    @Override
+    public Completable reimageAsync() throws CloudException, IOException, InterruptedException {
+        return this.manager().inner().virtualMachineScaleSets().reimageAsync(this.resourceGroupName(), this.name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+        return ServiceFuture.fromBody(this.reimageAsync().<Void>toObservable(), callback);
     }
 
     @Override

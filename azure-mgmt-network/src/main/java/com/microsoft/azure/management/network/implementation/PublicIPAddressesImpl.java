@@ -9,19 +9,19 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddresses;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  *  Implementation for {@link PublicIPAddresses}.
  */
 @LangDefinition
 class PublicIPAddressesImpl
-        extends TopLevelCrudableResourcesImpl<
-                            PublicIPAddress,
-                            PublicIPAddressImpl,
-                            PublicIPAddressInner,
-                            PublicIPAddressesInner,
-                            NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                    PublicIPAddress,
+                                    PublicIPAddressImpl,
+                                    PublicIPAddressInner,
+                                    PublicIPAddressesInner,
+                                    NetworkManager>
         implements PublicIPAddresses {
 
     PublicIPAddressesImpl(final NetworkManager networkManager) {

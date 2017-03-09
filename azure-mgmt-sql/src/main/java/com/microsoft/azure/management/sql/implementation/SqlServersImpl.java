@@ -7,27 +7,21 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.sql.ServerVersion;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlServers;
-import rx.Completable;
 
 /**
  * Implementation for SqlServers and its parent interfaces.
  */
 @LangDefinition
 class SqlServersImpl
-        extends TopLevelCrudableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+        extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 
     protected SqlServersImpl(SqlServerManager manager) {
         super(manager.inner().servers(), manager);
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override
