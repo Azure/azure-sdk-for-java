@@ -15,8 +15,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.TopicResourceInner;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 /**
+ * Type representing service bus topic.
  */
 @Fluent
 public interface Topic extends
@@ -25,298 +27,436 @@ public interface Topic extends
     Updatable<Topic.Update> {
 
     /**
-     * Last time the message was sent, or a request was received, for this topic.
-     */
-    DateTime accessedAt();
-    /**
-     * TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String autoDeleteOnIdle();
-    /**
-     * Exact time the message was created.
+     * @return the exact time the topic was created.
      */
     DateTime createdAt();
     /**
-     * Number of active messages in the queue, topic, or subscription.
+     * @return last time a message was sent, or the last time there was a receive request to this topic
+     */
+    DateTime accessedAt();
+    /**
+     * @return the exact time the topic was updated
+     */
+    DateTime updatedAt();
+    /**
+     * @return the maximum size of memory allocated for the topic in megabytes.
+     */
+    int maxSizeInMB();
+    /**
+     * @return current size of the topic, in bytes
+     */
+    int currentSizeInBytes();
+    /**
+     * @return indicates whether server-side batched operations are enabled
+     */
+    boolean isBatchedOperationsEnabled();
+    /**
+     * @return indicates whether express entities are enabled
+     */
+    boolean isExpressEnabled();
+    /**
+     * @return indicates whether the topic is to be partitioned across multiple message brokers
+     */
+    boolean isPartitioningEnabled();
+    /**
+     * @return indicates whether the topic supports sessions
+     */
+    boolean isSessionEnabled();
+    /**
+     * indicates if this topic requires duplicate detection.
+     */
+    boolean isDuplicateDetectionEnabled();
+    /**
+     * @return the idle duration after which the topic is automatically deleted.
+     */
+    int deleteOnIdleDurationInMinutes();
+    /**
+     * @return the duration after which the message expires, starting from when the message is sent to topic.
+     */
+    Period defaultMessageTtlDuration();
+    /**
+     * @return the duration of the duplicate detection history.
+     */
+    Period duplicateMessageDetectionHistoryDuration();
+    /**
+     * @return number of active messages in the topic
      */
     int activeMessageCount();
     /**
-     * Number of messages that are dead lettered.
+     * @return number of messages in the dead-letter topic
      */
     int deadLetterMessageCount();
     /**
-     * Number of scheduled messages.
+     * @return number of messages sent to the topic that are yet to be released
+     * for consumption
      */
     int scheduledMessageCount();
     /**
-     * Number of messages transferred into dead letters.
+     * @return number of messages transferred into dead letters
      */
     int transferDeadLetterMessageCount();
     /**
-     * Number of messages transferred to another queue, topic, or subscription.
+     * @return number of messages transferred to another topic, topic, or subscription
      */
     int transferMessageCount();
     /**
-     * Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String defaultMessageTimeToLive();
-    /**
-     * TimeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String duplicateDetectionHistoryTimeWindow();
-    /**
-     * Value that indicates whether server-side batched operations are enabled.
-     */
-    boolean enableBatchedOperations();
-    /**
-     * Value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage.
-     */
-    boolean enableExpress();
-    /**
-     * Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
-     */
-    boolean enablePartitioning();
-    /**
-     * Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic.
-     */
-    int maxSizeInMegabytes();
-    /**
-     * Value indicating if this topic requires duplicate detection.
-     */
-    boolean requiresDuplicateDetection();
-    /**
-     * Size of the topic, in bytes.
-     */
-    int sizeInBytes();
-    /**
-     * Enumerates the possible values for the status of a messaging entity.
-     */
-    EntityStatus status();
-    /**
-     * Number of subscriptions.
+     * @return number of subscriptions for the topic
      */
     int subscriptionCount();
     /**
-     * Value that indicates whether the topic supports ordering.
+     * @return the current status of the topic
      */
-    boolean supportOrdering();
+    EntityStatus status();
     /**
-     * The exact time the message was updated.
+     * @return entry point to manage subscriptions associated with the topic
      */
-    DateTime updatedAt();
+    Subscriptions subscriptions();
+    /**
+     * @return entry point to manage authorization rules for the service bus topic
+     */
+    AuthorizationRules authorizationRules();
 
-
+    /**
+     * The entirety of the topic definition.
+     */
     interface Definition extends
-        Topic.DefinitionStages.Blank,
-        Topic.DefinitionStages.WithGroup,
-        Topic.DefinitionStages.WithCreate{
+            Topic.DefinitionStages.Blank,
+            Topic.DefinitionStages.WithGroup,
+            Topic.DefinitionStages.WithCreate {
     }
 
+    /**
+     * Grouping of topic definition stages.
+     */
     interface DefinitionStages {
+        /**
+         * The first stage of a topic definition.
+         */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
 
-        interface WithResourceGroupNameParameter {
+        /**
+         * The stage of the topic definition allowing to specify the resource group.
+         */
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the topic definition allowing to specify size.
+         */
+        interface WithSize {
             /**
-             * Name of the Resource group within the Azure subscription.
+             * Specifies the maximum size of memory allocated for the topic.
              *
-             * @param resourceGroupNameParameter
-             * @return the next stage
+             * @param sizeInMB size in MB
+             * @return the next stage of topic definition
              */
-            Definition withResourceGroupNameParameter(String resourceGroupNameParameter);
+            WithCreate withSizeInMB(int sizeInMB);
         }
 
-        interface WithNamespaceNameParameter {
+        /**
+         * The stage of the topic definition allowing to specify partitioning behaviour.
+         */
+        interface WithPartitioning {
             /**
-             * The namespace name
+             * Specifies that partitioning should be enabled on this topic.
              *
-             * @param namespaceNameParameter
-             * @return the next stage
+             * @return the next stage of topic definition
              */
-            Definition withNamespaceNameParameter(String namespaceNameParameter);
-        }
+            WithCreate withPartitioning();
 
-        interface WithTopicNameParameter {
             /**
-             * The topic name.
+             * Specifies that the default partitioning should be disabled on this topic.
+             * Note: if the parent service bus is Premium SKU then partition cannot be
+             * disabled
              *
-             * @param topicNameParameter
-             * @return the next stage
+             * @return the next stage of topic definition
              */
-            Definition withTopicNameParameter(String topicNameParameter);
+            WithCreate withoutPartitioning();
         }
 
-        interface WithAutoDeleteOnIdle {
-            Definition withAutoDeleteOnIdle(String autoDeleteOnIdle);
-        }
-
-        interface WithDefaultMessageTimeToLive {
-            Definition withDefaultMessageTimeToLive(String defaultMessageTimeToLive);
-        }
-
-        interface WithDuplicateDetectionHistoryTimeWindow {
-            Definition withDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow);
-        }
-
-        interface WithEnableBatchedOperations {
-            Definition withTopicProperties();
-            Definition withoutTopicProperties();
-        }
-
-        interface WithEnableExpress {
-            Definition withTopicProperties();
-            Definition withoutTopicProperties();
-        }
-
-        interface WithEnablePartitioning {
-            Definition withTopicProperties();
-            Definition withoutTopicProperties();
-        }
-
-        interface WithMaxSizeInMegabytes {
-            Definition withMaxSizeInMegabytes(int maxSizeInMegabytes);
-        }
-
-        interface WithRequiresDuplicateDetection {
-            Definition withTopicProperties();
-            Definition withoutTopicProperties();
-        }
-
-        interface WithStatus {
+        /**
+         * The stage of the topic definition allowing to define auto delete behaviour.
+         */
+        interface WithDeleteOnIdle {
             /**
-             * Entity status.
+             * The idle interval after which the topic is automatically deleted.
+             * Note: unless it is explicitly overridden the default delete on idle duration
+             * is infinite (TimeSpan.Max).
              *
-             * @return the next stage
+             * @param durationInMinutes idle duration in minutes
+             * @return the next stage of topic definition
              */
-            Definition withStatus(EntityStatus status);
+            WithCreate withDeleteOnIdleDurationInMinutes(int durationInMinutes);
         }
 
-        interface WithSupportOrdering {
-            Definition withTopicProperties();
-            Definition withoutTopicProperties();
+        /**
+         * The stage of the topic definition allowing to define default TTL for messages.
+         */
+        interface WithDefaultMessageTTL {
+            /**
+             * Specifies the duration after which the message expires.
+             * Note: unless it is explicitly overridden the default ttl is infinite (TimeSpan.Max).
+             *
+             * @param ttl time to live duration
+             * @return the next stage of topic definition
+             */
+            WithCreate withDefaultMessageTTL(Period ttl);
         }
 
+        /**
+         * The stage of the topic definition allowing to mark messages as express messages.
+         */
+        interface WithExpressMessage {
+            /**
+             * Specifies that messages in this topic are express hence they can be cached in memory
+             * for some time before storing it in messaging store.
+             * Note: By default topic is not express.
+             *
+             * @return the next stage of topic definition
+             */
+            WithCreate withExpressMessage();
+        }
+
+        /**
+         * The stage of the topic definition allowing specify batching behaviour.
+         */
+        interface WithMessageBatching {
+            /**
+             * Specifies that the default batching should be disabled on this topic.
+             * With batching service bus can batch multiple message when it write or delete messages
+             * from it's internal store.
+             *
+             * @return the next stage of topic definition
+             */
+            WithCreate withoutMessageBatching();
+        }
+
+        /**
+         * The stage of the topic definition allowing to specify duration of the duplicate message
+         * detection history.
+         */
+        interface WithDuplicateMessageDetection {
+            /**
+             * Specifies the duration of the duplicate message detection history.
+             *
+             * @param duplicateDetectionHistoryDuration duration of the history
+             * @return the next stage of topic definition
+             */
+            WithCreate withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration);
+        }
+
+        /**
+         * The stage of the service bus namespace update allowing to manage subscriptions for the topic.
+         */
+        interface WithSubscription {
+            /**
+             * Creates a subscription entity for the service bus topic.
+             *
+             * @param name queue name
+             * @param maxSizeInMB maximum size of memory allocated for the subscription entity
+             * @return the next stage of topic definition
+             */
+            WithCreate withNewSubscription(String name, int maxSizeInMB);
+        }
+
+        /**
+         * The stage of the topic definition allowing to add an authorization rule for accessing
+         * the topic.
+         */
+        interface WithAuthorizationRule {
+            /**
+             * Creates an authorization rule for the topic.
+             *
+             * @param name rule name
+             * @param rights rule rights
+             * @return next stage of the topic definition
+             */
+            WithCreate withNewAuthorizationRule(String name, AccessRights... rights);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
         interface WithCreate extends
-            Creatable<Topic>,
-            Topic.DefinitionStages.WithResourceGroupNameParameter,
-            Topic.DefinitionStages.WithNamespaceNameParameter,
-            Topic.DefinitionStages.WithTopicNameParameter,
-            Topic.DefinitionStages.WithAutoDeleteOnIdle,
-            Topic.DefinitionStages.WithDefaultMessageTimeToLive,
-            Topic.DefinitionStages.WithDuplicateDetectionHistoryTimeWindow,
-            Topic.DefinitionStages.WithEnableBatchedOperations,
-            Topic.DefinitionStages.WithEnableExpress,
-            Topic.DefinitionStages.WithEnablePartitioning,
-            Topic.DefinitionStages.WithMaxSizeInMegabytes,
-            Topic.DefinitionStages.WithRequiresDuplicateDetection,
-            Topic.DefinitionStages.WithStatus,
-            Topic.DefinitionStages.WithSupportOrdering{
-        }
-
-        interface Blank extends
-            GroupableResource.DefinitionWithRegion<WithGroup>{
-        }
-
-        interface WithGroup extends
-            GroupableResource.DefinitionStages.WithGroup<WithCreate>{
+                Creatable<Topic>,
+                Topic.DefinitionStages.WithSize,
+                Topic.DefinitionStages.WithPartitioning,
+                Topic.DefinitionStages.WithDeleteOnIdle,
+                Topic.DefinitionStages.WithDefaultMessageTTL,
+                Topic.DefinitionStages.WithExpressMessage,
+                Topic.DefinitionStages.WithMessageBatching,
+                Topic.DefinitionStages.WithDuplicateMessageDetection,
+                Topic.UpdateStages.WithSubscription,
+                Topic.DefinitionStages.WithAuthorizationRule {
         }
     }
 
+    /**
+     * The template for a topic update operation, containing all the settings that can be modified.
+     */
     interface Update extends
-        Topic.UpdateStages.WithResourceGroupNameParameter,
-        Topic.UpdateStages.WithNamespaceNameParameter,
-        Topic.UpdateStages.WithTopicNameParameter,
-        Topic.UpdateStages.WithAutoDeleteOnIdle,
-        Topic.UpdateStages.WithDefaultMessageTimeToLive,
-        Topic.UpdateStages.WithDuplicateDetectionHistoryTimeWindow,
-        Topic.UpdateStages.WithEnableBatchedOperations,
-        Topic.UpdateStages.WithEnableExpress,
-        Topic.UpdateStages.WithEnablePartitioning,
-        Topic.UpdateStages.WithMaxSizeInMegabytes,
-        Topic.UpdateStages.WithRequiresDuplicateDetection,
-        Topic.UpdateStages.WithStatus,
-        Topic.UpdateStages.WithSupportOrdering{
+            Topic.UpdateStages.WithSize,
+            Topic.UpdateStages.WithDeleteOnIdle,
+            Topic.UpdateStages.WithDefaultMessageTTL,
+            Topic.UpdateStages.WithExpressMessage,
+            Topic.UpdateStages.WithMessageBatching,
+            Topic.UpdateStages.WithDuplicateMessageDetection,
+            Topic.UpdateStages.WithSubscription,
+            Topic.UpdateStages.WithAuthorizationRule {
     }
 
+    /**
+     * Grouping of topic update stages.
+     */
     interface UpdateStages {
-
-        interface WithResourceGroupNameParameter {
+        /**
+         * The stage of the topic definition allowing to specify size.
+         */
+        interface WithSize {
             /**
-             * Name of the Resource group within the Azure subscription.
+             * Specifies the maximum size of memory allocated for the topic.
              *
-             * @param resourceGroupNameParameter
-             * @return the next stage
+             * @param sizeInMB size in MB
+             * @return the next stage of topic update
              */
-            Update withResourceGroupNameParameter(String resourceGroupNameParameter);
+            Update withSizeInMB(int sizeInMB);
         }
 
-        interface WithNamespaceNameParameter {
+        /**
+         * The stage of the topic definition allowing to define auto delete behaviour.
+         */
+        interface WithDeleteOnIdle {
             /**
-             * The namespace name
+             * The idle interval after which the topic is automatically deleted.
              *
-             * @param namespaceNameParameter
-             * @return the next stage
+             * @param durationInMinutes idle duration in minutes
+             * @return the next stage of topic update
              */
-            Update withNamespaceNameParameter(String namespaceNameParameter);
+            Update withDeleteOnIdleDurationInMinutes(int durationInMinutes);
         }
 
-        interface WithTopicNameParameter {
+        /**
+         * The stage of the topic definition allowing to define default TTL for messages.
+         */
+        interface WithDefaultMessageTTL {
             /**
-             * The topic name.
+             * Specifies the duration after which the message expires.
              *
-             * @param topicNameParameter
-             * @return the next stage
+             * @param ttl time to live duration
+             * @return the next stage of topic update
              */
-            Update withTopicNameParameter(String topicNameParameter);
+            Update withDefaultMessageTTL(Period ttl);
         }
 
-        interface WithAutoDeleteOnIdle {
-            Update withAutoDeleteOnIdle(String autoDeleteOnIdle);
-        }
-
-        interface WithDefaultMessageTimeToLive {
-            Update withDefaultMessageTimeToLive(String defaultMessageTimeToLive);
-        }
-
-        interface WithDuplicateDetectionHistoryTimeWindow {
-            Update withDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow);
-        }
-
-        interface WithEnableBatchedOperations {
-            Update withTopicProperties();
-            Update withoutTopicProperties();
-        }
-
-        interface WithEnableExpress {
-            Update withTopicProperties();
-            Update withoutTopicProperties();
-        }
-
-        interface WithEnablePartitioning {
-            Update withTopicProperties();
-            Update withoutTopicProperties();
-        }
-
-        interface WithMaxSizeInMegabytes {
-            Update withMaxSizeInMegabytes(int maxSizeInMegabytes);
-        }
-
-        interface WithRequiresDuplicateDetection {
-            Update withTopicProperties();
-            Update withoutTopicProperties();
-        }
-
-        interface WithStatus {
+        /**
+         * The stage of the topic definition allowing to mark it as either holding regular or express
+         * messages.
+         */
+        interface WithExpressMessage {
             /**
-             * Entity status.
+             * Specifies that messages in this topic are express hence they can be cached in memory
+             * for some time before storing it in messaging store.
              *
-             * @return the next stage
+             * @return the next stage of topic update
              */
-            Update withStatus(EntityStatus status);
+            Update withExpressMessage();
+
+            /**
+             * Specifies that messages in this topic are not express hence they should be cached in memory.
+             *
+             * @return the next stage of topic update
+             */
+            Update withoutExpressMessage();
         }
 
-        interface WithSupportOrdering {
-            Update withTopicProperties();
-            Update withoutTopicProperties();
+        /**
+         * The stage of the topic definition allowing configure message batching behaviour.
+         */
+        interface WithMessageBatching {
+            /**
+             * Specifies that service bus can batch multiple message when it write messages to or delete
+             * messages from it's internal store. This increases the throughput.
+             *
+             * @return the next stage of topic update
+             */
+            Update withMessageBatching();
+
+            /**
+             * Specifies that batching of messages should be disabled when service bus write messages to
+             * or delete messages from it's internal store.
+             *
+             * @return the next stage of topic update
+             */
+            Update withoutMessageBatching();
+        }
+
+        /**
+         * The stage of the topic definition allowing to specify duration of the duplicate message
+         * detection history.
+         */
+        interface WithDuplicateMessageDetection {
+            /**
+             * Specifies the duration of the duplicate message detection history.
+             *
+             * @param duration duration of the history
+             * @return the next stage of topic update
+             */
+            Update withDuplicateMessageDetectionHistoryDuration(Period duration);
+
+            /**
+             * Specifies that duplicate message detection needs to be disabled.
+             *
+             * @return the next stage of topic update
+             */
+            Update withoutDuplicateMessageDetection();
+        }
+
+        /**
+         * The stage of the service bus namespace update allowing to manage subscriptions for the topic.
+         */
+        interface WithSubscription {
+            /**
+             * Creates a subscription entity for the service bus topic.
+             *
+             * @param name queue name
+             * @param maxSizeInMB maximum size of memory allocated for the subscription entity
+             * @return next stage of the service bus topic update
+             */
+            Update withNewSubscription(String name, int maxSizeInMB);
+
+            /**
+             * Removes a subscription entity associated with the service bus topic.
+             *
+             * @param name subscription name
+             * @return next stage of the service bus topic update
+             */
+            Update withoutSubscription(String name);
+        }
+
+        /**
+         * The stage of the topic definition allowing to add an authorization rule for accessing
+         * the topic.
+         */
+        interface WithAuthorizationRule {
+            /**
+             * Creates an authorization rule for the topic.
+             *
+             * @param name rule name
+             * @param rights rule rights
+             * @return next stage of the topic update
+             */
+            Update withNewAuthorizationRule(String name, AccessRights... rights);
+
+            /**
+             * Removes an authorization rule for the topic.
+             *
+             * @param name rule name
+             * @return next stage of the topic update
+             */
+            Update withoutNewAuthorizationRule(String name);
         }
     }
-
 }

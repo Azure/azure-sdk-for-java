@@ -26,7 +26,7 @@ public interface Queue extends
         Refreshable<Queue>,
         Updatable<Queue.Update> {
     /**
-     * @return the exact time the message was created.
+     * @return the exact time the queue was created
      */
     DateTime createdAt();
     /**
@@ -34,11 +34,11 @@ public interface Queue extends
      */
     DateTime accessedAt();
     /**
-     * @return the exact time the message was updated
+     * @return the exact time the queue was updated
      */
     DateTime updatedAt();
     /**
-     * the maximum size of memory allocated for the queue in megabytes.
+     * @return the maximum size of memory allocated for the queue in megabytes.
      */
     int maxSizeInMB();
     /**
@@ -94,19 +94,20 @@ public interface Queue extends
      */
     int messageCount();
     /**
-     * @return number of active messages in the queue, topic, or subscription
+     * @return number of active messages in the queue
      */
     int activeMessageCount();
     /**
-     * @return number of messages that are dead lettered
+     * @return number of messages in the dead-letter queue
      */
     int deadLetterMessageCount();
     /**
-     * @return number of scheduled messages
+     * @return number of messages sent to the queue that are yet to be released
+     * for consumption
      */
     int scheduledMessageCount();
     /**
-     * Number of messages transferred into dead letters.
+     * @return number of messages transferred into dead letters
      */
     int transferDeadLetterMessageCount();
     /**
@@ -117,6 +118,10 @@ public interface Queue extends
      * @return the current status of the queue
      */
     EntityStatus status();
+    /**
+     * @return entry point to manage authorization rules for the service bus queue
+     */
+    AuthorizationRules authorizationRules();
 
     /**
      * The entirety of the queue definition.
@@ -543,6 +548,14 @@ public interface Queue extends
              * @return next stage of the queue update
              */
             Update withNewAuthorizationRule(String name, AccessRights... rights);
+
+            /**
+             * Removes an authorization rule for the queue.
+             *
+             * @param name rule name
+             * @return next stage of the queue update
+             */
+            Update withoutNewAuthorizationRule(String name);
         }
     }
 }

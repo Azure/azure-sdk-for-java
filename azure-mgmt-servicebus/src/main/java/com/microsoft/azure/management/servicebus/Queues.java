@@ -18,9 +18,9 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
 
 
 /**
- * Entry point to load balancer management API in Azure.
+ * Entry point to service bus queue management API in Azure.
  */
-@Fluent()
+@Fluent
 public interface Queues extends
     SupportsCreating<Queue.DefinitionStages.Blank>,
     HasManager<ServiceBusManager>,

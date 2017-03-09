@@ -77,42 +77,80 @@ public class ServiceBusOperationsTests extends TestBase {
     @Test
     public void canOperateOnQueue() {
         String RG_NAME = "javasbrga4878671a3-3";
-        String sbName = "sb-08d63135a0-2";
-        String qName = "q-08d63135a0-2";
+        String basicSBName = "basic-sb-08d63135a0";
+        String standardSBName = "standard-sb-08d63135a0";
+        String premiumSBName = "premium-sb-08d63135a0";
+
+        String qName = "myqueue-5";
 
         resourceManager.resourceGroups().define(RG_NAME)
                 .withRegion(Region.US_EAST2)
                 .create();
 
+//        createBasicSB(RG_NAME, basicSBName);
+//        createStandardSB(RG_NAME, standardSBName);
+//        createPremiumSB(RG_NAME, premiumSBName);
+
+        QueueResourceInner queueResourceInner = serviceBusManager.inner().queues().get(RG_NAME,
+                premiumSBName,
+                qName);
+
+//        QueueResourceInner queueResourceInner = new QueueResourceInner();
+//        queueResourceInner.withLocation(Region.US_EAST2.toString());
+//        queueResourceInner.withEnablePartitioning(false);
+        queueResourceInner.withLockDuration("00:02:05");
+        queueResourceInner = serviceBusManager.inner().queues().createOrUpdate(RG_NAME,
+                premiumSBName,
+                qName,
+                queueResourceInner);
+
+//        queueResourceInner.withRequiresSession(false);
+//        queueResourceInner.withSupportOrdering(true);
+//        queueResourceInner = serviceBusManager.inner().queues().get(RG_NAME, sbName, qName + "4");
+//        queueResourceInner.withEnableExpress(false);
+//        queueResourceInner.withEnableBatchedOperations(true);
+//        queueResourceInner.withSupportOrdering(true);
+
+//        queueResourceInner.withRequiresDuplicateDetection(false);
+//        queueResourceInner.withDuplicateDetectionHistoryTimeWindow("00:20:00");
+//        queueResourceInner.withDeadLetteringOnMessageExpiration(true);
+
+    }
+
+
+    private void createBasicSB(String rgName, String sbName) {
+        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
+        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
+        namespaceResourceInner
+                .withSku(new Sku())
+                .sku()
+                .withName(SkuName.BASIC)
+                .withTier(SkuTier.BASIC);
+        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
+                sbName, namespaceResourceInner);
+    }
+
+    private void createStandardSB(String rgName, String sbName) {
+        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
+        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
+        namespaceResourceInner
+                .withSku(new Sku())
+                .sku()
+                .withName(SkuName.STANDARD)
+                .withTier(SkuTier.STANDARD);
+        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
+                sbName, namespaceResourceInner);
+    }
+
+    private void createPremiumSB(String rgName, String sbName) {
         NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
         namespaceResourceInner.withLocation(Region.US_EAST2.toString());
         namespaceResourceInner
                 .withSku(new Sku())
                 .sku()
                 .withName(SkuName.PREMIUM)
-                .withTier(SkuTier.PREMIUM)
-                .withCapacity(4);
-
-       // namespaceResourceInner = serviceBusManager.inner().namespaces().createOrUpdate(RG_NAME,
-       //         sbName, namespaceResourceInner);
-
-        QueueResourceInner queueResourceInner = new QueueResourceInner();
-        queueResourceInner.withLocation(Region.US_EAST2.toString());
-        queueResourceInner.withEnablePartitioning(false);
-        queueResourceInner.withRequiresSession(false);
-        queueResourceInner.withSupportOrdering(true);
-        queueResourceInner = serviceBusManager.inner().queues().get(RG_NAME, sbName, qName + "3");
-//        queueResourceInner.withEnableExpress(false);
-//        queueResourceInner.withEnableBatchedOperations(true);
-//        queueResourceInner.withSupportOrdering(true);
-
-        queueResourceInner.withRequiresDuplicateDetection(false);
-        queueResourceInner.withDuplicateDetectionHistoryTimeWindow("00:20:00");
-        queueResourceInner.withDeadLetteringOnMessageExpiration(true);
-        queueResourceInner = serviceBusManager.inner().queues().createOrUpdate(RG_NAME,
-                sbName,
-                qName + "3",
-                queueResourceInner);
+                .withTier(SkuTier.PREMIUM);
+        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
+                sbName, namespaceResourceInner);
     }
-
 }

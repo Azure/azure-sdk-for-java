@@ -18,9 +18,9 @@ import com.microsoft.azure.management.servicebus.implementation.SubscriptionsInn
 
 
 /**
- * Entry point to load balancer management API in Azure.
+ * Entry point to service bus topic subscription management API in Azure.
  */
-@Fluent()
+@Fluent
 public interface Subscriptions extends
     SupportsCreating<Subscription.DefinitionStages.Blank>,
     HasManager<ServiceBusManager>,
@@ -29,5 +29,4 @@ public interface Subscriptions extends
     SupportsGettingById<Subscription>,
     SupportsDeletingById,
     SupportsDeletingByGroup {
-
 }

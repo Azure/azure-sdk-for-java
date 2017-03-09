@@ -15,311 +15,438 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.SubscriptionResourceInner;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 /**
- * Type represents service bus topic subscription.
+ * Type representing service bus topic subscription.
  */
 @Fluent
 public interface Subscription extends
         IndependentChildResource<ServiceBusManager, SubscriptionResourceInner>,
     Refreshable<Subscription>,
     Updatable<Subscription.Update> {
-
     /**
-     * Last time there was a receive request to this subscription.
-     */
-    DateTime accessedAt();
-    /**
-     * TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
-     */
-    String autoDeleteOnIdle();
-    /**
-     * Number of active messages in the queue, topic, or subscription.
-     */
-    int activeMessageCount();
-    /**
-     * Number of messages that are dead lettered.
-     */
-    int deadLetterMessageCount();
-    /**
-     * Number of scheduled messages.
-     */
-    int scheduledMessageCount();
-    /**
-     * Number of messages transferred into dead letters.
-     */
-    int transferDeadLetterMessageCount();
-    /**
-     * Number of messages transferred to another queue, topic, or subscription.
-     */
-    int transferMessageCount();
-    /**
-     * Exact time the message was created.
+     * @return the exact time the message was created
      */
     DateTime createdAt();
     /**
-     * Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
+     * @return last time there was a receive request to this subscription
      */
-    String defaultMessageTimeToLive();
+    DateTime accessedAt();
     /**
-     * Value that indicates whether a subscription has dead letter support on filter evaluation exceptions.
+     * @return the exact time the message was updated
      */
-    boolean deadLetteringOnFilterEvaluationExceptions();
+    DateTime updatedAt();
     /**
-     * Value that indicates whether a subscription has dead letter support when a message expires.
+     * @return indicates whether server-side batched operations are enabled
      */
-    boolean deadLetteringOnMessageExpiration();
+    boolean isBatchedOperationsEnabled();
     /**
-     * Value that indicates whether server-side batched operations are enabled.
+     * @return indicates whether this subscription has dead letter support when a message expires
      */
-    boolean enableBatchedOperations();
+    boolean isDeadLetteringEnabledForExpiredMessages();
     /**
-     * The lock duration time span for the subscription. The service accepts a C# Standard TimeSpan Format for loc duration https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx
+     * @return indicates whether the subscription supports sessions
      */
-    String lockDuration();
+    boolean isSessionEnabled();
     /**
-     * Number of maximum deliveries.
+     * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
-    int maxDeliveryCount();
+    int lockDurationInSeconds();
     /**
-     * Number of messages.
+     * @return the idle duration after which the subscription is automatically deleted.
+     */
+    int deleteOnIdleDurationInMinutes();
+    /**
+     * @return the duration after which the message expires, starting from when the message is sent to subscription.
+     */
+    Period defaultMessageTtlDuration();
+    /**
+     * @return the maximum number of a message delivery before marking it as dead-lettered
+     */
+    int maxDeliveryCountBeforeDeadLetteringMessage();
+    /**
+     * @return the number of messages in the subscription
      */
     int messageCount();
     /**
-     * Value indicating if a subscription supports the concept of sessions.
+     * @return number of active messages in the subscription
      */
-    boolean requiresSession();
+    int activeMessageCount();
     /**
-     * Enumerates the possible values for the status of a messaging entity.
+     * @return number of messages in the dead-letter subscription
+     */
+    int deadLetterMessageCount();
+    /**
+     * @return number of messages sent to the subscription that are yet to be released
+     * for consumption
+     */
+    int scheduledMessageCount();
+    /**
+     * @return number of messages transferred into dead letters
+     */
+    int transferDeadLetterMessageCount();
+    /**
+     * @return number of messages transferred to another queue, topic, or subscription
+     */
+    int transferMessageCount();
+    /**
+     * @return the current status of the subscription
      */
     EntityStatus status();
     /**
-     * The exact time the message was updated.
+     * @return  indicates whether subscription has dead letter support on filter evaluation exceptions
      */
-    DateTime updatedAt();
+    boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages();
+    /**
+     * @return entry point to manage authorization rules for the service bus topic subscription
+     */
+    AuthorizationRules authorizationRules();
 
-
+    /**
+     * The entirety of the subscription definition.
+     */
     interface Definition extends
-        Subscription.DefinitionStages.Blank,
-        Subscription.DefinitionStages.WithGroup,
-        Subscription.DefinitionStages.WithCreate{
+            Subscription.DefinitionStages.Blank,
+            Subscription.DefinitionStages.WithGroup,
+            Subscription.DefinitionStages.WithCreate {
     }
 
+    /**
+     * Grouping of queue definition stages.
+     */
     interface DefinitionStages {
+        /**
+         * The first stage of a subscription definition.
+         */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
 
-        interface WithResourceGroupNameParameter {
+        /**
+         * The stage of the subscription definition allowing to specify the resource group.
+         */
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the subscription definition allowing to define auto delete behaviour.
+         */
+        interface WithDeleteOnIdle {
             /**
-             * Name of the Resource group within the Azure subscription.
+             * The idle interval after which the subscription is automatically deleted.
+             * Note: unless it is explicitly overridden the default delete on idle duration
+             * is infinite (TimeSpan.Max).
              *
-             * @param resourceGroupNameParameter
-             * @return the next stage
+             * @param durationInMinutes idle duration in minutes
+             * @return the next stage of subscription definition
              */
-            Definition withResourceGroupNameParameter(String resourceGroupNameParameter);
+            WithCreate withDeleteOnIdleDurationInMinutes(int durationInMinutes);
         }
 
-        interface WithNamespaceNameParameter {
+        /**
+         * The stage of the subscription definition allowing to define duration for message lock.
+         */
+        interface WithMessageLockDuration {
             /**
-             * The namespace name
+             * Specifies the amount of time that the message is locked for other receivers.
+             * Note: unless it is explicitly overridden the default lock duration is 60 seconds,
+             * the maximum allowed value is 300 seconds.
              *
-             * @param namespaceNameParameter
-             * @return the next stage
+             * @param durationInSeconds duration of a lock in seconds
+             * @return the next stage of subscription definition
              */
-            Definition withNamespaceNameParameter(String namespaceNameParameter);
+            WithCreate withMessageLockDurationInSeconds(int durationInSeconds);
         }
 
-        interface WithTopicNameParameter {
+        /**
+         * The stage of the subscription definition allowing to define default TTL for messages.
+         */
+        interface WithDefaultMessageTTL {
             /**
-             * The topic name.
+             * Specifies the duration after which the message expires.
+             * Note: unless it is explicitly overridden the default ttl is infinite (TimeSpan.Max).
              *
-             * @param topicNameParameter
-             * @return the next stage
+             * @param ttl time to live duration
+             * @return the next stage of subscription definition
              */
-            Definition withTopicNameParameter(String topicNameParameter);
+            WithCreate withDefaultMessageTTL(Period ttl);
         }
 
-        interface WithSubscriptionNameParameter {
+        /**
+         * The stage of the subscription definition allowing to enable session support.
+         */
+        interface WithSession {
             /**
-             * The subscription name.
+             * Specifies that session support should be enabled for the subscription.
              *
-             * @param subscriptionNameParameter
-             * @return the next stage
+             * @return the next stage of subscription definition
              */
-            Definition withSubscriptionNameParameter(String subscriptionNameParameter);
+            WithCreate withSession();
         }
 
-        interface WithAutoDeleteOnIdle {
-            Definition withAutoDeleteOnIdle(String autoDeleteOnIdle);
-        }
-
-        interface WithDefaultMessageTimeToLive {
-            Definition withDefaultMessageTimeToLive(String defaultMessageTimeToLive);
-        }
-
-        interface WithDeadLetteringOnFilterEvaluationExceptions {
-            Definition withSubscriptionProperties();
-            Definition withoutSubscriptionProperties();
-        }
-
-        interface WithDeadLetteringOnMessageExpiration {
-            Definition withSubscriptionProperties();
-            Definition withoutSubscriptionProperties();
-        }
-
-        interface WithEnableBatchedOperations {
-            Definition withSubscriptionProperties();
-            Definition withoutSubscriptionProperties();
-        }
-
-        interface WithLockDuration {
-            Definition withLockDuration(String lockDuration);
-        }
-
-        interface WithMaxDeliveryCount {
-            Definition withMaxDeliveryCount(int maxDeliveryCount);
-        }
-
-        interface WithRequiresSession {
-            Definition withSubscriptionProperties();
-            Definition withoutSubscriptionProperties();
-        }
-
-        interface WithStatus {
+        /**
+         * The stage of the subscription definition allowing specify batching behaviour.
+         */
+        interface WithMessageBatching {
             /**
-             * Entity status.
+             * Specifies that the default batching should be disabled on this subscription.
+             * With batching service bus can batch multiple message when it write or delete messages
+             * from it's internal store.
              *
-             * @return the next stage
+             * @return the next stage of subscription definition
              */
-            Definition withStatus(EntityStatus status);
+            WithCreate withoutMessageBatching();
         }
 
+        /**
+         * The stage of the subscription definition allowing to specify whether expired message can be moved
+         * to secondary dead-letter subscription.
+         */
+        interface WithExpiredMessageMovedToDeadLetterQueue {
+            /**
+             * Specifies that expired message must be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription definition
+             */
+            WithCreate withExpiredMessageMovedToDeadLetterQueue();
+        }
+
+        /**
+         * The stage of the subscription definition allowing to specify maximum delivery count of message before
+         * moving it to dead-letter subscription.
+         */
+        interface WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount {
+            /**
+             * Specifies maximum number of times a message can be delivered. Once this count has exceeded,
+             * message will be moved to dead-letter subscription.
+             *
+             * @param deliveryCount maximum delivery count
+             * @return the next stage of subscription definition
+             */
+            WithCreate withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(int deliveryCount);
+        }
+
+        /**
+         * The stage of the subscription definition allowing to specify whether message those are failed on
+         * filter evaluation can be moved to secondary dead-letter subscription.
+         */
+        interface WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+            /**
+             * Specifies that filter evaluation failed message must be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription definition
+             */
+            WithCreate withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException();
+        }
+
+        /**
+         * The stage of the queue definition allowing to add an authorization rule for accessing
+         * the subscription.
+         */
+        interface WithAuthorizationRule {
+            /**
+             * Creates an authorization rule for the subscription.
+             *
+             * @param name rule name
+             * @param rights rule rights
+             * @return next stage of the subscription definition
+             */
+            WithCreate withNewAuthorizationRule(String name, AccessRights... rights);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
         interface WithCreate extends
-            Creatable<Subscription>,
-            Subscription.DefinitionStages.WithResourceGroupNameParameter,
-            Subscription.DefinitionStages.WithNamespaceNameParameter,
-            Subscription.DefinitionStages.WithTopicNameParameter,
-            Subscription.DefinitionStages.WithSubscriptionNameParameter,
-            Subscription.DefinitionStages.WithAutoDeleteOnIdle,
-            Subscription.DefinitionStages.WithDefaultMessageTimeToLive,
-            Subscription.DefinitionStages.WithDeadLetteringOnFilterEvaluationExceptions,
-            Subscription.DefinitionStages.WithDeadLetteringOnMessageExpiration,
-            Subscription.DefinitionStages.WithEnableBatchedOperations,
-            Subscription.DefinitionStages.WithLockDuration,
-            Subscription.DefinitionStages.WithMaxDeliveryCount,
-            Subscription.DefinitionStages.WithRequiresSession,
-            Subscription.DefinitionStages.WithStatus{
-        }
-
-        interface Blank extends
-            GroupableResource.DefinitionWithRegion<WithGroup>{
-        }
-
-        interface WithGroup extends
-            GroupableResource.DefinitionStages.WithGroup<WithCreate>{
+                Creatable<Queue>,
+                Subscription.DefinitionStages.WithDeleteOnIdle,
+                Subscription.DefinitionStages.WithMessageLockDuration,
+                Subscription.DefinitionStages.WithDefaultMessageTTL,
+                Subscription.DefinitionStages.WithSession,
+                Subscription.DefinitionStages.WithMessageBatching,
+                Subscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterQueue,
+                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
+                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException,
+                Subscription.DefinitionStages.WithAuthorizationRule {
         }
     }
 
+    /**
+     * The template for a subscription update operation, containing all the settings that can be modified.
+     */
     interface Update extends
-        Subscription.UpdateStages.WithResourceGroupNameParameter,
-        Subscription.UpdateStages.WithNamespaceNameParameter,
-        Subscription.UpdateStages.WithTopicNameParameter,
-        Subscription.UpdateStages.WithSubscriptionNameParameter,
-        Subscription.UpdateStages.WithAutoDeleteOnIdle,
-        Subscription.UpdateStages.WithDefaultMessageTimeToLive,
-        Subscription.UpdateStages.WithDeadLetteringOnFilterEvaluationExceptions,
-        Subscription.UpdateStages.WithDeadLetteringOnMessageExpiration,
-        Subscription.UpdateStages.WithEnableBatchedOperations,
-        Subscription.UpdateStages.WithLockDuration,
-        Subscription.UpdateStages.WithMaxDeliveryCount,
-        Subscription.UpdateStages.WithRequiresSession,
-        Subscription.UpdateStages.WithStatus{
+            Subscription.UpdateStages.WithDeleteOnIdle,
+            Subscription.UpdateStages.WithMessageLockDuration,
+            Subscription.UpdateStages.WithDefaultMessageTTL,
+            Subscription.UpdateStages.WithSession,
+            Subscription.UpdateStages.WithMessageBatching,
+            Subscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
+            Subscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
+            Subscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException,
+            Subscription.UpdateStages.WithAuthorizationRule {
     }
 
+    /**
+     * Grouping of subscription update stages.
+     */
     interface UpdateStages {
-
-        interface WithResourceGroupNameParameter {
+        /**
+         * The stage of the subscription definition allowing to define auto delete behaviour.
+         */
+        interface WithDeleteOnIdle {
             /**
-             * Name of the Resource group within the Azure subscription.
+             * The idle interval after which the subscription is automatically deleted.
              *
-             * @param resourceGroupNameParameter
-             * @return the next stage
+             * @param durationInMinutes idle duration in minutes
+             * @return the next stage of subscription update
              */
-            Update withResourceGroupNameParameter(String resourceGroupNameParameter);
+            Update withDeleteOnIdleDurationInMinutes(int durationInMinutes);
         }
 
-        interface WithNamespaceNameParameter {
+        /**
+         * The stage of the subscription definition allowing to define duration for message lock.
+         */
+        interface WithMessageLockDuration {
             /**
-             * The namespace name
+             * Specifies the amount of time that the message is locked for other receivers.
              *
-             * @param namespaceNameParameter
-             * @return the next stage
+             * @param durationInSeconds duration of a lock in seconds
+             * @return the next stage of subscription update
              */
-            Update withNamespaceNameParameter(String namespaceNameParameter);
+            Update withMessageLockDurationInSeconds(int durationInSeconds);
         }
 
-        interface WithTopicNameParameter {
+        /**
+         * The stage of the subscription definition allowing to define default TTL for messages.
+         */
+        interface WithDefaultMessageTTL {
             /**
-             * The topic name.
+             * Specifies the duration after which the message expires.
              *
-             * @param topicNameParameter
-             * @return the next stage
+             * @param ttl time to live duration
+             * @return the next stage of subscription update
              */
-            Update withTopicNameParameter(String topicNameParameter);
+            Update withDefaultMessageTTL(Period ttl);
         }
 
-        interface WithSubscriptionNameParameter {
+        /**
+         * The stage of the subscription definition allowing to enable session support.
+         */
+        interface WithSession {
             /**
-             * The subscription name.
+             * Specifies that session support should be enabled for the subscription.
              *
-             * @param subscriptionNameParameter
-             * @return the next stage
+             * @return the next stage of subscription update
              */
-            Update withSubscriptionNameParameter(String subscriptionNameParameter);
-        }
+            Update withSession();
 
-        interface WithAutoDeleteOnIdle {
-            Update withAutoDeleteOnIdle(String autoDeleteOnIdle);
-        }
-
-        interface WithDefaultMessageTimeToLive {
-            Update withDefaultMessageTimeToLive(String defaultMessageTimeToLive);
-        }
-
-        interface WithDeadLetteringOnFilterEvaluationExceptions {
-            Update withSubscriptionProperties();
-            Update withoutSubscriptionProperties();
-        }
-
-        interface WithDeadLetteringOnMessageExpiration {
-            Update withSubscriptionProperties();
-            Update withoutSubscriptionProperties();
-        }
-
-        interface WithEnableBatchedOperations {
-            Update withSubscriptionProperties();
-            Update withoutSubscriptionProperties();
-        }
-
-        interface WithLockDuration {
-            Update withLockDuration(String lockDuration);
-        }
-
-        interface WithMaxDeliveryCount {
-            Update withMaxDeliveryCount(int maxDeliveryCount);
-        }
-
-        interface WithRequiresSession {
-            Update withSubscriptionProperties();
-            Update withoutSubscriptionProperties();
-        }
-
-        interface WithStatus {
             /**
-             * Entity status.
+             * Specifies that session support should be disabled for the subscription.
              *
-             * @return the next stage
+             * @return the next stage of subscription update
              */
-            Update withStatus(EntityStatus status);
+            Update withoutSession();
+        }
+
+        /**
+         * The stage of the subscription definition allowing configure message batching behaviour.
+         */
+        interface WithMessageBatching {
+            /**
+             * Specifies that service bus can batch multiple message when it write messages to or delete
+             * messages from it's internal store. This increases the throughput.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withMessageBatching();
+
+            /**
+             * Specifies that batching of messages should be disabled when service bus write messages to
+             * or delete messages from it's internal store.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withoutMessageBatching();
+        }
+
+        /**
+         * The stage of the queue definition allowing to specify whether expired message can be moved
+         * to secondary dead-letter subscription.
+         */
+        interface WithExpiredMessageMovedToDeadLetterSubscription {
+            /**
+             * Specifies that expired message must be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withExpiredMessageMovedToDeadLetterSubscription();
+
+            /**
+             * Specifies that expired message should not be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withoutExpiredMessageMovedToDeadLetterSubscription();
+        }
+
+        /**
+         * The stage of the queue definition allowing to specify maximum delivery count of message before
+         * moving it to dead-letter queue.
+         */
+        interface WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount {
+            /**
+             * Specifies maximum number of times a message can be delivered. Once this count has exceeded,
+             * message will be moved to dead-letter subscription.
+             *
+             * @param deliveryCount maximum delivery subscription
+             * @return the next stage of subscription update
+             */
+            Update withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount);
+        }
+
+        /**
+         * The stage of the subscription definition allowing to specify whether message those are failed on
+         * filter evaluation can be moved to secondary dead-letter subscription.
+         */
+        interface WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
+            /**
+             * Specifies that filter evaluation failed message must be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException();
+
+            /**
+             * Specifies that filter evaluation failed message should not be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription update
+             */
+            Update withoutMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException();
+        }
+
+        /**
+         * The stage of the queue definition allowing to add an authorization rule for accessing
+         * the subscription.
+         */
+        interface WithAuthorizationRule {
+            /**
+             * Creates an authorization rule for the subscription.
+             *
+             * @param name rule name
+             * @param rights rule rights
+             * @return next stage of the subscription update
+             */
+            Update withNewAuthorizationRule(String name, AccessRights... rights);
+
+            /**
+             * Removes an authorization rule for the subscription.
+             *
+             * @param name rule name
+             * @return next stage of the subscription update
+             */
+            Update withoutNewAuthorizationRule(String name);
         }
     }
-
 }

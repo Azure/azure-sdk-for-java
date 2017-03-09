@@ -18,9 +18,9 @@ import com.microsoft.azure.management.servicebus.implementation.TopicsInner;
 
 
 /**
- * Entry point to load balancer management API in Azure.
+ * Entry point to service bus topic management API in Azure.
  */
-@Fluent()
+@Fluent
 public interface Topics extends
     SupportsCreating<Topic.DefinitionStages.Blank>,
     HasManager<ServiceBusManager>,
@@ -29,5 +29,4 @@ public interface Topics extends
     SupportsGettingById<Topic>,
     SupportsDeletingById,
     SupportsDeletingByGroup {
-
 }

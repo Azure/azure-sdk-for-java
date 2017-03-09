@@ -18,6 +18,7 @@ import com.microsoft.azure.management.servicebus.implementation.SharedAccessAuth
 import java.util.List;
 
 /**
+ * Type representing authorization rule defined for namespace, queue, topics and subscriptions.
  */
 @Fluent
 public interface AuthorizationRule extends
@@ -31,75 +32,33 @@ public interface AuthorizationRule extends
     List<AccessRights> rights();
 
     /**
-     * Gets the primary and secondary connection strings for the namespace.
+     * @return the primary and secondary keys
      */
     void listKeys();
 
     /**
-     * Regenerates primary or secondary connection strings for the topic.
+     * Regenerates primary or secondary keys.
      */
     void regenerateKeys();
 
 
+    /**
+     * The entirety of the authorization rule definition.
+     */
     interface Definition extends
         AuthorizationRule.DefinitionStages.Blank,
         AuthorizationRule.DefinitionStages.WithGroup,
-        AuthorizationRule.DefinitionStages.WithCreate{
+        AuthorizationRule.DefinitionStages.WithCreate {
     }
 
     interface DefinitionStages {
-
-        interface WithResourceGroupNameParameter {
-            /**
-             * Name of the Resource group within the Azure subscription.
-             *
-             * @param resourceGroupNameParameter
-             * @return the next stage
-             */
-            Definition withResourceGroupNameParameter(String resourceGroupNameParameter);
-        }
-
-        interface WithNamespaceNameParameter {
-            /**
-             * The namespace name
-             *
-             * @param namespaceNameParameter
-             * @return the next stage
-             */
-            Definition withNamespaceNameParameter(String namespaceNameParameter);
-        }
-
-        interface WithTopicNameParameter {
-            /**
-             * The topic name.
-             *
-             * @param topicNameParameter
-             * @return the next stage
-             */
-            Definition withTopicNameParameter(String topicNameParameter);
-        }
-
-        interface WithAuthorizationRuleNameParameter {
-            /**
-             * The authorizationrule name.
-             *
-             * @param authorizationRuleNameParameter
-             * @return the next stage
-             */
-            Definition withAuthorizationRuleNameParameter(String authorizationRuleNameParameter);
-        }
-
         interface WithRights {
-            Definition withRights(AccessRights rights);
+            WithCreate withRights(AccessRights rights);
         }
 
         interface WithCreate extends
             Creatable<AuthorizationRule>,
-            AuthorizationRule.DefinitionStages.WithResourceGroupNameParameter,
-            AuthorizationRule.DefinitionStages.WithNamespaceNameParameter,
-            AuthorizationRule.DefinitionStages.WithTopicNameParameter,
-            AuthorizationRule.DefinitionStages.WithAuthorizationRuleNameParameter,
-            AuthorizationRule.DefinitionStages.WithRights{
+            AuthorizationRule.DefinitionStages.WithRights {
         }
 
         interface Blank extends
@@ -112,55 +71,10 @@ public interface AuthorizationRule extends
     }
 
     interface Update extends
-        AuthorizationRule.UpdateStages.WithResourceGroupNameParameter,
-        AuthorizationRule.UpdateStages.WithNamespaceNameParameter,
-        AuthorizationRule.UpdateStages.WithTopicNameParameter,
-        AuthorizationRule.UpdateStages.WithAuthorizationRuleNameParameter,
-        AuthorizationRule.UpdateStages.WithRights{
+        AuthorizationRule.UpdateStages.WithRights {
     }
 
     interface UpdateStages {
-
-        interface WithResourceGroupNameParameter {
-            /**
-             * Name of the Resource group within the Azure subscription.
-             *
-             * @param resourceGroupNameParameter
-             * @return the next stage
-             */
-            Update withResourceGroupNameParameter(String resourceGroupNameParameter);
-        }
-
-        interface WithNamespaceNameParameter {
-            /**
-             * The namespace name
-             *
-             * @param namespaceNameParameter
-             * @return the next stage
-             */
-            Update withNamespaceNameParameter(String namespaceNameParameter);
-        }
-
-        interface WithTopicNameParameter {
-            /**
-             * The topic name.
-             *
-             * @param topicNameParameter
-             * @return the next stage
-             */
-            Update withTopicNameParameter(String topicNameParameter);
-        }
-
-        interface WithAuthorizationRuleNameParameter {
-            /**
-             * The authorizationrule name.
-             *
-             * @param authorizationRuleNameParameter
-             * @return the next stage
-             */
-            Update withAuthorizationRuleNameParameter(String authorizationRuleNameParameter);
-        }
-
         interface WithRights {
             Update withRights(AccessRights rights);
         }

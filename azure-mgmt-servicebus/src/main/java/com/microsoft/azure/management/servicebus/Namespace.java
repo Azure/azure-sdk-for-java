@@ -49,12 +49,10 @@ public interface Namespace extends
      * @return entry point to manage queue entities in the service bus namespace
      */
     Queues queues();
-
     /**
      * @return entry point to manage topics entities in the service bus namespace
      */
     Topics topics();
-
     /**
      * @return entry point to manage authorization rules for the service bus namespace
      */
