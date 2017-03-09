@@ -9,7 +9,6 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.SiteInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -89,15 +88,7 @@ public interface DeploymentSlot extends
          */
         interface WithCreate extends
             Creatable<DeploymentSlot>,
-            GroupableResource.DefinitionWithTags<WithCreate>,
-            WebAppBase.DefinitionStages.WithCreate<DeploymentSlot>,
-            WebAppBase.DefinitionStages.WithSiteEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithScmSiteAlsoStopped<WithCreate>,
-            WebAppBase.DefinitionStages.WithClientAffinityEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithClientCertEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
-            WebAppBase.DefinitionStages.WithAppSettings<WithCreate>,
-            WebAppBase.DefinitionStages.WithConnectionString<WithCreate> {
+            WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
         }
     }
 
@@ -106,14 +97,6 @@ public interface DeploymentSlot extends
      */
     interface Update extends
         Appliable<DeploymentSlot>,
-        GroupableResource.UpdateWithTags<Update>,
-        WebAppBase.Update<DeploymentSlot>,
-        WebAppBase.UpdateStages.WithClientAffinityEnabled<Update>,
-        WebAppBase.UpdateStages.WithClientCertEnabled<Update>,
-        WebAppBase.UpdateStages.WithScmSiteAlsoStopped<Update>,
-        WebAppBase.UpdateStages.WithSiteEnabled<Update>,
-        WebAppBase.UpdateStages.WithSiteConfigs<Update>,
-        WebAppBase.UpdateStages.WithAppSettings<Update>,
-        WebAppBase.UpdateStages.WithConnectionString<Update> {
+        WebAppBase.Update<DeploymentSlot> {
     }
 }

@@ -23,6 +23,9 @@ public interface FunctionApp extends
     Refreshable<FunctionApp>,
     Updatable<FunctionApp.Update> {
 
+    /**
+     * @return the storage account associated with the function app
+     */
     StorageAccount storageAccount();
 
     /**************************************************************
@@ -183,11 +186,7 @@ public interface FunctionApp extends
             Creatable<FunctionApp>,
             DefinitionStages.WithRuntimeVersion,
             DefinitionStages.WithDailyUsageQuota,
-            GroupableResource.DefinitionWithTags<WithCreate>,
-            WebAppBase.DefinitionStages.WithCreate<FunctionApp>,
-            WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
-            WebAppBase.DefinitionStages.WithAppSettings<WithCreate>,
-            WebAppBase.DefinitionStages.WithConnectionString<WithCreate> {
+            WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
     }
 
@@ -311,9 +310,6 @@ public interface FunctionApp extends
         UpdateStages.WithAppServicePlan,
         UpdateStages.WithRuntimeVersion,
         UpdateStages.WithStorageAccount,
-        UpdateStages.WithDailyUsageQuota,
-        WebAppBase.UpdateStages.WithSiteConfigs<Update>,
-        WebAppBase.UpdateStages.WithAppSettings<Update>,
-        WebAppBase.UpdateStages.WithConnectionString<Update> {
+        UpdateStages.WithDailyUsageQuota {
     }
 }

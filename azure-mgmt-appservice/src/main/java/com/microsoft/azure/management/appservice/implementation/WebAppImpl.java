@@ -9,7 +9,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebAppBase;
 
 /**
  * The implementation for WebApp.
@@ -21,9 +20,7 @@ class WebAppImpl
             WebApp,
             WebApp.Definition,
             WebApp.Update,
-            WebApp.UpdateStages.WithNewAppServicePlan,
-            WebAppBase.DefinitionStages.WithWebContainer<WebApp.DefinitionStages.WithCreate>,
-            WebAppBase.UpdateStages.WithWebContainer<WebApp.Update> {
+            WebApp.UpdateStages.WithNewAppServicePlan {
 
     private DeploymentSlots deploymentSlots;
 

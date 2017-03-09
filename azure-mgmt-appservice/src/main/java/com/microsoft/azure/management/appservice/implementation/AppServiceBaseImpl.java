@@ -45,7 +45,7 @@ abstract class AppServiceBaseImpl<
     FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
     FluentWithCreateT,
     FluentUpdateT>
-        extends WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT> {
+        extends WebAppBaseImpl<FluentT, FluentImplT> {
 
     private AppServicePlanImpl appServicePlan;
 

@@ -103,15 +103,7 @@ public interface WebApp extends
          */
         interface WithCreate extends
             Creatable<WebApp>,
-            GroupableResource.DefinitionWithTags<WithCreate>,
-            WebAppBase.DefinitionStages.WithCreate<WebApp>,
-            WebAppBase.DefinitionStages.WithSiteEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithScmSiteAlsoStopped<WithCreate>,
-            WebAppBase.DefinitionStages.WithClientAffinityEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithClientCertEnabled<WithCreate>,
-            WebAppBase.DefinitionStages.WithSiteConfigs<WithCreate>,
-            WebAppBase.DefinitionStages.WithAppSettings<WithCreate>,
-            WebAppBase.DefinitionStages.WithConnectionString<WithCreate> {
+            WebAppBase.DefinitionStages.WithCreate<WebApp> {
         }
     }
 
@@ -162,15 +154,7 @@ public interface WebApp extends
      */
     interface Update extends
         Appliable<WebApp>,
-        GroupableResource.UpdateWithTags<Update>,
         UpdateStages.WithAppServicePlan,
-        WebAppBase.Update<WebApp>,
-        WebAppBase.UpdateStages.WithClientAffinityEnabled<Update>,
-        WebAppBase.UpdateStages.WithClientCertEnabled<Update>,
-        WebAppBase.UpdateStages.WithScmSiteAlsoStopped<Update>,
-        WebAppBase.UpdateStages.WithSiteEnabled<Update>,
-        WebAppBase.UpdateStages.WithSiteConfigs<Update>,
-        WebAppBase.UpdateStages.WithAppSettings<Update>,
-        WebAppBase.UpdateStages.WithConnectionString<Update> {
+        WebAppBase.Update<WebApp> {
     }
 }

@@ -304,8 +304,18 @@ public interface WebAppBase extends
     void resetSlotConfigurations();
 
     /**************************************************************
-     * Fluent interfaces to provision a Web App or deployment slot
+     * Fluent interfaces to provision a Web App or deployment slot.
      **************************************************************/
+
+    /**
+     * The entirety of the web app base definition.
+     *
+     * @param <FluentT> the type of the resource
+     */
+    interface Definition<FluentT> extends
+            DefinitionStages.WithWebContainer<FluentT>,
+            DefinitionStages.WithCreate<FluentT> {
+    }
 
     /**
      * Grouping of all the site definition stages.
@@ -357,198 +367,198 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing disabling the web app upon creation.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithSiteEnabled<FluentWithCreateT> {
+        interface WithSiteEnabled<FluentT> {
             /**
              * Disables the web app upon creation.
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withAppDisabledOnCreation();
+            WithCreate<FluentT> withAppDisabledOnCreation();
         }
 
         /**
          * A web app definition stage allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithScmSiteAlsoStopped<FluentWithCreateT> {
+        interface WithScmSiteAlsoStopped<FluentT> {
             /**
              * Specifies if SCM site is also stopped when the web app is stopped.
              * @param scmSiteAlsoStopped true if SCM site is also stopped
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
+            WithCreate<FluentT> withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
         }
 
         /**
          * A web app definition stage allowing setting if client affinity is enabled.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithClientAffinityEnabled<FluentWithCreateT> {
+        interface WithClientAffinityEnabled<FluentT> {
             /**
              * Specifies if client affinity is enabled.
              * @param enabled true if client affinity is enabled
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withClientAffinityEnabled(boolean enabled);
+            WithCreate<FluentT> withClientAffinityEnabled(boolean enabled);
         }
 
         /**
          * A web app definition stage allowing setting if client cert is enabled.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithClientCertEnabled<FluentWithCreateT> {
+        interface WithClientCertEnabled<FluentT> {
             /**
              * Specifies if client cert is enabled.
              * @param enabled true if client cert is enabled
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withClientCertEnabled(boolean enabled);
+            WithCreate<FluentT> withClientCertEnabled(boolean enabled);
         }
 
         /**
          * A web app definition stage allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithWebContainer<FluentWithCreateT> {
+        interface WithWebContainer<FluentT> {
             /**
              * Specifies the Java web container.
              * @param webContainer the Java web container
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withWebContainer(WebContainer webContainer);
+            WithCreate<FluentT> withWebContainer(WebContainer webContainer);
         }
 
         /**
          * A web app definition stage allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithSiteConfigs<FluentWithCreateT> {
+        interface WithSiteConfigs<FluentT> {
             /**
              * Specifies the .NET Framework version.
              * @param version the .NET Framework version
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withNetFrameworkVersion(NetFrameworkVersion version);
+            WithCreate<FluentT> withNetFrameworkVersion(NetFrameworkVersion version);
 
             /**
              * Specifies the PHP version.
              * @param version the PHP version
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withPhpVersion(PhpVersion version);
+            WithCreate<FluentT> withPhpVersion(PhpVersion version);
 
             /**
              * Turn off PHP support.
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withoutPhp();
+            WithCreate<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.
              * @param version the Java version
              * @return the next stage of the web app definition
              */
-            WithWebContainer<FluentWithCreateT> withJavaVersion(JavaVersion version);
+            WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
              * Specifies the Python version.
              * @param version the Python version
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withPythonVersion(PythonVersion version);
+            WithCreate<FluentT> withPythonVersion(PythonVersion version);
 
             /**
              * Specifies the platform architecture to use.
              * @param platform the platform architecture
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withPlatformArchitecture(PlatformArchitecture platform);
+            WithCreate<FluentT> withPlatformArchitecture(PlatformArchitecture platform);
 
             /**
              * Specifies if web sockets are enabled.
              * @param enabled true if web sockets are enabled
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withWebSocketsEnabled(boolean enabled);
+            WithCreate<FluentT> withWebSocketsEnabled(boolean enabled);
 
             /**
              * Specifies if the VM powering the web app is always powered on.
              * @param alwaysOn true if the web app is always powered on
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withWebAppAlwaysOn(boolean alwaysOn);
+            WithCreate<FluentT> withWebAppAlwaysOn(boolean alwaysOn);
 
             /**
              * Specifies the managed pipeline mode.
              * @param managedPipelineMode managed pipeline mode
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
+            WithCreate<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
 
             /**
              * Specifies the slot name to auto-swap when a deployment is completed in this web app / deployment slot.
              * @param slotName the name of the slot, or 'production', to auto-swap
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withAutoSwapSlotName(String slotName);
+            WithCreate<FluentT> withAutoSwapSlotName(String slotName);
 
             /**
              * Specifies the Visual Studio version for remote debugging.
              * @param remoteVisualStudioVersion the Visual Studio version for remote debugging
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
+            WithCreate<FluentT> withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
 
             /**
              * Disables remote debugging.
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withRemoteDebuggingDisabled();
+            WithCreate<FluentT> withRemoteDebuggingDisabled();
 
             /**
              * Adds a default document.
              * @param document default document
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withDefaultDocument(String document);
+            WithCreate<FluentT> withDefaultDocument(String document);
 
             /**
              * Adds a list of default documents.
              * @param documents list of default documents
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withDefaultDocuments(List<String> documents);
+            WithCreate<FluentT> withDefaultDocuments(List<String> documents);
 
             /**
              * Removes a default document.
              * @param document default document to remove
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withoutDefaultDocument(String document);
+            WithCreate<FluentT> withoutDefaultDocument(String document);
         }
 
         /**
          * A web app definition stage allowing app settings to be set.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithAppSettings<FluentWithCreateT> {
+        interface WithAppSettings<FluentT> {
             /**
              * Adds an app setting to the web app.
              * @param key the key for the app setting
              * @param value the value for the app setting
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withAppSetting(String key, String value);
+            WithCreate<FluentT> withAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}.
              * @param settings a {@link Map} of app settings
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withAppSettings(Map<String, String> settings);
+            WithCreate<FluentT> withAppSettings(Map<String, String> settings);
 
             /**
              * Adds an app setting to the web app. This app setting will be swapped
@@ -557,7 +567,7 @@ public interface WebAppBase extends
              * @param value the value for the app setting
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withStickyAppSetting(String key, String value);
+            WithCreate<FluentT> withStickyAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}. These app settings will be swapped
@@ -565,14 +575,14 @@ public interface WebAppBase extends
              * @param settings a {@link Map} of app settings
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withStickyAppSettings(Map<String, String> settings);
+            WithCreate<FluentT> withStickyAppSettings(Map<String, String> settings);
         }
 
         /**
          * A web app definition stage allowing connection strings to be set.
-         * @param <FluentWithCreateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithConnectionString<FluentWithCreateT> {
+        interface WithConnectionString<FluentT> {
             /**
              * Adds a connection string to the web app.
              * @param name the name of the connection string
@@ -580,7 +590,7 @@ public interface WebAppBase extends
              * @param type the connection string type
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withConnectionString(String name, String value, ConnectionStringType type);
+            WithCreate<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
 
             /**
              * Adds a connection string to the web app. This connection string will be swapped
@@ -590,7 +600,7 @@ public interface WebAppBase extends
              * @param type the connection string type
              * @return the next stage of the web app definition
              */
-            FluentWithCreateT withStickyConnectionString(String name, String value, ConnectionStringType type);
+            WithCreate<FluentT> withStickyConnectionString(String name, String value, ConnectionStringType type);
         }
 
         /**
@@ -620,6 +630,13 @@ public interface WebAppBase extends
          */
         interface WithCreate<FluentT> extends
             Creatable<FluentT>,
+            GroupableResource.DefinitionWithTags<WithCreate<FluentT>>,
+            WithClientAffinityEnabled<FluentT>,
+            WithClientCertEnabled<FluentT>,
+            WithScmSiteAlsoStopped<FluentT>,
+            WithSiteConfigs<FluentT>,
+            WithAppSettings<FluentT>,
+            WithConnectionString<FluentT>,
             WithSourceControl<FluentT>,
             WithHostNameBinding<FluentT>,
             WithHostNameSslBinding<FluentT> {
@@ -690,204 +707,204 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing disabling the web app upon creation.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithSiteEnabled<UpdateT> {
+        interface WithSiteEnabled<FluentT> {
             /**
              * Disables the web app upon creation.
              * @return the next stage of web app update
              */
-            UpdateT withAppDisabledOnCreation();
+            Update<FluentT> withAppDisabledOnCreation();
         }
 
         /**
          * The stage of the web app update allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithScmSiteAlsoStopped<UpdateT> {
+        interface WithScmSiteAlsoStopped<FluentT> {
             /**
              * Specifies if SCM site is also stopped when the web app is stopped.
              * @param scmSiteAlsoStopped true if SCM site is also stopped
              * @return the next stage of web app update
              */
-            UpdateT withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
+            Update<FluentT> withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
         }
 
         /**
          * The stage of the web app update allowing setting if client affinity is enabled.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithClientAffinityEnabled<UpdateT> {
+        interface WithClientAffinityEnabled<FluentT> {
             /**
              * Specifies if client affinity is enabled.
              * @param enabled true if client affinity is enabled
              * @return the next stage of web app update
              */
-            UpdateT withClientAffinityEnabled(boolean enabled);
+            Update<FluentT> withClientAffinityEnabled(boolean enabled);
         }
 
         /**
          * The stage of the web app update allowing setting if client cert is enabled.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithClientCertEnabled<UpdateT> {
+        interface WithClientCertEnabled<FluentT> {
             /**
              * Specifies if client cert is enabled.
              * @param enabled true if client cert is enabled
              * @return the next stage of web app update
              */
-            UpdateT withClientCertEnabled(boolean enabled);
+            Update<FluentT> withClientCertEnabled(boolean enabled);
         }
 
         /**
          * The stage of the web app update allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithWebContainer<UpdateT> {
+        interface WithWebContainer<FluentT> {
             /**
              * Specifies the Java web container.
              * @param webContainer the Java web container
              * @return the next stage of the web app update
              */
-            UpdateT withWebContainer(WebContainer webContainer);
+            Update<FluentT> withWebContainer(WebContainer webContainer);
         }
 
         /**
          * The stage of the web app update allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithSiteConfigs<UpdateT> {
+        interface WithSiteConfigs<FluentT> {
             /**
              * Specifies the .NET Framework version.
              * @param version the .NET Framework version
              * @return the next stage of web app update
              */
-            UpdateT withNetFrameworkVersion(NetFrameworkVersion version);
+            Update<FluentT> withNetFrameworkVersion(NetFrameworkVersion version);
 
             /**
              * Specifies the PHP version.
              * @param version the PHP version
              * @return the next stage of web app update
              */
-            UpdateT withPhpVersion(PhpVersion version);
+            Update<FluentT> withPhpVersion(PhpVersion version);
 
             /**
              * Specifies the Java version.
              * @param version the Java version
              * @return the next stage of web app update
              */
-            WithWebContainer<UpdateT> withJavaVersion(JavaVersion version);
+            WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
              * Turn off Java support.
              * @return the next stage of web app update
              */
-            UpdateT withoutJava();
+            Update<FluentT> withoutJava();
 
             /**
              * Specifies the Python version.
              * @param version the Python version
              * @return the next stage of web app update
              */
-            UpdateT withPythonVersion(PythonVersion version);
+            Update<FluentT> withPythonVersion(PythonVersion version);
 
             /**
              * Turn off Python support.
              * @return the next stage of web app update
              */
-            UpdateT withoutPython();
+            Update<FluentT> withoutPython();
 
             /**
              * Specifies the platform architecture to use.
              * @param platform the platform architecture
              * @return the next stage of web app update
              */
-            UpdateT withPlatformArchitecture(PlatformArchitecture platform);
+            Update<FluentT> withPlatformArchitecture(PlatformArchitecture platform);
 
             /**
              * Specifies if web sockets are enabled.
              * @param enabled true if web sockets are enabled
              * @return the next stage of web app update
              */
-            UpdateT withWebSocketsEnabled(boolean enabled);
+            Update<FluentT> withWebSocketsEnabled(boolean enabled);
 
             /**
              * Specifies if the VM powering the web app is always powered on.
              * @param alwaysOn true if the web app is always powered on
              * @return the next stage of web app update
              */
-            UpdateT withWebAppAlwaysOn(boolean alwaysOn);
+            Update<FluentT> withWebAppAlwaysOn(boolean alwaysOn);
 
             /**
              * Specifies the managed pipeline mode.
              * @param managedPipelineMode managed pipeline mode
              * @return the next stage of web app update
              */
-            UpdateT withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
+            Update<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
 
             /**
              * Specifies the slot name to auto-swap when a deployment is completed in this web app / deployment slot.
              * @param slotName the name of the slot, or 'production', to auto-swap
              * @return the next stage of web app update
              */
-            UpdateT withAutoSwapSlotName(String slotName);
+            Update<FluentT> withAutoSwapSlotName(String slotName);
 
             /**
              * Specifies the Visual Studio version for remote debugging.
              * @param remoteVisualStudioVersion the Visual Studio version for remote debugging
              * @return the next stage of web app update
              */
-            UpdateT withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
+            Update<FluentT> withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
 
             /**
              * Disables remote debugging.
              * @return the next stage of web app update
              */
-            UpdateT withRemoteDebuggingDisabled();
+            Update<FluentT> withRemoteDebuggingDisabled();
 
             /**
              * Adds a default document.
              * @param document default document
              * @return the next stage of web app update
              */
-            UpdateT withDefaultDocument(String document);
+            Update<FluentT> withDefaultDocument(String document);
 
             /**
              * Adds a list of default documents.
              * @param documents list of default documents
              * @return the next stage of web app update
              */
-            UpdateT withDefaultDocuments(List<String> documents);
+            Update<FluentT> withDefaultDocuments(List<String> documents);
 
             /**
              * Removes a default document.
              * @param document default document to remove
              * @return the next stage of web app update
              */
-            UpdateT withoutDefaultDocument(String document);
+            Update<FluentT> withoutDefaultDocument(String document);
         }
 
         /**
          * A web app update stage allowing app settings to be set.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithAppSettings<UpdateT> {
+        interface WithAppSettings<FluentT> {
             /**
              * Adds an app setting to the web app.
              * @param key the key for the app setting
              * @param value the value for the app setting
              * @return the next stage of the web app update
              */
-            UpdateT withAppSetting(String key, String value);
+            Update<FluentT> withAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}.
              * @param settings a {@link Map} of app settings
              * @return the next stage of the web app update
              */
-            UpdateT withAppSettings(Map<String, String> settings);
+            Update<FluentT> withAppSettings(Map<String, String> settings);
 
             /**
              * Adds an app setting to the web app. This app setting
@@ -896,7 +913,7 @@ public interface WebAppBase extends
              * @param value the value for the app setting
              * @return the next stage of the web app update
              */
-            UpdateT withStickyAppSetting(String key, String value);
+            Update<FluentT> withStickyAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}. These app settings
@@ -904,14 +921,14 @@ public interface WebAppBase extends
              * @param settings a {@link Map} of app settings
              * @return the next stage of the web app update
              */
-            UpdateT withStickyAppSettings(Map<String, String> settings);
+            Update<FluentT> withStickyAppSettings(Map<String, String> settings);
 
             /**
              * Removes an app setting from the web app.
              * @param key the key of the app setting to remove
              * @return the next stage of the web app update
              */
-            UpdateT withoutAppSetting(String key);
+            Update<FluentT> withoutAppSetting(String key);
 
             /**
              * Changes the stickiness of an app setting.
@@ -919,14 +936,14 @@ public interface WebAppBase extends
              * @param sticky true if the app setting sticks to the slot during a swap
              * @return the next stage of the web app update
              */
-            UpdateT withAppSettingStickiness(String key, boolean sticky);
+            Update<FluentT> withAppSettingStickiness(String key, boolean sticky);
         }
 
         /**
          * A web app update stage allowing connection strings to be set.
-         * @param <UpdateT> the type of the resource
+         * @param <FluentT> the type of the resource
          */
-        interface WithConnectionString<UpdateT> {
+        interface WithConnectionString<FluentT> {
             /**
              * Adds a connection string to the web app.
              * @param name the name of the connection string
@@ -934,7 +951,7 @@ public interface WebAppBase extends
              * @param type the connection string type
              * @return the next stage of the web app update
              */
-            UpdateT withConnectionString(String name, String value, ConnectionStringType type);
+            Update<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
 
             /**
              * Adds a connection string to the web app. This connection string
@@ -944,14 +961,14 @@ public interface WebAppBase extends
              * @param type the connection string type
              * @return the next stage of the web app update
              */
-            UpdateT withStickyConnectionString(String name, String value, ConnectionStringType type);
+            Update<FluentT> withStickyConnectionString(String name, String value, ConnectionStringType type);
 
             /**
              * Removes a connection string from the web app.
              * @param name the name of the connection string
              * @return the next stage of the web app update
              */
-            UpdateT withoutConnectionString(String name);
+            Update<FluentT> withoutConnectionString(String name);
 
             /**
              * Changes the stickiness of a connection string.
@@ -959,7 +976,7 @@ public interface WebAppBase extends
              * @param sticky true if the connection string sticks to the slot during a swap
              * @return the next stage of the web app update
              */
-            UpdateT withConnectionStringStickiness(String name, boolean sticky);
+            Update<FluentT> withConnectionStringStickiness(String name, boolean sticky);
         }
 
         /**
@@ -995,6 +1012,13 @@ public interface WebAppBase extends
      */
     interface Update<FluentT> extends
         Appliable<FluentT>,
+        GroupableResource.UpdateWithTags<Update<FluentT>>,
+        UpdateStages.WithClientAffinityEnabled<FluentT>,
+        UpdateStages.WithClientCertEnabled<FluentT>,
+        UpdateStages.WithScmSiteAlsoStopped<FluentT>,
+        UpdateStages.WithSiteConfigs<FluentT>,
+        UpdateStages.WithAppSettings<FluentT>,
+        UpdateStages.WithConnectionString<FluentT>,
         UpdateStages.WithSourceControl<FluentT>,
         UpdateStages.WithHostNameBinding<FluentT>,
         UpdateStages.WithHostNameSslBinding<FluentT> {

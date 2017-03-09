@@ -16,7 +16,6 @@ import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -34,13 +33,11 @@ import java.util.Map;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotImpl
-        extends WebAppBaseImpl<DeploymentSlot, DeploymentSlotImpl, DeploymentSlot.DefinitionStages.WithCreate, DeploymentSlot.Update>
+        extends WebAppBaseImpl<DeploymentSlot, DeploymentSlotImpl>
         implements
             DeploymentSlot,
             DeploymentSlot.Definition,
-            DeploymentSlot.Update,
-            WebAppBase.DefinitionStages.WithWebContainer<DeploymentSlot.DefinitionStages.WithCreate>,
-            WebAppBase.UpdateStages.WithWebContainer<DeploymentSlot.Update> {
+            DeploymentSlot.Update {
     private final WebAppImpl parent;
     private final String name;
 

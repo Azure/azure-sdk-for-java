@@ -11,7 +11,6 @@ import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.management.appservice.SkuDescription;
-import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -32,9 +31,7 @@ class FunctionAppImpl
         FunctionApp,
         FunctionApp.Definition,
         FunctionApp.Update,
-        FunctionApp.UpdateStages.WithNewAppServicePlan,
-        WebAppBase.DefinitionStages.WithWebContainer<FunctionApp.DefinitionStages.WithCreate>,
-        WebAppBase.UpdateStages.WithWebContainer<FunctionApp.Update> {
+        FunctionApp.UpdateStages.WithNewAppServicePlan {
 
     private Creatable<StorageAccount> storageAccountCreatable;
     private StorageAccount storageAccountToSet;

@@ -54,15 +54,11 @@ import java.util.Set;
  * The implementation for WebAppBase.
  * @param <FluentT> the fluent interface of the web app or deployment slot or function app
  * @param <FluentImplT> the fluent implementation of the web app or deployment slot or function app
- * @param <FluentWithCreateT> the definition stage that derives from Creatable
- * @param <FluentUpdateT> The definition stage that derives from Appliable
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class WebAppBaseImpl<
         FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
-        FluentWithCreateT,
-        FluentUpdateT>
+        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
         extends GroupableResourceImpl<
             FluentT,
             SiteInner,
@@ -70,8 +66,9 @@ abstract class WebAppBaseImpl<
             AppServiceManager>
         implements
             WebAppBase,
-            WebAppBase.DefinitionStages.WithCreate<FluentT>,
-            WebAppBase.Update<FluentT> {
+            WebAppBase.Definition<FluentT>,
+            WebAppBase.Update<FluentT>,
+            WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
     private Map<String, AppSetting> cachedAppSettings;
     private Map<String, ConnectionString> cachedConnectionStrings;
@@ -744,7 +741,7 @@ abstract class WebAppBaseImpl<
         });
     }
 
-    WebAppBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
+    WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
         if (hostNameSslBinding.newCertificate() != null) {
             sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         }

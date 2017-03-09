@@ -21,17 +21,17 @@ import rx.Observable;
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppSourceControlImpl<
         FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT, ?, ?>>
+        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteSourceControlInner>
     implements
         WebAppSourceControl,
         WebAppSourceControl.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
-    private final WebAppBaseImpl<FluentT, FluentImplT, ?, ?> parent;
+    private final WebAppBaseImpl<FluentT, FluentImplT> parent;
     private String githubAccessToken;
 
-    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT, ?, ?> parent) {
+    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent) {
         super(inner);
         this.parent = parent;
     }
