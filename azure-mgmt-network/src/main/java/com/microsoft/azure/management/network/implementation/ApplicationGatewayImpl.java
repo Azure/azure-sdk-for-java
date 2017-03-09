@@ -1243,22 +1243,34 @@ class ApplicationGatewayImpl
     @Override
     public void start() {
         this.startAsync().await();
-        this.refresh();
     }
 
     @Override
     public void stop() {
         this.stopAsync().await();
-        this.refresh();
     }
 
     @Override
     public Completable startAsync() {
-        return this.manager().inner().applicationGateways().startAsync(this.resourceGroupName(), this.name()).toCompletable();
+        return this.manager().inner().applicationGateways().startAsync(
+                this.resourceGroupName(), this.name()).flatMap(
+                        new Func1<Void, Observable<ApplicationGateway>>() {
+                            @Override
+                            public Observable<ApplicationGateway> call(Void aVoid) {
+                                return refreshAsync();
+                            }
+                        }).toCompletable();
     }
 
     @Override
     public Completable stopAsync() {
-        return this.manager().inner().applicationGateways().stopAsync(this.resourceGroupName(),  this.name()).toCompletable();
+        return this.manager().inner().applicationGateways().stopAsync(
+                this.resourceGroupName(), this.name()).flatMap(
+                        new Func1<Void, Observable<ApplicationGateway>>() {
+                            @Override
+                            public Observable<ApplicationGateway> call(Void aVoid) {
+                                return refreshAsync();
+                            }
+                        }).toCompletable();
     }
 }
