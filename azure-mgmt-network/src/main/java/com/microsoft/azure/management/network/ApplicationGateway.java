@@ -21,6 +21,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import rx.Completable;
+
 /**
  * Entry point for application gateway management API in Azure.
  */
@@ -31,6 +33,29 @@ public interface ApplicationGateway extends
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
         HasPrivateIPAddress {
+
+    // Actions
+    /**
+     * Starts the application gateway.
+     */
+    void start();
+
+    /**
+     * Stops the application gateway.
+     */
+    void stop();
+
+    /**
+     * Starts the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
+     * Stops the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopAsync();
 
     // Getters
 
