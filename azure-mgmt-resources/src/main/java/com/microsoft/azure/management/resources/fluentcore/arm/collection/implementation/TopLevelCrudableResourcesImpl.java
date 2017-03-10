@@ -5,8 +5,14 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,6 +25,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.InnerSuppo
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
+
 import rx.Completable;
 import rx.Observable;
 
@@ -35,7 +43,7 @@ public abstract class TopLevelCrudableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,
         ImplT extends T,
         InnerT extends Resource,
-        InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete,
+        InnerCollectionT extends InnerSupportsListing<InnerT> & InnerSupportsGet<InnerT> & InnerSupportsDelete<?>,
         ManagerT extends ManagerBase>
     extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
     implements
@@ -45,7 +53,8 @@ public abstract class TopLevelCrudableResourcesImpl<
         HasManager<ManagerT>,
         HasInner<InnerCollectionT>,
         SupportsListingAsync<T>,
-        SupportsListingByGroupAsync<T> {
+        SupportsListingByGroupAsync<T>,
+        SupportsBatchDeletion {
 
     protected TopLevelCrudableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
@@ -59,6 +68,38 @@ public abstract class TopLevelCrudableResourcesImpl<
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         return inner().deleteAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(String...ids) {
+        return this.deleteByIdsAsync(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(Collection<String> ids) {
+        if (ids == null) {
+            return null;
+        }
+
+        Collection<Observable<String>> observables = new ArrayList<>();
+        for (String id : ids) {
+            final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+            final String name = ResourceUtils.nameFromResourceId(id);
+            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o);
+        }
+
+        return Observable.mergeDelayError(observables);
+    }
+
+    @Override
+    public void deleteByIds(String...ids) {
+        this.deleteByIds(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public void deleteByIds(Collection<String> ids) {
+        this.deleteByIdsAsync(ids).toBlocking().last();
     }
 
     @Override
