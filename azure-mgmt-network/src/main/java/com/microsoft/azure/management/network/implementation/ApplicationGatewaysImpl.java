@@ -72,7 +72,7 @@ class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return;
         }
-        this.stopAsync(applicationGatewayResourceIds);
+        this.stopAsync(applicationGatewayResourceIds).toBlocking().last();
     }
 
     @Override
