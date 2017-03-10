@@ -101,7 +101,7 @@ public interface Subscription extends
     /**
      * @return entry point to manage authorization rules for the service bus topic subscription
      */
-    AuthorizationRules authorizationRules();
+    SubscriptionAuthorizationRules authorizationRules();
 
     /**
      * The entirety of the subscription definition.

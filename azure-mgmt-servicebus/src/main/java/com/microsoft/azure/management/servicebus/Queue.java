@@ -121,7 +121,7 @@ public interface Queue extends
     /**
      * @return entry point to manage authorization rules for the service bus queue
      */
-    AuthorizationRules authorizationRules();
+    QueueAuthorizationRules authorizationRules();
 
     /**
      * The entirety of the queue definition.

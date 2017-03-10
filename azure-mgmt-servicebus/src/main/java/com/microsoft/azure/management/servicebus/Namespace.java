@@ -56,7 +56,7 @@ public interface Namespace extends
     /**
      * @return entry point to manage authorization rules for the service bus namespace
      */
-    AuthorizationRules authorizationRules();
+    NamespaceAuthorizationRules authorizationRules();
 
     /**
      * The entirety of the service bus namespace definition.

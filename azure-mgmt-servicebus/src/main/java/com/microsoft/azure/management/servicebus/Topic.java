@@ -114,7 +114,7 @@ public interface Topic extends
     /**
      * @return entry point to manage authorization rules for the service bus topic
      */
-    AuthorizationRules authorizationRules();
+    TopicAuthorizationRules TopicAuthorizationRules();
 
     /**
      * The entirety of the topic definition.
