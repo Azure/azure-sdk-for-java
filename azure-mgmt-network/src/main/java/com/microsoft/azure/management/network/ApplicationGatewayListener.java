@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an application gateway's HTTP listener.
  */
 @Fluent()
+@Beta
 public interface ApplicationGatewayListener extends
     HasInner<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway>,

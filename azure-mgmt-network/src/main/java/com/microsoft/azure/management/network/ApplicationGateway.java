@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
@@ -27,6 +28,7 @@ import rx.Completable;
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
+@Beta
 public interface ApplicationGateway extends
         GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,

@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a private frontend of an internal load balancer.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerPrivateFrontend extends
     LoadBalancerFrontend,
     HasPrivateIPAddress,
