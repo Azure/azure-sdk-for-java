@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.io.File;
 import java.io.IOException;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaySslCertificateInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an application gateway SSL certificate.
  */
 @Fluent()
+@Beta()
 public interface ApplicationGatewaySslCertificate extends
     HasInner<ApplicationGatewaySslCertificateInner>,
     ChildResource<ApplicationGateway> {

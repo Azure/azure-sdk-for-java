@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an application gateway backend.
  */
 @Fluent()
+@Beta
 public interface ApplicationGatewayBackend extends
     HasInner<ApplicationGatewayBackendAddressPoolInner>,
     ChildResource<ApplicationGateway>,
