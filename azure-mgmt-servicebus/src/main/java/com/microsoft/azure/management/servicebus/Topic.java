@@ -8,8 +8,9 @@ package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
@@ -22,9 +23,10 @@ import org.joda.time.Period;
  */
 @Fluent
 public interface Topic extends
-        IndependentChildResource<ServiceBusManager, TopicResourceInner>,
-    Refreshable<Topic>,
-    Updatable<Topic.Update> {
+        IndependentChild<ServiceBusManager>,
+        Refreshable<Topic>,
+        Updatable<Topic.Update>,
+        HasInner<TopicResourceInner> {
 
     /**
      * @return the exact time the topic was created.
