@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
-import java.util.List;
 import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
+import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
+
+import java.util.List;
 
 /**
  * Configuration settings for the Azure App Service Authentication /

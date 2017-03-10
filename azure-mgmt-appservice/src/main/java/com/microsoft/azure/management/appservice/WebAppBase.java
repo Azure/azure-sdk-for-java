@@ -623,6 +623,18 @@ public interface WebAppBase extends
         }
 
         /**
+         * A web app definition stage allowing authentication to be set.
+         * @param <FluentT> the type of the resource
+         */
+        interface WithAuthentication<FluentT> {
+            /**
+             * Specifies the definition of a new authentication configuration.
+             * @return the first stage of an authentication definition
+             */
+            WebAppAuthentication.DefinitionStages.Blank<WithCreate<FluentT>> defineAuthentication();
+        }
+
+        /**
          * A site definition with sufficient inputs to create a new web app /
          * deployments slot in the cloud, but exposing additional optional
          * inputs to specify.
@@ -639,7 +651,8 @@ public interface WebAppBase extends
             WithConnectionString<FluentT>,
             WithSourceControl<FluentT>,
             WithHostNameBinding<FluentT>,
-            WithHostNameSslBinding<FluentT> {
+            WithHostNameSslBinding<FluentT>,
+            WithAuthentication<FluentT> {
         }
     }
 
@@ -1004,6 +1017,30 @@ public interface WebAppBase extends
             Update<FluentT> withLocalGitSourceControl();
 
         }
+
+        /**
+         * A web app definition stage allowing authentication to be set.
+         * @param <FluentT> the type of the resource
+         */
+        interface WithAuthentication<FluentT> {
+            /**
+             * Specifies the definition of a new authentication configuration.
+             * @return the first stage of an authentication definition
+             */
+            WebAppAuthentication.UpdateDefinitionStages.Blank<Update<FluentT>> defineAuthentication();
+
+            /**
+             * Updates the authentication configuration of the web app.
+             * @return the first stage of an authentication update
+             */
+            WebAppAuthentication.Update<Update<FluentT>> updateAuthentication();
+
+            /**
+             * Turns off the authentication on the web app.
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withoutAuthentication();
+        }
     }
 
     /**
@@ -1021,6 +1058,7 @@ public interface WebAppBase extends
         UpdateStages.WithConnectionString<FluentT>,
         UpdateStages.WithSourceControl<FluentT>,
         UpdateStages.WithHostNameBinding<FluentT>,
-        UpdateStages.WithHostNameSslBinding<FluentT> {
+        UpdateStages.WithHostNameSslBinding<FluentT>,
+        UpdateStages.WithAuthentication<FluentT> {
     }
 }

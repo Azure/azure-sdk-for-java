@@ -89,6 +89,7 @@ abstract class WebAppBaseImpl<
     private List<String> connectionStringsToRemove;
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
+    private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
     private boolean sourceControlToDelete;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
@@ -437,6 +438,8 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<Void> deleteSourceControl();
 
+    abstract Observable<SiteAuthSettingsInner> createOrUpdateAuthentication(SiteAuthSettingsInner inner);
+
     @Override
     public Observable<FluentT> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
@@ -739,6 +742,10 @@ abstract class WebAppBaseImpl<
                 return site;
             }
         });
+    }
+
+    Observable<SiteInner> submitAuthentication(final SiteInner site) {
+
     }
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
@@ -1100,7 +1107,14 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
+    @SuppressWarnings("unchecked")
+    FluentImplT withAuthentication(WebAppAuthenticationImpl<FluentT, FluentImplT> authentication) {
+        this.authentication = authentication;
+        return (FluentImplT) this;
+    }
+
     @Override
+    @SuppressWarnings("unchecked")
     public Observable<FluentT> refreshAsync() {
         return super.refreshAsync().flatMap(new Func1<FluentT, Observable<FluentT>>() {
             @Override
@@ -1121,5 +1135,20 @@ abstract class WebAppBaseImpl<
     @Override
     protected Observable<SiteInner> getInnerAsync() {
         return getInner();
+    }
+
+    @Override
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> defineAuthentication() {
+        return new WebAppAuthenticationImpl<>(new SiteAuthSettingsInner(), this);
+    }
+
+    @Override
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> updateAuthentication() {
+        return null;
+    }
+
+    @Override
+    public FluentImplT withoutAuthentication() {
+        return null;
     }
 }
