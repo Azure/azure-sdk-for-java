@@ -39,7 +39,7 @@ import rx.Observable;
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
  */
-public abstract class TopLevelCrudableResourcesImpl<
+public abstract class TopLevelModifiableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,
         ImplT extends T,
         InnerT extends Resource,
@@ -56,7 +56,7 @@ public abstract class TopLevelCrudableResourcesImpl<
         SupportsListingByGroupAsync<T>,
         SupportsBatchDeletion {
 
-    protected TopLevelCrudableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
+    protected TopLevelModifiableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
     }
 

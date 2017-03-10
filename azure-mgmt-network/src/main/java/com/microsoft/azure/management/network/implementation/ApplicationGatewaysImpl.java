@@ -14,7 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
 
 import rx.Observable;
@@ -24,7 +24,7 @@ import rx.Observable;
  */
 @LangDefinition
 class ApplicationGatewaysImpl
-        extends TopLevelCrudableResourcesImpl<
+        extends TopLevelModifiableResourcesImpl<
             ApplicationGateway,
             ApplicationGatewayImpl,
             ApplicationGatewayInner,

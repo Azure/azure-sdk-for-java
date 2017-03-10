@@ -12,6 +12,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Observable;
@@ -154,6 +156,16 @@ public class GroupPagedListTests {
 
             @Override
             public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
+                return null;
+            }
+
+            @Override
+            public Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
+                return null;
+            }
+
+            @Override
+            public ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback) {
                 return null;
             }
 

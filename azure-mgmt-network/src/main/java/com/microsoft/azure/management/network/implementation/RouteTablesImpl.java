@@ -8,19 +8,19 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.RouteTables;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  *  Implementation for RouteTables.
  */
 @LangDefinition
 class RouteTablesImpl
-        extends TopLevelCrudableResourcesImpl<
-                            RouteTable,
-                            RouteTableImpl,
-                            RouteTableInner,
-                            RouteTablesInner,
-                            NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                    RouteTable,
+                                    RouteTableImpl,
+                                    RouteTableInner,
+                                    RouteTablesInner,
+                                    NetworkManager>
         implements RouteTables {
 
     RouteTablesImpl(final NetworkManager networkManager) {

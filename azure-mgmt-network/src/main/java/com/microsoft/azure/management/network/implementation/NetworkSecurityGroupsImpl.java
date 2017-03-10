@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import rx.Completable;
 
 import java.util.Set;
@@ -19,12 +19,12 @@ import java.util.Set;
  */
 @LangDefinition
 class NetworkSecurityGroupsImpl
-        extends TopLevelCrudableResourcesImpl<
-                            NetworkSecurityGroup,
-                            NetworkSecurityGroupImpl,
-                            NetworkSecurityGroupInner,
-                            NetworkSecurityGroupsInner,
-                            NetworkManager>
+        extends TopLevelModifiableResourcesImpl<
+                                    NetworkSecurityGroup,
+                                    NetworkSecurityGroupImpl,
+                                    NetworkSecurityGroupInner,
+                                    NetworkSecurityGroupsInner,
+                                    NetworkManager>
         implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {

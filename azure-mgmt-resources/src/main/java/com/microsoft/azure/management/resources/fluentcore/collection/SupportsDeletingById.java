@@ -38,7 +38,7 @@ public interface SupportsDeletingById {
      * Asynchronously delete a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deleteByIdAsync(String id);
 }
