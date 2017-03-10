@@ -30,7 +30,7 @@ public final class RXMapper<T> implements Func1<Object, T> {
             return fromObservable.subscribeOn(Schedulers.io())
                     .map(new RXMapper<T>(toValue));
         } else {
-            return null;
+            return Observable.empty();
         }
     }
 
