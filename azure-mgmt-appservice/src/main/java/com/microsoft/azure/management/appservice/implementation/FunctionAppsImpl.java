@@ -37,7 +37,7 @@ class FunctionAppsImpl
             public FunctionApp typeConvert(SiteInner siteInner) {
                 siteInner.withSiteConfig(manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 FunctionAppImpl impl = wrapModel(siteInner);
-                return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                return impl.cacheSiteProperties().toBlocking().single();
             }
         };
     }
@@ -54,7 +54,7 @@ class FunctionAppsImpl
             return null;
         }
         siteInner.withSiteConfig(this.inner().getConfiguration(groupName, name));
-        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+        return wrapModel(siteInner).cacheSiteProperties().toBlocking().single();
     }
 
     @Override

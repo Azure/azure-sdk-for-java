@@ -38,7 +38,7 @@ class WebAppsImpl
             public WebApp typeConvert(SiteInner siteInner) {
                 siteInner.withSiteConfig(manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 WebAppImpl impl = wrapModel(siteInner);
-                return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                return impl.cacheSiteProperties().toBlocking().single();
             }
         };
     }
@@ -62,7 +62,7 @@ class WebAppsImpl
                     public Observable<WebApp> call(SiteConfigInner siteConfigInner) {
                         siteInner.withSiteConfig(siteConfigInner);
 
-                        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings();
+                        return wrapModel(siteInner).cacheSiteProperties();
                     }
                 });
             }

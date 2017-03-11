@@ -40,7 +40,7 @@ public interface WebAppAuthentication extends
          * The first stage of a web app authentication definition as part of a definition of a web app.
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface Blank<ParentT> extends WithAuthenticationProvider<ParentT> {
+        interface Blank<ParentT> extends WithDefaultAuthenticationProvider<ParentT> {
         }
 
         /**
@@ -131,7 +131,7 @@ public interface WebAppAuthentication extends
              * @param url the external redirect URL
              * @return the next stage of the web app authentication definition
              */
-            WithAttach<ParentT> withExternalRedirectUrl(String url);
+            WithAttach<ParentT> withAllowedExternalRedirectUrl(String url);
         }
 
         /** The final stage of the web app authentication definition.
@@ -168,7 +168,7 @@ public interface WebAppAuthentication extends
          * The first stage of a web app authentication definition as part of a definition of a web app.
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface Blank<ParentT> extends WithAuthenticationProvider<ParentT> {
+        interface Blank<ParentT> extends WithDefaultAuthenticationProvider<ParentT> {
         }
 
         /**
@@ -259,7 +259,7 @@ public interface WebAppAuthentication extends
              * @param url the external redirect URL
              * @return the next stage of the web app authentication definition
              */
-            WithAttach<ParentT> withExternalRedirectUrl(String url);
+            WithAttach<ParentT> withAllowedExternalRedirectUrl(String url);
         }
 
         /** The final stage of the web app authentication definition.
@@ -365,7 +365,7 @@ public interface WebAppAuthentication extends
              * @param url the external redirect URL
              * @return the next stage of the web app authentication update
              */
-            Update<ParentT> withExternalRedirectUrl(String url);
+            Update<ParentT> withAllowedExternalRedirectUrl(String url);
         }
     }
 

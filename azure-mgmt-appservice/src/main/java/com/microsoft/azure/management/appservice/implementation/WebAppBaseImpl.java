@@ -39,7 +39,8 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.Func3;
+import rx.functions.Func2;
+import rx.functions.Func4;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
@@ -89,8 +90,9 @@ abstract class WebAppBaseImpl<
     private List<String> connectionStringsToRemove;
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
-    private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
     private boolean sourceControlToDelete;
+    private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
+    private boolean authenticationToUpdate;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -110,6 +112,7 @@ abstract class WebAppBaseImpl<
         this.connectionStringStickiness = new HashMap<>();
         this.sourceControl = null;
         this.sourceControlToDelete = false;
+        this.authenticationToUpdate = false;
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -382,11 +385,19 @@ abstract class WebAppBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    Observable<FluentT> cacheAppSettingsAndConnectionStrings() {
+    Observable<FluentT> cacheSiteProperties() {
         final FluentT self = (FluentT) this;
-        return Observable.zip(listAppSettings(), listConnectionStrings(), listSlotConfigurations(), new Func3<StringDictionaryInner, ConnectionStringDictionaryInner, SlotConfigNamesResourceInner, FluentT>() {
+        return Observable.zip(
+                listAppSettings(),
+                listConnectionStrings(),
+                listSlotConfigurations(),
+                getAuthentication(),
+                new Func4<StringDictionaryInner, ConnectionStringDictionaryInner, SlotConfigNamesResourceInner, SiteAuthSettingsInner, FluentT>() {
             @Override
-            public FluentT call(final StringDictionaryInner appSettingsInner, final ConnectionStringDictionaryInner connectionStringsInner, final SlotConfigNamesResourceInner slotConfigs) {
+            public FluentT call(final StringDictionaryInner appSettingsInner,
+                                final ConnectionStringDictionaryInner connectionStringsInner,
+                                final SlotConfigNamesResourceInner slotConfigs,
+                                final SiteAuthSettingsInner siteAuth) {
                 cachedAppSettings = new HashMap<>();
                 cachedConnectionStrings = new HashMap<>();
                 if (appSettingsInner != null && appSettingsInner.properties() != null) {
@@ -407,6 +418,7 @@ abstract class WebAppBaseImpl<
                         }
                     });
                 }
+                authentication = new WebAppAuthenticationImpl<>(siteAuth, WebAppBaseImpl.this);
                 return self;
             }
         });
@@ -438,7 +450,9 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<Void> deleteSourceControl();
 
-    abstract Observable<SiteAuthSettingsInner> createOrUpdateAuthentication(SiteAuthSettingsInner inner);
+    abstract Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner);
+
+    abstract Observable<SiteAuthSettingsInner> getAuthentication();
 
     @Override
     public Observable<FluentT> createResourceAsync() {
@@ -474,18 +488,16 @@ abstract class WebAppBaseImpl<
                 return submitSiteConfig(inner, inner().siteConfig());
             }
         })
-        // app settings
+        // app settings and connection strings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                return submitAppSettings(inner);
-            }
-        })
-        // connection strings
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(final SiteInner inner) {
-                return submitConnectionStrings(inner);
+                return submitAppSettings(inner).zipWith(submitConnectionStrings(inner), new Func2<SiteInner, SiteInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(SiteInner siteInner, SiteInner siteInner2) {
+                        return inner;
+                    }
+                });
             }
         })
         // app setting & connection string stickiness
@@ -495,6 +507,13 @@ abstract class WebAppBaseImpl<
                 return submitStickiness(inner);
             }
         })
+        // delete source control
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSourceControlToDelete(inner);
+            }
+        })
         // create source control
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
@@ -502,11 +521,11 @@ abstract class WebAppBaseImpl<
                 return submitSourceControlToCreate(inner);
             }
         })
-        // delete source control
+        // authentication
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner inner) {
-                return submitSourceControlToDelete(inner);
+            public Observable<SiteInner> call(SiteInner inner) {
+                return submitAuthentication(inner);
             }
         })
         // convert from inner
@@ -519,7 +538,7 @@ abstract class WebAppBaseImpl<
         }).flatMap(new Func1<FluentT, Observable<FluentT>>() {
             @Override
             public Observable<FluentT> call(FluentT fluentT) {
-                return cacheAppSettingsAndConnectionStrings();
+                return cacheSiteProperties();
             }
         });
     }
@@ -745,7 +764,15 @@ abstract class WebAppBaseImpl<
     }
 
     Observable<SiteInner> submitAuthentication(final SiteInner site) {
-
+        if (!authenticationToUpdate) {
+            return Observable.just(site);
+        }
+        return updateAuthentication(authentication.inner()).map(new Func1<SiteAuthSettingsInner, SiteInner>() {
+            @Override
+            public SiteInner call(SiteAuthSettingsInner siteAuthSettingsInner) {
+                return site;
+            }
+        });
     }
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
@@ -1110,6 +1137,7 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     FluentImplT withAuthentication(WebAppAuthenticationImpl<FluentT, FluentImplT> authentication) {
         this.authentication = authentication;
+        authenticationToUpdate = true;
         return (FluentImplT) this;
     }
 
@@ -1125,7 +1153,7 @@ abstract class WebAppBaseImpl<
                         fluentT.inner().withSiteConfig(siteConfigInner);
                         final WebAppBaseImpl<FluentT, FluentImplT> impl = (WebAppBaseImpl<FluentT, FluentImplT>) fluentT;
 
-                        return impl.cacheAppSettingsAndConnectionStrings();
+                        return impl.cacheSiteProperties();
                     }
                 });
             }
@@ -1139,16 +1167,19 @@ abstract class WebAppBaseImpl<
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> defineAuthentication() {
-        return new WebAppAuthenticationImpl<>(new SiteAuthSettingsInner(), this);
+        return new WebAppAuthenticationImpl<>(new SiteAuthSettingsInner().withEnabled(true), this);
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> updateAuthentication() {
-        return null;
+        return authentication;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public FluentImplT withoutAuthentication() {
-        return null;
+        this.authentication.inner().withEnabled(false);
+        authenticationToUpdate = true;
+        return (FluentImplT) this;
     }
 }

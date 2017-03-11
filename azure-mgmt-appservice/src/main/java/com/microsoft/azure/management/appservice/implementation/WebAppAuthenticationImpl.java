@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import java.util.ArrayList;
 
 /**
- *  Implementation for WebAppSourceControl and its create and update interfaces.
+ *  Implementation for WebAppAuthentication and its create and update interfaces.
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
@@ -31,11 +31,11 @@ class WebAppAuthenticationImpl<
         WebAppAuthentication.Update<WebAppBase.Update<FluentT>> {
 
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
-    private String githubAccessToken;
 
     WebAppAuthenticationImpl(SiteAuthSettingsInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent) {
         super(inner);
         this.parent = parent;
+        inner.withTokenStoreEnabled(true);
     }
 
     @Override
@@ -99,7 +99,7 @@ class WebAppAuthenticationImpl<
     }
 
     @Override
-    public WebAppAuthenticationImpl<FluentT, FluentImplT> withExternalRedirectUrl(String url) {
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> withAllowedExternalRedirectUrl(String url) {
         if (inner().allowedExternalRedirectUrls() == null) {
             inner().withAllowedExternalRedirectUrls(new ArrayList<String>());
         }

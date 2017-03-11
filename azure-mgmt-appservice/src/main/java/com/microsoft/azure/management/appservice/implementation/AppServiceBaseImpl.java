@@ -124,6 +124,16 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
+    Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
+        return manager().inner().webApps().updateAuthSettingsAsync(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    Observable<SiteAuthSettingsInner> getAuthentication() {
+        return manager().inner().webApps().getAuthSettingsAsync(resourceGroupName(), name());
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, HostNameBinding> getHostNameBindings() {
         List<HostNameBindingInner> collectionInner = this.manager().inner().webApps().listHostNameBindings(resourceGroupName(), name());
