@@ -36,7 +36,7 @@ public class AutoscaleProfileInner {
      * scaling action. A maximum of 10 rules can be specified.
      */
     @JsonProperty(value = "rules", required = true)
-    private List<ScaleRule> rules;
+    private List<ScaleRuleInner> rules;
 
     /**
      * the specific date-time for the profile. This element is not used if the
@@ -97,7 +97,7 @@ public class AutoscaleProfileInner {
      *
      * @return the rules value
      */
-    public List<ScaleRule> rules() {
+    public List<ScaleRuleInner> rules() {
         return this.rules;
     }
 
@@ -107,7 +107,7 @@ public class AutoscaleProfileInner {
      * @param rules the rules value to set
      * @return the AutoscaleProfileInner object itself.
      */
-    public AutoscaleProfileInner withRules(List<ScaleRule> rules) {
+    public AutoscaleProfileInner withRules(List<ScaleRuleInner> rules) {
         this.rules = rules;
         return this;
     }
