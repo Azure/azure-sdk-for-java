@@ -23,13 +23,14 @@ import java.util.ArrayList;
  * Implementation for TrafficManagerProfiles.
  */
 @LangDefinition
-class TrafficManagerProfilesImpl extends TopLevelModifiableResourcesImpl<
+class TrafficManagerProfilesImpl
+    extends TopLevelModifiableResourcesImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,
         ProfileInner,
         ProfilesInner,
         TrafficManager>
-        implements TrafficManagerProfiles {
+    implements TrafficManagerProfiles {
 
     TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
         super(trafficManager.inner().profiles(), trafficManager);

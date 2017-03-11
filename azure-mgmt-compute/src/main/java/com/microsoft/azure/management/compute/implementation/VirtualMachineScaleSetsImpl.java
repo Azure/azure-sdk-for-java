@@ -24,13 +24,13 @@ import java.util.ArrayList;
  */
 @LangDefinition
 public class VirtualMachineScaleSetsImpl
-        extends TopLevelModifiableResourcesImpl<
-                                        VirtualMachineScaleSet,
-                                        VirtualMachineScaleSetImpl,
-                                        VirtualMachineScaleSetInner,
-                                        VirtualMachineScaleSetsInner,
-                                        ComputeManager>
-        implements VirtualMachineScaleSets {
+    extends TopLevelModifiableResourcesImpl<
+        VirtualMachineScaleSet,
+        VirtualMachineScaleSetImpl,
+        VirtualMachineScaleSetInner,
+        VirtualMachineScaleSetsInner,
+        ComputeManager>
+    implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
 

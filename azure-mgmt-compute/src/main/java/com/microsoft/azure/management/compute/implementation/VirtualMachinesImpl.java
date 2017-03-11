@@ -30,11 +30,11 @@ import java.util.ArrayList;
 @LangDefinition
 class VirtualMachinesImpl
     extends TopLevelModifiableResourcesImpl<
-                        VirtualMachine,
-                        VirtualMachineImpl,
-                        VirtualMachineInner,
-                        VirtualMachinesInner,
-                        ComputeManager>
+        VirtualMachine,
+        VirtualMachineImpl,
+        VirtualMachineInner,
+        VirtualMachinesInner,
+        ComputeManager>
     implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;

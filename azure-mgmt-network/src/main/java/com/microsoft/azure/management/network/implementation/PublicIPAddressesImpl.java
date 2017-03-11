@@ -16,13 +16,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
  */
 @LangDefinition
 class PublicIPAddressesImpl
-        extends TopLevelModifiableResourcesImpl<
-                                    PublicIPAddress,
-                                    PublicIPAddressImpl,
-                                    PublicIPAddressInner,
-                                    PublicIPAddressesInner,
-                                    NetworkManager>
-        implements PublicIPAddresses {
+    extends TopLevelModifiableResourcesImpl<
+        PublicIPAddress,
+        PublicIPAddressImpl,
+        PublicIPAddressInner,
+        PublicIPAddressesInner,
+        NetworkManager>
+    implements PublicIPAddresses {
 
     PublicIPAddressesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().publicIPAddresses(), networkManager);

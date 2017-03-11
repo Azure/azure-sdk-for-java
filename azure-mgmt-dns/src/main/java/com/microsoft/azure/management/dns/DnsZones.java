@@ -8,6 +8,7 @@ package com.microsoft.azure.management.dns;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.dns.implementation.ZonesInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -32,6 +33,7 @@ public interface DnsZones extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<DnsZone>,
+        SupportsBatchDeletion,
         HasManager<DnsZoneManager>,
         HasInner<ZonesInner> {
 }
