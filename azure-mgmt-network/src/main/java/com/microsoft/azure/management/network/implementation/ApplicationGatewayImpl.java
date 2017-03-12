@@ -239,22 +239,19 @@ class ApplicationGatewayImpl
 
             // Clear deleted frontend references
             ref = listener.inner().frontendIPConfiguration();
-            if (ref != null
-                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 listener.inner().withFrontendIPConfiguration(null);
             }
 
             // Clear deleted frontend port references
             ref = listener.inner().frontendPort();
-            if (ref != null
-                    && !this.frontendPorts().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.frontendPorts().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 listener.inner().withFrontendPort(null);
             }
 
             // Clear deleted SSL certificate references
             ref = listener.inner().sslCertificate();
-            if (ref != null
-                    && !this.sslCertificates().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.sslCertificates().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 listener.inner().withSslCertificate(null);
             }
         }
@@ -266,22 +263,19 @@ class ApplicationGatewayImpl
 
             // Clear deleted backends
             ref = rule.inner().backendAddressPool();
-            if (ref != null
-                    && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withBackendAddressPool(null);
             }
 
             // Clear deleted backend HTTP configs
             ref = rule.inner().backendHttpSettings();
-            if (ref != null
-                    && !this.backendHttpConfigurations().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.backendHttpConfigurations().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withBackendHttpSettings(null);
             }
 
             // Clear deleted frontend HTTP listeners
             ref = rule.inner().httpListener();
-            if (ref != null
-                    && !this.listeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.listeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withHttpListener(null);
             }
         }
@@ -1252,25 +1246,19 @@ class ApplicationGatewayImpl
 
     @Override
     public Completable startAsync() {
-        return this.manager().inner().applicationGateways().startAsync(
-                this.resourceGroupName(), this.name()).flatMap(
-                        new Func1<Void, Observable<ApplicationGateway>>() {
-                            @Override
-                            public Observable<ApplicationGateway> call(Void aVoid) {
-                                return refreshAsync();
-                            }
-                        }).toCompletable();
+        Observable<Void> startObservable = this.manager().inner().applicationGateways().startAsync(this.resourceGroupName(), this.name());
+        Observable<ApplicationGateway> refreshObservable = refreshAsync();
+
+        // Refresh after start to ensure the app gateway operational state is updated
+        return Observable.concat(startObservable, refreshObservable).toCompletable();
     }
 
     @Override
     public Completable stopAsync() {
-        return this.manager().inner().applicationGateways().stopAsync(
-                this.resourceGroupName(), this.name()).flatMap(
-                        new Func1<Void, Observable<ApplicationGateway>>() {
-                            @Override
-                            public Observable<ApplicationGateway> call(Void aVoid) {
-                                return refreshAsync();
-                            }
-                        }).toCompletable();
+        Observable<Void> stopObservable = this.manager().inner().applicationGateways().stopAsync(this.resourceGroupName(), this.name());
+        Observable<ApplicationGateway> refreshObservable = refreshAsync();
+
+        // Refresh after stop to ensure the app gateway operational state is updated
+        return Observable.concat(stopObservable, refreshObservable).toCompletable();
     }
 }

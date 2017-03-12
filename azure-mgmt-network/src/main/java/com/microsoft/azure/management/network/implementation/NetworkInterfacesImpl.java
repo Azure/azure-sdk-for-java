@@ -22,13 +22,13 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworkInterfacesImpl
-        extends TopLevelModifiableResourcesImpl<
-                                            NetworkInterface,
-                                            NetworkInterfaceImpl,
-                                            NetworkInterfaceInner,
-                                            NetworkInterfacesInner,
-                                            NetworkManager>
-        implements NetworkInterfaces {
+    extends TopLevelModifiableResourcesImpl<
+        NetworkInterface,
+        NetworkInterfaceImpl,
+        NetworkInterfaceInner,
+        NetworkInterfacesInner,
+        NetworkManager>
+    implements NetworkInterfaces {
 
     NetworkInterfacesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkInterfaces(), networkManager);

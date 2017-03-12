@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancersInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -35,6 +36,7 @@ public interface LoadBalancers extends
     SupportsDeletingById,
     SupportsDeletingByGroup,
     SupportsBatchCreation<LoadBalancer>,
+    SupportsBatchDeletion,
     HasManager<NetworkManager>,
     HasInner<LoadBalancersInner> {
 }

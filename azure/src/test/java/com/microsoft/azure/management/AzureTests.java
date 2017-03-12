@@ -11,13 +11,18 @@ import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
+import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Location;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -26,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AzureTests extends TestBase {
@@ -193,8 +199,68 @@ public class AzureTests extends TestBase {
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
+    @Test
+    public void testApplicationGatewaysInParallel() throws Exception {
+        String rgName = SdkContext.randomResourceName("rg", 13);
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName)
+                .withRegion(region);
+        List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
+
+        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(resourceGroup)
+                .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.1")
+                    .toBackendIPAddress("10.0.0.2")
+                    .attach());
+
+        agCreatables.add(azure.applicationGateways().define(SdkContext.randomResourceName("ag", 13))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(resourceGroup)
+                .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.3")
+                    .toBackendIPAddress("10.0.0.4")
+                    .attach());
+
+        CreatedResources<ApplicationGateway> created = azure.applicationGateways().create(agCreatables);
+        List<ApplicationGateway> ags = new ArrayList<>();
+        List<String> agIds = new ArrayList<>();
+        for (Creatable<ApplicationGateway> creatable : agCreatables) {
+            ApplicationGateway ag = created.get(creatable.key());
+            Assert.assertNotNull(ag);
+            ags.add(ag);
+            agIds.add(ag.id());
+        }
+
+        azure.applicationGateways().stop(agIds);
+
+        for (ApplicationGateway ag : ags) {
+            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, ag.refresh().operationalState());
+        }
+
+        azure.applicationGateways().start(agIds);
+
+        for (ApplicationGateway ag : ags) {
+            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, ag.refresh().operationalState());
+        }
+
+        azure.applicationGateways().deleteByIds(agIds);
+        for (String id : agIds) {
+            Assert.assertNull(azure.applicationGateways().getById(id));
+        }
+
+        azure.resourceGroups().beginDeleteByName(rgName);
+    }
+
     /**
-     * Tests a minimal Internet-facing application gateway
+     * Tests a minimal Internet-facing application gateway.
      * @throws Exception
      */
     @Test
@@ -204,7 +270,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests a complex Internet-facing application gateway
+     * Tests a complex Internet-facing application gateway.
      * @throws Exception
      */
     @Test
@@ -252,7 +318,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests the regions enum
+     * Tests the regions enum.
      */
     @Test
     public void testRegions() {

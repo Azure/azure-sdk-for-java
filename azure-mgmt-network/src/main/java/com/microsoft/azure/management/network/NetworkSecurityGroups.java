@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupsInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -33,6 +34,7 @@ public interface NetworkSecurityGroups extends
     SupportsDeletingById,
     SupportsDeletingByGroup,
     SupportsBatchCreation<NetworkSecurityGroup>,
+    SupportsBatchDeletion,
     HasManager<NetworkManager>,
     HasInner<NetworkSecurityGroupsInner> {
 }

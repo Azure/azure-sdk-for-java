@@ -15,13 +15,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
  */
 @LangDefinition
 class RouteTablesImpl
-        extends TopLevelModifiableResourcesImpl<
-                                    RouteTable,
-                                    RouteTableImpl,
-                                    RouteTableInner,
-                                    RouteTablesInner,
-                                    NetworkManager>
-        implements RouteTables {
+    extends TopLevelModifiableResourcesImpl<
+        RouteTable,
+        RouteTableImpl,
+        RouteTableInner,
+        RouteTablesInner,
+        NetworkManager>
+    implements RouteTables {
 
     RouteTablesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().routeTables(), networkManager);

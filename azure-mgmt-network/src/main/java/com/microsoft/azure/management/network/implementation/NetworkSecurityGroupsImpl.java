@@ -19,13 +19,13 @@ import java.util.Set;
  */
 @LangDefinition
 class NetworkSecurityGroupsImpl
-        extends TopLevelModifiableResourcesImpl<
-                                    NetworkSecurityGroup,
-                                    NetworkSecurityGroupImpl,
-                                    NetworkSecurityGroupInner,
-                                    NetworkSecurityGroupsInner,
-                                    NetworkManager>
-        implements NetworkSecurityGroups {
+    extends TopLevelModifiableResourcesImpl<
+        NetworkSecurityGroup,
+        NetworkSecurityGroupImpl,
+        NetworkSecurityGroupInner,
+        NetworkSecurityGroupsInner,
+        NetworkManager>
+    implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkSecurityGroups(), networkManager);

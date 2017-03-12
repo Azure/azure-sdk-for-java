@@ -15,13 +15,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
  */
 @LangDefinition
 class LoadBalancersImpl
-        extends TopLevelModifiableResourcesImpl<
-                                            LoadBalancer,
-                                            LoadBalancerImpl,
-                                            LoadBalancerInner,
-                                            LoadBalancersInner,
-                                            NetworkManager>
-        implements LoadBalancers {
+    extends TopLevelModifiableResourcesImpl<
+        LoadBalancer,
+        LoadBalancerImpl,
+        LoadBalancerInner,
+        LoadBalancersInner,
+        NetworkManager>
+    implements LoadBalancers {
 
     LoadBalancersImpl(final NetworkManager networkManager) {
         super(networkManager.inner().loadBalancers(), networkManager);
