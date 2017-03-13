@@ -1,3 +1,6 @@
+2017.XX.XX Version X.X.X
+ * Changed blob constants to support up to 256 MB on put blob for block blobs. The default value for put blob threshold has also been updated to half of the maximum, or 128 MB currently.
+
 2017.01.18 Version 5.0.0
  * Prefix support for listing files and directories.
  * Added support for setting public access when creating a blob container
