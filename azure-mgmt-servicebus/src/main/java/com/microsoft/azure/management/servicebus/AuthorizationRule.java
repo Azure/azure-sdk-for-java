@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
@@ -22,9 +23,8 @@ import java.util.List;
  */
 @Fluent
 public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
-        IndependentChild<ServiceBusManager>,
-        Refreshable<RuleT>,
-        HasInner<SharedAccessAuthorizationRuleInner> {
+        IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleInner>,
+        Refreshable<RuleT> {
 
     /**
      * The rights associated with the rule.
@@ -58,7 +58,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
              * @param rights the access rights
              * @return the next stage
              */
-            T withAceessRight(AccessRights rights);
+            T withAccessRight(AccessRights rights);
         }
     }
 

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -15,7 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 public interface QueueAuthorizationRule extends
         AuthorizationRule<QueueAuthorizationRule>,
-        Updatable<NamespaceAuthorizationRule.Update> {
+        Updatable<QueueAuthorizationRule.Update>,
+        HasParent<Queue> {
     /**
      * @return the name of the namespace that the parent queue belongs to
      */

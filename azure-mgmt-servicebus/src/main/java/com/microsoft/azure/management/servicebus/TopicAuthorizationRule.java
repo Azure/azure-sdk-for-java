@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -15,7 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 public interface TopicAuthorizationRule extends
         AuthorizationRule<TopicAuthorizationRule>,
-        Updatable<TopicAuthorizationRule.Update> {
+        Updatable<TopicAuthorizationRule.Update>,
+        HasParent<Topic> {
     /**
      * @return the name of the namespace that the parent topic belongs to
      */

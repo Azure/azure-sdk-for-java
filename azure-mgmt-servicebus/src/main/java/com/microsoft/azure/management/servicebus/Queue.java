@@ -7,8 +7,9 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -23,9 +24,10 @@ import org.joda.time.Period;
  */
 @Fluent
 public interface Queue extends
-        IndependentChild<ServiceBusManager>,
+        IndependentChildResource<ServiceBusManager, QueueResourceInner>,
         Refreshable<Queue>,
         Updatable<Queue.Update>,
+        HasParent<Namespace>,
         HasInner<QueueResourceInner> {
     /**
      * @return the exact time the queue was created
@@ -130,7 +132,6 @@ public interface Queue extends
      */
     interface Definition extends
         Queue.DefinitionStages.Blank,
-        Queue.DefinitionStages.WithGroup,
         Queue.DefinitionStages.WithCreate {
     }
 
@@ -141,13 +142,7 @@ public interface Queue extends
         /**
          * The first stage of a queue definition.
          */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the queue definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface Blank extends WithCreate {
         }
 
         /**

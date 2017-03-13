@@ -7,8 +7,9 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -23,10 +24,10 @@ import org.joda.time.Period;
  */
 @Fluent
 public interface Subscription extends
-        IndependentChild<ServiceBusManager>,
+        IndependentChildResource<ServiceBusManager, SubscriptionResourceInner>,
         Refreshable<Subscription>,
         Updatable<Subscription.Update>,
-        HasInner<SubscriptionResourceInner> {
+        HasParent<Topic> {
     /**
      * @return the exact time the message was created
      */
@@ -110,7 +111,6 @@ public interface Subscription extends
      */
     interface Definition extends
             Subscription.DefinitionStages.Blank,
-            Subscription.DefinitionStages.WithGroup,
             Subscription.DefinitionStages.WithCreate {
     }
 
@@ -121,13 +121,7 @@ public interface Subscription extends
         /**
          * The first stage of a subscription definition.
          */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the subscription definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface Blank extends WithCreate {
         }
 
         /**
@@ -262,7 +256,7 @@ public interface Subscription extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Queue>,
+                Creatable<Subscription>,
                 Subscription.DefinitionStages.WithDeleteOnIdle,
                 Subscription.DefinitionStages.WithMessageLockDuration,
                 Subscription.DefinitionStages.WithDefaultMessageTTL,

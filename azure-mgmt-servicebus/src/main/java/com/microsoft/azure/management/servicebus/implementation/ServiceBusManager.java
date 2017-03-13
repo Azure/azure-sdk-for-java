@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.servicebus.Namespaces;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -84,5 +85,13 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
         super(restClient,
                 subscriptionId,
                 new ServiceBusManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+    }
+
+    /**
+     * @return the service bus namespace management API entry point
+     */
+    public Namespaces namespaces() {
+        // TODO:
+        return null;
     }
 }

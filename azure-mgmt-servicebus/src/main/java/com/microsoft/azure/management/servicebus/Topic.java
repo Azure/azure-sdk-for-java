@@ -7,8 +7,9 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -23,9 +24,10 @@ import org.joda.time.Period;
  */
 @Fluent
 public interface Topic extends
-        IndependentChild<ServiceBusManager>,
+        IndependentChildResource<ServiceBusManager, TopicResourceInner>,
         Refreshable<Topic>,
         Updatable<Topic.Update>,
+        HasParent<Namespace>,
         HasInner<TopicResourceInner> {
 
     /**
@@ -123,7 +125,6 @@ public interface Topic extends
      */
     interface Definition extends
             Topic.DefinitionStages.Blank,
-            Topic.DefinitionStages.WithGroup,
             Topic.DefinitionStages.WithCreate {
     }
 
@@ -134,13 +135,7 @@ public interface Topic extends
         /**
          * The first stage of a topic definition.
          */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the topic definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface Blank extends WithCreate {
         }
 
         /**

@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -146,6 +147,7 @@ public interface Namespace extends
          */
         interface WithCreate extends
             Creatable<Namespace>,
+            Resource.DefinitionWithTags<Update>,
             Namespace.DefinitionStages.WithSku,
             Namespace.DefinitionStages.WithQueue,
             Namespace.DefinitionStages.WithTopic,
@@ -158,6 +160,7 @@ public interface Namespace extends
      */
     interface Update extends
             Appliable<Namespace>,
+            Resource.UpdateWithTags<Update>,
             Namespace.UpdateStages.WithSku,
             Namespace.UpdateStages.WithQueue,
             Namespace.UpdateStages.WithTopic,
