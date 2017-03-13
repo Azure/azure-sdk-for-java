@@ -7,13 +7,10 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.servicebus.implementation.NamespacesInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 
 /**
@@ -21,10 +18,8 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  */
 @Fluent
 public interface AuthorizationRules<RuleT> extends
-        SupportsGettingByName<RuleT>,
-        SupportsListing<RuleT>,
         SupportsListingAsync<RuleT>,
+        SupportsGettingByNameAsync<RuleT>,
         SupportsDeletingByName,
-        HasManager<ServiceBusManager>,
-        HasInner<NamespacesInner> {
+        HasManager<ServiceBusManager> {
 }

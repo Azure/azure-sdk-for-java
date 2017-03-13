@@ -6,27 +6,24 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
+import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.SubscriptionsInner;
 
-
 /**
- * Entry point to service bus topic subscription management API in Azure.
+ * Entry point to service bus queue management API in Azure.
  */
 @Fluent
 public interface Subscriptions extends
-    SupportsCreating<Subscription.DefinitionStages.Blank>,
-    HasManager<ServiceBusManager>,
-    HasInner<SubscriptionsInner>,
-    SupportsBatchCreation<Subscription>,
-    SupportsGettingById<Subscription>,
-    SupportsDeletingById,
-    SupportsDeletingByGroup {
+        SupportsCreating<Subscription.DefinitionStages.Blank>,
+        SupportsListingAsync<Subscription>,
+        SupportsGettingByNameAsync<Subscription>,
+        SupportsDeletingByName,
+        HasManager<ServiceBusManager>,
+        HasParent<Topic>,
+        HasInner<SubscriptionsInner> {
 }

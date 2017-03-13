@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
@@ -15,6 +16,7 @@ import rx.Observable;
 /**
  * Implementation for Topic.
  */
+@LangDefinition
 class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, TopicResourceInner, TopicImpl, ServiceBusManager>
         implements
         Topic,

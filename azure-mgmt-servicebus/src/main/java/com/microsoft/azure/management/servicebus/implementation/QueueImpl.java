@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
@@ -15,6 +16,7 @@ import rx.Observable;
 /**
  * Implementation for Queue.
  */
+@LangDefinition
 class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, QueueResourceInner, QueueImpl, ServiceBusManager>
         implements
         Queue,
@@ -23,11 +25,6 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     QueueImpl(String name, QueueResourceInner innerObject, ServiceBusManager manager) {
         super(name, innerObject, manager);
-    }
-
-    @Override
-    public String id() {
-        return null;
     }
 
     @Override

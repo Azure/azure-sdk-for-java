@@ -6,12 +6,10 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
+import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.QueuesInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
@@ -22,12 +20,11 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  */
 @Fluent
 public interface Queues extends
-    SupportsCreating<Queue.DefinitionStages.Blank>,
-    HasManager<ServiceBusManager>,
-    HasInner<QueuesInner>,
-    SupportsBatchCreation<Queue>,
-    SupportsGettingById<Queue>,
-    SupportsDeletingById,
-    SupportsDeletingByGroup {
-
+        SupportsCreating<Queue.DefinitionStages.Blank>,
+        SupportsListingAsync<Queue>,
+        SupportsGettingByNameAsync<Queue>,
+        SupportsDeletingByName,
+        HasManager<ServiceBusManager>,
+        HasParent<Namespace>,
+        HasInner<QueuesInner> {
 }

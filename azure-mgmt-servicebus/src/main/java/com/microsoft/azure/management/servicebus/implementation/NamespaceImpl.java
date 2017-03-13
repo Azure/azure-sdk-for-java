@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
@@ -14,6 +15,7 @@ import rx.Observable;
 /**
  * Implementation for Namespace.
  */
+@LangDefinition
 class NamespaceImpl extends GroupableResourceImpl<
         Namespace,
         NamespaceResourceInner,

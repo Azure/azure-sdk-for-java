@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.Queue;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Implementation for QueueAuthorizationRule.
  */
+@LangDefinition
 class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAuthorizationRule,
         QueueImpl,
         SharedAccessAuthorizationRuleInner,
@@ -26,14 +28,7 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
         QueueAuthorizationRule,
         QueueAuthorizationRule.Definition,
         QueueAuthorizationRule.Update {
-    /**
-     * Creates QueueAuthorizationRuleImpl.
-     *
-     * @param name        the name of the resource
-     * @param inner the inner object
-     * @param manager
-     */
-    protected QueueAuthorizationRuleImpl(String name,
+    QueueAuthorizationRuleImpl(String name,
                                          SharedAccessAuthorizationRuleInner inner,
                                          ServiceBusManager manager) {
         super(name, inner, manager);

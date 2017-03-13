@@ -60,7 +60,7 @@ public class ServiceBusOperationsTests extends TestBase {
 //        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
 //        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
 
-        NamespaceResourceInner namespaceResourceInner = serviceBusManager.inner().namespaces().get(rgName, sbName);
+        NamespaceResourceInner namespaceResourceInner = serviceBusManager.inner().namespaces().getByResourceGroup(rgName, sbName);
         namespaceResourceInner.withSku(new Sku())
         .sku()
         .withName(SkuName.PREMIUM)

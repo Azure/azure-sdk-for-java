@@ -27,8 +27,7 @@ public interface Queue extends
         IndependentChildResource<ServiceBusManager, QueueResourceInner>,
         Refreshable<Queue>,
         Updatable<Queue.Update>,
-        HasParent<Namespace>,
-        HasInner<QueueResourceInner> {
+        HasParent<Namespace> {
     /**
      * @return the exact time the queue was created
      */

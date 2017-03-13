@@ -16,23 +16,23 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.servicebus.implementation.NamespaceResourceInner;
+import com.microsoft.azure.management.servicebus.implementation.NamespacesInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 
 
 /**
  * Entry point to service bus namespace API in Azure.
  */
-@Fluent()
+@Fluent
 public interface Namespaces extends
     SupportsCreating<Namespace.DefinitionStages.Blank>,
-    HasManager<ServiceBusManager>,
-    HasInner<NamespaceResourceInner>,
     SupportsBatchCreation<Namespace>,
     SupportsListing<Namespace>,
     SupportsListingByGroup<Namespace>,
     SupportsGettingByGroup<Namespace>,
     SupportsGettingById<Namespace>,
     SupportsDeletingById,
-    SupportsDeletingByGroup {
+    SupportsDeletingByGroup,
+    HasManager<ServiceBusManager>,
+    HasInner<NamespacesInner> {
 }

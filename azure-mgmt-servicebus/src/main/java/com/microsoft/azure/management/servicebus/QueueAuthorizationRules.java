@@ -7,13 +7,18 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.servicebus.implementation.QueuesInner;
 
 /**
  * Entry point to queue authorization rules management API.
  */
 @Fluent
 public interface QueueAuthorizationRules extends
+        AuthorizationRules<QueueAuthorizationRule>,
         SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank>,
-        AuthorizationRules<QueueAuthorizationRule> {
+        HasParent<Queue>,
+        HasInner<QueuesInner> {
 }

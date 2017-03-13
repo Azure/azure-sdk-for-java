@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.Topic;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Implementation for TopicAuthorizationRule.
  */
+@LangDefinition
 class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAuthorizationRule,
         TopicImpl,
         SharedAccessAuthorizationRuleInner,
