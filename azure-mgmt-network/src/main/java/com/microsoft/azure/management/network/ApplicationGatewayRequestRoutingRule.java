@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
@@ -26,6 +27,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an application gateway request routing rule.
  */
 @Fluent()
+@Beta()
 public interface ApplicationGatewayRequestRoutingRule extends
     HasInner<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,

@@ -16,13 +16,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
  */
 @LangDefinition
 class RedisCachesImpl
-        extends TopLevelModifiableResourcesImpl<
-                                                RedisCache,
-                                                RedisCacheImpl,
-                                                RedisResourceInner,
-                                                RedisInner,
-                                                RedisManager>
-        implements RedisCaches {
+    extends TopLevelModifiableResourcesImpl<
+        RedisCache,
+        RedisCacheImpl,
+        RedisResourceInner,
+        RedisInner,
+        RedisManager>
+    implements RedisCaches {
 
     RedisCachesImpl(final RedisManager redisManager) {
         super(redisManager.inner().redis(), redisManager);

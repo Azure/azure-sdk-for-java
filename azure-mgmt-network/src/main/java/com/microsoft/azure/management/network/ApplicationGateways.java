@@ -5,9 +5,13 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
+
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaysInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,11 +23,14 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
+import rx.Observable;
+
 
 /**
  * Entry point to application gateway management API in Azure.
  */
 @Fluent()
+@Beta()
 public interface ApplicationGateways extends
     SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
     SupportsListing<ApplicationGateway>,
@@ -33,6 +40,59 @@ public interface ApplicationGateways extends
     SupportsDeletingById,
     SupportsDeletingByGroup,
     SupportsBatchCreation<ApplicationGateway>,
+    SupportsBatchDeletion,
     HasManager<NetworkManager>,
     HasInner<ApplicationGatewaysInner> {
+
+    /**
+     * Starts the specified application gateways.
+     * @param ids application gateway resource ids
+     */
+    void start(String...ids);
+
+    /**
+     * Starts the specified application gateways.
+     * @param ids application gateway resource ids
+     */
+    void start(Collection<String> ids);
+
+    /**
+     * Starts the specified application gateways in parallel asynchronously.
+     * @param ids application gateway resource id
+     * @return an Observable emitting the resource ID for each successfully started application gateway
+     */
+    Observable<String> startAsync(String... ids);
+
+    /**
+     * Starts the specified application gateways in parallel asynchronously.
+     * @param ids application gateway resource id
+     * @return an Observable emitting the resource ID for each successfully started application gateway
+     */
+    Observable<String> startAsync(Collection<String> ids);
+
+    /**
+     * Stops the specified application gateways.
+     * @param ids application gateway resource ids
+     */
+    void stop(String...ids);
+
+    /**
+     * Stops the specified application gateways.
+     * @param ids application gateway resource ids
+     */
+    void stop(Collection<String> ids);
+
+    /**
+     * Stops the specified application gateways in parallel asynchronously.
+     * @param ids application gateway resource ids
+     * @return an Observable emitting the resource ID for each successfully stopped application gateway
+     */
+    Observable<String> stopAsync(String...ids);
+
+    /**
+     * Stops the specified application gateways in parallel asynchronously.
+     * @param ids application gateway resource id
+     * @return an Observable emitting the resource ID for each successfully stopped application gateway
+     */
+    Observable<String> stopAsync(Collection<String> ids);
 }
