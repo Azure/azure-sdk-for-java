@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.MetricTrigger;
 import com.microsoft.azure.management.monitor.ScaleAction;
 import com.microsoft.azure.management.monitor.ScaleRule;
@@ -19,6 +20,8 @@ class ScaleRuleImpl
         implements
             ScaleRule,
             ScaleRule.Definition,
+            ScaleRule.ParentUpdateDefinition,
+            ScaleRule.UpdateDefinition,
             ScaleRule.Update {
 
     ScaleRuleImpl(String name) {
@@ -55,7 +58,12 @@ class ScaleRuleImpl
     }
 
     @Override
-    public AutoscaleProfileImpl apply() {
+    public AutoscaleProfileImpl parent() {
+        return null;
+    }
+
+    @Override
+    public AutoscaleProfileImpl attach() {
         return null;
     }
 }

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.monitor.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.ScaleAction;
 import com.microsoft.azure.management.monitor.ScaleDirection;
+import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.ScaleType;
 import org.joda.time.Period;
 
@@ -19,7 +20,11 @@ import org.joda.time.Period;
 class ScaleActionImpl
         implements
             ScaleAction,
+            ScaleAction.StandaloneDefinition,
+            ScaleAction.StandaloneUpdate,
             ScaleAction.Definition,
+            ScaleAction.ParentUpdateDefinition,
+            ScaleAction.UpdateDefinition,
             ScaleAction.Update {
 
     ScaleActionImpl(String name) {
@@ -46,7 +51,28 @@ class ScaleActionImpl
     }
 
     @Override
-    public ScaleRuleImpl apply() {
+    public ScaleRuleImpl attach() {
         return null;
     }
+
+    @Override
+    public ScaleRuleImpl parent() {
+        return null;
+    }
+
+    @Override
+    public ScaleActionImpl create() {
+        return this;
+    }
+
+    @Override
+    public ScaleActionImpl update() {
+        return this;
+    }
+
+    @Override
+    public ScaleActionImpl apply() {
+        return this;
+    }
+
 }

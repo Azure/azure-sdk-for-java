@@ -15,47 +15,152 @@ import org.joda.time.Period;
 @Fluent
 public interface ScaleAction {
 
-    interface Definition<ParentT> extends
-            DefinitionStages.WithApply<ParentT>,
-            DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithType<ParentT>,
-            DefinitionStages.WithCooldown<ParentT>,
-            DefinitionStages.WithValue<ParentT> {
+    StandaloneUpdateStages.Blank update();
+
+    interface StandaloneDefinition extends
+            StandaloneDefinitionStages.WithApply,
+            StandaloneDefinitionStages.Blank,
+            StandaloneDefinitionStages.WithType,
+            StandaloneDefinitionStages.WithCooldown,
+            StandaloneDefinitionStages.WithValue {
+    }
+
+    interface StandaloneDefinitionStages {
+        interface Blank {
+            WithType withDirection(ScaleDirection direction);
+        }
+
+        interface WithType {
+            WithCooldown withType(ScaleType type);
+        }
+
+        interface WithCooldown {
+            WithValue withCooldown(Period cooldown);
+        }
+
+        interface WithValue extends
+                WithApply {
+            WithValue withValue(String value);
+        }
+        interface WithApply {
+            ScaleAction create();
+        }
+    }
+    interface StandaloneUpdate extends
+            StandaloneUpdateStages.Blank {
+    }
+
+    interface StandaloneUpdateStages {
+        interface Blank {
+            StandaloneUpdate withDirection(ScaleDirection direction);
+            StandaloneUpdate withType(ScaleType type);
+            StandaloneUpdate withCooldown(Period cooldown);
+            StandaloneUpdate withValue(String value);
+            ScaleAction apply();
+        }
+    }
+
+    interface Definition extends
+            DefinitionStages.WithApply,
+            DefinitionStages.Blank,
+            DefinitionStages.WithType,
+            DefinitionStages.WithCooldown,
+            DefinitionStages.WithValue {
     }
 
     interface DefinitionStages {
-        interface Blank<ParentT> {
-            WithType<ParentT> withDirection(ScaleDirection direction);
+        interface Blank {
+            WithType withDirection(ScaleDirection direction);
         }
 
-        interface WithType<ParentT> {
-            WithCooldown<ParentT> withType(ScaleType type);
+        interface WithType {
+            WithCooldown withType(ScaleType type);
         }
 
-        interface WithCooldown<ParentT> {
-            WithValue<ParentT> withCooldown(Period cooldown);
+        interface WithCooldown {
+            WithValue withCooldown(Period cooldown);
         }
 
-        interface WithValue<ParentT> extends
-                WithApply<ParentT> {
-            WithValue<ParentT> withValue(String value);
+        interface WithValue extends
+                WithApply {
+            WithValue withValue(String value);
         }
-        interface WithApply<ParentT> {
-            ParentT apply();
+        interface WithApply {
+            ScaleRule.DefinitionStages.WithAttach attach();
         }
     }
 
-    interface Update<ParentT> extends
-            UpdateStages.Blank<ParentT> {
+    interface ParentUpdateDefinition extends
+            ParentUpdateDefinitionStages.WithApply,
+            ParentUpdateDefinitionStages.Blank,
+            ParentUpdateDefinitionStages.WithType,
+            ParentUpdateDefinitionStages.WithCooldown,
+            ParentUpdateDefinitionStages.WithValue {
+    }
+
+    interface ParentUpdateDefinitionStages {
+        interface Blank {
+            WithType withDirection(ScaleDirection direction);
+        }
+
+        interface WithType {
+            WithCooldown withType(ScaleType type);
+        }
+
+        interface WithCooldown {
+            WithValue withCooldown(Period cooldown);
+        }
+
+        interface WithValue extends
+                WithApply {
+            WithValue withValue(String value);
+        }
+        interface WithApply {
+            ScaleRule.ParentUpdateDefinitionStages.WithAttach attach();
+        }
+    }
+
+    interface UpdateDefinition extends
+            UpdateDefinitionStages.WithApply,
+            UpdateDefinitionStages.Blank,
+            UpdateDefinitionStages.WithType,
+            UpdateDefinitionStages.WithCooldown,
+            UpdateDefinitionStages.WithValue {
+    }
+
+    interface UpdateDefinitionStages {
+        interface Blank {
+            WithType withDirection(ScaleDirection direction);
+        }
+
+        interface WithType {
+            WithCooldown withType(ScaleType type);
+        }
+
+        interface WithCooldown {
+            WithValue withCooldown(Period cooldown);
+        }
+
+        interface WithValue extends
+                WithApply {
+            WithValue withValue(String value);
+        }
+        interface WithApply {
+            ScaleRule.UpdateDefinitionStages.WithAttach attach();
+        }
+    }
+
+    interface Update extends
+            UpdateStages.Blank {
     }
 
     interface UpdateStages {
-        interface Blank<ParentT> {
-            Update<ParentT> withDirection(ScaleDirection direction);
-            Update<ParentT> withType(ScaleType type);
-            Update<ParentT> withCooldown(Period cooldown);
-            Update<ParentT> withValue(String value);
-            ParentT apply();
+        interface Blank {
+            Update withDirection(ScaleDirection direction);
+            Update withType(ScaleType type);
+            Update withCooldown(Period cooldown);
+            Update withValue(String value);
+            ScaleRule.Update parent();
         }
     }
 }

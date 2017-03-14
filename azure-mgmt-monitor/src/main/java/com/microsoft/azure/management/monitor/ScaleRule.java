@@ -7,7 +7,8 @@
 package com.microsoft.azure.management.monitor;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import java.util.Map;
+import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
  */
@@ -18,35 +19,75 @@ public interface ScaleRule {
 
     ScaleAction scaleAction();
 
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithScaleAction<ParentT>,
-            DefinitionStages.WithApply<ParentT> {
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithScaleAction,
+            DefinitionStages.WithAttach {
     }
 
     interface DefinitionStages {
-        interface Blank<ParentT> {
-            MetricTrigger.DefinitionStages.Blank<WithScaleAction<ParentT>> defineMetricTrigger(String name);
+        interface Blank {
+            MetricTrigger.DefinitionStages.Blank defineMetricTrigger(String name);
         }
 
-        interface WithScaleAction<ParentT> {
-            ScaleAction.DefinitionStages.Blank<WithApply<ParentT>> defineScaleAction();
+        interface WithScaleAction {
+            ScaleAction.DefinitionStages.Blank defineScaleAction();
         }
 
-        interface WithApply<ParentT> {
-            ParentT apply();
+        interface WithAttach extends
+                Attachable.InDefinition<AutoscaleProfile.DefinitionStages.WithScaleRuleOptional>{
         }
     }
 
-    interface Update<ParentT> extends
-            UpdateStages.Blank<ParentT> {
+    interface ParentUpdateDefinition extends
+            ParentUpdateDefinitionStages.Blank,
+            ParentUpdateDefinitionStages.WithScaleAction,
+            ParentUpdateDefinitionStages.WithAttach {
+    }
+
+    interface ParentUpdateDefinitionStages {
+        interface Blank {
+            MetricTrigger.ParentUpdateDefinitionStages.Blank defineMetricTrigger(String name);
+        }
+
+        interface WithScaleAction {
+            ScaleAction.ParentUpdateDefinitionStages.Blank defineScaleAction();
+        }
+
+        interface WithAttach {
+            AutoscaleProfile.UpdateDefinitionStages.WithScaleRuleOptional attach();
+        }
+    }
+
+    interface UpdateDefinition extends
+            UpdateDefinitionStages.Blank,
+            UpdateDefinitionStages.WithScaleAction,
+            UpdateDefinitionStages.WithAttach {
+    }
+
+    interface UpdateDefinitionStages {
+        interface Blank {
+            MetricTrigger.UpdateDefinitionStages.Blank defineMetricTrigger(String name);
+        }
+
+        interface WithScaleAction {
+            ScaleAction.UpdateDefinitionStages.Blank defineScaleAction();
+        }
+
+        interface WithAttach extends
+                Attachable.InUpdate<AutoscaleProfile.Update>{
+        }
+    }
+
+    interface Update extends
+            Settable<AutoscaleProfile.Update>,
+            UpdateStages.Blank {
     }
 
     interface UpdateStages {
-        interface Blank<ParentT> {
-            MetricTrigger.UpdateStages.Blank<Update<ParentT>> updateMetricTrigger();
-            ScaleAction.UpdateStages.Blank<Update<ParentT>> updateScaleAction();
-            ParentT apply();
+        interface Blank {
+            MetricTrigger.UpdateStages.Blank updateMetricTrigger();
+            ScaleAction.UpdateStages.Blank updateScaleAction();
         }
     }
 }

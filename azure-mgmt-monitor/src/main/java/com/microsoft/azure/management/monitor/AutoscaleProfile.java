@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import org.joda.time.DateTime;
 
@@ -46,77 +47,100 @@ public interface AutoscaleProfile {
      */
     Recurrence recurrence();
 
-
-    interface Definition<ParentT> extends
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithScaleRule<ParentT>,
-            DefinitionStages.WithScaleRuleOptional<ParentT> {
+    interface Definition extends
+            DefinitionStages.WithAttach,
+            DefinitionStages.Blank,
+            DefinitionStages.WithScaleRule,
+            DefinitionStages.WithScaleRuleOptional {
     }
 
     interface DefinitionStages {
-
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach extends
+                Attachable.InDefinition<AutoscaleSetting.DefinitionStages.WithCreate> {
         }
 
-        interface Blank<ParentT> {
-            WithScaleRule<ParentT> withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault);
+        interface Blank {
+            WithScaleRule withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault);
         }
 
-        interface WithScaleRule<ParentT> {
-            ScaleRule.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineScaleRule();
+        interface WithScaleRule {
+            ScaleRule.DefinitionStages.Blank defineScaleRule();
         }
 
-        interface WithScaleRuleOptional<ParentT> extends
-                WithAttach<ParentT> {
-            ScaleRule.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineScaleRule();
-            WithScaleRuleOptional<ParentT> withTimeWindow(DateTime start, DateTime end);
-            WithScaleRuleOptional<ParentT> withTimeWindow(DateTime start, DateTime end, String timeZone);
-            WithScaleRuleOptional<ParentT> withRecurrence(Recurrence recurrence);
-            Recurrence.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineRecurrence();
+        interface WithScaleRuleOptional extends
+                WithAttach {
+            ScaleRule.DefinitionStages.Blank defineScaleRule();
+            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end);
+            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end, String timeZone);
+            WithScaleRuleOptional withRecurrence(Recurrence recurrence);
+            Recurrence.DefinitionStages.Blank defineRecurrence();
         }
     }
 
-    interface Update<ParentT> extends
-            UpdateStages.WithAttach<ParentT>,
-            UpdateStages.WithName<ParentT>,
-            UpdateStages.WithScaleCapacity<ParentT>,
-            UpdateStages.WithScaleRule<ParentT>,
-            UpdateStages.WithTimeWindow<ParentT>,
-            UpdateStages.WithRecurrence<ParentT> {
+    interface UpdateDefinition extends
+            UpdateDefinitionStages.WithAttach,
+            UpdateDefinitionStages.Blank,
+            UpdateDefinitionStages.WithScaleRule,
+            UpdateDefinitionStages.WithScaleRuleOptional {
+    }
+
+    interface UpdateDefinitionStages {
+        interface WithAttach extends
+                Attachable.InUpdate<AutoscaleSetting.Update> {
+        }
+
+        interface Blank {
+            WithScaleRule withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault);
+        }
+
+        interface WithScaleRule {
+            ScaleRule.ParentUpdateDefinitionStages.Blank defineScaleRule();
+        }
+
+        interface WithScaleRuleOptional extends
+                WithAttach {
+            ScaleRule.ParentUpdateDefinitionStages.Blank defineScaleRule();
+            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end);
+            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end, String timeZone);
+            WithScaleRuleOptional withRecurrence(Recurrence recurrence);
+            Recurrence.DefinitionStages.Blank defineRecurrence();
+        }
+    }
+
+    interface Update extends
+            Settable<AutoscaleSetting.Update>,
+            UpdateStages.WithName,
+            UpdateStages.WithScaleCapacity,
+            UpdateStages.WithScaleRule,
+            UpdateStages.WithTimeWindow,
+            UpdateStages.WithRecurrence {
     }
 
     interface UpdateStages {
-
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
+        interface WithName {
+            Update withName(String Name);
         }
 
-        interface WithName<ParentT> {
-            Update<ParentT> withName(String name);
+        interface WithScaleCapacity {
+            Update withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault);
         }
 
-        interface WithScaleCapacity<ParentT> {
-            Update<ParentT> withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault);
+        interface WithScaleRule {
+            Update withoutScaleRule(ScaleRule scaleRule);
+            ScaleRule.Update updateScaleRule(ScaleRule scaleRule);
+            ScaleRule.UpdateDefinitionStages.Blank defineScaleRule();
         }
 
-        interface WithScaleRule<ParentT> {
-            Update<ParentT> withoutScaleRule(ScaleRule scaleRule);
-            ScaleRule.Update<Update<ParentT>> updateScaleRule(ScaleRule scaleRule);
-            ScaleRule.DefinitionStages.Blank<Update<ParentT>> defineScaleRule();
+        interface WithTimeWindow {
+            Update withTimeWindow(DateTime start, DateTime end);
+            Update withTimeWindow(DateTime start, DateTime end, String timeZone);
+            Update withoutTimeWindow();
         }
 
-        interface WithTimeWindow<ParentT> {
-            Update<ParentT> withTimeWindow(DateTime start, DateTime end);
-            Update<ParentT> withTimeWindow(DateTime start, DateTime end, String timeZone);
-            Update<ParentT> withoutTimeWindow();
-        }
-
-        interface WithRecurrence<ParentT> {
-            Update<ParentT> withoutRecurrence();
-            Recurrence.UpdateStages.Blank<Update<ParentT>> updateRecurrence();
-            Recurrence.DefinitionStages.Blank<Update<ParentT>> defineRecurrence();
+        interface WithRecurrence {
+            Update withoutRecurrence();
+            Recurrence.UpdateStages.Blank updateRecurrence();
+            Recurrence.UpdateDefinitionStages.Blank defineRecurrence();
         }
     }
 

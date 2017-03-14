@@ -15,6 +15,7 @@ import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.AutoscaleSetting;
 import com.microsoft.azure.management.monitor.ComparisonOperationType;
 import com.microsoft.azure.management.monitor.MetricStatisticType;
@@ -40,6 +41,7 @@ import org.joda.time.Period;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -63,7 +65,7 @@ public final class ManageMonitor {
                 .withRegion(Region.US_CENTRAL)
                 .create();
 
-            /*MetricTrigger trigger = azure.autoscaleSettings().createMetricTrigger("triggerName")
+            MetricTrigger trigger = azure.autoscaleSettings().defineMetricTrigger("triggerName")
                     .withMetricResourceUri("asd")
                     .withTimeGrain(Period.days(3))
                     .withStatistic(MetricStatisticType.AVERAGE)
@@ -71,24 +73,33 @@ public final class ManageMonitor {
                     .withTimeAggregation(TimeAggregationType.TOTAL)
                     .withOperator(ComparisonOperationType.LESS_THAN)
                     .withThreshold(6.6)
+                    .create();
+
+            trigger.update()
+                    .withMetricName("New Name")
                     .apply();
 
-            ScaleAction scaleAction = azure.autoscaleSettings().createScaleAction()
+            ScaleAction scaleAction = azure.autoscaleSettings().defineScaleAction()
                     .withDirection(ScaleDirection.INCREASE)
                     .withType(ScaleType.PERCENT_CHANGE_COUNT)
                     .withCooldown(Period.months(2))
-                    .withValue("asdasdasd")
+                    .create();
+
+            scaleAction.update()
+                    .withValue("Some value")
                     .apply();
 
-            Recurrence recurrence = azure.autoscaleSettings().createRecurrence()
+            Recurrence recurrence = azure.autoscaleSettings().defineRecurrence()
                     .withFrequency(RecurrenceFrequency.DAY)
                     .withScheduleTimeZone("PST")
-                    .withScheduleHours(3)
-                    .withScheduleMinutes(5)
+                    .withScheduleHour(3)
+                    .withScheduleMinute(5)
                     .withScheduleDay("Monday")
-                    .withScheduleDay("Tuesday")
-                    .withScheduleDay("Saturday")
-                    .apply();*/
+                    .create();
+
+            recurrence.update()
+                    .withScheduleHours( Arrays.asList(1, 2, 3))
+                    .apply();
 
             AutoscaleSetting setting = azure.autoscaleSettings().define("somesettingZ")
                     .withRegion(Region.US_EAST)
@@ -104,13 +115,13 @@ public final class ManageMonitor {
                                 .withTimeAggregation(TimeAggregationType.TOTAL)
                                 .withOperator(ComparisonOperationType.LESS_THAN)
                                 .withThreshold(5.4)
-                                .apply()
+                                .attach()
                             .defineScaleAction()
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.EXACT_COUNT)
                                 .withCooldown(Period.hours(12))
-                                .apply()
-                            .apply()
+                                .attach()
+                            .attach()
                         .withTimeWindow(DateTime.now().minusDays(2), DateTime.now())
                         .defineRecurrence()
                             .withFrequency(RecurrenceFrequency.WEEK)
@@ -118,8 +129,7 @@ public final class ManageMonitor {
                             .withScheduleHour(1)
                             .withScheduleMinute(2)
                             .withScheduleDay("Friday")
-                            .withScheduleDay("Sunday")
-                            .apply()
+                            .attach()
                         .attach()
                     .defineAutoscaleProfile("AutoScaleProfile2")
                         .withScaleCapacity("0", "5", "3")
@@ -132,13 +142,13 @@ public final class ManageMonitor {
                                 .withTimeAggregation(TimeAggregationType.TOTAL)
                                 .withOperator(ComparisonOperationType.LESS_THAN)
                                 .withThreshold(5.4)
-                                .apply()
+                                .attach()
                             .defineScaleAction()
                                 .withDirection(ScaleDirection.DECREASE)
                                 .withType(ScaleType.EXACT_COUNT)
                                 .withCooldown(Period.hours(3))
-                                .apply()
-                            .apply()
+                                .attach()
+                            .attach()
                         .defineScaleRule()
                             .defineMetricTrigger("triggerName")
                                 .withMetricResourceUri("asd")
@@ -148,23 +158,21 @@ public final class ManageMonitor {
                                 .withTimeAggregation(TimeAggregationType.TOTAL)
                                 .withOperator(ComparisonOperationType.LESS_THAN)
                                 .withThreshold(6.6)
-                                .apply()
+                                .attach()
                             .defineScaleAction()
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
                                 .withValue("asdasdasd")
-                                .apply()
-                            .apply()
+                                .attach()
+                            .attach()
                         .defineRecurrence()
                             .withFrequency(RecurrenceFrequency.DAY)
                             .withScheduleTimeZone("PST")
                             .withScheduleHour(3)
                             .withScheduleMinute(5)
-                            .withScheduleDay("Monday")
-                            .withScheduleDay("Tuesday")
-                            .withScheduleDay("Saturday")
-                            .apply()
+                            .withScheduleDays( Arrays.asList("Monday", "Tuesday", "Saturday"))
+                            .attach()
                         .attach()
                     .defineAutoscaleNotification()
                         .withSendToSubscriptionAdministrator()
@@ -186,25 +194,25 @@ public final class ManageMonitor {
                                 .withTimeAggregation(TimeAggregationType.TOTAL)
                                 .withOperator(ComparisonOperationType.LESS_THAN)
                                 .withThreshold(6.6)
-                                .apply()
+                                .attach()
                             .defineScaleAction()
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
                                 .withValue("asdasdasd")
-                                .apply()
-                            .apply()
+                                .attach()
+                            .attach()
                         .attach()
                     .updateAutoscaleProfile("AutoScaleProfile2")
-                        .withScaleCapacity("10", "20", "15")
+                        .withName("AutoScaleProfile12")
                         .updateScaleRule(rule)
                             .updateMetricTrigger()
                                 .withStatistic(MetricStatisticType.MAX)
-                                .apply()
+                                .parent()
                             .updateScaleAction()
                                 .withValue("ahahahah!")
-                                .apply()
-                            .apply()
+                                .parent()
+                            .parent()
                         .withoutScaleRule(rule)
                         .defineScaleRule()
                             .defineMetricTrigger("triggerName")
@@ -215,26 +223,26 @@ public final class ManageMonitor {
                                 .withTimeAggregation(TimeAggregationType.TOTAL)
                                 .withOperator(ComparisonOperationType.LESS_THAN)
                                 .withThreshold(6.6)
-                                .apply()
+                                .attach()
                             .defineScaleAction()
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
                                 .withValue("asdasdasd")
-                                .apply()
-                            .apply()
+                                .attach()
+                            .attach()
                         .withoutTimeWindow()
                         .updateRecurrence()
                             .withFrequency(RecurrenceFrequency.YEAR)
-                            .apply()
-                        .attach()
+                            .parent()
+                        .parent()
                     .withoutAutoscaleNotifications()
                     .defineAutoscaleNotification()
                         .withEmailNotificationCustomEmail("sendme@universal.com")
                         .attach()
                     .updateAutoscaleNotification(setting.notifications().get(0))
                         .withoutEmailNotificationCustomEmails()
-                        .attach()
+                        .parent()
                     .apply();
 
             return true;

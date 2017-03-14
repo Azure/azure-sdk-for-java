@@ -8,6 +8,7 @@ package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.AutoscaleNotification;
+import com.microsoft.azure.management.monitor.AutoscaleSetting;
 import com.microsoft.azure.management.monitor.WebhookNotification;
 
 import java.util.List;
@@ -21,6 +22,7 @@ class AutoscaleNotificationImpl
         implements
             AutoscaleNotification,
             AutoscaleNotification.Definition,
+            AutoscaleNotification.UpdateDefinition,
             AutoscaleNotification.Update {
 
     AutoscaleNotificationImpl(String name) {
@@ -103,6 +105,11 @@ class AutoscaleNotificationImpl
 
     @Override
     public AutoscaleNotificationImpl withEmailNotificationCustomEmails(List customEmails) {
+        return null;
+    }
+
+    @Override
+    public AutoscaleSettingImpl parent() {
         return null;
     }
 }

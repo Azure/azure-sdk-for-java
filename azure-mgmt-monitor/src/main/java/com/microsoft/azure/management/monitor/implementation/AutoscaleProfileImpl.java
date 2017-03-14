@@ -31,6 +31,7 @@ class AutoscaleProfileImpl
         implements
             AutoscaleProfile,
             AutoscaleProfile.Definition,
+            AutoscaleProfile.UpdateDefinition,
             AutoscaleProfile.Update {
 
     AutoscaleProfileImpl(String name) {
@@ -62,17 +63,12 @@ class AutoscaleProfileImpl
     }
 
     @Override
-    public AutoscaleSetting attach() {
+    public AutoscaleSettingImpl attach() {
         return null;
     }
 
     @Override
     public AutoscaleProfileImpl withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault) {
-        return null;
-    }
-
-    @Override
-    public AutoscaleProfileImpl withName(String name) {
         return null;
     }
 
@@ -123,6 +119,16 @@ class AutoscaleProfileImpl
 
     @Override
     public RecurrenceImpl defineRecurrence() {
+        return null;
+    }
+
+    @Override
+    public AutoscaleSettingImpl parent() {
+        return null;
+    }
+
+    @Override
+    public AutoscaleProfileImpl withName(String Name) {
         return null;
     }
 }

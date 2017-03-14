@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResou
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
@@ -46,54 +47,69 @@ public interface AutoscaleNotification {
      */
     Map<String, WebhookNotification> webhooks();
 
-    interface Definition<ParentT> extends
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.Blank<ParentT> {
+    interface Definition extends
+            DefinitionStages.WithAttach,
+            DefinitionStages.Blank {
     }
 
     interface DefinitionStages {
-
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach extends
+                Attachable.InDefinition<AutoscaleSetting.DefinitionStages.WithCreate> {
         }
 
-        interface Blank<ParentT> {
-            Definition<ParentT> withSendToSubscriptionAdministrator();
-            Definition<ParentT> withoutSendToSubscriptionAdministrator();
-            Definition<ParentT> withSendToSubscriptionCoAdministrators();
-            Definition<ParentT> withoutSendToSubscriptionCoAdministrators();
-            Definition<ParentT> withEmailNotificationCustomEmails(List<String> customEmails);
-            Definition<ParentT> withEmailNotificationCustomEmail(String customEmail);
-            Definition<ParentT> withWebhookNotification(String serviceUri, Map<String, String> properties);
+        interface Blank {
+            Definition withSendToSubscriptionAdministrator();
+            Definition withoutSendToSubscriptionAdministrator();
+            Definition withSendToSubscriptionCoAdministrators();
+            Definition withoutSendToSubscriptionCoAdministrators();
+            Definition withEmailNotificationCustomEmails(List<String> customEmails);
+            Definition withEmailNotificationCustomEmail(String customEmail);
+            Definition withWebhookNotification(String serviceUri, Map<String, String> properties);
         }
     }
 
-    interface Update<ParentT> extends
-            UpdateStages.WithAttach<ParentT>,
-            UpdateStages.Blank<ParentT>{
+    interface UpdateDefinition extends
+            UpdateDefinitionStages.WithAttach,
+            UpdateDefinitionStages.Blank {
+    }
+
+    interface UpdateDefinitionStages {
+        interface WithAttach extends
+                Attachable.InUpdate<AutoscaleSetting.Update> {
+        }
+
+        interface Blank {
+            UpdateDefinition withSendToSubscriptionAdministrator();
+            UpdateDefinition withoutSendToSubscriptionAdministrator();
+            UpdateDefinition withSendToSubscriptionCoAdministrators();
+            UpdateDefinition withoutSendToSubscriptionCoAdministrators();
+            UpdateDefinition withEmailNotificationCustomEmails(List<String> customEmails);
+            UpdateDefinition withEmailNotificationCustomEmail(String customEmail);
+            UpdateDefinition withWebhookNotification(String serviceUri, Map<String, String> properties);
+        }
+    }
+
+    interface Update extends
+            Settable<AutoscaleSetting.Update>,
+            UpdateStages.Blank {
     }
 
     interface UpdateStages {
 
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
-        }
+        interface Blank {
+            Update withSendToSubscriptionAdministrator();
+            Update withoutSendToSubscriptionAdministrator();
 
-        interface Blank<ParentT> {
-            Update<ParentT> withSendToSubscriptionAdministrator();
-            Update<ParentT> withoutSendToSubscriptionAdministrator();
+            Update withSendToSubscriptionCoAdministrators();
+            Update withoutSendToSubscriptionCoAdministrators();
 
-            Update<ParentT> withSendToSubscriptionCoAdministrators();
-            Update<ParentT> withoutSendToSubscriptionCoAdministrators();
+            Update withEmailNotificationCustomEmail(String customEmails);
+            Update withoutEmailNotificationCustomEmail(String customEmails);
+            Update withEmailNotificationCustomEmails(List<String> customEmails);
+            Update withoutEmailNotificationCustomEmails();
 
-            Update<ParentT> withEmailNotificationCustomEmail(String customEmails);
-            Update<ParentT> withoutEmailNotificationCustomEmail(String customEmails);
-            Update<ParentT> withEmailNotificationCustomEmails(List<String> customEmails);
-            Update<ParentT> withoutEmailNotificationCustomEmails();
-
-            Update<ParentT> withWebhookNotification(String serviceUri, Map<String, String> properties);
-            Update<ParentT> withoutWebhookNotification();
+            Update withWebhookNotification(String serviceUri, Map<String, String> properties);
+            Update withoutWebhookNotification();
         }
     }
-
 }

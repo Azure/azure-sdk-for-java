@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.ComparisonOperationType;
 import com.microsoft.azure.management.monitor.MetricStatisticType;
 import com.microsoft.azure.management.monitor.MetricTrigger;
+import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.TimeAggregationType;
 import org.joda.time.Period;
 
@@ -20,7 +21,11 @@ import org.joda.time.Period;
 class MetricTriggerImpl
         implements
             MetricTrigger,
+            MetricTrigger.StandaloneDefinition,
+            MetricTrigger.StandaloneUpdate,
             MetricTrigger.Definition,
+            MetricTrigger.ParentUpdateDefinition,
+            MetricTrigger.UpdateDefinition,
             MetricTrigger.Update {
 
     MetricTriggerImpl(String name) {
@@ -67,7 +72,27 @@ class MetricTriggerImpl
     }
 
     @Override
-    public ScaleRuleImpl apply() {
+    public ScaleRuleImpl parent() {
         return null;
+    }
+
+    @Override
+    public ScaleRuleImpl attach() {
+        return null;
+    }
+
+    @Override
+    public MetricTriggerImpl create() {
+        return this;
+    }
+
+    @Override
+    public MetricTriggerImpl update() {
+        return this;
+    }
+
+    @Override
+    public MetricTriggerImpl apply() {
+        return this;
     }
 }

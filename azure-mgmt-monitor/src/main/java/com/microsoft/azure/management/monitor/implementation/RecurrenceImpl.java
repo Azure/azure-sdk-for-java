@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.Recurrence;
 import com.microsoft.azure.management.monitor.RecurrenceFrequency;
 import com.microsoft.azure.management.monitor.RecurrentSchedule;
@@ -27,7 +28,10 @@ class RecurrenceImpl extends
         WrapperImpl<RecurrenceInner>
         implements
             Recurrence,
+            Recurrence.StandaloneDefinition,
+            Recurrence.StandaloneUpdate,
             Recurrence.Definition,
+            Recurrence.UpdateDefinition,
             Recurrence.Update {
 
     RecurrenceImpl(RecurrenceInner inner) {
@@ -133,7 +137,27 @@ class RecurrenceImpl extends
     }
 
     @Override
-    public AutoscaleProfileImpl apply() {
+    public AutoscaleProfileImpl parent() {
         return null;
+    }
+
+    @Override
+    public AutoscaleProfileImpl attach() {
+        return null;
+    }
+
+    @Override
+    public RecurrenceImpl update() {
+        return this;
+    }
+
+    @Override
+    public RecurrenceImpl apply() {
+        return this;
+    }
+
+    @Override
+    public RecurrenceImpl create() {
+        return this;
     }
 }

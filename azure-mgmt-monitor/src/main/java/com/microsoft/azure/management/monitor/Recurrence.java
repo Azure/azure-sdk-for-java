@@ -8,6 +8,7 @@ package com.microsoft.azure.management.monitor;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -51,63 +52,161 @@ public interface Recurrence {
      */
     List<Integer> minutes();
 
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithRecurrentScheduleTimeZone<ParentT>,
-            DefinitionStages.WithRecurrentScheduleHours<ParentT>,
-            DefinitionStages.WithRecurrentScheduleMinutes<ParentT>,
-            DefinitionStages.WithRecurrentScheduleDays<ParentT>,
-            DefinitionStages.WithRecurrentScheduleDaysApplicable<ParentT> {
+    StandaloneUpdateStages.Blank update();
+
+    interface StandaloneDefinition extends
+            StandaloneDefinitionStages.Blank,
+            StandaloneDefinitionStages.WithRecurrentScheduleTimeZone,
+            StandaloneDefinitionStages.WithRecurrentScheduleHours,
+            StandaloneDefinitionStages.WithRecurrentScheduleMinutes,
+            StandaloneDefinitionStages.WithRecurrentScheduleDays,
+            StandaloneDefinitionStages.WithRecurrentScheduleDaysApplicable {
+    }
+
+    interface StandaloneDefinitionStages {
+        interface Blank {
+            WithRecurrentScheduleTimeZone withFrequency(RecurrenceFrequency frequency);
+        }
+
+        interface WithRecurrentScheduleTimeZone {
+            WithRecurrentScheduleHours withScheduleTimeZone(String scheduleTimeZone);
+        }
+
+        interface WithRecurrentScheduleHours {
+            WithRecurrentScheduleMinutes withScheduleHour(int hour);
+            WithRecurrentScheduleMinutes withScheduleHours(List<Integer> hours);
+        }
+
+        interface WithRecurrentScheduleMinutes {
+            WithRecurrentScheduleDays withScheduleMinute(int minute);
+            WithRecurrentScheduleDays withScheduleMinutes(List<Integer> minutes);
+        }
+
+        interface WithRecurrentScheduleDays {
+            WithRecurrentScheduleDaysApplicable withScheduleDay(String day);
+            WithRecurrentScheduleDaysApplicable withScheduleDays(List<String> day);
+        }
+
+        interface WithRecurrentScheduleDaysApplicable {
+            Recurrence create();
+        }
+    }
+
+    interface StandaloneUpdate extends
+            StandaloneUpdateStages.Blank {
+    }
+
+    interface StandaloneUpdateStages {
+        interface Blank {
+            StandaloneUpdate withFrequency(RecurrenceFrequency frequency);
+            StandaloneUpdate withScheduleTimeZone(String scheduleTimeZone);
+            StandaloneUpdate withScheduleHour(int hour);
+            StandaloneUpdate withScheduleHours(List<Integer> hours);
+            StandaloneUpdate withoutHour(int hour);
+            StandaloneUpdate withScheduleMinute(int minute);
+            StandaloneUpdate withScheduleMinutes(List<Integer> minutes);
+            StandaloneUpdate withoutScheduleMinute(int minute);
+            StandaloneUpdate withScheduleDay(String day);
+            StandaloneUpdate withScheduleDays(List<String> day);
+            StandaloneUpdate withoutScheduleDay(String day);
+            Recurrence apply();
+        }
+    }
+
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithRecurrentScheduleTimeZone,
+            DefinitionStages.WithRecurrentScheduleHours,
+            DefinitionStages.WithRecurrentScheduleMinutes,
+            DefinitionStages.WithRecurrentScheduleDays,
+            DefinitionStages.WithRecurrentScheduleDaysApplicable {
     }
 
     interface DefinitionStages {
-        interface Blank<ParentT> {
-            WithRecurrentScheduleTimeZone<ParentT> withFrequency(RecurrenceFrequency frequency);
+        interface Blank {
+            WithRecurrentScheduleTimeZone withFrequency(RecurrenceFrequency frequency);
         }
 
-        interface WithRecurrentScheduleTimeZone<ParentT> {
-            WithRecurrentScheduleHours<ParentT> withScheduleTimeZone(String scheduleTimeZone);
+        interface WithRecurrentScheduleTimeZone {
+            WithRecurrentScheduleHours withScheduleTimeZone(String scheduleTimeZone);
         }
 
-        interface WithRecurrentScheduleHours<ParentT> {
-            WithRecurrentScheduleMinutes<ParentT> withScheduleHour(int hour);
-            WithRecurrentScheduleMinutes<ParentT> withScheduleHours(List<Integer> hours);
+        interface WithRecurrentScheduleHours {
+            WithRecurrentScheduleMinutes withScheduleHour(int hour);
+            WithRecurrentScheduleMinutes withScheduleHours(List<Integer> hours);
         }
 
-        interface WithRecurrentScheduleMinutes<ParentT> {
-            WithRecurrentScheduleDays<ParentT> withScheduleMinute(int minute);
-            WithRecurrentScheduleDays<ParentT> withScheduleMinutes(List<Integer> minutes);
+        interface WithRecurrentScheduleMinutes {
+            WithRecurrentScheduleDays withScheduleMinute(int minute);
+            WithRecurrentScheduleDays withScheduleMinutes(List<Integer> minutes);
         }
 
-        interface WithRecurrentScheduleDays<ParentT> {
-            WithRecurrentScheduleDaysApplicable<ParentT> withScheduleDay(String day);
-            WithRecurrentScheduleDaysApplicable<ParentT> withScheduleDays(List<String> day);
+        interface WithRecurrentScheduleDays {
+            WithRecurrentScheduleDaysApplicable withScheduleDay(String day);
+            WithRecurrentScheduleDaysApplicable withScheduleDays(List<String> day);
         }
 
-        interface WithRecurrentScheduleDaysApplicable<ParentT> extends
-                WithRecurrentScheduleDays<ParentT> {
-            ParentT apply();
+        interface WithRecurrentScheduleDaysApplicable extends
+                Attachable.InDefinition<AutoscaleProfile.DefinitionStages.WithScaleRuleOptional> {
         }
     }
 
-    interface Update<ParentT> extends
-            UpdateStages.Blank<ParentT> {
+    interface UpdateDefinition extends
+            UpdateDefinitionStages.Blank,
+            UpdateDefinitionStages.WithRecurrentScheduleTimeZone,
+            UpdateDefinitionStages.WithRecurrentScheduleHours,
+            UpdateDefinitionStages.WithRecurrentScheduleMinutes,
+            UpdateDefinitionStages.WithRecurrentScheduleDays,
+            UpdateDefinitionStages.WithRecurrentScheduleDaysApplicable {
+    }
+
+    interface UpdateDefinitionStages {
+        interface Blank {
+            WithRecurrentScheduleTimeZone withFrequency(RecurrenceFrequency frequency);
+        }
+
+        interface WithRecurrentScheduleTimeZone {
+            WithRecurrentScheduleHours withScheduleTimeZone(String scheduleTimeZone);
+        }
+
+        interface WithRecurrentScheduleHours {
+            WithRecurrentScheduleMinutes withScheduleHour(int hour);
+            WithRecurrentScheduleMinutes withScheduleHours(List<Integer> hours);
+        }
+
+        interface WithRecurrentScheduleMinutes {
+            WithRecurrentScheduleDays withScheduleMinute(int minute);
+            WithRecurrentScheduleDays withScheduleMinutes(List<Integer> minutes);
+        }
+
+        interface WithRecurrentScheduleDays {
+            WithRecurrentScheduleDaysApplicable withScheduleDay(String day);
+            WithRecurrentScheduleDaysApplicable withScheduleDays(List<String> day);
+        }
+
+        interface WithRecurrentScheduleDaysApplicable extends
+                Attachable.InUpdate<AutoscaleProfile.Update> {
+        }
+    }
+
+    interface Update extends
+            Settable<AutoscaleProfile.Update>,
+            UpdateStages.Blank {
     }
 
     interface UpdateStages {
-        interface Blank<ParentT> {
-            Update<ParentT> withFrequency(RecurrenceFrequency frequency);
-            Update<ParentT> withScheduleTimeZone(String scheduleTimeZone);
-            Update<ParentT> withScheduleHour(int hour);
-            Update<ParentT> withScheduleHours(List<Integer> hours);
-            Update<ParentT> withoutHour(int hour);
-            Update<ParentT> withScheduleMinute(int minute);
-            Update<ParentT> withScheduleMinutes(List<Integer> minutes);
-            Update<ParentT> withoutScheduleMinute(int minute);
-            Update<ParentT> withScheduleDay(String day);
-            Update<ParentT> withScheduleDays(List<String> day);
-            Update<ParentT> withoutScheduleDay(String day);
-            ParentT apply();
+        interface Blank {
+            Update withFrequency(RecurrenceFrequency frequency);
+            Update withScheduleTimeZone(String scheduleTimeZone);
+            Update withScheduleHour(int hour);
+            Update withScheduleHours(List<Integer> hours);
+            Update withoutHour(int hour);
+            Update withScheduleMinute(int minute);
+            Update withScheduleMinutes(List<Integer> minutes);
+            Update withoutScheduleMinute(int minute);
+            Update withScheduleDay(String day);
+            Update withScheduleDays(List<String> day);
+            Update withoutScheduleDay(String day);
         }
     }
 

@@ -52,7 +52,7 @@ public interface AutoscaleSetting extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate{
+        DefinitionStages.WithCreate {
     }
 
     interface DefinitionStages {
@@ -64,7 +64,7 @@ public interface AutoscaleSetting extends
              * @param name
              * @return the next stage
              */
-            AutoscaleProfile.DefinitionStages.Blank<WithCreate> defineAutoscaleProfile(String name);
+            AutoscaleProfile.DefinitionStages.Blank defineAutoscaleProfile(String name);
         }
 
         interface DefineAutoscaleSettingResourceNotifications {
@@ -73,7 +73,7 @@ public interface AutoscaleSetting extends
              *
              * @return the next stage
              */
-            AutoscaleNotification.DefinitionStages.Blank<Definition> defineAutoscaleNotification();
+            AutoscaleNotification.DefinitionStages.Blank defineAutoscaleNotification();
         }
 
         interface WithAutoscaleSettingResourceEnabled {
@@ -120,14 +120,14 @@ public interface AutoscaleSetting extends
              *
              * @return the next stage
              */
-            AutoscaleProfile.DefinitionStages.Blank<Update> defineAutoscaleProfile(String name);
+            AutoscaleProfile.UpdateDefinitionStages.Blank defineAutoscaleProfile(String name);
             /**
              * the collection of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
              *
              * @param name
              * @return the next stage
              */
-            AutoscaleProfile.Update<Update> updateAutoscaleProfile(String name);
+            AutoscaleProfile.Update updateAutoscaleProfile(String name);
         }
 
         interface DefineAutoscaleSettingResourceNotifications {
@@ -138,14 +138,14 @@ public interface AutoscaleSetting extends
              *
              * @return the next stage
              */
-            AutoscaleNotification.DefinitionStages.Blank<Update> defineAutoscaleNotification();
+            AutoscaleNotification.UpdateDefinitionStages.Blank defineAutoscaleNotification();
             /**
              * the collection of notifications.
              *
              * @param notification
              * @return the next stage
              */
-            AutoscaleNotification.UpdateStages.Blank<Update> updateAutoscaleNotification(AutoscaleNotification notification);
+            AutoscaleNotification.UpdateStages.Blank updateAutoscaleNotification(AutoscaleNotification notification);
         }
 
         interface WithAutoscaleSettingResourceEnabled {
