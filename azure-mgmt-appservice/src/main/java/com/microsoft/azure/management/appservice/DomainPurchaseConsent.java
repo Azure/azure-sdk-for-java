@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Domain purchase consent object, representing acceptance of applicable legal
@@ -21,16 +22,19 @@ public class DomainPurchaseConsent {
      * using ListLegalAgreements API under
      * &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
      */
+    @JsonProperty(value = "agreementKeys")
     private List<String> agreementKeys;
 
     /**
      * Client IP address.
      */
+    @JsonProperty(value = "agreedBy")
     private String agreedBy;
 
     /**
      * Timestamp when the agreements were accepted.
      */
+    @JsonProperty(value = "agreedAt")
     private DateTime agreedAt;
 
     /**

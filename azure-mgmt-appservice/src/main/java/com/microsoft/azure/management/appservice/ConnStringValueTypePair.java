@@ -17,7 +17,7 @@ public class ConnStringValueTypePair {
     /**
      * Value of pair.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -25,7 +25,7 @@ public class ConnStringValueTypePair {
      * 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub',
      * 'ApiHub', 'DocDb', 'RedisCache'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private ConnectionStringType type;
 
     /**

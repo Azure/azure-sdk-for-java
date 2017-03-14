@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Http logs to azure blob storage configuration.
@@ -17,6 +18,7 @@ public class AzureBlobStorageHttpLogsConfig {
      * SAS url to a azure blob container with read/write/list/delete
      * permissions.
      */
+    @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
     /**
@@ -24,11 +26,13 @@ public class AzureBlobStorageHttpLogsConfig {
      * Remove blobs older than X days.
      * 0 or lower means no retention.
      */
+    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /**
      * Enabled.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**

@@ -12,6 +12,7 @@ import java.util.Map;
 import com.microsoft.azure.management.appservice.CertificateProductType;
 import com.microsoft.azure.management.appservice.ProvisioningState;
 import com.microsoft.azure.management.appservice.CertificateOrderStatus;
+import com.microsoft.azure.management.appservice.CertificateDetails;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -85,7 +86,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Signed certificate.
      */
     @JsonProperty(value = "properties.signedCertificate", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner signedCertificate;
+    private CertificateDetails signedCertificate;
 
     /**
      * Last CSR that was created for this order.
@@ -97,13 +98,13 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Intermediate certificate.
      */
     @JsonProperty(value = "properties.intermediate", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner intermediate;
+    private CertificateDetails intermediate;
 
     /**
      * Root certificate.
      */
     @JsonProperty(value = "properties.root", access = JsonProperty.Access.WRITE_ONLY)
-    private CertificateDetailsInner root;
+    private CertificateDetails root;
 
     /**
      * Current serial number of the certificate.
@@ -282,7 +283,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the signedCertificate value
      */
-    public CertificateDetailsInner signedCertificate() {
+    public CertificateDetails signedCertificate() {
         return this.signedCertificate;
     }
 
@@ -311,7 +312,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the intermediate value
      */
-    public CertificateDetailsInner intermediate() {
+    public CertificateDetails intermediate() {
         return this.intermediate;
     }
 
@@ -320,7 +321,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      *
      * @return the root value
      */
-    public CertificateDetailsInner root() {
+    public CertificateDetails root() {
         return this.root;
     }
 

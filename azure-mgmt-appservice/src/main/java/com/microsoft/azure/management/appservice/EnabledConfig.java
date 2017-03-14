@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Enabled configuration.
@@ -16,6 +17,7 @@ public class EnabledConfig {
     /**
      * Enabled.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**

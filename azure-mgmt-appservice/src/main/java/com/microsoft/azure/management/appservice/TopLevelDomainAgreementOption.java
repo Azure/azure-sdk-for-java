@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Options for retrieving the list of top level domain legal agreements.
@@ -18,6 +19,7 @@ public class TopLevelDomainAgreementOption {
      * include agreements for domain privacy as well; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "includePrivacy")
     private Boolean includePrivacy;
 
     /**

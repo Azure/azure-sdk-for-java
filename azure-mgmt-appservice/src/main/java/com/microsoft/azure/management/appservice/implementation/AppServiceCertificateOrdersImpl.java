@@ -34,7 +34,7 @@ class AppServiceCertificateOrdersImpl
 
     @Override
     public AppServiceCertificateOrder getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
+        return wrapModel(this.inner().getByResourceGroup(groupName, name));
     }
 
     @Override
@@ -62,7 +62,7 @@ class AppServiceCertificateOrdersImpl
 
     @Override
     protected Observable<AppServiceCertificateOrderInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

@@ -18,43 +18,43 @@ public class ResourceMetricValue {
     /**
      * Value timestamp.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String timestamp;
 
     /**
      * Value average.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "average", access = JsonProperty.Access.WRITE_ONLY)
     private Double average;
 
     /**
      * Value minimum.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Double minimum;
 
     /**
      * Value maximum.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Double maximum;
 
     /**
      * Value total.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "total", access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
     /**
      * Value count.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Double count;
 
     /**
      * Properties.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricProperty> properties;
 
     /**

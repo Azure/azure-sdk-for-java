@@ -17,12 +17,13 @@ public class IpSecurityRestriction {
     /**
      * IP address the security restriction is valid for.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /**
      * Subnet mask for the range of IP addresses the restriction is valid for.
      */
+    @JsonProperty(value = "subnetMask")
     private String subnetMask;
 
     /**

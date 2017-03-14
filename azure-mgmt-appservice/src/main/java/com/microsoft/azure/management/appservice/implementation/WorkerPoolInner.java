@@ -54,6 +54,7 @@ public class WorkerPoolInner extends Resource {
     /**
      * The sku property.
      */
+    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /**
