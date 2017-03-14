@@ -10,9 +10,7 @@ package com.microsoft.azure.management.monitor.implementation;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.management.monitor.Recurrence;
 import com.microsoft.azure.management.monitor.ScaleCapacity;
-import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.TimeWindow;
 
 /**
@@ -40,7 +38,7 @@ public class AutoscaleProfileInner {
 
     /**
      * the specific date-time for the profile. This element is not used if the
-     * Recurrence element is used.
+     * RecurrenceInner element is used.
      */
     @JsonProperty(value = "fixedDate")
     private TimeWindow fixedDate;
@@ -50,7 +48,7 @@ public class AutoscaleProfileInner {
      * used if the FixedDate element is used.
      */
     @JsonProperty(value = "recurrence")
-    private Recurrence recurrence;
+    private RecurrenceInner recurrence;
 
     /**
      * Get the name value.
@@ -137,7 +135,7 @@ public class AutoscaleProfileInner {
      *
      * @return the recurrence value
      */
-    public Recurrence recurrence() {
+    public RecurrenceInner recurrence() {
         return this.recurrence;
     }
 
@@ -147,7 +145,7 @@ public class AutoscaleProfileInner {
      * @param recurrence the recurrence value to set
      * @return the AutoscaleProfile object itself.
      */
-    public AutoscaleProfileInner withRecurrence(Recurrence recurrence) {
+    public AutoscaleProfileInner withRecurrence(RecurrenceInner recurrence) {
         this.recurrence = recurrence;
         return this;
     }

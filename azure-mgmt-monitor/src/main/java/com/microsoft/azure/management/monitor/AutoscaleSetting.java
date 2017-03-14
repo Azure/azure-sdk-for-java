@@ -109,7 +109,7 @@ public interface AutoscaleSetting extends
             UpdateStages.DefineAutoscaleSettingResourceNotifications,
             UpdateStages.WithAutoscaleSettingResourceEnabled,
             UpdateStages.WithAutoscaleSettingResourceName,
-            UpdateStages.WithAutoscaleSettingResourceTargetResourceUri{
+            UpdateStages.WithAutoscaleSettingResourceTargetResourceUri {
     }
 
     interface UpdateStages {

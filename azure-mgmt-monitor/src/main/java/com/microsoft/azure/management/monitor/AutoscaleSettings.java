@@ -34,7 +34,7 @@ public interface AutoscaleSettings extends
     SupportsDeletingById,
     SupportsDeletingByGroup {
 
-    ScaleRule.DefinitionStages.MetricTriggerDefinitionStages.WithMetricResourceUri<MetricTrigger> createMetricTrigger(String name);
+    /*ScaleRule.DefinitionStages.MetricTriggerDefinitionStages.WithMetricResourceUri<MetricTrigger> createMetricTrigger(String name);
     ScaleRule.DefinitionStages.ScaleActionDefinitionStages.WithDirection<ScaleAction> createScaleAction();
-    AutoscaleProfile.DefinitionStages.RecurrenceDefinitionStages.WithRecurrenceFrequency<Recurrence> createRecurrence();
+    AutoscaleProfile.DefinitionStages.RecurrenceDefinitionStages.WithRecurrenceFrequency<Recurrence> createRecurrence();*/
 }

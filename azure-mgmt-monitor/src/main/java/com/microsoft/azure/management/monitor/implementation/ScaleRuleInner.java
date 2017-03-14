@@ -9,8 +9,8 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.management.monitor.MetricTrigger;
-import com.microsoft.azure.management.monitor.ScaleAction;
+import com.microsoft.azure.management.monitor.implementation.MetricTriggerInner;
+import com.microsoft.azure.management.monitor.implementation.ScaleActionInner;
 
 /**
  * A rule that provide the triggers and parameters for the scaling action.
@@ -20,20 +20,20 @@ public class ScaleRuleInner {
      * the trigger that results in a scaling action.
      */
     @JsonProperty(value = "metricTrigger", required = true)
-    private MetricTrigger metricTrigger;
+    private MetricTriggerInner metricTrigger;
 
     /**
      * the parameters for the scaling action.
      */
     @JsonProperty(value = "scaleAction", required = true)
-    private ScaleAction scaleAction;
+    private ScaleActionInner scaleAction;
 
     /**
      * Get the metricTrigger value.
      *
      * @return the metricTrigger value
      */
-    public MetricTrigger metricTrigger() {
+    public MetricTriggerInner metricTrigger() {
         return this.metricTrigger;
     }
 
@@ -43,7 +43,7 @@ public class ScaleRuleInner {
      * @param metricTrigger the metricTrigger value to set
      * @return the ScaleRuleInner object itself.
      */
-    public ScaleRuleInner withMetricTrigger(MetricTrigger metricTrigger) {
+    public ScaleRuleInner withMetricTrigger(MetricTriggerInner metricTrigger) {
         this.metricTrigger = metricTrigger;
         return this;
     }
@@ -53,7 +53,7 @@ public class ScaleRuleInner {
      *
      * @return the scaleAction value
      */
-    public ScaleAction scaleAction() {
+    public ScaleActionInner scaleAction() {
         return this.scaleAction;
     }
 
@@ -63,7 +63,7 @@ public class ScaleRuleInner {
      * @param scaleAction the scaleAction value to set
      * @return the ScaleRuleInner object itself.
      */
-    public ScaleRuleInner withScaleAction(ScaleAction scaleAction) {
+    public ScaleRuleInner withScaleAction(ScaleActionInner scaleAction) {
         this.scaleAction = scaleAction;
         return this;
     }

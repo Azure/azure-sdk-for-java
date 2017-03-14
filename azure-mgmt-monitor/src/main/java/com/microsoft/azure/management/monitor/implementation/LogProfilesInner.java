@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -316,10 +317,18 @@ public class LogProfilesInner {
     /**
      * List the log profiles.
      *
-     * @return the List&lt;LogProfileResourceInner&gt; object if successful.
+     * @return the PagedList<LogProfileResourceInner> object if successful.
      */
-    public List<LogProfileResourceInner> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+    public PagedList<LogProfileResourceInner> list() {
+        PageImpl1<LogProfileResourceInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<LogProfileResourceInner>(page) {
+            @Override
+            public Page<LogProfileResourceInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**

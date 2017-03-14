@@ -19,10 +19,7 @@ import java.util.Map;
 /**
  */
 @Fluent
-public interface AutoscaleNotification extends
-        ChildResource<AutoscaleSetting>,
-        Refreshable<AutoscaleNotification>,
-        Updatable<AutoscaleNotification.Update> {
+public interface AutoscaleNotification {
 
     /**
      * the operation associated with the notification and its value must be "scale"

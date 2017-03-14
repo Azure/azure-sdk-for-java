@@ -19,10 +19,7 @@ import java.util.Map;
 /**
  */
 @Fluent
-public interface AutoscaleProfile extends
-        ChildResource<AutoscaleSetting>,
-        Refreshable<AutoscaleProfile>,
-        Updatable<AutoscaleProfile.Update> {
+public interface AutoscaleProfile {
 
     /**
      * the name of the profile.
@@ -52,7 +49,9 @@ public interface AutoscaleProfile extends
 
     interface Definition<ParentT> extends
             DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.Blank<ParentT> {
+            DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithScaleRule<ParentT>,
+            DefinitionStages.WithScaleRuleOptional<ParentT> {
     }
 
     interface DefinitionStages {
@@ -66,44 +65,16 @@ public interface AutoscaleProfile extends
         }
 
         interface WithScaleRule<ParentT> {
-            ScaleRule.DefinitionStages.Blank<ParentT> defineScaleRule();
+            ScaleRule.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineScaleRule();
         }
 
         interface WithScaleRuleOptional<ParentT> extends
                 WithAttach<ParentT> {
-            ScaleRule.DefinitionStages.Blank<ParentT> defineScaleRule();
+            ScaleRule.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineScaleRule();
             WithScaleRuleOptional<ParentT> withTimeWindow(DateTime start, DateTime end);
             WithScaleRuleOptional<ParentT> withTimeWindow(DateTime start, DateTime end, String timeZone);
             WithScaleRuleOptional<ParentT> withRecurrence(Recurrence recurrence);
-            RecurrenceDefinitionStages.WithRecurrenceFrequency<WithScaleRuleOptional<ParentT>> defineRecurrence();
-        }
-
-        interface RecurrenceDefinitionStages {
-            interface WithRecurrenceFrequency<ParentT> {
-                WithRecurrentScheduleTimeZone<ParentT> withFrequency(RecurrenceFrequency frequency);
-            }
-
-            interface WithRecurrentScheduleTimeZone<ParentT> {
-                WithRecurrentScheduleHours<ParentT> withScheduleTimeZone(String scheduleTimeZoney);
-            }
-
-            interface WithRecurrentScheduleHours<ParentT> {
-                WithRecurrentScheduleMinutes<ParentT> withScheduleHours(int hours);
-            }
-
-            interface WithRecurrentScheduleMinutes<ParentT> {
-                WithRecurrentScheduleDays<ParentT> withScheduleMinutes(int minutes);
-            }
-
-            interface WithRecurrentScheduleDays<ParentT> {
-                WithRecurrentScheduleDaysApplicable<ParentT> withScheduleDay(String day);
-                WithRecurrentScheduleDaysApplicable<ParentT> withScheduleDays(List<String> day);
-            }
-
-            interface WithRecurrentScheduleDaysApplicable<ParentT> extends
-                    WithRecurrentScheduleDays<ParentT> {
-                ParentT apply();
-            }
+            Recurrence.DefinitionStages.Blank<WithScaleRuleOptional<ParentT>> defineRecurrence();
         }
     }
 
@@ -133,6 +104,7 @@ public interface AutoscaleProfile extends
         interface WithScaleRule<ParentT> {
             Update<ParentT> withoutScaleRule(ScaleRule scaleRule);
             ScaleRule.Update<Update<ParentT>> updateScaleRule(ScaleRule scaleRule);
+            ScaleRule.DefinitionStages.Blank<Update<ParentT>> defineScaleRule();
         }
 
         interface WithTimeWindow<ParentT> {
@@ -142,20 +114,9 @@ public interface AutoscaleProfile extends
         }
 
         interface WithRecurrence<ParentT> {
-            UpdateRecurrance<Update<ParentT>> updateRecurrence();
-            DefinitionStages.RecurrenceDefinitionStages.WithRecurrenceFrequency<Update<ParentT>> defineRecurrence();
-            /**/
-        }
-
-        interface UpdateRecurrance<ParentT> {
-            UpdateRecurrance<ParentT> withFrequency(RecurrenceFrequency frequency);
-            UpdateRecurrance<ParentT> withScheduleTimeZone(String scheduleTimeZoney);
-            UpdateRecurrance<ParentT> withScheduleHours(int hours);
-            UpdateRecurrance<ParentT> withScheduleMinutes(int minutes);
-            UpdateRecurrance<ParentT> withScheduleDay(String day);
-            UpdateRecurrance<ParentT> withScheduleDays(List<String> day);
-            UpdateRecurrance<ParentT> withoutScheduleDay(String day);
-            ParentT apply();
+            Update<ParentT> withoutRecurrence();
+            Recurrence.UpdateStages.Blank<Update<ParentT>> updateRecurrence();
+            Recurrence.DefinitionStages.Blank<Update<ParentT>> defineRecurrence();
         }
     }
 

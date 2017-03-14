@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.AutoscaleSetting;
@@ -15,17 +14,14 @@ import com.microsoft.azure.management.monitor.MetricTrigger;
 import com.microsoft.azure.management.monitor.Recurrence;
 import com.microsoft.azure.management.monitor.ScaleAction;
 import com.microsoft.azure.management.monitor.ScaleRule;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelCrudableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-
-import java.util.List;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * Implementation for {@link AutoscaleSettings}.
  */
 @LangDefinition
 class AutoscaleSettingsImpl
-        extends TopLevelCrudableResourcesImpl<
+        extends TopLevelModifiableResourcesImpl<
                             AutoscaleSetting,
                             AutoscaleSettingImpl,
                             AutoscaleSettingResourceInner,
@@ -34,55 +30,41 @@ class AutoscaleSettingsImpl
         implements AutoscaleSettings {
 
     AutoscaleSettingsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().autoscaleSettings()), monitorManager);
+        super(monitorManager.inner().autoscaleSettings(), monitorManager);
     }
 
     @Override
     protected AutoscaleSettingImpl wrapModel(String name) {
-        return new AutoscaleSettingImpl(name, new AutoscaleSettingResourceInner(), this.manager());
+        return null;
     }
 
     @Override
     protected AutoscaleSettingImpl wrapModel(AutoscaleSettingResourceInner inner) {
-        return new AutoscaleSettingImpl(inner.name(), inner, this.manager());
+        return null;
     }
 
     @Override
     public AutoscaleSettingImpl define(String name) {
-        return wrapModel(name);
+        return null;
+    }
+
+    /*
+    @Override
+    public MetricTrigger createMetricTrigger(String name) {
+        return null;
     }
 
     @Override
-    public PagedList<Operation> listOperations() {
-        return (new PagedListConverter<OperationInner, Operation>() {
-            @Override
-            public Operation typeConvert(OperationInner inner) {
-                return new Operation(inner);
-            }
-        }).convert(this.manager().inner().listOperations());
+    public ScaleAction createScaleAction() {
+        return null;
     }
 
     @Override
-    public PagedList<ResourceUsage> listResourceUsage() {
-        return (new PagedListConverter<ResourceUsageInner, ResourceUsage>() {
-            @Override
-            public ResourceUsage typeConvert(ResourceUsageInner inner) {
-                return new ResourceUsage(inner);
-            }
-        }).convert(this.manager().inner().checkResourceUsage());
-    }
+    public Recurrence createRecurrence() {
+        return null;
+    }*/
 
-    @Override
-    public PagedList<EdgeNode> listEdgeNodes() {
-        return (new PagedListConverter<EdgeNodeInner, EdgeNode>() {
-            @Override
-            public EdgeNode typeConvert(EdgeNodeInner inner) {
-                return new EdgeNode(inner);
-            }
-        }).convert(this.manager().inner().edgeNodes().list());
-    }
-
-    @Override
+    /*@Override
     public ScaleRule.DefinitionStages.MetricTriggerDefinitionStages.WithMetricResourceUri<MetricTrigger> createMetricTrigger(String name) {
         return null;
     }
@@ -96,4 +78,5 @@ class AutoscaleSettingsImpl
     public AutoscaleProfile.DefinitionStages.RecurrenceDefinitionStages.WithRecurrenceFrequency<Recurrence> createRecurrence() {
         return null;
     }
+    */
 }
