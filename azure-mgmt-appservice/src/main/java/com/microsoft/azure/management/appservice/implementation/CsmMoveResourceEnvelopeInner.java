@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Object with a list of the resources that need to be moved and the resource
@@ -18,11 +19,13 @@ public class CsmMoveResourceEnvelopeInner {
     /**
      * The targetResourceGroup property.
      */
+    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /**
      * The resources property.
      */
+    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**

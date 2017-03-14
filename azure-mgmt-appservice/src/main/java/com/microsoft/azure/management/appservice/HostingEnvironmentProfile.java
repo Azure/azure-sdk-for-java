@@ -17,18 +17,19 @@ public class HostingEnvironmentProfile {
     /**
      * Resource ID of the App Service Environment.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * Name of the App Service Environment.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Resource type of the App Service Environment.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**

@@ -29,6 +29,7 @@ import com.microsoft.azure.management.appservice.PhpVersion;
 import com.microsoft.azure.management.appservice.PlatformArchitecture;
 import com.microsoft.azure.management.appservice.PythonVersion;
 import com.microsoft.azure.management.appservice.RemoteVisualStudioVersion;
+import com.microsoft.azure.management.appservice.ScmType;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.UsageState;
@@ -1094,7 +1095,7 @@ abstract class WebAppBaseImpl<
         if (inner().siteConfig() == null) {
             inner().withSiteConfig(new SiteConfigInner());
         }
-        inner().siteConfig().withScmType("LocalGit");
+        inner().siteConfig().withScmType(ScmType.LOCAL_GIT);
         return (FluentImplT) this;
     }
 

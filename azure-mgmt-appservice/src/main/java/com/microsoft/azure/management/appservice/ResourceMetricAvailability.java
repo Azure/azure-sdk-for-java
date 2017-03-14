@@ -17,13 +17,13 @@ public class ResourceMetricAvailability {
     /**
      * Time grain .
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timeGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /**
      * Retention period for the current time grain.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "retention", access = JsonProperty.Access.WRITE_ONLY)
     private String retention;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Body of the error response returned from the API.
@@ -17,31 +18,37 @@ public class ErrorEntity {
     /**
      * Basic error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * Any details of the error.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * Type of error.
      */
+    @JsonProperty(value = "extendedCode")
     private String extendedCode;
 
     /**
      * Message template.
      */
+    @JsonProperty(value = "messageTemplate")
     private String messageTemplate;
 
     /**
      * Parameters for the template.
      */
+    @JsonProperty(value = "parameters")
     private List<String> parameters;
 
     /**
      * Inner errors.
      */
+    @JsonProperty(value = "innerErrors")
     private List<ErrorEntity> innerErrors;
 
     /**

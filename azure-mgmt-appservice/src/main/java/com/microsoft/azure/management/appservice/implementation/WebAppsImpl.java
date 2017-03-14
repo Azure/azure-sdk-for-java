@@ -51,7 +51,7 @@ class WebAppsImpl
     @Override
     public Observable<WebApp> getByGroupAsync(final String groupName, final String name) {
         final WebAppsImpl self = this;
-        return this.inner().getAsync(groupName, name).flatMap(new Func1<SiteInner, Observable<WebApp>>() {
+        return this.inner().getByResourceGroupAsync(groupName, name).flatMap(new Func1<SiteInner, Observable<WebApp>>() {
             @Override
             public Observable<WebApp> call(final SiteInner siteInner) {
                 if (siteInner == null) {

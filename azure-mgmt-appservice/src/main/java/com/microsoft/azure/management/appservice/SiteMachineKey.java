@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * MachineKey of an app.
@@ -16,21 +17,25 @@ public class SiteMachineKey {
     /**
      * MachineKey validation.
      */
+    @JsonProperty(value = "validation")
     private String validation;
 
     /**
      * Validation key.
      */
+    @JsonProperty(value = "validationKey")
     private String validationKey;
 
     /**
      * Decryption.
      */
+    @JsonProperty(value = "decryption")
     private String decryption;
 
     /**
      * Decryption key.
      */
+    @JsonProperty(value = "decryptionKey")
     private String decryptionKey;
 
     /**

@@ -17,23 +17,25 @@ public class VirtualNetworkProfile {
     /**
      * Resource id of the Virtual Network.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * Name of the Virtual Network (read-only).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Resource type of the Virtual Network (read-only).
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
      * Subnet within the Virtual Network.
      */
+    @JsonProperty(value = "subnet")
     private String subnet;
 
     /**

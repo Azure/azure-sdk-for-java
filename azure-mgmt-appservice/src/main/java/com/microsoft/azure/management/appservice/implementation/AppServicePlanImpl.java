@@ -41,7 +41,7 @@ class AppServicePlanImpl
 
     @Override
     protected Observable<AppServicePlanInner> getInnerAsync() {
-        return this.manager().inner().appServicePlans().getAsync(resourceGroupName(), name());
+        return this.manager().inner().appServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

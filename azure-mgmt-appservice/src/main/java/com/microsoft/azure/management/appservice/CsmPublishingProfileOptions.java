@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Publishing options for requested profile.
@@ -19,6 +20,7 @@ public class CsmPublishingProfileOptions {
      * WebDeploy -- default
      * Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'.
      */
+    @JsonProperty(value = "format")
     private PublishingProfileFormat format;
 
     /**

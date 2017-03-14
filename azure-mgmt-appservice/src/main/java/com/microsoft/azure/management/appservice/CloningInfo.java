@@ -20,24 +20,28 @@ public class CloningInfo {
      * operations
      * together to use the same snapshot.
      */
+    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to overwrite destination app; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "overwrite")
     private Boolean overwrite;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "cloneCustomHostNames")
     private Boolean cloneCustomHostNames;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to clone source control from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "cloneSourceControl")
     private Boolean cloneSourceControl;
 
     /**
@@ -47,12 +51,13 @@ public class CloningInfo {
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
      * for other slots.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sourceWebAppId", required = true)
     private String sourceWebAppId;
 
     /**
      * App Service Environment.
      */
+    @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
 
     /**
@@ -61,12 +66,14 @@ public class CloningInfo {
      * from source app. Otherwise, application settings from source app are
      * retained.
      */
+    @JsonProperty(value = "appSettingsOverrides")
     private Map<String, String> appSettingsOverrides;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to configure load balancing for source and
      * destination app.
      */
+    @JsonProperty(value = "configureLoadBalancing")
     private Boolean configureLoadBalancing;
 
     /**
@@ -74,12 +81,14 @@ public class CloningInfo {
      * Traffic Manager resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
      */
+    @JsonProperty(value = "trafficManagerProfileId")
     private String trafficManagerProfileId;
 
     /**
      * Name of Traffic Manager profile to create. This is only needed if
      * Traffic Manager profile does not already exist.
      */
+    @JsonProperty(value = "trafficManagerProfileName")
     private String trafficManagerProfileName;
 
     /**

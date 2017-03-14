@@ -10,8 +10,11 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.appservice.NameValuePair;
+import com.microsoft.azure.management.appservice.ConnStringInfo;
 import com.microsoft.azure.management.appservice.SiteMachineKey;
 import com.microsoft.azure.management.appservice.HandlerMapping;
+import com.microsoft.azure.management.appservice.ScmType;
 import com.microsoft.azure.management.appservice.ManagedPipelineMode;
 import com.microsoft.azure.management.appservice.VirtualApplication;
 import com.microsoft.azure.management.appservice.SiteLoadBalancing;
@@ -67,6 +70,12 @@ public class SiteConfigInner extends Resource {
     private String nodeVersion;
 
     /**
+     * Linux App Framework and version.
+     */
+    @JsonProperty(value = "properties.linuxFxVersion")
+    private String linuxFxVersion;
+
+    /**
      * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
@@ -119,6 +128,18 @@ public class SiteConfigInner extends Resource {
     private String publishingUsername;
 
     /**
+     * Application settings.
+     */
+    @JsonProperty(value = "properties.appSettings")
+    private List<NameValuePair> appSettings;
+
+    /**
+     * Connection strings.
+     */
+    @JsonProperty(value = "properties.connectionStrings")
+    private List<ConnStringInfo> connectionStrings;
+
+    /**
      * Site MachineKey.
      */
     @JsonProperty(value = "properties.machineKey", access = JsonProperty.Access.WRITE_ONLY)
@@ -137,10 +158,12 @@ public class SiteConfigInner extends Resource {
     private String documentRoot;
 
     /**
-     * SCM type.
+     * SCM type. Possible values include: 'None', 'Dropbox', 'Tfs', 'LocalGit',
+     * 'GitHub', 'CodePlexGit', 'CodePlexHg', 'BitbucketGit', 'BitbucketHg',
+     * 'ExternalGit', 'ExternalHg', 'OneDrive', 'VSO'.
      */
-    @JsonProperty(value = "properties.scmType", access = JsonProperty.Access.WRITE_ONLY)
-    private String scmType;
+    @JsonProperty(value = "properties.scmType")
+    private ScmType scmType;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
@@ -402,6 +425,26 @@ public class SiteConfigInner extends Resource {
     }
 
     /**
+     * Get the linuxFxVersion value.
+     *
+     * @return the linuxFxVersion value
+     */
+    public String linuxFxVersion() {
+        return this.linuxFxVersion;
+    }
+
+    /**
+     * Set the linuxFxVersion value.
+     *
+     * @param linuxFxVersion the linuxFxVersion value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withLinuxFxVersion(String linuxFxVersion) {
+        this.linuxFxVersion = linuxFxVersion;
+        return this;
+    }
+
+    /**
      * Get the requestTracingEnabled value.
      *
      * @return the requestTracingEnabled value
@@ -562,6 +605,46 @@ public class SiteConfigInner extends Resource {
     }
 
     /**
+     * Get the appSettings value.
+     *
+     * @return the appSettings value
+     */
+    public List<NameValuePair> appSettings() {
+        return this.appSettings;
+    }
+
+    /**
+     * Set the appSettings value.
+     *
+     * @param appSettings the appSettings value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withAppSettings(List<NameValuePair> appSettings) {
+        this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get the connectionStrings value.
+     *
+     * @return the connectionStrings value
+     */
+    public List<ConnStringInfo> connectionStrings() {
+        return this.connectionStrings;
+    }
+
+    /**
+     * Set the connectionStrings value.
+     *
+     * @param connectionStrings the connectionStrings value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withConnectionStrings(List<ConnStringInfo> connectionStrings) {
+        this.connectionStrings = connectionStrings;
+        return this;
+    }
+
+    /**
      * Get the machineKey value.
      *
      * @return the machineKey value
@@ -615,7 +698,7 @@ public class SiteConfigInner extends Resource {
      *
      * @return the scmType value
      */
-    public String scmType() {
+    public ScmType scmType() {
         return this.scmType;
     }
 
@@ -623,9 +706,9 @@ public class SiteConfigInner extends Resource {
      * Set the scmType value.
      *
      * @param scmType the scmType value to set
-     * @return the SiteConfigInner object itself
+     * @return the SiteConfigInner object itself.
      */
-    public SiteConfigInner withScmType(String scmType) {
+    public SiteConfigInner withScmType(ScmType scmType) {
         this.scmType = scmType;
         return this;
     }

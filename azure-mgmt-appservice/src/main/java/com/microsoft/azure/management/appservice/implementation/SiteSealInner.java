@@ -11,32 +11,32 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Identifies an object.
+ * Site seal.
  */
-public class NameIdentifierInner {
+public class SiteSealInner {
     /**
-     * Name of the object.
+     * HTML snippet.
      */
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "html", required = true)
+    private String html;
 
     /**
-     * Get the name value.
+     * Get the html value.
      *
-     * @return the name value
+     * @return the html value
      */
-    public String name() {
-        return this.name;
+    public String html() {
+        return this.html;
     }
 
     /**
-     * Set the name value.
+     * Set the html value.
      *
-     * @param name the name value to set
-     * @return the NameIdentifierInner object itself.
+     * @param html the html value to set
+     * @return the SiteSealInner object itself.
      */
-    public NameIdentifierInner withName(String name) {
-        this.name = name;
+    public SiteSealInner withHtml(String html) {
+        this.html = html;
         return this;
     }
 
