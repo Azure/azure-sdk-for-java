@@ -44,6 +44,7 @@ public class SmokeTest extends TestBase
 		waitForTelltale(settings);
 
 		Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation() != null);
+		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
 	
 	@Test
