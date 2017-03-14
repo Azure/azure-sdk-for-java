@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
@@ -121,6 +122,9 @@ public class RequestResponseLink extends ClientEntity{
 	{
 		this.replyTo = UUID.randomUUID().toString();
 		
+		Map commonLinkProperties = new HashMap();
+		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());
+		
 		// Create send link
 		final Connection connection = this.underlyingFactory.getConnection();
 
@@ -141,8 +145,8 @@ public class RequestResponseLink extends ClientEntity{
 		Source senderSource = new Source();
 		senderSource.setAddress(this.replyTo);
 		sender.setSource(senderSource);
-		sender.setSenderSettleMode(SenderSettleMode.SETTLED);
-
+		sender.setSenderSettleMode(SenderSettleMode.SETTLED);		
+		sender.setProperties(commonLinkProperties);
 		SendLinkHandler sendLinkHandler = new SendLinkHandler(this.amqpSender);
 		BaseHandler.setHandler(sender, sendLinkHandler);
 
@@ -165,6 +169,7 @@ public class RequestResponseLink extends ClientEntity{
 		// Set settle modes
 		receiver.setSenderSettleMode(SenderSettleMode.SETTLED);
 		receiver.setReceiverSettleMode(ReceiverSettleMode.FIRST);
+		receiver.setProperties(commonLinkProperties);
 
 		final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(this.amqpReceiver);
 		BaseHandler.setHandler(receiver, receiveLinkHandler);	

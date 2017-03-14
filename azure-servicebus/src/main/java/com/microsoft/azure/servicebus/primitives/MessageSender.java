@@ -560,6 +560,10 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 		sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
+		Map linkProperties = new HashMap();
+		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());
+		sender.setProperties(linkProperties);
+		
 		SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
 		BaseHandler.setHandler(sender, handler);
 
@@ -895,7 +899,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			messageList.add(messageEntry);
 		}
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGES, messageList);
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
 		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
 		return responseFuture.thenCompose((responseMessage) -> {
 			CompletableFuture<long[]> returningFuture = new CompletableFuture<long[]>();
@@ -919,7 +923,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
 		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION, requestBodyMap, Util.adjustServerTimeout(timeout));
 		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
 		return responseFuture.thenCompose((responseMessage) -> {
 			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();

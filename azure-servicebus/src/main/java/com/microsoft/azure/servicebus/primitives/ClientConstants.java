@@ -36,6 +36,8 @@ public final class ClientConstants
 	public final static Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":store-lock-lost");
 	public final static Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
 	public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+	public final static Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+	public final static Symbol LINK_PEEKMODE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":peek-mode");
 	public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
 	public static final Symbol DEADLETTERNAME = Symbol.valueOf(AmqpConstants.VENDOR + ":dead-letter");
     public static final Symbol MESSAGE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-lock-lost");
@@ -43,6 +45,8 @@ public final class ClientConstants
     public static final Symbol SESSIONS_CANNOT_BE_LOCKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-cannot-be-locked");
     public static final Symbol MESSAGE_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-not-found");
     public static final Symbol SESSION_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-not-found");
+    public static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
+    public static final Symbol LOCKED_UNTIL_UTC = Symbol.getSymbol(AmqpConstants.VENDOR + ":locked-until-utc");
 	
 	public static final String DEADLETTER_REASON_HEADER = "DeadLetterReason";
     public static final String DEADLETTER_ERROR_DESCRIPTION_HEADER = "DeadLetterErrorDescription";
@@ -71,15 +75,21 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
 	public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 	public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+	public static final String REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-session-lock";
 	public static final String REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER = AmqpConstants.VENDOR + ":receive-by-sequence-number";
 	public static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
     public static final String REQUEST_RESPONSE_CANCEL_CHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":cancel-scheduled-message";
     public static final String REQUEST_RESPONSE_PEEK_OPERATION = AmqpConstants.VENDOR + ":peek-message";
-    public static final String REQUEST_RESPONSE_UPDATE_DISPOSTION = AmqpConstants.VENDOR + ":update-disposition";
+    public static final String REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION = AmqpConstants.VENDOR + ":update-disposition";
+    public static final String REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION = AmqpConstants.VENDOR + ":get-session-state";
+    public static final String REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION = AmqpConstants.VENDOR + ":set-session-state";
+    public static final String REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION = AmqpConstants.VENDOR + ":get-message-sessions";
 	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
 	public static final String REQUEST_RESPONSE_LOCKTOKEN = "lock-token";
+	public static final String REQUEST_RESPONSE_EXPIRATION = "expiration";
 	public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 	public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
+	public static final String REQUEST_RESPONSE_SESSION_STATE = "session-state";
 	public static final String REQUEST_RESPONSE_SEQUENCE_NUMBERS = "sequence-numbers";
 	public static final String REQUEST_RESPONSE_RECEIVER_SETTLE_MODE = "receiver-settle-mode";
 	public static final String REQUEST_RESPONSE_MESSAGES = "messages";
@@ -96,6 +106,11 @@ public final class ClientConstants
     public static final String REQUEST_RESPONSE_DEADLETTER_REASON = "deadletter-reason";
     public static final String REQUEST_RESPONSE_DEADLETTER_DESCRIPTION = "deadletter-description";
     public static final String REQUEST_RESPONSE_PROPERTIES_TO_MODIFY = "properties-to-modify";
+    public static final String REQUEST_RESPONSE_LAST_UPDATED_TIME = "last-updated-time";
+    public static final String REQUEST_RESPONSE_LAST_SESSION_ID = "last-session-id";
+    public static final String REQUEST_RESPONSE_SKIP = "skip";
+    public static final String REQUEST_RESPONSE_TOP = "top";
+    public static final String REQUEST_RESPONSE_SESSIONIDS = "sessions-ids";
     
     public static final String DISPOSITION_STATUS_COMPLETED = "completed";
     public static final String DISPOSITION_STATUS_DEFERED = "defered";

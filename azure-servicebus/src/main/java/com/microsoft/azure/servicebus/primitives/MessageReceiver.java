@@ -50,9 +50,6 @@ import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 
-import com.microsoft.azure.servicebus.BrokeredMessage;
-import com.microsoft.azure.servicebus.IBrokeredMessage;
-import com.microsoft.azure.servicebus.MessageConverter;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
@@ -80,6 +77,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private final SettleModePair settleModePair;
 	private final RetryPolicy retryPolicy;
 	private int prefetchCount;
+	private String sessionId;
+	private boolean isSessionReceiver;
+	private boolean isBrowsableSession;
+	private Instant sessionLockedUntilUtc;
 
 	private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
 	private Receiver receiveLink;
@@ -98,7 +99,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	private MessageReceiver(final MessagingFactory factory,
 			final String name, 
-			final String recvPath,			
+			final String recvPath,
+			final String sessionId,
 			final int prefetchCount,
 			final SettleModePair settleModePair)
 	{
@@ -107,6 +109,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.underlyingFactory = factory;
 		this.operationTimeout = factory.getOperationTimeout();
 		this.receivePath = recvPath;
+		this.sessionId = sessionId;
+		this.isSessionReceiver = false;
+		this.isBrowsableSession = false;
 		this.prefetchCount = prefetchCount;
 		this.settleModePair = settleModePair;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<MessageWithDeliveryTag>();
@@ -145,7 +150,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		Timer.schedule(timedOutUpdateStateRequestsDaemon, Duration.ofSeconds(1), TimerType.RepeatRun);
 	}
 
-	// @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
 	// Connection has to be associated with Reactor before Creating a receiver on it.
 	public static CompletableFuture<MessageReceiver> create(
 			final MessagingFactory factory, 
@@ -158,15 +162,37 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				factory,
 				name, 
 				recvPath,
+				null,
 				prefetchCount,
 				settleModePair);
+		return msgReceiver.createLink();
+	}
+	
+	public static CompletableFuture<MessageReceiver> create(
+			final MessagingFactory factory, 
+			final String name, 
+			final String recvPath,
+			final String sessionId,
+			final boolean isBrowsableSession,
+			final int prefetchCount,
+			final SettleModePair settleModePair)
+	{
+		MessageReceiver msgReceiver = new MessageReceiver(
+				factory,
+				name, 
+				recvPath,
+				sessionId,
+				prefetchCount,
+				settleModePair);
+		msgReceiver.isSessionReceiver = true;
+		msgReceiver.isBrowsableSession = isBrowsableSession;
 		return msgReceiver.createLink();
 	}
 
 	private CompletableFuture<MessageReceiver> createLink()
 	{
 		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
-		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
+		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());		
 		try
 		{
 			this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
@@ -193,10 +219,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	
 	private void createReceiveLink()
 	{	
-		Connection connection = this.underlyingFactory.getConnection();
-
-		Source source = new Source();
-		source.setAddress(receivePath);		
+		Connection connection = this.underlyingFactory.getConnection();	
 
 		final Session session = connection.session();
 		session.setIncomingCapacity(Integer.MAX_VALUE);
@@ -208,18 +231,35 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				receiveLinkNamePrefix;
 		final Receiver receiver = session.receiver(receiveLinkName);
+		
+		Source source = new Source();
+		source.setAddress(receivePath);
+		Map linkProperties = new HashMap();
+		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());		
+		
+		if(this.isSessionReceiver)
+		{
+			HashMap filterMap = new HashMap();
+			filterMap.put(ClientConstants.SESSION_FILTER, this.sessionId);
+			source.setFilter(filterMap);
+			
+			linkProperties.put(ClientConstants.LINK_PEEKMODE_PROPERTY, this.isBrowsableSession);
+		}		
+		
 		receiver.setSource(source);
 		receiver.setTarget(new Target());
 
 		// Set settle modes
 		receiver.setSenderSettleMode(this.settleModePair.getSenderSettleMode());
 		receiver.setReceiverSettleMode(this.settleModePair.getReceiverSettleMode());
+		
+		receiver.setProperties(linkProperties);
 
 		final ReceiveLinkHandler handler = new ReceiveLinkHandler(this);
 		BaseHandler.setHandler(receiver, handler);
 		this.underlyingFactory.registerForConnectionError(receiver);
 
-		receiver.open();
+		receiver.open();		
 
 		if (this.receiveLink != null)
 		{			
@@ -259,6 +299,25 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			return this.prefetchCount;
 		}
+	}
+	
+
+	public String getSessionId()
+	{
+		return this.sessionId;
+	}
+	
+
+	public Instant getSessionLockedUntilUtc()
+	{
+		if(this.isSessionReceiver)
+		{
+			return this.sessionLockedUntilUtc;
+		}
+		else
+		{
+			throw new RuntimeException("Object is not a session receiver");
+		}		
 	}
 
 	public void setPrefetchCount(final int value) throws ServiceBusException
@@ -378,6 +437,32 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	{		
 		if (exception == null)
 		{
+			if(this.isSessionReceiver)
+			{
+				Map remoteSourceFilter = ((Source)this.receiveLink.getRemoteSource()).getFilter();
+				if(remoteSourceFilter != null && remoteSourceFilter.containsKey(ClientConstants.SESSION_FILTER))
+				{
+					String remoteSessionId = (String)remoteSourceFilter.get(ClientConstants.SESSION_FILTER);
+					this.sessionId = remoteSessionId;
+					
+					if(this.receiveLink.getRemoteProperties() != null && this.receiveLink.getRemoteProperties().containsKey(ClientConstants.LOCKED_UNTIL_UTC))
+					{
+						this.sessionLockedUntilUtc = Util.convertDotNetTicksToInstant((long)this.receiveLink.getRemoteProperties().get(ClientConstants.LOCKED_UNTIL_UTC));
+					}
+					else
+					{
+						this.sessionLockedUntilUtc = Instant.ofEpochMilli(0);
+					}					
+				}
+				else
+				{
+					exception = new ServiceBusException(false, "SessionId filter not set on the remote source.");					
+				}			
+			}
+		}		
+		
+		if (exception == null)
+		{			
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
 				this.linkOpen.getWork().complete(this);
@@ -911,17 +996,17 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return new ServiceBusException(false, operation + " failed while dispatching to Reactor, see cause for more details.", cause);
 	}
 	
-	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens, String sessionId, Duration timeout)
+	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens)
 	{
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
-		if(!StringUtil.isNullOrEmpty(sessionId))
+		if(this.isSessionReceiver)
 		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 		}
 		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(timeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, timeout);
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 		return responseFuture.thenCompose((responseMessage) -> {
 			CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
 			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -944,8 +1029,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		HashMap requestBodyMap = new HashMap();
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
 		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RECEIVER_SETTLE_MODE, UnsignedInteger.valueOf(this.settleModePair.getReceiverSettleMode() == ReceiverSettleMode.FIRST ? 0 : 1));		
+		if(this.isSessionReceiver)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+		}
 		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, RequestResponseUtils.adjustServerTimeout(this.operationTimeout));
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 		return responseFuture.thenCompose((responseMessage) -> {
 			CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
@@ -1007,9 +1096,14 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		if(propertiesToModify != null && propertiesToModify.size() > 0)
 		{
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_PROPERTIES_TO_MODIFY, propertiesToModify);
-		}		
+		}
 		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION, requestBodyMap, RequestResponseUtils.adjustServerTimeout(this.operationTimeout));
+		if(this.isSessionReceiver)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+		}
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
 		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
 		return responseFuture.thenCompose((responseMessage) -> {
 			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
@@ -1017,6 +1111,179 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
 			{
 				returningFuture.complete(null);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	public CompletableFuture<Void> renewSessionLocksAsync()
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				Date expiration = (Date)RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATION);
+				this.sessionLockedUntilUtc = expiration.toInstant();
+				returningFuture.complete(null);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	public CompletableFuture<byte[]> getSessionStateAsync()
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<byte[]> returningFuture = new CompletableFuture<byte[]>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				byte[] receivedState = null;
+				Map bodyMap = RequestResponseUtils.getResponseBody(responseMessage);
+				if(bodyMap.containsKey(ClientConstants.REQUEST_RESPONSE_SESSION_STATE))
+				{
+					Object sessionState = bodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSION_STATE);
+					if(sessionState != null)
+					{
+						receivedState = ((Binary)sessionState).getArray();
+					}					
+				}
+				
+				returningFuture.complete(receivedState);
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	// NULL session state is allowed
+	public CompletableFuture<Void> setSessionStateAsync(byte[] sessionState)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_STATE, sessionState == null ? null : new Binary(sessionState));
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				returningFuture.complete(null);				
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	// A receiver can be used to peek messages from any session-id, useful for browsable sessions
+	public CompletableFuture<Collection<Message>> peekMessagesAsync(long fromSequenceNumber, int messageCount, String sessionId)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGE_COUNT, messageCount);		
+		if(sessionId != null)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
+		}
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Collection<Message>> returningFuture = new CompletableFuture<Collection<Message>>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				List<Message> peekedMessages = new ArrayList<Message>();
+				Object responseBodyMap = ((AmqpValue)responseMessage.getBody()).getValue();
+				if(responseBodyMap != null && responseBodyMap instanceof Map)
+				{					
+					Object messages = ((Map)responseBodyMap).get(ClientConstants.REQUEST_RESPONSE_MESSAGES);
+					if(messages != null && messages instanceof Iterable)
+					{
+						for(Object message : (Iterable)messages)
+						{
+							if(message instanceof Map)
+							{
+								Message peekedMessage = Message.Factory.create();
+								Binary messagePayLoad = (Binary)((Map)message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
+								peekedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());
+								peekedMessages.add(peekedMessage);
+							}
+						}
+					}
+				}				
+				returningFuture.complete(peekedMessages);
+			}
+			else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE ||
+					(statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.MESSAGE_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage))))
+			{
+				returningFuture.complete(new ArrayList<Message>());
+			}
+			else
+			{
+				// error response
+				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+			}
+			return returningFuture;
+		});
+	}
+	
+	public CompletableFuture<Pair<String[], Integer>> getMessageSessionsAsync(Date lastUpdatedTime, int skip, int top, String lastSessionId)
+	{
+		HashMap requestBodyMap = new HashMap();
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LAST_UPDATED_TIME, lastUpdatedTime);
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SKIP, skip);
+		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_TOP, top);
+		if(lastSessionId != null)
+		{
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LAST_SESSION_ID, lastSessionId);
+		}
+		
+		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+		return responseFuture.thenCompose((responseMessage) -> {
+			CompletableFuture<Pair<String[], Integer>> returningFuture = new CompletableFuture<Pair<String[], Integer>>();
+			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+			{
+				Map responseBodyMap = RequestResponseUtils.getResponseBody(responseMessage);
+				int responseSkip = (int)responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SKIP);
+				String[] sessionIds = (String[])responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSIONIDS);
+				returningFuture.complete(new Pair<>(sessionIds, responseSkip));				
+			}
+			else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE ||
+					(statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.SESSION_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage))))
+			{
+				returningFuture.complete(new Pair<>(new String[0], 0));
 			}
 			else
 			{

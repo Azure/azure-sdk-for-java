@@ -116,40 +116,70 @@ public class ClientFactory {
 		return receiver.initializeAsync().thenApply((v) -> receiver);
 	}
 	
-	// Create browser
-	public static IMessageBrowser createMessageBrowserFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException, IOException
+	// Accept Session
+	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId) throws InterruptedException, ServiceBusException, IOException
 	{		
-		return Utils.completeFuture(createMessageBrowserFromConnectionStringAsync(amqpConnectionString));
+		return acceptSessionFromConnectionString(amqpConnectionString, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageBrowser createMessageBrowserFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	{		
+		return Utils.completeFuture(acceptSessionFromConnectionStringAsync(amqpConnectionString, sessionId, receiveMode));
+	}
+	
+	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId) throws InterruptedException, ServiceBusException, IOException
 	{
-		return Utils.completeFuture(createMessageBrowserFromConnectionStringBuilderAsync(amqpConnectionStringBuilder));
+		return acceptSessionFromConnectionStringBuilder(amqpConnectionStringBuilder, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageBrowser createMessageBrowserFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
 	{
-		return Utils.completeFuture(createMessageBrowserFromFromEntityPathAsync(messagingFactory, entityPath));
+		return Utils.completeFuture(acceptSessionFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, sessionId, receiveMode));
 	}
 	
-	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromConnectionStringAsync(String amqpConnectionString) throws IOException
+	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId) throws InterruptedException, ServiceBusException, IOException
+	{
+		return acceptSessionFromEntityPath(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
+	}
+	
+	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	{
+		return Utils.completeFuture(acceptSessionFromFromEntityPathAsync(messagingFactory, entityPath, sessionId, receiveMode));
+	}
+	
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId) throws IOException
+	{		
+		return acceptSessionFromConnectionStringAsync(amqpConnectionString, sessionId, DEFAULTRECEIVEMODE);
+	}
+	
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) throws IOException
 	{
 		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
-		return createMessageBrowserFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
+		return acceptSessionFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), sessionId);
+	}	
+	
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId) throws IOException
+	{		
+		return acceptSessionFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
 	// Throwing IOException is ugly in an async method. Change it
-	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws IOException
 	{
 		Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
-		BrokeredMessageBrowser browser = new BrokeredMessageBrowser(amqpConnectionStringBuilder);
-		return browser.initializeAsync().thenApply((v) -> browser);
+		BrokeredMessageSession session = new BrokeredMessageSession(amqpConnectionStringBuilder, sessionId, receiveMode);
+		return session.initializeAsync().thenApply((v) -> session);
 	}
 	
-	public static CompletableFuture<IMessageBrowser> createMessageBrowserFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId) throws IOException
+	{		
+		return acceptSessionFromFromEntityPathAsync(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
+	}
+	
+	public static CompletableFuture<IMessageSession> acceptSessionFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) throws IOException
 	{
 		Utils.assertNonNull("messagingFactory", messagingFactory);
-		BrokeredMessageBrowser browser = new BrokeredMessageBrowser(messagingFactory, entityPath);
-		return browser.initializeAsync().thenApply((v) -> browser);
+		BrokeredMessageSession session = new BrokeredMessageSession(messagingFactory, entityPath, sessionId, receiveMode);
+		return session.initializeAsync().thenApply((v) -> session);
 	}
 }

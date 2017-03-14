@@ -198,14 +198,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 		else
 		{
-			final Connection currentConnection = this.connection;
-			Iterator<Link> literator = this.registeredLinks.iterator();
+			final Connection currentConnection = this.connection;			
+			Link[] links = this.registeredLinks.toArray(new Link[0]);
 
 			this.openConnection = new CompletableFuture<Connection>();
 
-			while (literator.hasNext())
-			{
-				Link link = literator.next();
+			for(Link link : links)
+			{				
 				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
 				{
 					link.close();
@@ -217,10 +216,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				currentConnection.close();
 			}
 			
-			literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
-			{
-				Link link = literator.next();
+			for(Link link : links)
+			{				
 				Handler handler = BaseHandler.getHandler(link);
 				if (handler != null && handler instanceof BaseLinkHandler)
 				{
@@ -256,12 +253,12 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				TRACE_LOGGER.log(Level.SEVERE, ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
 				
 				this.onReactorError(cause);
-			}
-
-			Iterator<Link> literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
+			}		
+			
+			Link[] links = this.registeredLinks.toArray(new Link[0]);
+			
+			for(Link link : links)
 			{
-				Link link = literator.next();
 				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
 				{
 					link.close();
@@ -273,17 +270,15 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				currentConnection.close();
 			}
 
-			literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
+			for(Link link : links)
 			{
-				Link link = literator.next();
 				Handler handler = BaseHandler.getHandler(link);
 				if (handler != null && handler instanceof BaseLinkHandler)
 				{
 					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
 					linkHandler.processOnClose(link, cause);
 				}
-			}
+			}			
 		}
 	}
 
@@ -387,13 +382,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void registerForConnectionError(Link link)
 	{
-		this.registeredLinks.add(link);	
+		this.registeredLinks.add(link);
 	}
 
 	@Override
 	public void deregisterForConnectionError(Link link)
 	{
-		this.registeredLinks.remove(link);	
+		this.registeredLinks.remove(link);
 	}
 	
 	public void scheduleOnReactorThread(final DispatchHandler handler) throws IOException

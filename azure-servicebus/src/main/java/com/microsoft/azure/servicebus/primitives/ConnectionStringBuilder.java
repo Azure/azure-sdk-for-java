@@ -34,7 +34,7 @@ import java.util.regex.*;
  * </ul>
  */
 public class ConnectionStringBuilder
-{
+{	
 	final static String endpointFormat = "amqps://%s.servicebus.windows.net";
 	final static String endpointRawFormat = "amqps://%s";
 
@@ -89,7 +89,7 @@ public class ConnectionStringBuilder
 	{
 		try
 		{
-			this.endpoint = new URI(String.format(Locale.US, endpointFormat, namespaceName));
+			this.endpoint = new URI(String.format(Locale.US, this.getEndPointFormat(), namespaceName));
 		} 
 		catch(URISyntaxException exception)
 		{
@@ -395,5 +395,11 @@ public class ConnectionStringBuilder
 						String.format(Locale.US, "Illegal connection string parameter name: %s", key));
 			}
 		}
+	}
+	
+	// Just to override in onebox tests
+	String getEndPointFormat()
+	{
+		return this.endpointFormat;
 	}
 }

@@ -19,15 +19,9 @@ public class RequestResponseUtils {
 		requestMessage.setBody(new AmqpValue(propertyBag));
 		HashMap applicationPropertiesMap = new HashMap();
 		applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_OPERATION_NAME, operation);
-		applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());		
+		applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
 		requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
 		return requestMessage;
-	}
-	
-	// Pass one second less to the server so client doesn't time out before server times out
-	public static Duration adjustServerTimeout(Duration clientTimeout)
-	{
-		return clientTimeout.minusMillis(100);
 	}
 	
 	public static int getResponseStatusCode(Message responseMessage)

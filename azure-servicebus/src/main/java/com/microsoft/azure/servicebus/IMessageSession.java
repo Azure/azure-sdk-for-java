@@ -4,20 +4,22 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+
 public interface IMessageSession extends IMessageReceiver {
 	String getSessionId();
 	
 	Instant getLockedUntilUtc();
 	
-	void renewLock();
+	void renewLock() throws InterruptedException, ServiceBusException;
 	
 	CompletableFuture<Void> renewLockAsync();
 	
-	void setState(InputStream stream);
+	void setState(byte[] state) throws InterruptedException, ServiceBusException;
 	
-	CompletableFuture<Void> setStateAsync(InputStream stream);
+	CompletableFuture<Void> setStateAsync(byte[] state);
 	
-	InputStream getState();
+	byte[] getState() throws InterruptedException, ServiceBusException;
 	
-	CompletableFuture<InputStream> getStateAsync();	
+	CompletableFuture<byte[]> getStateAsync();	
 }

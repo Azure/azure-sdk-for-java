@@ -34,7 +34,7 @@ public class ReceiveSample {
 		while (true) {
 			IBrokeredMessage receivedMessage = receiver.receive(Duration.ofMinutes(1));
 			System.out.println(new String(receivedMessage.getContent()));
-			receiver.complete(receivedMessage);
+			receiver.complete(receivedMessage.getLockToken());
 		}
 	}
 

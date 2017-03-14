@@ -8,8 +8,12 @@ package com.microsoft.azure.servicebus.primitives;
 import java.lang.reflect.Array;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -372,5 +376,11 @@ public class Util
 		{
 			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception);		
 		}
+	}
+
+	// Pass little less than client timeout to the server so client doesn't time out before server times out
+	public static Duration adjustServerTimeout(Duration clientTimeout)
+	{
+		return clientTimeout.minusMillis(100);
 	}
 }

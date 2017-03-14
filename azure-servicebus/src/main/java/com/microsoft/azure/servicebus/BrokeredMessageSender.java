@@ -63,7 +63,7 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 			CompletableFuture<Void> factoryFuture;
 			if(this.messagingFactory == null)
 			{
-				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAccept((f) -> {BrokeredMessageSender.this.messagingFactory = f;});
+				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAccept((f) -> {this.messagingFactory = f;});
 			}
 			else
 			{
@@ -72,11 +72,11 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 			
 			return factoryFuture.thenCompose((v) ->
 			{
-				CompletableFuture<MessageSender> senderFuture = MessageSender.create(BrokeredMessageSender.this.messagingFactory, StringUtil.getRandomString(), BrokeredMessageSender.this.entityPath);
+				CompletableFuture<MessageSender> senderFuture = MessageSender.create(this.messagingFactory, StringUtil.getRandomString(), this.entityPath);
 				return senderFuture.thenAccept((s) -> 
 				{
-					BrokeredMessageSender.this.internalSender = s;
-					BrokeredMessageSender.this.isInitialized = true;
+					this.internalSender = s;
+					this.isInitialized = true;
 				});
 			});
 		}

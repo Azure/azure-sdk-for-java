@@ -1,4 +1,23 @@
-namespacename=yournamespace
-entitypath=yourentitypath
-sharedaccesskeyname=yoursharedaccesskey
-sharedaccesskey=yoursharedaccesskey
+# non-partitioned queue with no sessions
+queue.namespacename=yournamespace
+queue.entitypath=yourentitypath
+queue.sharedaccesskeyname=yoursharedaccesskey
+queue.sharedaccesskey=yoursharedaccesskey
+# non-partitioned queue with sessions
+queue.sessionful.namespacename=yournamespace
+queue.sessionful.entitypath=yourentitypath
+queue.sessionful.sharedaccesskeyname=yoursharedaccesskey
+queue.sessionful.sharedaccesskey=yoursharedaccesskey
+# non-partitioned topic/subscription with no sessions
+topic.namespacename=yournamespace
+topic.entitypath=yourentitypath
+subscription.entitypath=yoursubscriptionpath
+topic.sharedaccesskeyname=yoursharedaccesskey
+topic.sharedaccesskey=yoursharedaccesskey
+# non-partitioned topic/subscription with sessions
+topic.sessionful.namespacename=yournamespace
+topic.sessionful.entitypath=yourentitypath
+subscription.sessionful.entitypath=yoursubscriptionpath
+topic.sessionful.sharedaccesskeyname=yoursharedaccesskey
+topic.sessionful.sharedaccesskey=yoursharedaccesskey
+
