@@ -20,9 +20,10 @@ import com.microsoft.azure.batch.protocol.models.FileListFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileProperties;
 import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import rx.exceptions.Exceptions;
+import rx.functions.Func1;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -284,7 +285,27 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options);
+        // Duplicate the stream due to AutoRest issue https://github.com/Azure/autorest/issues/1385
+        ByteArrayOutputStream output = this._parentBatchClient.protocolLayer().files().getFromTaskAsync(jobId, taskId, fileName, options)
+                .map(new Func1<InputStream, ByteArrayOutputStream>() {
+            @Override
+            public ByteArrayOutputStream call(InputStream input) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                byte[] data = new byte[16384];
+                int nRead;
+                try {
+                    while ((nRead = input.read(data, 0, data.length)) != -1) {
+                        buffer.write(data, 0, nRead);
+                    }
+                    buffer.flush();
+                    return buffer;
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
+                }
+            }
+        }).toBlocking().single();
+
+        return new ByteArrayInputStream(output.toByteArray());
     }
 
     /**
@@ -317,7 +338,27 @@ public class FileOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        return this._parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options);
+        // Duplicate the stream due to AutoRest issue https://github.com/Azure/autorest/issues/1385
+        ByteArrayOutputStream output = this._parentBatchClient.protocolLayer().files().getFromComputeNodeAsync(poolId, nodeId, fileName, options)
+                .map(new Func1<InputStream, ByteArrayOutputStream>() {
+            @Override
+            public ByteArrayOutputStream call(InputStream input) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                byte[] data = new byte[16384];
+                int nRead;
+                try {
+                    while ((nRead = input.read(data, 0, data.length)) != -1) {
+                        buffer.write(data, 0, nRead);
+                    }
+                    buffer.flush();
+                    return buffer;
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
+                }
+            }
+        }).toBlocking().single();
+
+        return new ByteArrayInputStream(output.toByteArray());
     }
 
     /**

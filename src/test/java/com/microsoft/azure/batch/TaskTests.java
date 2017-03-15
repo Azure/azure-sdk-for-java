@@ -207,7 +207,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testAddMultiTasks() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());

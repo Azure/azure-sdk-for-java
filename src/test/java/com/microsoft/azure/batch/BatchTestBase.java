@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.time.Duration;
 import java.util.*;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -162,4 +163,44 @@ abstract class BatchTestBase {
         String sas = blob.generateSharedAccessSignature(policy, null);
         return blob.getUri() + "?" + sas;
     }
+
+    /**
+     * Wait all tasks under a specified job to be completed
+     * @param client batch client instance
+     * @param jobId job id
+     * @param expiryTime the waiting period
+     * @return if task completed in time, return true, otherwise, return false
+     * @throws BatchErrorException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    static boolean waitForTasksToComplete(BatchClient client, String jobId, Duration expiryTime) throws BatchErrorException, IOException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
+        while (elapsedTime < expiryTime.toMillis()) {
+            List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId, new DetailLevel.Builder().withSelectClause("id, state").build());
+
+            boolean allComplete = true;
+            for (CloudTask task : taskCollection) {
+                if (task.state() != TaskState.COMPLETED) {
+                    allComplete = false;
+                    break;
+                }
+            }
+
+            if (allComplete) {
+                // All tasks completed
+                return true;
+            }
+
+            // Check again after 10 seconds
+            Thread.sleep(10 * 1000);
+            elapsedTime = (new Date()).getTime() - startTime;
+        }
+
+        // Timeout, return false
+        return false;
+    }
+
 }
