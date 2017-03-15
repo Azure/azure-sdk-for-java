@@ -7,6 +7,8 @@
 package com.microsoft.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.ResponseBody;
@@ -143,19 +145,29 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
     }
 
     @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws IOException {
+    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(final Response<ResponseBody> response, Class<THeader> headerType) throws IOException {
         ServiceResponse<T> bodyResponse = build(response);
         THeader headers = serializerAdapter.deserialize(
-                serializerAdapter.serialize(response.headers()),
+                serializerAdapter.serialize(Maps.asMap(response.headers().names(), new Function<String, String>() {
+                    @Override
+                    public String apply(String s) {
+                        return response.headers().get(s);
+                    }
+                })),
                 headerType);
         return new ServiceResponseWithHeaders<>(bodyResponse.body(), headers, bodyResponse.response());
     }
 
     @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException {
+    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(final Response<Void> response, Class<THeader> headerType) throws IOException {
         ServiceResponse<T> bodyResponse = buildEmpty(response);
         THeader headers = serializerAdapter.deserialize(
-                serializerAdapter.serialize(response.headers()),
+                serializerAdapter.serialize(Maps.asMap(response.headers().names(), new Function<String, String>() {
+                    @Override
+                    public String apply(String s) {
+                        return response.headers().get(s);
+                    }
+                })),
                 headerType);
         ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(headers, bodyResponse.headResponse());
         serviceResponse.withBody(bodyResponse.body());

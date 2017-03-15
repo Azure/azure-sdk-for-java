@@ -73,9 +73,9 @@ public class LoggingInterceptor implements Interceptor {
         }
         // log headers
         if (logLevel == LogLevel.HEADERS || logLevel == LogLevel.BODY_AND_HEADERS) {
-            for (Map.Entry<String, List<String>> header : request.headers().toMultimap().entrySet()) {
-                if (!LOGGING_HEADER.equals(header.getKey())) {
-                    log(logger, String.format("%s: %s", header.getKey(), Joiner.on(", ").join(header.getValue())));
+            for (String header : request.headers().names()) {
+                if (!LOGGING_HEADER.equals(header)) {
+                    log(logger, String.format("%s: %s", header, Joiner.on(", ").join(request.headers(header))));
                 }
             }
         }
@@ -130,8 +130,8 @@ public class LoggingInterceptor implements Interceptor {
 
         // log headers
         if (logLevel == LogLevel.HEADERS || logLevel == LogLevel.BODY_AND_HEADERS) {
-            for (Map.Entry<String, List<String>> header : response.headers().toMultimap().entrySet()) {
-                log(logger, String.format("%s: %s", header.getKey(), Joiner.on(", ").join(header.getValue())));
+            for (String header : response.headers().names()) {
+                log(logger, String.format("%s: %s", header, Joiner.on(", ").join(request.headers(header))));
             }
         }
 
