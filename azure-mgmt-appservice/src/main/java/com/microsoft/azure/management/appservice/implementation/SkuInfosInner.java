@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.appservice.GlobalCsmSkuDescription;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Collection of SKU information.
@@ -18,11 +19,13 @@ public class SkuInfosInner {
     /**
      * Resource type that this SKU applies to.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
      * List of SKUs the subscription is able to use.
      */
+    @JsonProperty(value = "skus")
     private List<GlobalCsmSkuDescription> skus;
 
     /**

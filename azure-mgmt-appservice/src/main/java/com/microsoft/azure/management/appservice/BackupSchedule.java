@@ -20,39 +20,40 @@ public class BackupSchedule {
      * How often should be the backup executed (e.g. for weekly backup, this
      * should be set to 7 and FrequencyUnit should be set to Day).
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "frequencyInterval", required = true)
     private int frequencyInterval;
 
     /**
-     * How often should be the backup executed (e.g. for weekly backup, this
-     * should be set to Day and FrequencyInterval should be set to 7). Possible
-     * values include: 'Day', 'Hour'.
+     * The unit of time for how often should be the backup executed (e.g. for
+     * weekly backup, this should be set to Day and FrequencyInterval should be
+     * set to 7). Possible values include: 'Day', 'Hour'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "frequencyUnit", required = true)
     private FrequencyUnit frequencyUnit;
 
     /**
      * True if the retention policy should always keep at least one backup in
      * the storage account, regardless how old it is; false otherwise.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keepAtLeastOneBackup", required = true)
     private boolean keepAtLeastOneBackup;
 
     /**
      * After how many days backups should be deleted.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "retentionPeriodInDays", required = true)
     private int retentionPeriodInDays;
 
     /**
      * When the schedule should start working.
      */
+    @JsonProperty(value = "startTime")
     private DateTime startTime;
 
     /**
      * Last time when this schedule was triggered.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastExecutionTime;
 
     /**

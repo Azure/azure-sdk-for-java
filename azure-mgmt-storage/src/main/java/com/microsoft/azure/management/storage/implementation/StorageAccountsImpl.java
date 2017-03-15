@@ -20,13 +20,13 @@ import rx.functions.Func1;
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends TopLevelModifiableResourcesImpl<
-                                        StorageAccount,
-                                        StorageAccountImpl,
-                                        StorageAccountInner,
-                                        StorageAccountsInner,
-                                        StorageManager>
-        implements StorageAccounts {
+    extends TopLevelModifiableResourcesImpl<
+        StorageAccount,
+        StorageAccountImpl,
+        StorageAccountInner,
+        StorageAccountsInner,
+        StorageManager>
+    implements StorageAccounts {
 
     StorageAccountsImpl(final StorageManager storageManager) {
         super(storageManager.inner().storageAccounts(), storageManager);

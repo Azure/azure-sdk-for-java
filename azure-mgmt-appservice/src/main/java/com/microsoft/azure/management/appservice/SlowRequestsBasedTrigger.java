@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Trigger based on request execution time.
@@ -16,16 +17,19 @@ public class SlowRequestsBasedTrigger {
     /**
      * Time taken.
      */
+    @JsonProperty(value = "timeTaken")
     private String timeTaken;
 
     /**
      * Count.
      */
+    @JsonProperty(value = "count")
     private Integer count;
 
     /**
      * Time interval.
      */
+    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Trigger based on status code.
@@ -16,26 +17,31 @@ public class StatusCodesBasedTrigger {
     /**
      * HTTP status code.
      */
+    @JsonProperty(value = "status")
     private Integer status;
 
     /**
      * SubStatus.
      */
+    @JsonProperty(value = "subStatus")
     private Integer subStatus;
 
     /**
      * Win32 error code.
      */
+    @JsonProperty(value = "win32Status")
     private Integer win32Status;
 
     /**
      * Count.
      */
+    @JsonProperty(value = "count")
     private Integer count;
 
     /**
      * Time interval.
      */
+    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /**

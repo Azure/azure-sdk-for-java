@@ -11,6 +11,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.HostNameType;
+import com.microsoft.azure.management.appservice.SslState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -62,6 +63,25 @@ public class HostNameBindingInner extends Resource {
      */
     @JsonProperty(value = "properties.hostNameType")
     private HostNameType hostNameType;
+
+    /**
+     * SSL type. Possible values include: 'Disabled', 'SniEnabled',
+     * 'IpBasedEnabled'.
+     */
+    @JsonProperty(value = "properties.sslState")
+    private SslState sslState;
+
+    /**
+     * SSL certificate thumbprint.
+     */
+    @JsonProperty(value = "properties.thumbprint")
+    private String thumbprint;
+
+    /**
+     * Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     */
+    @JsonProperty(value = "properties.virtualIP")
+    private String virtualIP;
 
     /**
      * Get the hostNameBindingName value.
@@ -200,6 +220,66 @@ public class HostNameBindingInner extends Resource {
      */
     public HostNameBindingInner withHostNameType(HostNameType hostNameType) {
         this.hostNameType = hostNameType;
+        return this;
+    }
+
+    /**
+     * Get the sslState value.
+     *
+     * @return the sslState value
+     */
+    public SslState sslState() {
+        return this.sslState;
+    }
+
+    /**
+     * Set the sslState value.
+     *
+     * @param sslState the sslState value to set
+     * @return the HostNameBindingInner object itself.
+     */
+    public HostNameBindingInner withSslState(SslState sslState) {
+        this.sslState = sslState;
+        return this;
+    }
+
+    /**
+     * Get the thumbprint value.
+     *
+     * @return the thumbprint value
+     */
+    public String thumbprint() {
+        return this.thumbprint;
+    }
+
+    /**
+     * Set the thumbprint value.
+     *
+     * @param thumbprint the thumbprint value to set
+     * @return the HostNameBindingInner object itself.
+     */
+    public HostNameBindingInner withThumbprint(String thumbprint) {
+        this.thumbprint = thumbprint;
+        return this;
+    }
+
+    /**
+     * Get the virtualIP value.
+     *
+     * @return the virtualIP value
+     */
+    public String virtualIP() {
+        return this.virtualIP;
+    }
+
+    /**
+     * Set the virtualIP value.
+     *
+     * @param virtualIP the virtualIP value to set
+     * @return the HostNameBindingInner object itself.
+     */
+    public HostNameBindingInner withVirtualIP(String virtualIP) {
+        this.virtualIP = virtualIP;
         return this;
     }
 

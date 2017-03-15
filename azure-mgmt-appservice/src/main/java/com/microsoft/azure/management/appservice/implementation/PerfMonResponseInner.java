@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.PerfMonSet;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Performance monitor API response.
@@ -17,16 +18,19 @@ public class PerfMonResponseInner {
     /**
      * The response code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * The message.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * The performance monitor counters.
      */
+    @JsonProperty(value = "data")
     private PerfMonSet data;
 
     /**

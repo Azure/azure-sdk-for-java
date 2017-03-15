@@ -17,14 +17,14 @@ public class CsmSlotEntityInner {
     /**
      * Destination deployment slot during swap operation.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "targetSlot", required = true)
     private String targetSlot;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot
      * during swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "preserveVnet", required = true)
     private boolean preserveVnet;
 
     /**

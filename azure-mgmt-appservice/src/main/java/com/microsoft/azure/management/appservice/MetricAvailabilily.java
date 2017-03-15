@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Metric availability and retention.
@@ -16,11 +17,13 @@ public class MetricAvailabilily {
     /**
      * Time grain.
      */
+    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /**
      * Retention period for the current time grain.
      */
+    @JsonProperty(value = "retention")
     private String retention;
 
     /**

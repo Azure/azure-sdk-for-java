@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Details of a hostname derived from a domain.
@@ -17,12 +18,14 @@ public class HostName {
     /**
      * Name of the hostname.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * List of apps the hostname is assigned to. This list will have more than
      * one app only if the hostname is pointing to a Traffic Manager.
      */
+    @JsonProperty(value = "siteNames")
     private List<String> siteNames;
 
     /**
@@ -30,22 +33,26 @@ public class HostName {
      * assigned to a Traffic Manager then it will be the Traffic Manager name
      * otherwise it will be the app name.
      */
+    @JsonProperty(value = "azureResourceName")
     private String azureResourceName;
 
     /**
      * Type of the Azure resource the hostname is assigned to. Possible values
      * include: 'Website', 'TrafficManager'.
      */
+    @JsonProperty(value = "azureResourceType")
     private AzureResourceType azureResourceType;
 
     /**
      * Type of the DNS record. Possible values include: 'CName', 'A'.
      */
+    @JsonProperty(value = "customHostNameDnsRecordType")
     private CustomHostNameDnsRecordType customHostNameDnsRecordType;
 
     /**
      * Type of the hostname. Possible values include: 'Verified', 'Managed'.
      */
+    @JsonProperty(value = "hostNameType")
     private HostNameType hostNameType;
 
     /**

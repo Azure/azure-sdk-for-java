@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Cross-Origin Resource Sharing (CORS) settings for the app.
@@ -19,6 +20,7 @@ public class CorsSettings {
      * cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
      */
+    @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
     /**

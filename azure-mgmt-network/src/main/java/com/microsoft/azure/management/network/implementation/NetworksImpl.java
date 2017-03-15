@@ -19,13 +19,13 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworksImpl
-        extends TopLevelModifiableResourcesImpl<
-                                            Network,
-                                            NetworkImpl,
-                                            VirtualNetworkInner,
-                                            VirtualNetworksInner,
-                                            NetworkManager>
-        implements Networks {
+    extends TopLevelModifiableResourcesImpl<
+        Network,
+        NetworkImpl,
+        VirtualNetworkInner,
+        VirtualNetworksInner,
+        NetworkManager>
+    implements Networks {
 
     NetworksImpl(final NetworkManager networkManager) {
         super(networkManager.inner().virtualNetworks(), networkManager);

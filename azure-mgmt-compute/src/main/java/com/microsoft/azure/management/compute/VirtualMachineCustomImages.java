@@ -9,6 +9,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ImagesInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -33,6 +34,7 @@ public interface VirtualMachineCustomImages extends
         SupportsGettingById<VirtualMachineCustomImage>,
         SupportsDeletingByGroup,
         SupportsBatchCreation<VirtualMachineCustomImage>,
+        SupportsBatchDeletion,
         HasManager<ComputeManager>,
         HasInner<ImagesInner> {
 }

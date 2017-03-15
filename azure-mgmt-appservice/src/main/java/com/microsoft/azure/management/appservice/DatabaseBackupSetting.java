@@ -18,12 +18,13 @@ public class DatabaseBackupSetting {
      * Database type (e.g. SqlAzure / MySql). Possible values include:
      * 'SqlAzure', 'MySql', 'LocalMySql'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "databaseType", required = true)
     private DatabaseType databaseType;
 
     /**
      * The name property.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -31,6 +32,7 @@ public class DatabaseBackupSetting {
      * SiteConfig.ConnectionStrings.
      * This is used during restore with overwrite connection strings options.
      */
+    @JsonProperty(value = "connectionStringName")
     private String connectionStringName;
 
     /**
@@ -38,6 +40,7 @@ public class DatabaseBackupSetting {
      * restored. If the restore should happen to a new database, the database
      * name inside is the new one.
      */
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /**

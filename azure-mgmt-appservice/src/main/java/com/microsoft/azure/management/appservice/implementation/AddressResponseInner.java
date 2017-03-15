@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.appservice.VirtualIPMapping;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes main public IP address and any extra virtual IPs.
@@ -18,22 +19,26 @@ public class AddressResponseInner {
     /**
      * Main public virtual IP.
      */
+    @JsonProperty(value = "serviceIpAddress")
     private String serviceIpAddress;
 
     /**
      * Virtual Network internal IP address of the App Service Environment if it
      * is in internal load-balancing mode.
      */
+    @JsonProperty(value = "internalIpAddress")
     private String internalIpAddress;
 
     /**
      * IP addresses appearing on outbound connections.
      */
+    @JsonProperty(value = "outboundIpAddresses")
     private List<String> outboundIpAddresses;
 
     /**
      * Additional virtual IPs.
      */
+    @JsonProperty(value = "vipMappings")
     private List<VirtualIPMapping> vipMappings;
 
     /**

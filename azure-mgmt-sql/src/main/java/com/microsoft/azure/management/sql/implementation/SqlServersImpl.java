@@ -17,7 +17,12 @@ import com.microsoft.azure.management.sql.SqlServers;
  */
 @LangDefinition
 class SqlServersImpl
-        extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+        extends TopLevelModifiableResourcesImpl<
+            SqlServer,
+            SqlServerImpl,
+            ServerInner,
+            ServersInner,
+            SqlServerManager>
         implements SqlServers {
 
     protected SqlServersImpl(SqlServerManager manager) {
