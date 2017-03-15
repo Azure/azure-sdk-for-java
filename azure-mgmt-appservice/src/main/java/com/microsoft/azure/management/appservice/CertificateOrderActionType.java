@@ -45,6 +45,15 @@ public enum CertificateOrderActionType {
     /** Enum value FraudCleared. */
     FRAUD_CLEARED("FraudCleared"),
 
+    /** Enum value CertificateExpired. */
+    CERTIFICATE_EXPIRED("CertificateExpired"),
+
+    /** Enum value CertificateExpirationWarning. */
+    CERTIFICATE_EXPIRATION_WARNING("CertificateExpirationWarning"),
+
+    /** Enum value FraudDocumentationRequired. */
+    FRAUD_DOCUMENTATION_REQUIRED("FraudDocumentationRequired"),
+
     /** Enum value Unknown. */
     UNKNOWN("Unknown");
 

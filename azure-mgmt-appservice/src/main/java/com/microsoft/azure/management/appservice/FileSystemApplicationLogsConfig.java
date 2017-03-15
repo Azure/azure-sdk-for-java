@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application logs to file system configuration.
@@ -17,6 +18,7 @@ public class FileSystemApplicationLogsConfig {
      * Log level. Possible values include: 'Off', 'Verbose', 'Information',
      * 'Warning', 'Error'.
      */
+    @JsonProperty(value = "level")
     private LogLevel level;
 
     /**

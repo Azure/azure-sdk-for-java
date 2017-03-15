@@ -17,19 +17,20 @@ public class ResourceNameAvailabilityRequest {
     /**
      * Resource name to verify.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Resource type used for verification. Possible values include: 'Site',
      * 'Slot', 'HostingEnvironment'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private CheckNameResourceTypes type;
 
     /**
      * Is fully qualified domain name.
      */
+    @JsonProperty(value = "isFqdn")
     private Boolean isFqdn;
 
     /**

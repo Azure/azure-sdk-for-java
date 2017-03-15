@@ -16,8 +16,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.appservice.TopLevelDomainAgreementOption;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -38,7 +38,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in TopLevelDomains.
  */
-public final class TopLevelDomainsInner {
+public class TopLevelDomainsInner {
     /** The Retrofit service to perform REST calls. */
     private TopLevelDomainsService service;
     /** The service client containing this operation class. */
@@ -86,6 +86,9 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      * Get all top-level domains supported for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
     public PagedList<TopLevelDomainInner> list() {
@@ -103,6 +106,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<TopLevelDomainInner>> listAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
@@ -121,6 +125,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      * Get all top-level domains supported for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
     public Observable<Page<TopLevelDomainInner>> listAsync() {
@@ -137,6 +142,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      * Get all top-level domains supported for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listWithServiceResponseAsync() {
@@ -157,6 +163,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      * Get all top-level domains supported for registration.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listSinglePageAsync() {
@@ -190,6 +197,9 @@ public final class TopLevelDomainsInner {
      * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TopLevelDomainInner object if successful.
      */
     public TopLevelDomainInner get(String name) {
@@ -202,6 +212,7 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<TopLevelDomainInner> getAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
@@ -213,6 +224,7 @@ public final class TopLevelDomainsInner {
      * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopLevelDomainInner object
      */
     public Observable<TopLevelDomainInner> getAsync(String name) {
@@ -229,6 +241,7 @@ public final class TopLevelDomainsInner {
      * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TopLevelDomainInner object
      */
     public Observable<ServiceResponse<TopLevelDomainInner>> getWithServiceResponseAsync(String name) {
@@ -265,6 +278,9 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name) {
@@ -283,6 +299,7 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
@@ -302,6 +319,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name) {
@@ -319,6 +337,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name) {
@@ -340,6 +359,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name) {
@@ -373,6 +393,9 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name, final Boolean includePrivacy) {
@@ -392,6 +415,7 @@ public final class TopLevelDomainsInner {
      * @param name Name of the top-level domain.
      * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
@@ -412,6 +436,7 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy) {
@@ -430,6 +455,7 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top-level domain.
      * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name, final Boolean includePrivacy) {
@@ -452,6 +478,7 @@ public final class TopLevelDomainsInner {
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top-level domain.
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
@@ -490,6 +517,9 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
     public PagedList<TopLevelDomainInner> listNext(final String nextPageLink) {
@@ -507,8 +537,9 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<TopLevelDomainInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<TopLevelDomainInner>> serviceFuture, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
@@ -528,6 +559,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
     public Observable<Page<TopLevelDomainInner>> listNextAsync(final String nextPageLink) {
@@ -545,6 +577,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
     public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -566,6 +599,7 @@ public final class TopLevelDomainsInner {
      * Get all top-level domains supported for registration.
      *
     ServiceResponse<PageImpl<TopLevelDomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -599,6 +633,9 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
     public PagedList<TldLegalAgreementInner> listAgreementsNext(final String nextPageLink) {
@@ -616,8 +653,9 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink, final ServiceFuture<List<TldLegalAgreementInner>> serviceFuture, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
@@ -637,6 +675,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<Page<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink) {
@@ -654,6 +693,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -675,6 +715,7 @@ public final class TopLevelDomainsInner {
      * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsNextSinglePageAsync(final String nextPageLink) {

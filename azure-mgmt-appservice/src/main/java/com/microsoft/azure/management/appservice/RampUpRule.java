@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Routing rules for ramp up testing. This rule allows to redirect static
@@ -18,12 +19,14 @@ public class RampUpRule {
      * Hostname of a slot to which the traffic will be redirected if decided
      * to. E.g. myapp-stage.azurewebsites.net.
      */
+    @JsonProperty(value = "actionHostName")
     private String actionHostName;
 
     /**
      * Percentage of the traffic which will be redirected to
      * &lt;code&gt;ActionHostName&lt;/code&gt;.
      */
+    @JsonProperty(value = "reroutePercentage")
     private Double reroutePercentage;
 
     /**
@@ -37,21 +40,25 @@ public class RampUpRule {
      * which URL can be specified in
      * &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      */
+    @JsonProperty(value = "changeStep")
     private Double changeStep;
 
     /**
      * Specifies interval in mimuntes to reevaluate ReroutePercentage.
      */
+    @JsonProperty(value = "changeIntervalInMinutes")
     private Integer changeIntervalInMinutes;
 
     /**
      * Specifies lower boundary above which ReroutePercentage will stay.
      */
+    @JsonProperty(value = "minReroutePercentage")
     private Double minReroutePercentage;
 
     /**
      * Specifies upper boundary below which ReroutePercentage will stay.
      */
+    @JsonProperty(value = "maxReroutePercentage")
     private Double maxReroutePercentage;
 
     /**
@@ -60,12 +67,14 @@ public class RampUpRule {
      * scaffold and contracts.
      * https://www.siteextensions.net/packages/TiPCallback/.
      */
+    @JsonProperty(value = "changeDecisionCallbackUrl")
     private String changeDecisionCallbackUrl;
 
     /**
      * Name of the routing rule. The recommended name would be to point to the
      * slot which will receive the traffic in the experiment.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**

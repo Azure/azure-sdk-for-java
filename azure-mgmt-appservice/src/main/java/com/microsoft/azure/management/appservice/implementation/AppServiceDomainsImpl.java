@@ -35,7 +35,7 @@ class AppServiceDomainsImpl
 
     @Override
     protected Observable<DomainInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

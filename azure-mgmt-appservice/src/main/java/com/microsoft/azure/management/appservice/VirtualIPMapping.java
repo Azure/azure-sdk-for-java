@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Virtual IP mapping.
@@ -16,21 +17,25 @@ public class VirtualIPMapping {
     /**
      * Virtual IP address.
      */
+    @JsonProperty(value = "virtualIP")
     private String virtualIP;
 
     /**
      * Internal HTTP port.
      */
+    @JsonProperty(value = "internalHttpPort")
     private Integer internalHttpPort;
 
     /**
      * Internal HTTPS port.
      */
+    @JsonProperty(value = "internalHttpsPort")
     private Integer internalHttpsPort;
 
     /**
      * Is virtual IP mapping in use.
      */
+    @JsonProperty(value = "inUse")
     private Boolean inUse;
 
     /**

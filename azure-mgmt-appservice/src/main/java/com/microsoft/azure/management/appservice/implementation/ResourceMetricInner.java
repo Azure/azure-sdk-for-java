@@ -22,55 +22,55 @@ public class ResourceMetricInner {
     /**
      * Name of metric.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceMetricName name;
 
     /**
      * Metric unit.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
      * Metric granularity. E.g PT1H, PT5M, P1D.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timeGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /**
      * Metric start time.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
      * Metric end time.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
      * Metric resource Id.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /**
      * Resource Id.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * Metric values.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricValue> metricValues;
 
     /**
      * Properties.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricProperty> properties;
 
     /**

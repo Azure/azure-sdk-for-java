@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.ValidateResponseError;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes the result of resource validation.
@@ -17,11 +18,13 @@ public class ValidateResponseInner {
     /**
      * Result of validation.
      */
+    @JsonProperty(value = "status")
     private String status;
 
     /**
      * Error details for the case when validation fails.
      */
+    @JsonProperty(value = "error")
     private ValidateResponseError error;
 
     /**

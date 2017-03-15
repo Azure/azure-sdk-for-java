@@ -17,20 +17,20 @@ public class DomainControlCenterSsoRequestInner {
     /**
      * URL where the single sign-on request is to be made.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /**
      * Post parameter key.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "postParameterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterKey;
 
     /**
      * Post parameter value. Client should use
      * 'application/x-www-form-urlencoded' encoding for this value.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "postParameterValue", access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterValue;
 
     /**

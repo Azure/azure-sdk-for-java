@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Rules that can be defined for auto-heal.
@@ -16,11 +17,13 @@ public class AutoHealRules {
     /**
      * Conditions that describe when to execute the auto-heal actions.
      */
+    @JsonProperty(value = "triggers")
     private AutoHealTriggers triggers;
 
     /**
      * Actions to be executed when a rule is triggered.
      */
+    @JsonProperty(value = "actions")
     private AutoHealActions actions;
 
     /**

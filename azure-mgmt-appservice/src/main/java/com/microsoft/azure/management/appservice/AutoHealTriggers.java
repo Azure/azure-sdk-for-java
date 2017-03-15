@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Triggers for auto-heal.
@@ -17,21 +18,25 @@ public class AutoHealTriggers {
     /**
      * A rule based on total requests.
      */
+    @JsonProperty(value = "requests")
     private RequestsBasedTrigger requests;
 
     /**
      * A rule based on private bytes.
      */
+    @JsonProperty(value = "privateBytesInKB")
     private Integer privateBytesInKB;
 
     /**
      * A rule based on status codes.
      */
+    @JsonProperty(value = "statusCodes")
     private List<StatusCodesBasedTrigger> statusCodes;
 
     /**
      * A rule based on request execution time.
      */
+    @JsonProperty(value = "slowRequests")
     private SlowRequestsBasedTrigger slowRequests;
 
     /**

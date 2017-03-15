@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Custom action to be executed
@@ -17,11 +18,13 @@ public class AutoHealCustomAction {
     /**
      * Executable to be run.
      */
+    @JsonProperty(value = "exe")
     private String exe;
 
     /**
      * Parameters for the executable.
      */
+    @JsonProperty(value = "parameters")
     private String parameters;
 
     /**

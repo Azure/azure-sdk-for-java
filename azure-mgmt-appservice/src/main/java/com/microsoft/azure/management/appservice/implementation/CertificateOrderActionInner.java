@@ -24,7 +24,8 @@ public class CertificateOrderActionInner extends Resource {
      * 'CertificateOrderCanceled', 'CertificateOrderCreated',
      * 'CertificateRevoked', 'DomainValidationComplete', 'FraudDetected',
      * 'OrgNameChange', 'OrgValidationComplete', 'SanDrop', 'FraudCleared',
-     * 'Unknown'.
+     * 'CertificateExpired', 'CertificateExpirationWarning',
+     * 'FraudDocumentationRequired', 'Unknown'.
      */
     @JsonProperty(value = "properties.type")
     private CertificateOrderActionType certificateOrderActionType;

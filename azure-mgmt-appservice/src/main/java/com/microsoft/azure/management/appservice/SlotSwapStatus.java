@@ -18,19 +18,19 @@ public class SlotSwapStatus {
     /**
      * The time the last successful slot swap completed.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestampUtc", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestampUtc;
 
     /**
      * The source slot of the last swap operation.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sourceSlotName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSlotName;
 
     /**
      * The destination slot of the last swap operation.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "destinationSlotName", access = JsonProperty.Access.WRITE_ONLY)
     private String destinationSlotName;
 
     /**
