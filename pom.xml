@@ -70,6 +70,12 @@
       <version>4.0.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -157,20 +163,20 @@
        <groupId>com.googlecode.addjars-maven-plugin</groupId>
        <artifactId>addjars-maven-plugin</artifactId>
        <version>1.0.5</version>
-          <executions>
-             <execution>
-                <goals>
-                  <goal>add-jars</goal>
-                </goals>
-                <configuration>
-                  <resources>
-                    <resource>
-                      <directory>../extlib</directory>
-                    </resource>
-                 </resources>
-              </configuration>
-           </execution>
-        </executions>
+       <executions>
+         <execution>
+           <goals>
+             <goal>add-jars</goal>
+           </goals>
+           <configuration>
+             <resources>
+               <resource>
+                 <directory>../extlib</directory>
+               </resource>
+             </resources>
+           </configuration>
+         </execution>
+       </executions>
       </plugin>
 
     </plugins>

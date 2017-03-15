@@ -18,6 +18,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -30,6 +32,8 @@ import java.util.TreeMap;
 class BatchSharedKeyCredentialsInterceptor implements Interceptor {
 
     private final BatchSharedKeyCredentials credentials;
+
+    private Mac hmacSha256;
 
     /**
      * Constructor for BatchSharedKeyCredentialsInterceptor
@@ -62,18 +66,24 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
         return headerValue;
     }
 
-    private String sign(String accessKey, String stringToSign) {
+    private synchronized String sign(String stringToSign) {
         try {
             // Encoding the Signature
             // Signature=Base64(HMAC-SHA256(UTF8(StringToSign)))
-            Mac hmac = Mac.getInstance("hmacSHA256");
-            hmac.init(new SecretKeySpec(Base64.decodeBase64(accessKey),
-                    "hmacSHA256"));
-            byte[] digest = hmac.doFinal(stringToSign.getBytes("UTF-8"));
+            byte[] digest = getHmac256().doFinal(stringToSign.getBytes("UTF-8"));
             return Base64.encodeBase64String(digest);
         } catch (Exception e) {
             throw new IllegalArgumentException("accessKey", e);
         }
+    }
+
+    private synchronized Mac getHmac256() throws NoSuchAlgorithmException, InvalidKeyException {
+        if (this.hmacSha256 == null) {
+            // Initializes the HMAC-SHA256 Mac and SecretKey.
+            this.hmacSha256 = Mac.getInstance("HmacSHA256");
+            this.hmacSha256.init(new SecretKeySpec(Base64.decodeBase64(this.credentials.keyValue()), "HmacSHA256"));
+        }
+        return this.hmacSha256;
     }
 
     private Request signHeader(Request request) throws IOException {
@@ -141,7 +151,7 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
 
         signature = signature + "/"
                 + credentials.accountName().toLowerCase() + "/"
-                + request.url().uri().getPath().replaceAll("^[/]+", "");
+                + request.url().uri().getRawPath().replaceAll("^[/]+", "");
         // We temporary change client side auth code generator to bypass server
         // bug 4092533
         signature = signature.replace("%5C", "/").replace("%2F", "/");
@@ -156,22 +166,18 @@ class BatchSharedKeyCredentialsInterceptor implements Interceptor {
                         .toLowerCase(Locale.US);
                 queryComponents.put(
                         key,
-                        key
-                                + ":"
-                                + URLDecoder.decode(pair.substring(idx + 1),
-                                        "UTF-8"));
+                        key + ":" + URLDecoder.decode(pair.substring(idx + 1),"UTF-8"));
             }
 
             for (Map.Entry<String, String> entry : queryComponents.entrySet()) {
                 signature = signature + "\n" + entry.getValue();
             }
         }
-        String signedSignature = sign(credentials.keyValue(), signature);
+        String signedSignature = sign(signature);
         String authorization = "SharedKey " + credentials.accountName()
                 + ":" + signedSignature;
         builder.header("Authorization", authorization);
 
         return builder.build();
     }
-
 }
