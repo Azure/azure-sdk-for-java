@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for Subscriptions.
@@ -28,8 +29,18 @@ class SubscriptionsImpl
         ServiceBusManager,
         Topic>
         implements Subscriptions {
-    protected SubscriptionsImpl(SubscriptionsInner innerCollection, ServiceBusManager manager) {
-        super(innerCollection, manager);
+    private final String resourceGroupName;
+    private final String namespaceName;
+    private final String topicName;
+
+    protected SubscriptionsImpl(String resourceGroupName,
+                                String namespaceName,
+                                String topicName,
+                                ServiceBusManager manager) {
+        super(manager.inner().subscriptions(), manager);
+        this.resourceGroupName = resourceGroupName;
+        this.namespaceName = namespaceName;
+        this.topicName = topicName;
     }
 
     @Override
@@ -38,17 +49,7 @@ class SubscriptionsImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-
-    }
-
-    @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return null;
-    }
-
-    @Override
-    public Completable deleteByNameAsync(String name) {
+    public Subscription.DefinitionStages.Blank define(String name) {
         return null;
     }
 
@@ -58,8 +59,22 @@ class SubscriptionsImpl
     }
 
     @Override
-    public PagedList<Subscription> list() {
+    public Subscription getByName(String name) {
         return null;
+    }
+
+    @Override
+    public Completable deleteByNameAsync(String name) {
+        return null;
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return null;
+    }
+
+    @Override
+    public void deleteByName(String name) {
     }
 
     @Override
@@ -68,12 +83,12 @@ class SubscriptionsImpl
     }
 
     @Override
-    protected SubscriptionImpl wrapModel(String name) {
+    public PagedList<Subscription> list() {
         return null;
     }
 
     @Override
-    public Subscription getByName(String name) {
+    protected SubscriptionImpl wrapModel(String name) {
         return null;
     }
 
@@ -84,21 +99,22 @@ class SubscriptionsImpl
 
     @Override
     public PagedList<Subscription> listByParent(String resourceGroupName, String parentName) {
-        return null;
-    }
-
-    @Override
-    public Subscription.DefinitionStages.Blank define(String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Observable<Subscription> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 }

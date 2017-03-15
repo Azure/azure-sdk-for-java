@@ -13,6 +13,8 @@ import com.microsoft.azure.management.servicebus.Subscription;
 import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRule;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,8 +30,20 @@ class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<Sub
         SubscriptionAuthorizationRule,
         SubscriptionAuthorizationRule.Definition,
         SubscriptionAuthorizationRule.Update {
-    SubscriptionAuthorizationRuleImpl(String name, SharedAccessAuthorizationRuleInner innerObject, ServiceBusManager manager) {
-        super(name, innerObject, manager);
+    private final String namespaceName;
+    private final String topicName;
+
+    SubscriptionAuthorizationRuleImpl(String resourceGroupName,
+                                      String namespaceName,
+                                      String topicName,
+                                      String subscriptionName,
+                                      String name,
+                                      SharedAccessAuthorizationRuleInner inner,
+                                      ServiceBusManager manager) {
+        super(name, inner, manager);
+        this.namespaceName = namespaceName;
+        this.topicName = topicName;
+        this.withExistingParentResource(resourceGroupName, subscriptionName);
     }
 
     @Override
@@ -39,32 +53,33 @@ class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<Sub
 
     @Override
     public String namespaceName() {
-        return null;
+        return this.namespaceName;
     }
 
     @Override
     public String topicName() {
-        return null;
+        return this.topicName;
     }
 
     @Override
     public String subscriptionName() {
-        return null;
+        return this.parentName;
     }
 
     @Override
     public List<AccessRights> rights() {
-        return null;
+         if (this.inner().rights() == null) {
+             return Collections.unmodifiableList(new ArrayList<AccessRights>());
+         }
+        return Collections.unmodifiableList(this.inner().rights());
     }
 
     @Override
     public void listKeys() {
-
     }
 
     @Override
     public void regenerateKeys() {
-
     }
 
     @Override

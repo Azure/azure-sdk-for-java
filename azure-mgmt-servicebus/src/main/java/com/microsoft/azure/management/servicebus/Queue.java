@@ -43,11 +43,11 @@ public interface Queue extends
     /**
      * @return the maximum size of memory allocated for the queue in megabytes.
      */
-    int maxSizeInMB();
+    long maxSizeInMB();
     /**
      * @return current size of the queue, in bytes
      */
-    int currentSizeInBytes();
+    long currentSizeInBytes();
     /**
      * @return indicates whether server-side batched operations are enabled
      */
@@ -75,11 +75,11 @@ public interface Queue extends
     /**
      * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
-    int lockDurationInSeconds();
+    long lockDurationInSeconds();
     /**
      * @return the idle duration after which the queue is automatically deleted.
      */
-    int deleteOnIdleDurationInMinutes();
+    long deleteOnIdleDurationInMinutes();
     /**
      * @return the duration after which the message expires, starting from when the message is sent to queue.
      */
@@ -95,28 +95,28 @@ public interface Queue extends
     /**
      * @return the number of messages in the queue
      */
-    int messageCount();
+    long messageCount();
     /**
      * @return number of active messages in the queue
      */
-    int activeMessageCount();
+    long activeMessageCount();
     /**
      * @return number of messages in the dead-letter queue
      */
-    int deadLetterMessageCount();
+    long deadLetterMessageCount();
     /**
      * @return number of messages sent to the queue that are yet to be released
      * for consumption
      */
-    int scheduledMessageCount();
+    long scheduledMessageCount();
     /**
      * @return number of messages transferred into dead letters
      */
-    int transferDeadLetterMessageCount();
+    long transferDeadLetterMessageCount();
     /**
      * @return number of messages transferred to another queue, topic, or subscription
      */
-    int transferMessageCount();
+    long transferMessageCount();
     /**
      * @return the current status of the queue
      */

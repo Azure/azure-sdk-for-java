@@ -42,10 +42,14 @@ public class ServiceBusOperationsTests extends TestBase {
                 .authenticate(restClient, defaultSubscription);
     }
 
-
     @Override
     protected void cleanUpResources() {
    //     resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
+
+    @Test
+    public void canOperateOnNamespaces() {
+
     }
 
     @Test

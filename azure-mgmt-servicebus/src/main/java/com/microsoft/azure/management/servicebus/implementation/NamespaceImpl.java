@@ -26,48 +26,54 @@ class NamespaceImpl extends GroupableResourceImpl<
         Namespace.Definition,
         Namespace.Update {
 
-    NamespaceImpl(String name, NamespaceResourceInner innerObject, ServiceBusManager manager) {
-        super(name, innerObject, manager);
+    NamespaceImpl(String name, NamespaceResourceInner inner, ServiceBusManager manager) {
+        super(name, inner, manager);
     }
 
     @Override
     public String dnsLabel() {
-        return null;
+        return this.inner().name();
     }
 
     @Override
     public String fqdn() {
-        return null;
+        return this.inner().serviceBusEndpoint();
     }
 
     @Override
     public NamespaceSku sku() {
-        return null;
+        return new NamespaceSku(this.inner().sku());
     }
 
     @Override
     public DateTime createdAt() {
-        return null;
+        return this.inner().createdAt();
     }
 
     @Override
     public DateTime updatedAt() {
-        return null;
+        return this.inner().updatedAt();
     }
 
     @Override
     public Queues queues() {
-        return null;
+        return new QueuesImpl(this.resourceGroupName(),
+                this.name(),
+                this.manager());
     }
 
     @Override
     public Topics topics() {
-        return null;
+        return new TopicsImpl(this.resourceGroupName(),
+                this.name(),
+                this.manager());
     }
 
     @Override
     public NamespaceAuthorizationRules authorizationRules() {
-        return null;
+        return new NamespaceAuthorizationRulesImpl(this.resourceGroupName(),
+                this.name(),
+                manager());
     }
 
     @Override
@@ -91,7 +97,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public Update withoutTopic(String name) {
+    public NamespaceImpl withoutTopic(String name) {
         return this;
     }
 
@@ -106,12 +112,12 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    protected Observable<NamespaceResourceInner> getInnerAsync() {
+    public Observable<Namespace> createResourceAsync() {
         return null;
     }
 
     @Override
-    public Observable<Namespace> createResourceAsync() {
+    protected Observable<NamespaceResourceInner> getInnerAsync() {
         return null;
     }
 }

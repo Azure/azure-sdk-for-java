@@ -11,6 +11,8 @@ import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,28 +27,34 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRule.Definition,
         NamespaceAuthorizationRule.Update {
-    NamespaceAuthorizationRuleImpl(String name, SharedAccessAuthorizationRuleInner innerObject, ServiceBusManager manager) {
-        super(name, innerObject, manager);
+    NamespaceAuthorizationRuleImpl(String resourceGroupName,
+                                   String namespaceName,
+                                   String name,
+                                   SharedAccessAuthorizationRuleInner inner,
+                                   ServiceBusManager manager) {
+        super(name, inner, manager);
+        this.withExistingParentResource(resourceGroupName, namespaceName);
     }
 
     @Override
     public String namespaceName() {
-        return null;
+        return this.parentName;
     }
 
     @Override
     public List<AccessRights> rights() {
-        return null;
+        if (this.inner().rights() == null) {
+            return Collections.unmodifiableList(new ArrayList<AccessRights>());
+        }
+        return Collections.unmodifiableList(this.inner().rights());
     }
 
     @Override
     public void listKeys() {
-
     }
 
     @Override
     public void regenerateKeys() {
-
     }
 
     @Override

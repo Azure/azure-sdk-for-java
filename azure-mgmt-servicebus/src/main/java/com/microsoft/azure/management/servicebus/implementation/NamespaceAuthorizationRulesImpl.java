@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for NamespaceAuthorizationRules.
@@ -28,8 +29,15 @@ class NamespaceAuthorizationRulesImpl
         ServiceBusManager,
         Namespace>
         implements NamespaceAuthorizationRules {
-    NamespaceAuthorizationRulesImpl(NamespacesInner innerCollection, ServiceBusManager manager) {
-        super(innerCollection, manager);
+    private final String resourceGroupName;
+    private final String namespaceName;
+
+    NamespaceAuthorizationRulesImpl(String resourceGroupName,
+                                    String namespaceName,
+                                    ServiceBusManager manager) {
+        super(manager.inner().namespaces(), manager);
+        this.resourceGroupName = resourceGroupName;
+        this.namespaceName = namespaceName;
     }
 
     @Override
@@ -38,8 +46,22 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
+    public NamespaceAuthorizationRule.DefinitionStages.Blank define(String name) {
+        return null;
+    }
 
+    @Override
+    public Observable<NamespaceAuthorizationRule> getByNameAsync(String name) {
+        return null;
+    }
+
+    @Override
+    public NamespaceAuthorizationRule getByName(String name) {
+        return null;
+    }
+
+    @Override
+    public void deleteByName(String name) {
     }
 
     @Override
@@ -53,7 +75,7 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Observable<NamespaceAuthorizationRule> getByNameAsync(String name) {
+    public Observable<NamespaceAuthorizationRule> listAsync() {
         return null;
     }
 
@@ -63,42 +85,38 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Observable<NamespaceAuthorizationRule> listAsync() {
-        return null;
-    }
-
-    @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(String name) {
         return null;
     }
 
-    @Override
-    public NamespaceAuthorizationRule getByName(String name) {
-        return null;
-    }
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
         return null;
     }
 
-    @Override
-    public PagedList<NamespaceAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
-        return null;
-    }
 
     @Override
-    public NamespaceAuthorizationRule.DefinitionStages.Blank define(String name) {
-        return null;
+    public PagedList<NamespaceAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Observable<NamespaceAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 }

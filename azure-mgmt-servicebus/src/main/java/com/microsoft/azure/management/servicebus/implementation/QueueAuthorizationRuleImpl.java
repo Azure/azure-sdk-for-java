@@ -13,6 +13,8 @@ import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,20 +30,17 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
         QueueAuthorizationRule,
         QueueAuthorizationRule.Definition,
         QueueAuthorizationRule.Update {
-    QueueAuthorizationRuleImpl(String name,
-                                         SharedAccessAuthorizationRuleInner inner,
-                                         ServiceBusManager manager) {
+    private final String namespaceName;
+
+    QueueAuthorizationRuleImpl(String resourceGroupName,
+                               String namespaceName,
+                               String queueName,
+                               String name,
+                               SharedAccessAuthorizationRuleInner inner,
+                               ServiceBusManager manager) {
         super(name, inner, manager);
-    }
-
-    @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
-        return null;
-    }
-
-    @Override
-    protected Observable<QueueAuthorizationRule> createChildResourceAsync() {
-        return null;
+        this.namespaceName = namespaceName;
+        this.withExistingParentResource(resourceGroupName, queueName);
     }
 
     @Override
@@ -51,27 +50,28 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
 
     @Override
     public String namespaceName() {
-        return null;
+        return this.namespaceName;
     }
 
     @Override
     public String queueName() {
-        return null;
+        return this.parentName;
     }
 
     @Override
     public List<AccessRights> rights() {
-        return null;
+        if (this.inner().rights() == null) {
+            return Collections.unmodifiableList(new ArrayList<AccessRights>());
+        }
+        return Collections.unmodifiableList(this.inner().rights());
     }
 
     @Override
     public void listKeys() {
-
     }
 
     @Override
     public void regenerateKeys() {
-
     }
 
     @Override
@@ -81,6 +81,16 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
 
     @Override
     public QueueAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
+        return null;
+    }
+
+    @Override
+    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
+        return null;
+    }
+
+    @Override
+    protected Observable<QueueAuthorizationRule> createChildResourceAsync() {
         return null;
     }
 }

@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for TopicAuthorizationRules.
@@ -28,8 +29,18 @@ class TopicAuthorizationRulesImpl
         ServiceBusManager,
         Topic>
         implements TopicAuthorizationRules {
-    TopicAuthorizationRulesImpl(TopicsInner innerCollection, ServiceBusManager manager) {
-        super(innerCollection, manager);
+    private final String resourceGroupName;
+    private final String namespaceName;
+    private final String topicName;
+
+    TopicAuthorizationRulesImpl(String resourceGroupName,
+                                String namespaceName,
+                                String topicName,
+                                ServiceBusManager manager) {
+        super(manager.inner().topics(), manager);
+        this.resourceGroupName = resourceGroupName;
+        this.namespaceName = namespaceName;
+        this.topicName = topicName;
     }
 
     @Override
@@ -38,17 +49,7 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-
-    }
-
-    @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return null;
-    }
-
-    @Override
-    public Completable deleteByNameAsync(String name) {
+    public TopicAuthorizationRule.DefinitionStages.Blank define(String name) {
         return null;
     }
 
@@ -58,8 +59,21 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public PagedList<TopicAuthorizationRule> list() {
+    public TopicAuthorizationRule getByName(String name) {
         return null;
+    }
+    @Override
+    public Completable deleteByNameAsync(String name) {
+        return null;
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return null;
+    }
+
+    @Override
+    public void deleteByName(String name) {
     }
 
     @Override
@@ -68,12 +82,12 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    protected TopicAuthorizationRuleImpl wrapModel(String name) {
+    public PagedList<TopicAuthorizationRule> list() {
         return null;
     }
 
     @Override
-    public TopicAuthorizationRule getByName(String name) {
+    protected TopicAuthorizationRuleImpl wrapModel(String name) {
         return null;
     }
 
@@ -84,21 +98,25 @@ class TopicAuthorizationRulesImpl
 
     @Override
     public PagedList<TopicAuthorizationRule> listByParent(String resourceGroupName, String parentName) {
-        return null;
-    }
-
-    @Override
-    public TopicAuthorizationRule.DefinitionStages.Blank define(String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Observable<TopicAuthorizationRule> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
+        //
+        throw new NotImplementedException();
     }
 }

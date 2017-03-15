@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for Topics.
@@ -28,8 +29,13 @@ class TopicsImpl
         ServiceBusManager,
         Namespace>
         implements Topics {
-    TopicsImpl(TopicsInner innerCollection, ServiceBusManager manager) {
-        super(innerCollection, manager);
+    private final String resourceGroupName;
+    private final String namespaceName;
+
+    TopicsImpl(String resourceGroupName, String namespaceName, ServiceBusManager manager) {
+        super(manager.inner().topics(), manager);
+        this.resourceGroupName = resourceGroupName;
+        this.namespaceName = namespaceName;
     }
 
     @Override
@@ -38,17 +44,7 @@ class TopicsImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-
-    }
-
-    @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return null;
-    }
-
-    @Override
-    public Completable deleteByNameAsync(String name) {
+    public Topic.DefinitionStages.Blank define(String name) {
         return null;
     }
 
@@ -58,8 +54,22 @@ class TopicsImpl
     }
 
     @Override
-    public PagedList<Topic> list() {
+    public Topic getByName(String name) {
         return null;
+    }
+
+    @Override
+    public Completable deleteByNameAsync(String name) {
+        return null;
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return null;
+    }
+
+    @Override
+    public void deleteByName(String name) {
     }
 
     @Override
@@ -68,12 +78,12 @@ class TopicsImpl
     }
 
     @Override
-    protected TopicImpl wrapModel(String name) {
+    public PagedList<Topic> list() {
         return null;
     }
 
     @Override
-    public Topic getByName(String name) {
+    protected TopicImpl wrapModel(String name) {
         return null;
     }
 
@@ -84,21 +94,22 @@ class TopicsImpl
 
     @Override
     public PagedList<Topic> listByParent(String resourceGroupName, String parentName) {
-        return null;
-    }
-
-    @Override
-    public Topic.DefinitionStages.Blank define(String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 
     @Override
     public Observable<Topic> getByParentAsync(String resourceGroup, String parentName, String name) {
-        return null;
+        // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        //
+        throw new NotImplementedException();
     }
 }

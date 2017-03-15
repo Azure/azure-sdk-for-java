@@ -45,11 +45,11 @@ public interface Topic extends
     /**
      * @return the maximum size of memory allocated for the topic in megabytes.
      */
-    int maxSizeInMB();
+    long maxSizeInMB();
     /**
      * @return current size of the topic, in bytes
      */
-    int currentSizeInBytes();
+    long currentSizeInBytes();
     /**
      * @return indicates whether server-side batched operations are enabled
      */
@@ -63,17 +63,13 @@ public interface Topic extends
      */
     boolean isPartitioningEnabled();
     /**
-     * @return indicates whether the topic supports sessions
-     */
-    boolean isSessionEnabled();
-    /**
      * indicates if this topic requires duplicate detection.
      */
     boolean isDuplicateDetectionEnabled();
     /**
      * @return the idle duration after which the topic is automatically deleted.
      */
-    int deleteOnIdleDurationInMinutes();
+    long deleteOnIdleDurationInMinutes();
     /**
      * @return the duration after which the message expires, starting from when the message is sent to topic.
      */
@@ -85,24 +81,24 @@ public interface Topic extends
     /**
      * @return number of active messages in the topic
      */
-    int activeMessageCount();
+    long activeMessageCount();
     /**
      * @return number of messages in the dead-letter topic
      */
-    int deadLetterMessageCount();
+    long deadLetterMessageCount();
     /**
      * @return number of messages sent to the topic that are yet to be released
      * for consumption
      */
-    int scheduledMessageCount();
+    long scheduledMessageCount();
     /**
      * @return number of messages transferred into dead letters
      */
-    int transferDeadLetterMessageCount();
+    long transferDeadLetterMessageCount();
     /**
      * @return number of messages transferred to another topic, topic, or subscription
      */
-    int transferMessageCount();
+    long transferMessageCount();
     /**
      * @return number of subscriptions for the topic
      */

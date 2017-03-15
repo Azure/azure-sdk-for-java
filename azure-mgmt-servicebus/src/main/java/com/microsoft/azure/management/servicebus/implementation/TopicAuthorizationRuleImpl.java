@@ -13,6 +13,8 @@ import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,8 +30,17 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
         TopicAuthorizationRule,
         TopicAuthorizationRule.Definition,
         TopicAuthorizationRule.Update {
-    TopicAuthorizationRuleImpl(String name, SharedAccessAuthorizationRuleInner innerObject, ServiceBusManager manager) {
-        super(name, innerObject, manager);
+    private final String namespaceName;
+
+    TopicAuthorizationRuleImpl(String resourceGroupName,
+                               String namespaceName,
+                               String topicName,
+                               String name,
+                               SharedAccessAuthorizationRuleInner inner,
+                               ServiceBusManager manager) {
+        super(name, inner, manager);
+        this.namespaceName = namespaceName;
+        this.withExistingParentResource(resourceGroupName, topicName);
     }
 
     @Override
@@ -39,27 +50,28 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
 
     @Override
     public String namespaceName() {
-        return null;
+        return this.namespaceName;
     }
 
     @Override
     public String topicName() {
-        return null;
+        return this.parentName;
     }
 
     @Override
     public List<AccessRights> rights() {
-        return null;
+        if (this.inner().rights() == null) {
+            return Collections.unmodifiableList(new ArrayList<AccessRights>());
+        }
+        return Collections.unmodifiableList(this.inner().rights());
     }
 
     @Override
     public void listKeys() {
-
     }
 
     @Override
     public void regenerateKeys() {
-
     }
 
     @Override
