@@ -10,4 +10,8 @@ public class QuotaExceededException  extends ServiceBusException {
         super(false, message);
     }
     
+    public QuotaExceededException(Throwable cause) {
+        super(false, cause);
+    }
+    
 }

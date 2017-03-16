@@ -84,11 +84,11 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
 		{
-			return new ServiceBusException(false, new AmqpException(errorCondition));
+			return new ServiceBusException(true, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
 		{
-			return new ServiceBusException(false, new AmqpException(errorCondition));
+			return new QuotaExceededException(new AmqpException(errorCondition));
 		}
 
 		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
