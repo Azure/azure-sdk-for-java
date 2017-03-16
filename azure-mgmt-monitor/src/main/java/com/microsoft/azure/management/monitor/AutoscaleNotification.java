@@ -7,12 +7,11 @@
 package com.microsoft.azure.management.monitor;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.monitor.implementation.AutoscaleNotificationInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,9 @@ import java.util.Map;
 /**
  */
 @Fluent
-public interface AutoscaleNotification {
+public interface AutoscaleNotification extends
+        ExternalChildResource<AutoscaleNotification, AutoscaleSetting>,
+        HasInner<AutoscaleNotificationInner> {
 
     /**
      * the operation associated with the notification and its value must be "scale"

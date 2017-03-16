@@ -7,20 +7,21 @@
 package com.microsoft.azure.management.monitor;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
+import com.microsoft.azure.management.monitor.implementation.AutoscaleProfileInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import org.joda.time.DateTime;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  */
 @Fluent
-public interface AutoscaleProfile {
+public interface AutoscaleProfile extends
+        ExternalChildResource<AutoscaleProfile, AutoscaleSetting>,
+        HasInner<AutoscaleProfileInner> {
 
     /**
      * the name of the profile.
@@ -70,8 +71,8 @@ public interface AutoscaleProfile {
         interface WithScaleRuleOptional extends
                 WithAttach {
             ScaleRule.DefinitionStages.Blank defineScaleRule();
-            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end);
-            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end, String timeZone);
+            WithScaleRuleOptional withFixedDate(DateTime start, DateTime end);
+            WithScaleRuleOptional withFixedDate(DateTime start, DateTime end, String timeZone);
             WithScaleRuleOptional withRecurrence(Recurrence recurrence);
             Recurrence.DefinitionStages.Blank defineRecurrence();
         }
@@ -100,8 +101,8 @@ public interface AutoscaleProfile {
         interface WithScaleRuleOptional extends
                 WithAttach {
             ScaleRule.ParentUpdateDefinitionStages.Blank defineScaleRule();
-            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end);
-            WithScaleRuleOptional withTimeWindow(DateTime start, DateTime end, String timeZone);
+            WithScaleRuleOptional withFixedDate(DateTime start, DateTime end);
+            WithScaleRuleOptional withFixedDate(DateTime start, DateTime end, String timeZone);
             WithScaleRuleOptional withRecurrence(Recurrence recurrence);
             Recurrence.DefinitionStages.Blank defineRecurrence();
         }
@@ -132,9 +133,9 @@ public interface AutoscaleProfile {
         }
 
         interface WithTimeWindow {
-            Update withTimeWindow(DateTime start, DateTime end);
-            Update withTimeWindow(DateTime start, DateTime end, String timeZone);
-            Update withoutTimeWindow();
+            Update withFixedDate(DateTime start, DateTime end);
+            Update withFixedDate(DateTime start, DateTime end, String timeZone);
+            Update withoutFixedDate();
         }
 
         interface WithRecurrence {

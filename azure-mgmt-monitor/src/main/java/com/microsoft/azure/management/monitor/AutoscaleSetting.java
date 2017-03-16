@@ -105,16 +105,16 @@ public interface AutoscaleSetting extends
     interface Update extends
             Appliable<AutoscaleSetting>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.DefineAutoscaleSettingResourceProfiles,
-            UpdateStages.DefineAutoscaleSettingResourceNotifications,
-            UpdateStages.WithAutoscaleSettingResourceEnabled,
-            UpdateStages.WithAutoscaleSettingResourceName,
-            UpdateStages.WithAutoscaleSettingResourceTargetResourceUri {
+            UpdateStages.DefineAutoscaleSettingProfiles,
+            UpdateStages.DefineAutoscaleSettingNotifications,
+            UpdateStages.WithAutoscaleSettingEnabled,
+            UpdateStages.WithAutoscaleSettingTargetResourceUri {
     }
 
     interface UpdateStages {
 
-        interface DefineAutoscaleSettingResourceProfiles {
+        interface DefineAutoscaleSettingProfiles {
+            Update withoutAutoscaleProfile(String name);
             /**
              * the collection of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
              *
@@ -130,15 +130,17 @@ public interface AutoscaleSetting extends
             AutoscaleProfile.Update updateAutoscaleProfile(String name);
         }
 
-        interface DefineAutoscaleSettingResourceNotifications {
-            Update withoutAutoscaleNotification(String name);
+        interface DefineAutoscaleSettingNotifications {
+            Update withoutAutoscaleNotification(AutoscaleNotification notification);
             Update withoutAutoscaleNotifications();
+
             /**
              * the collection of notifications.
              *
              * @return the next stage
              */
             AutoscaleNotification.UpdateDefinitionStages.Blank defineAutoscaleNotification();
+
             /**
              * the collection of notifications.
              *
@@ -148,17 +150,14 @@ public interface AutoscaleSetting extends
             AutoscaleNotification.UpdateStages.Blank updateAutoscaleNotification(AutoscaleNotification notification);
         }
 
-        interface WithAutoscaleSettingResourceEnabled {
-            Update withAutoscaleSettingResource();
-            Update withoutAutoscaleSettingResource();
+        interface WithAutoscaleSettingEnabled {
+            Update withAutoscaleSettingEnabled();
+            Update withAutoscaleSettingDisabled();
         }
 
-        interface WithAutoscaleSettingResourceName {
-            Update withAutoscaleSettingResourceName(String name);
-        }
-
-        interface WithAutoscaleSettingResourceTargetResourceUri {
-            Update withAutoscaleSettingResourceTargetResourceUri(String targetResourceUri);
+        interface WithAutoscaleSettingTargetResourceUri {
+            Update withTargetResourceUri(String targetResourceUri);
+            Update withoutTargetResourceUri();
         }
     }
 

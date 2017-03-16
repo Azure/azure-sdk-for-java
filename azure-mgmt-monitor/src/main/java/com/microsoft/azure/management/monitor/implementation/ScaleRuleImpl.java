@@ -7,13 +7,12 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.MetricTrigger;
 import com.microsoft.azure.management.monitor.ScaleAction;
 import com.microsoft.azure.management.monitor.ScaleRule;
 
 /**
- * Implementation for CdnProfile.
+ * Implementation for ScaleRule.
  */
 @LangDefinition
 class ScaleRuleImpl

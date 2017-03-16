@@ -67,7 +67,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorManagem
      */
     public AutoscaleSettings autoscaleSettings() {
         if (autoscaleSettings == null) {
-            //autoscaleSettings = new RedisCachesImpl(this);
+            autoscaleSettings = new AutoscaleSettingsImpl(this);
         }
         return autoscaleSettings;
     }

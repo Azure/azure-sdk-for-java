@@ -10,22 +10,32 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.AutoscaleNotification;
 import com.microsoft.azure.management.monitor.AutoscaleSetting;
 import com.microsoft.azure.management.monitor.WebhookNotification;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation for CdnProfile.
+ * Implementation for AutoscaleNotification.
  */
 @LangDefinition
-class AutoscaleNotificationImpl
+class AutoscaleNotificationImpl extends
+        ExternalChildResourceImpl<AutoscaleNotification,
+                        AutoscaleNotificationInner,
+                        AutoscaleSettingImpl,
+                        AutoscaleSetting>
+
         implements
             AutoscaleNotification,
             AutoscaleNotification.Definition,
             AutoscaleNotification.UpdateDefinition,
             AutoscaleNotification.Update {
 
-    AutoscaleNotificationImpl(String name) {
+    AutoscaleNotificationImpl(AutoscaleSettingImpl parent, AutoscaleNotificationInner inner) {
+        super(SdkContext.randomResourceName("runtimeId_", 50), parent, inner);
     }
 
     @Override
@@ -110,6 +120,31 @@ class AutoscaleNotificationImpl
 
     @Override
     public AutoscaleSettingImpl parent() {
+        return null;
+    }
+
+    @Override
+    public String id() {
+        return this.name();
+    }
+
+    @Override
+    public Observable<AutoscaleNotification> createAsync() {
+        return null;
+    }
+
+    @Override
+    public Observable<AutoscaleNotification> updateAsync() {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteAsync() {
+        return null;
+    }
+
+    @Override
+    protected Observable<AutoscaleNotificationInner> getInnerAsync() {
         return null;
     }
 }

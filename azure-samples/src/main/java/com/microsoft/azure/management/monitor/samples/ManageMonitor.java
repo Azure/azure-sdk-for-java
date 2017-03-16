@@ -6,16 +6,7 @@
 
 package com.microsoft.azure.management.monitor.samples;
 
-import com.google.common.collect.Iterables;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
-import com.microsoft.azure.management.appservice.JavaVersion;
-import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebContainer;
-import com.microsoft.azure.management.cdn.CdnEndpoint;
-import com.microsoft.azure.management.cdn.CdnProfile;
-import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.AutoscaleSetting;
 import com.microsoft.azure.management.monitor.ComparisonOperationType;
 import com.microsoft.azure.management.monitor.MetricStatisticType;
@@ -29,21 +20,13 @@ import com.microsoft.azure.management.monitor.ScaleType;
 import com.microsoft.azure.management.monitor.TimeAggregationType;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * TODO: Todooo to do to do
@@ -107,8 +90,8 @@ public final class ManageMonitor {
                     .defineAutoscaleProfile("AutoScaleProfile1")
                         .withScaleCapacity("0", "10", "5")
                         .defineScaleRule()
-                            .defineMetricTrigger("afonia")
-                                .withMetricResourceUri("asd")
+                            .defineMetricTrigger("metric trigger name")
+                                .withMetricResourceUri("www.contoso.com")
                                 .withTimeGrain(Period.days(10))
                                 .withStatistic(MetricStatisticType.AVERAGE)
                                 .withTimeWindow(Period.days(1))
@@ -122,7 +105,7 @@ public final class ManageMonitor {
                                 .withCooldown(Period.hours(12))
                                 .attach()
                             .attach()
-                        .withTimeWindow(DateTime.now().minusDays(2), DateTime.now())
+                        .withFixedDate(DateTime.now().minusDays(2), DateTime.now())
                         .defineRecurrence()
                             .withFrequency(RecurrenceFrequency.WEEK)
                             .withScheduleTimeZone("EST")
@@ -134,8 +117,8 @@ public final class ManageMonitor {
                     .defineAutoscaleProfile("AutoScaleProfile2")
                         .withScaleCapacity("0", "5", "3")
                         .defineScaleRule()
-                            .defineMetricTrigger("theName")
-                                .withMetricResourceUri("asd")
+                            .defineMetricTrigger("the Name")
+                                .withMetricResourceUri("www.montoso.com")
                                 .withTimeGrain(Period.days(3))
                                 .withStatistic(MetricStatisticType.AVERAGE)
                                 .withTimeWindow(Period.days(5))
@@ -150,8 +133,8 @@ public final class ManageMonitor {
                                 .attach()
                             .attach()
                         .defineScaleRule()
-                            .defineMetricTrigger("triggerName")
-                                .withMetricResourceUri("asd")
+                            .defineMetricTrigger("trigger Name")
+                                .withMetricResourceUri("www.vontoso.com")
                                 .withTimeGrain(Period.days(3))
                                 .withStatistic(MetricStatisticType.AVERAGE)
                                 .withTimeWindow(Period.days(5))
@@ -163,7 +146,7 @@ public final class ManageMonitor {
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
-                                .withValue("asdasdasd")
+                                .withValue("some value that should be somewhere there")
                                 .attach()
                             .attach()
                         .defineRecurrence()
@@ -183,11 +166,11 @@ public final class ManageMonitor {
 
             ScaleRule rule = setting.profiles().get("aaa").rules().get(0);
             setting.update()
-                    .defineAutoscaleProfile("Vazgenidze")
+                    .defineAutoscaleProfile("a new profile")
                         .withScaleCapacity("5", "7", "6")
                         .defineScaleRule()
-                            .defineMetricTrigger("triggerName")
-                                .withMetricResourceUri("asd")
+                            .defineMetricTrigger("trigger Name")
+                                .withMetricResourceUri("www.tontoso.com")
                                 .withTimeGrain(Period.days(3))
                                 .withStatistic(MetricStatisticType.AVERAGE)
                                 .withTimeWindow(Period.days(5))
@@ -199,7 +182,7 @@ public final class ManageMonitor {
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
-                                .withValue("asdasdasd")
+                                .withValue("value of the values")
                                 .attach()
                             .attach()
                         .attach()
@@ -215,8 +198,8 @@ public final class ManageMonitor {
                             .parent()
                         .withoutScaleRule(rule)
                         .defineScaleRule()
-                            .defineMetricTrigger("triggerName")
-                                .withMetricResourceUri("asd")
+                            .defineMetricTrigger("trigger Name")
+                                .withMetricResourceUri("www.pontoso.com")
                                 .withTimeGrain(Period.days(3))
                                 .withStatistic(MetricStatisticType.AVERAGE)
                                 .withTimeWindow(Period.days(5))
@@ -228,10 +211,10 @@ public final class ManageMonitor {
                                 .withDirection(ScaleDirection.INCREASE)
                                 .withType(ScaleType.PERCENT_CHANGE_COUNT)
                                 .withCooldown(Period.months(2))
-                                .withValue("asdasdasd")
+                                .withValue("da da da")
                                 .attach()
                             .attach()
-                        .withoutTimeWindow()
+                        .withoutFixedDate()
                         .updateRecurrence()
                             .withFrequency(RecurrenceFrequency.YEAR)
                             .parent()
@@ -243,6 +226,7 @@ public final class ManageMonitor {
                     .updateAutoscaleNotification(setting.notifications().get(0))
                         .withoutEmailNotificationCustomEmails()
                         .parent()
+                    .withoutAutoscaleProfile("AutoScaleProfile2")
                     .apply();
 
             return true;

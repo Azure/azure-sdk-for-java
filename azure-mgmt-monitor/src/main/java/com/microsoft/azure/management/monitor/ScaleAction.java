@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.monitor;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import org.joda.time.Period;
 
 /**

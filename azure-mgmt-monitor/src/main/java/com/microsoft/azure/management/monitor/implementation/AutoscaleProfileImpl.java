@@ -7,44 +7,67 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.monitor.AutoscaleNotification;
 import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.AutoscaleSetting;
 import com.microsoft.azure.management.monitor.Recurrence;
-import com.microsoft.azure.management.monitor.RecurrenceFrequency;
 import com.microsoft.azure.management.monitor.ScaleCapacity;
 import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.TimeWindow;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import org.joda.time.DateTime;
 import rx.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Implementation for CdnProfile.
+ * Implementation for AutoscaleProfile.
  */
 @LangDefinition
-class AutoscaleProfileImpl
+class AutoscaleProfileImpl extends
+        ExternalChildResourceImpl<AutoscaleProfile,
+                AutoscaleProfileInner,
+                AutoscaleSettingImpl,
+                AutoscaleSetting>
         implements
             AutoscaleProfile,
             AutoscaleProfile.Definition,
             AutoscaleProfile.UpdateDefinition,
             AutoscaleProfile.Update {
 
-    AutoscaleProfileImpl(String name) {
+    AutoscaleProfileImpl(String name, AutoscaleSettingImpl parent, AutoscaleProfileInner inner) {
+        super(name, parent, inner);
+        inner.withName(name);
     }
 
     @Override
     public String name() {
+        return this.inner().name();
+    }
+
+    @Override
+    public Observable<AutoscaleProfile> createAsync() {
+        return null;
+    }
+
+    @Override
+    public Observable<AutoscaleProfile> updateAsync() {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteAsync() {
+        return null;
+    }
+
+    @Override
+    protected Observable<AutoscaleProfileInner> getInnerAsync() {
         return null;
     }
 
     @Override
     public ScaleCapacity capacity() {
-        return null;
+        return this.inner().capacity();
     }
 
     @Override
@@ -54,12 +77,12 @@ class AutoscaleProfileImpl
 
     @Override
     public TimeWindow fixedDate() {
-        return null;
+        return this.inner().fixedDate();
     }
 
     @Override
     public Recurrence recurrence() {
-        return null;
+        return new RecurrenceImpl(this, this.inner().recurrence());
     }
 
     @Override
@@ -69,7 +92,11 @@ class AutoscaleProfileImpl
 
     @Override
     public AutoscaleProfileImpl withScaleCapacity(String capacityMinimum, String capacityMaximum, String capacityDefault) {
-        return null;
+        this.inner().withCapacity( new ScaleCapacity()
+                .withMinimum(capacityMinimum)
+                .withMaximum(capacityMaximum)
+                .withDefaultProperty(capacityDefault));
+        return this;
     }
 
     @Override
@@ -88,47 +115,58 @@ class AutoscaleProfileImpl
     }
 
     @Override
-    public AutoscaleProfileImpl withTimeWindow(DateTime start, DateTime end) {
-        return null;
+    public AutoscaleProfileImpl withFixedDate(DateTime start, DateTime end) {
+        return this.withFixedDate(start, end, null);
     }
 
     @Override
-    public AutoscaleProfileImpl withTimeWindow(DateTime start, DateTime end, String timeZone) {
-        return null;
+    public AutoscaleProfileImpl withFixedDate(DateTime start, DateTime end, String timeZone) {
+        this.inner().withFixedDate( new TimeWindow()
+                .withStart(start)
+                .withEnd(end)
+                .withTimeZone(timeZone));
+        return this;
     }
 
     @Override
-    public AutoscaleProfileImpl withoutTimeWindow() {
-        return null;
+    public AutoscaleProfileImpl withoutFixedDate() {
+        this.inner().withFixedDate(null);
+        return this;
     }
 
     @Override
     public AutoscaleProfileImpl withoutRecurrence() {
-        return null;
+        this.inner().withRecurrence(null);
+        return this;
     }
 
     @Override
     public RecurrenceImpl updateRecurrence() {
-        return null;
+        RecurrenceImpl recurrence = new RecurrenceImpl(this, this.inner().recurrence());
+        return recurrence;
     }
 
     @Override
     public AutoscaleProfileImpl withRecurrence(Recurrence recurrence) {
-        return null;
+        this.inner().withRecurrence(((RecurrenceImpl)recurrence).inner());
+        return this;
     }
 
     @Override
     public RecurrenceImpl defineRecurrence() {
-        return null;
+        RecurrenceImpl recurrence = new RecurrenceImpl(this);
+        this.inner().withRecurrence(recurrence.inner());
+        return recurrence;
     }
 
     @Override
-    public AutoscaleSettingImpl parent() {
-        return null;
+    public AutoscaleProfileImpl withName(String name) {
+        this.inner().withName(name);
+        return this;
     }
 
     @Override
-    public AutoscaleProfileImpl withName(String Name) {
-        return null;
+    public String id() {
+        return this.name();
     }
 }

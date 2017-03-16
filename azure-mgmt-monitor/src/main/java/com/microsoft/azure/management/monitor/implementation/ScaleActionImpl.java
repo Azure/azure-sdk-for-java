@@ -9,12 +9,11 @@ package com.microsoft.azure.management.monitor.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.ScaleAction;
 import com.microsoft.azure.management.monitor.ScaleDirection;
-import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.ScaleType;
 import org.joda.time.Period;
 
 /**
- * Implementation for CdnProfile.
+ * Implementation for ScaleAction.
  */
 @LangDefinition
 class ScaleActionImpl

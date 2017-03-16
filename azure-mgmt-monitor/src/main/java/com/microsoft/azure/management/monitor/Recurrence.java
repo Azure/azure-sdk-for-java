@@ -9,7 +9,6 @@ package com.microsoft.azure.management.monitor;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -102,13 +101,10 @@ public interface Recurrence {
             StandaloneUpdate withScheduleTimeZone(String scheduleTimeZone);
             StandaloneUpdate withScheduleHour(int hour);
             StandaloneUpdate withScheduleHours(List<Integer> hours);
-            StandaloneUpdate withoutHour(int hour);
             StandaloneUpdate withScheduleMinute(int minute);
             StandaloneUpdate withScheduleMinutes(List<Integer> minutes);
-            StandaloneUpdate withoutScheduleMinute(int minute);
             StandaloneUpdate withScheduleDay(String day);
             StandaloneUpdate withScheduleDays(List<String> day);
-            StandaloneUpdate withoutScheduleDay(String day);
             Recurrence apply();
         }
     }
@@ -200,13 +196,10 @@ public interface Recurrence {
             Update withScheduleTimeZone(String scheduleTimeZone);
             Update withScheduleHour(int hour);
             Update withScheduleHours(List<Integer> hours);
-            Update withoutHour(int hour);
             Update withScheduleMinute(int minute);
             Update withScheduleMinutes(List<Integer> minutes);
-            Update withoutScheduleMinute(int minute);
             Update withScheduleDay(String day);
             Update withScheduleDays(List<String> day);
-            Update withoutScheduleDay(String day);
         }
     }
 

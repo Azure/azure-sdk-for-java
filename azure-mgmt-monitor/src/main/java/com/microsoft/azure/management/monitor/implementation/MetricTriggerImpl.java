@@ -10,12 +10,11 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.monitor.ComparisonOperationType;
 import com.microsoft.azure.management.monitor.MetricStatisticType;
 import com.microsoft.azure.management.monitor.MetricTrigger;
-import com.microsoft.azure.management.monitor.ScaleRule;
 import com.microsoft.azure.management.monitor.TimeAggregationType;
 import org.joda.time.Period;
 
 /**
- * Implementation for CdnProfile.
+ * Implementation for MetricTrigger.
  */
 @LangDefinition
 class MetricTriggerImpl

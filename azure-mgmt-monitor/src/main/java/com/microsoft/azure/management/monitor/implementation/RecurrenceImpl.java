@@ -7,17 +7,12 @@
 package com.microsoft.azure.management.monitor.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.monitor.AutoscaleProfile;
 import com.microsoft.azure.management.monitor.Recurrence;
 import com.microsoft.azure.management.monitor.RecurrenceFrequency;
 import com.microsoft.azure.management.monitor.RecurrentSchedule;
-import com.microsoft.azure.management.monitor.ScaleAction;
-import com.microsoft.azure.management.monitor.ScaleDirection;
-import com.microsoft.azure.management.monitor.ScaleType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import org.joda.time.Period;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,21 +29,22 @@ class RecurrenceImpl extends
             Recurrence.UpdateDefinition,
             Recurrence.Update {
 
-    RecurrenceImpl(RecurrenceInner inner) {
+    protected AutoscaleProfileImpl parentProfile;
+
+    private RecurrenceImpl(RecurrenceInner inner) {
         super(inner);
         if(inner().schedule() == null) {
             inner().withSchedule(new RecurrentSchedule());
         }
+    }
 
-        /*if(inner.schedule().days() == null) {
-            inner.schedule().withDays(new ArrayList<String>());
-        }
-        if(inner.schedule().hours() == null) {
-            inner.schedule().withHours(new ArrayList<Integer>());
-        }
-        if(inner.schedule().minutes() == null) {
-            inner.schedule().withMinutes(new ArrayList<Integer>());
-        }*/
+    RecurrenceImpl(AutoscaleProfileImpl parent, RecurrenceInner inner) {
+        this(inner);
+        parentProfile = parent;
+    }
+
+    RecurrenceImpl(AutoscaleProfileImpl parent) {
+        this(parent, new RecurrenceInner());
     }
 
     @Override
@@ -90,55 +86,43 @@ class RecurrenceImpl extends
 
     @Override
     public RecurrenceImpl withScheduleDay(String day) {
-        if(this.inner().schedule().days() == null) {
-            this.inner().schedule().withDays(new ArrayList<String>());
-        }
+        this.inner().schedule().withDays(Arrays.asList(day));
         return this;
     }
 
     @Override
-    public RecurrenceImpl withoutScheduleDay(String day) {
-        return this;
-    }
-
-    @Override
-    public RecurrenceImpl withScheduleDays(List day) {
+    public RecurrenceImpl withScheduleDays(List<String> days) {
+        this.inner().schedule().withDays(days);
         return this;
     }
 
     @Override
     public RecurrenceImpl withScheduleHour(int hour) {
-        return null;
+        this.inner().schedule().withHours(Arrays.asList(hour));
+        return this;
     }
 
     @Override
-    public RecurrenceImpl withoutHour(int hour) {
-        return null;
-    }
-
-    @Override
-    public RecurrenceImpl withScheduleHours(List hours) {
-        return null;
+    public RecurrenceImpl withScheduleHours(List<Integer> hours) {
+        this.inner().schedule().withHours(hours);
+        return this;
     }
 
     @Override
     public RecurrenceImpl withScheduleMinute(int minute) {
-        return null;
+        this.inner().schedule().withMinutes(Arrays.asList(minute));
+        return this;
     }
 
     @Override
-    public RecurrenceImpl withoutScheduleMinute(int minute) {
-        return null;
-    }
-
-    @Override
-    public RecurrenceImpl withScheduleMinutes(List minutes) {
-        return null;
+    public RecurrenceImpl withScheduleMinutes(List<Integer> minutes) {
+        this.inner().schedule().withMinutes(minutes);
+        return this;
     }
 
     @Override
     public AutoscaleProfileImpl parent() {
-        return null;
+        return this.parentProfile;
     }
 
     @Override
