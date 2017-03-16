@@ -12,17 +12,19 @@ import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverRuntimeInformation;
 
 public class PartitionContext
 {
-	private final EventProcessorHost host;
+    private final EventProcessorHost host;
     private final String partitionId;
     private final String eventHubPath;
     private final String consumerGroupName;
     
     private Lease lease;
     private String offset = PartitionReceiver.START_OF_STREAM;
-    private long sequenceNumber = 0;;
+    private long sequenceNumber = 0;
+    private ReceiverRuntimeInformation runtimeInformation;
     
     private Object offsetSynchronizer;
     
@@ -32,6 +34,7 @@ public class PartitionContext
         this.partitionId = partitionId;
         this.eventHubPath = eventHubPath;
         this.consumerGroupName = consumerGroupName;
+        this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
         
         this.offsetSynchronizer = new Object();
     }
@@ -49,6 +52,16 @@ public class PartitionContext
     public String getOwner()
     {
     	return this.lease.getOwner();
+    }
+    
+    public ReceiverRuntimeInformation getRuntimeInformation()
+    {
+        return this.runtimeInformation;
+    }
+    
+    void setRuntimeInformation(ReceiverRuntimeInformation value)
+    {
+        this.runtimeInformation = value;
     }
 
     Lease getLease()

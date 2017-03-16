@@ -10,13 +10,12 @@ import java.util.Set;
 
 import org.apache.qpid.proton.amqp.Symbol;
 
-public final class AmqpConstants
-{
+public final class AmqpConstants {
+    
 	private AmqpConstants() { }
 
 	@SuppressWarnings("serial")
-	public static final Set<String> RESERVED_PROPERTY_NAMES = Collections.unmodifiableSet(new HashSet<String>()
-	{{
+	public static final Set<String> RESERVED_PROPERTY_NAMES = Collections.unmodifiableSet(new HashSet<String>() {{
 		add(AMQP_PROPERTY_MESSAGE_ID);
 		add(AMQP_PROPERTY_USER_ID);
 		add(AMQP_PROPERTY_TO);
@@ -71,4 +70,6 @@ public final class AmqpConstants
 	public static final String AMQP_PROPERTY_GROUP_ID = "group-id";
 	public static final String AMQP_PROPERTY_GROUP_SEQUENCE = "group-sequence";
 	public static final String AMQP_PROPERTY_REPLY_TO_GROUP_ID = "reply-to-group-id";
+        
+        public static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 }

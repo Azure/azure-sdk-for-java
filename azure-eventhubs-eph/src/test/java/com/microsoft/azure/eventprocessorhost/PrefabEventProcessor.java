@@ -16,6 +16,7 @@ public class PrefabEventProcessor implements IEventProcessor
 	private boolean doCheckpoint;
 	private boolean doMarker;
 	private boolean logEveryMessage;
+	private boolean telltaleOnTimeout;
 	
 	private int eventCount = 0;
 	
@@ -26,6 +27,7 @@ public class PrefabEventProcessor implements IEventProcessor
 		this.doCheckpoint = doCheckpoint;
 		this.doMarker = doMarker;
 		this.logEveryMessage = logEveryMessage;
+		this.telltaleOnTimeout = telltale.isEmpty();
 	}
 	
 	@Override
@@ -43,6 +45,9 @@ public class PrefabEventProcessor implements IEventProcessor
 	{
 		int batchSize = 0;
 		EventData lastEvent = null;
+                if (messages != null && messages.iterator().hasNext())
+                    this.factory.setOnEventsContext(context);
+                
 		for (EventData event : messages)
 		{
 			this.eventCount++;
@@ -60,6 +65,19 @@ public class PrefabEventProcessor implements IEventProcessor
 				this.factory.setTelltaleFound(context.getPartitionId());
 			}
 			lastEvent = event;
+		}
+		if (batchSize == 0)
+		{
+			if (this.telltaleOnTimeout)
+			{
+				TestUtilities.log("P" + context.getPartitionId() + " got expected timeout");
+				this.factory.setTelltaleFound(context.getPartitionId());
+			}
+			else
+			{
+				TestUtilities.log("P" + context.getPartitionId() + " got UNEXPECTED timeout");
+				this.factory.putError("P" + context.getPartitionId() + " got UNEXPECTED timeout");
+			}
 		}
 		this.factory.addBatch(batchSize);
 		if (doCheckpoint)

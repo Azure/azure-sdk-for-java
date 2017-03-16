@@ -5,14 +5,13 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import static org.junit.Assert.*;
-
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventData;
@@ -31,6 +30,23 @@ public class SmokeTest extends TestBase
 		settings.outUtils.sendToAny(settings.outTelltale);
 		waitForTelltale(settings);
 
+		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+	}
+        
+        @Test
+	public void ReceiverRuntimeMetricsTest() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("ReceiverRuntimeMetrics");
+                settings.inOptions.setReceiverRuntimeMetricEnabled(true);
+		settings = testSetup(settings); 
+
+		settings.outUtils.sendToAny(settings.outTelltale);
+		waitForTelltale(settings);
+
+                // correctness of runtimeInfo is already tested in javaclient - this is only testing for presence of non-default value
+		Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation() != null);
+                Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation().getLastSequenceNumber() > 0);
+                
 		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
 	
@@ -98,6 +114,36 @@ public class SmokeTest extends TestBase
 		testFinish(settings, expectedMessages);
 		
 		return settings;
+	}
+	
+	@Test
+	public void receiveInvokeOnTimeout() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("receiveInvokeOnTimeout");
+		settings.inOptions.setInvokeProcessorAfterReceiveTimeout(true);
+		settings.inTelltaleOnTimeout = true;
+		settings.inHasSenders = false;
+		settings = testSetup(settings);
+		
+		waitForTelltale(settings, "0");
+		
+		testFinish(settings, SmokeTest.SKIP_COUNT_CHECK);
+	}
+	
+	@Test
+	public void receiveNotInvokeOnTimeout() throws Exception
+	{
+		PerTestSettings settings = new PerTestSettings("receiveNotInvokeOnTimeout");
+		settings = testSetup(settings);
+
+		// Receive timeout is one minute. If event processor is invoked on timeout, it will
+		// record an error that will fail the case on shutdown.
+		Thread.sleep(120 * 1000);
+		
+		settings.outUtils.sendToAny(settings.outTelltale);
+		waitForTelltale(settings);
+		
+		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
 	
 	@Test

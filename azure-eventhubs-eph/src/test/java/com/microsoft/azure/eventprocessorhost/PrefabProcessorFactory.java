@@ -18,6 +18,7 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	private ArrayList<String> errors = new ArrayList<String>();
 	private HashMap<String, Boolean> foundTelltale = new HashMap<String, Boolean>(); 
 	private int eventsReceivedCount = 0;
+        private PartitionContext partitionContextOnEvents;
 	
 	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker)
 	{
@@ -72,6 +73,16 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	{
 		return this.eventsReceivedCount;
 	}
+        
+        PartitionContext getOnEventsContext()
+        {
+            return this.partitionContextOnEvents;
+        }
+        
+        void setOnEventsContext(PartitionContext value)
+        {
+            this.partitionContextOnEvents = value;
+        }
 
 	@Override
 	public IEventProcessor createEventProcessor(PartitionContext context) throws Exception

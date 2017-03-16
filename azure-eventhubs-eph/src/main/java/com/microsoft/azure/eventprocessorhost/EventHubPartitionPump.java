@@ -7,6 +7,7 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -15,6 +16,7 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
@@ -96,19 +98,21 @@ class EventHubPartitionPump extends PartitionPump
 		this.eventHubClient = (EventHubClient) this.internalOperationFuture.get();
 		this.internalOperationFuture = null;
 		
-		// Create new receiver and set options
+	// Create new receiver and set options
+        ReceiverOptions options = new ReceiverOptions();
+        options.setReceiverRuntimeMetricEnabled(this.host.getEventProcessorOptions().getReceiverRuntimeMetricEnabled());
     	Object startAt = this.partitionContext.getInitialOffset();
     	long epoch = this.lease.getEpoch();
     	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
     	if (startAt instanceof String)
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
-    				(String)startAt, epoch);
+    				(String)startAt, epoch, options);
     	}
     	else if (startAt instanceof Instant) 
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
-    				(Instant)startAt, epoch);
+    				(Instant)startAt, epoch, options);
     	}
     	else
     	{
@@ -191,13 +195,28 @@ class EventHubPartitionPump extends PartitionPump
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
-        	// This method is called on the thread that the Java EH client uses to run the pump.
-        	// There is one pump per EventHubClient. Since each PartitionPump creates a new EventHubClient,
-        	// using that thread to call onEvents does no harm. Even if onEvents is slow, the pump will
-        	// get control back each time onEvents returns, and be able to receive a new batch of messages
-        	// with which to make the next onEvents call. The pump gains nothing by running faster than onEvents.
-			
-			EventHubPartitionPump.this.onEvents(events);
+                    if (EventHubPartitionPump.this.host.getEventProcessorOptions().getReceiverRuntimeMetricEnabled())
+                    {
+                        EventHubPartitionPump.this.partitionContext.setRuntimeInformation(EventHubPartitionPump.this.partitionReceiver.getRuntimeInformation());
+                    }
+                    
+                    // This method is called on the thread that the Java EH client uses to run the pump.
+                    // There is one pump per EventHubClient. Since each PartitionPump creates a new EventHubClient,
+                    // using that thread to call onEvents does no harm. Even if onEvents is slow, the pump will
+                    // get control back each time onEvents returns, and be able to receive a new batch of messages
+                    // with which to make the next onEvents call. The pump gains nothing by running faster than onEvents.
+
+                    // The underlying client returns null if there are no events, but the contract for IEventProcessor
+                    // is different and is expecting an empty iterable if there are no events (and invoke processor after
+                    // receive timeout is turned on).
+                    
+                    Iterable<EventData> effectiveEvents = events;
+                    if (effectiveEvents == null)
+                    {
+                    	effectiveEvents = new ArrayList<EventData>();
+                    }
+                    
+                    EventHubPartitionPump.this.onEvents(effectiveEvents);
 		}
 
 		@Override
