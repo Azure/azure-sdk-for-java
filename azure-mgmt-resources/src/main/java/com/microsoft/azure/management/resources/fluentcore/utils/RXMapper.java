@@ -56,7 +56,7 @@ public final class RXMapper<T> implements Func1<Object, T> {
     }
 
     /**
-     * Void emitting mapper
+     * Void emitting mapper.
      */
     private RXMapper() {
         this.value = null;
