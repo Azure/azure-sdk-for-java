@@ -160,7 +160,7 @@ public class EventProcessorSample
             for (EventData data : messages)
             {
                 System.out.println("SAMPLE (" + context.getPartitionId() + "," + data.getSystemProperties().getOffset() + "," +
-                		data.getSystemProperties().getSequenceNumber() + "): " + new String(data.getBody(), "UTF8"));
+                		data.getSystemProperties().getSequenceNumber() + "): " + new String(data.getBytes(), "UTF8"));
                 messageCount++;
                 
                 // Checkpointing persists the current position in the event stream for this partition and means that the next

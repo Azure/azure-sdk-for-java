@@ -46,7 +46,7 @@ public class ReceiveUsingOffset
 				{
 					for(EventData receivedEvent: receivedEvents)
 					{
-						System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
+						System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBytes(), Charset.defaultCharset())));
 						System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
 								receivedEvent.getSystemProperties().getOffset(), 
 								receivedEvent.getSystemProperties().getSequenceNumber(), 

@@ -95,7 +95,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase
 			
 			Assert.assertTrue(eData.getProperties().size() == 1);
 			
-			Assert.assertTrue(new String(eData.getBody(), eData.getBodyOffset(), eData.getBodyLength()).equals(payload));	
+			Assert.assertTrue(new String(eData.getBytes()).equals(payload));	
 		}};
 		
 	@BeforeClass

@@ -29,8 +29,6 @@ public final class AmqpConstants {
 		add(AMQP_PROPERTY_GROUP_ID);
 		add(AMQP_PROPERTY_GROUP_SEQUENCE);
 		add(AMQP_PROPERTY_REPLY_TO_GROUP_ID);
-                add(AmqpConstants.AMQP_VALUE);
-                add(AmqpConstants.AMQP_SEQUENCE);
 	}});
 	
 	public static final String APACHE = "apache.org";
@@ -72,9 +70,6 @@ public final class AmqpConstants {
 	public static final String AMQP_PROPERTY_GROUP_ID = "group-id";
 	public static final String AMQP_PROPERTY_GROUP_SEQUENCE = "group-sequence";
 	public static final String AMQP_PROPERTY_REPLY_TO_GROUP_ID = "reply-to-group-id";
-        
-        public static final String AMQP_VALUE = "amqp:amqp-value:*";
-        public static final String AMQP_SEQUENCE = "amqp:amqp-sequence:list";
         
         public static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 }

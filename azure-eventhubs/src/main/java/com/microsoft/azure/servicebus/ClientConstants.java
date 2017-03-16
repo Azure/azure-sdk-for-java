@@ -52,7 +52,7 @@ public final class ClientConstants
 	public final static String DEFAULT_RETRY = "Default";
 	
 	public final static String PRODUCT_NAME = "MSJavaClient";
-	public final static String CURRENT_JAVACLIENT_VERSION = "0.12.0";
+	public final static String CURRENT_JAVACLIENT_VERSION = "0.13.0";
 
 	public static final String PLATFORM_INFO = getPlatformInfo();
         

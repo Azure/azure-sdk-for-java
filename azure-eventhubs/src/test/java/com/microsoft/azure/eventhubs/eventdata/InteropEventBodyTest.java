@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.UnexpectedEventDataBodyException;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
@@ -34,7 +33,6 @@ import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.MessageSender;
 import com.microsoft.azure.servicebus.MessagingFactory;
 import com.microsoft.azure.servicebus.ServiceBusException;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 public class InteropEventBodyTest extends ApiTestBase {
     
@@ -78,25 +76,13 @@ public class InteropEventBodyTest extends ApiTestBase {
         partitionMsgSender.send(originalMessage).get();
         receivedEvent = receiver.receiveSync(10).iterator().next();
         
-        Assert.assertEquals(payload, receivedEvent.getSystemProperties().get(AmqpConstants.AMQP_VALUE));
-        
-        try {
-            receivedEvent.getBody();
-            Assert.assertTrue(false); // this line shouldn't be reachable
-        } catch (UnexpectedEventDataBodyException exception) {
-            Assert.assertEquals(AmqpConstants.AMQP_VALUE, exception.getSystemPropertyName());
-        }
+        Assert.assertEquals(payload, receivedEvent.getObject());
+        Assert.assertEquals(receivedEvent.getBytes(), null);
         
         partitionSender.sendSync(receivedEvent);
         reSentAndReceivedEvent = receiver.receiveSync(10).iterator().next();
-        Assert.assertEquals(payload, reSentAndReceivedEvent.getSystemProperties().get(AmqpConstants.AMQP_VALUE));
-        
-        try {
-            reSentAndReceivedEvent.getBody();
-            Assert.assertTrue(false); // this line shouldn't be reachable
-        } catch (UnexpectedEventDataBodyException exception) {
-            Assert.assertEquals(AmqpConstants.AMQP_VALUE, exception.getSystemPropertyName());
-        }
+        Assert.assertEquals(payload, reSentAndReceivedEvent.getObject());
+        Assert.assertEquals(reSentAndReceivedEvent.getBytes(), null);
     }
     
     @Test
@@ -111,25 +97,13 @@ public class InteropEventBodyTest extends ApiTestBase {
         partitionMsgSender.send(originalMessage).get();
         receivedEvent = receiver.receiveSync(10).iterator().next();
         
-        Assert.assertEquals(payload, new String(((List<Data>)(receivedEvent.getSystemProperties().get(AmqpConstants.AMQP_SEQUENCE))).get(0).getValue().getArray()));
-    
-        try {
-            receivedEvent.getBody();
-            Assert.assertTrue(false); // getBody() should throw; this line shouldn't be reachable
-        } catch (UnexpectedEventDataBodyException exception) {
-            Assert.assertEquals(AmqpConstants.AMQP_SEQUENCE, exception.getSystemPropertyName());
-        }
+        Assert.assertEquals(payload, new String(((List<Data>) receivedEvent.getObject()).get(0).getValue().getArray()));
+        Assert.assertEquals(receivedEvent.getBytes(), null);
         
         partitionSender.sendSync(receivedEvent);
         reSentAndReceivedEvent = receiver.receiveSync(10).iterator().next();
-        Assert.assertEquals(payload, new String(((List<Data>)(reSentAndReceivedEvent.getSystemProperties().get(AmqpConstants.AMQP_SEQUENCE))).get(0).getValue().getArray()));
-
-        try {
-            reSentAndReceivedEvent.getBody();
-            Assert.assertTrue(false); // getBody() should throw; this line shouldn't be reachable
-        } catch (UnexpectedEventDataBodyException exception) {
-            Assert.assertEquals(AmqpConstants.AMQP_SEQUENCE, exception.getSystemPropertyName());
-        }
+        Assert.assertEquals(payload, new String(((List<Data>) reSentAndReceivedEvent.getObject()).get(0).getValue().getArray()));
+        Assert.assertArrayEquals(reSentAndReceivedEvent.getBytes(), null);
     }
     
     @AfterClass

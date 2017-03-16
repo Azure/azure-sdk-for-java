@@ -32,6 +32,18 @@ import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
  * Each EventHubs partition can be visualized as a Stream of {@link EventData}.
+ * <p>
+ * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive java types) and Data section is not supported.
+ * <p>
+ * Here's how AMQP message sections map to {@link EventData}. Here's the reference used for AMQP 1.0 specification: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf
+ * <pre>
+ * i.   {@link #getProperties()} - AMQPMessage.ApplicationProperties section
+ * ii.  {@link #getBytes()} - if AMQPMessage.Body has Data section
+ * iii. {@link #getObject()} - if AMQPMessage.Body has AMQPValue or AMQPSequence sections
+ * </pre>
+ * While using client libraries released by Microsoft Azure EventHubs, sections (i) and (ii) alone are sufficient.
+ * Section (iii) is used for advanced scenarios, where the sending application uses third-party AMQP library to send the message to EventHubs and the receiving application
+ * uses this client library to receive {@link EventData}.
  */
 public class EventData implements Serializable
 {
@@ -39,15 +51,13 @@ public class EventData implements Serializable
         private static final int BODY_DATA_NULL = -1;
 
 	transient private Binary bodyData;
-	
-        private final Class bodyType;
+        transient private Object amqpBody;
         
 	private Map<String, Object> properties;
 	private SystemProperties systemProperties;
 
 	private EventData()
 	{
-            this.bodyType = Data.class;
 	}
 
 	/**
@@ -86,25 +96,25 @@ public class EventData implements Serializable
 			if (amqpMessage.getReplyToGroupId() != null) receiveProperties.put(AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID, amqpMessage.getReplyToGroupId());
 		}
 		
+		this.systemProperties = new SystemProperties(receiveProperties);	
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
 				: ((Map<String, Object>)(amqpMessage.getApplicationProperties().getValue()));
                 
                 Section bodySection = amqpMessage.getBody();
                 if (bodySection != null) {
-                    this.bodyType = bodySection.getClass();
-                    if (bodySection instanceof Data)
-                        this.bodyData =  ((Data) bodySection).getValue();
-                    else if (bodySection instanceof AmqpValue)
-                        receiveProperties.put(AmqpConstants.AMQP_VALUE, ((AmqpValue) bodySection).getValue()); 
-                    else if (bodySection instanceof AmqpSequence)
-                        receiveProperties.put(AmqpConstants.AMQP_SEQUENCE, ((AmqpSequence) bodySection).getValue());
-                }
-                else {
-                    this.bodyType = Data.class;
+                    if (bodySection instanceof Data) {
+                        this.bodyData = ((Data) bodySection).getValue();
+                        this.amqpBody = this.bodyData;
+                    }
+                    else if (bodySection instanceof AmqpValue) {
+                        this.amqpBody = ((AmqpValue) bodySection).getValue();
+                    }
+                    else if (bodySection instanceof AmqpSequence) {
+                        this.amqpBody = ((AmqpSequence) bodySection).getValue();
+                    }
                 }
                 
-		this.systemProperties = new SystemProperties(receiveProperties);	
-		amqpMessage.clear();
+                amqpMessage.clear();
 	}
 
 	/**
@@ -193,17 +203,30 @@ public class EventData implements Serializable
 		this.bodyData = Binary.create(buffer);
 	}
 
+        /**
+         * Use this method only if, the sender could be sending messages using third-party AMQP libraries.
+         * <p>If all the senders of EventHub use client libraries released and maintained by Microsoft Azure EventHubs, use {@link #getBytes()} method.
+         * <p>Get the value of AMQP messages' Body section on the received {@link EventData}.
+         * <p>If the AMQP message Body is always guaranteed to have Data section, use {@link #getBytes()} method.
+         * @return returns the Object which could represent either Data or AmqpValue or AmqpSequence.
+         * <p>{@link Binary} if the Body is Data section
+         * <p>{@link List} if the Body is AmqpSequence
+         * <p>package org.apache.qpid.proton.amqp contains various AMQP types that could be returned.
+         */
+        public Object getObject()
+        {
+            return this.amqpBody;
+        }
+        
 	/**
 	 * Get Actual Payload/Data wrapped by EventData.
 	 * This is the underlying array and should be used in conjunction with {@link #getBodyOffset()} and {@link #getBodyLength()}.
- 	 * @return returns the byte[] of the actual data
+ 	 * @return byte[] of the actual data <p>null if the body of the AMQP message doesn't have Data section
+         * @deprecated use {@link #getBytes()}
 	 */
+        @Deprecated
 	public byte[] getBody()
 	{
-            if (this.bodyType != Data.class) {
-                throw new UnexpectedEventDataBodyException(this.bodyType);
-            }
-            
             return this.bodyData == null ? null : this.bodyData.getArray();
 	}
 	
@@ -212,7 +235,9 @@ public class EventData implements Serializable
 	 * @return returns the byte[] of the actual data
 	 * @see #getBodyLength()
 	 * @see #getBody()
+         * @deprecated use {@link #getBytes()}
 	 */
+        @Deprecated
 	public int getBodyOffset()
 	{
 		return this.bodyData == null ? 0 : this.bodyData.getArrayOffset();
@@ -223,11 +248,27 @@ public class EventData implements Serializable
 	 * @return returns the byte[] of the actual data
 	 * @see #getBody()
 	 * @see #getBodyOffset()
+         * @deprecated use {@link #getBytes()}
 	 */
+        @Deprecated
 	public int getBodyLength()
 	{
 		return this.bodyData == null ? 0 : this.bodyData.getLength();
 	}
+        
+        /**
+         * Get Actual Payload/Data wrapped by EventData.
+         * @return byte[] of the actual data
+         * <p>null if the body of the message has other inter-operable AMQP messages, whose body does not represent byte[].
+         * In that case use {@link #getObject()}.
+         */
+        public byte[] getBytes() {
+            
+            if (this.bodyData == null)
+                return null;
+            
+            return this.bodyData.getArray();            
+        }
 
 	/**
 	 * Application property bag
@@ -307,8 +348,6 @@ public class EventData implements Serializable
 							case AmqpConstants.AMQP_PROPERTY_GROUP_ID: amqpMessage.setGroupId((String) systemProperty.getValue()); break;
 							case AmqpConstants.AMQP_PROPERTY_GROUP_SEQUENCE: amqpMessage.setGroupSequence((long) systemProperty.getValue()); break;
 							case AmqpConstants.AMQP_PROPERTY_REPLY_TO_GROUP_ID: amqpMessage.setReplyToGroupId((String) systemProperty.getValue()); break;
-                                                        case AmqpConstants.AMQP_VALUE: amqpMessage.setBody(new AmqpValue(systemProperty.getValue())); break;
-                                                        case AmqpConstants.AMQP_SEQUENCE: amqpMessage.setBody(new AmqpSequence((List) systemProperty.getValue())); break;
                                                         default: throw new RuntimeException("unreachable");
 						}
 					else
@@ -327,6 +366,17 @@ public class EventData implements Serializable
 		{
 			amqpMessage.setBody(new Data(this.bodyData));
 		}
+                else if (this.amqpBody != null)
+                {
+                    if (this.amqpBody instanceof List)
+                    {
+                        amqpMessage.setBody(new AmqpSequence((List) this.amqpBody));
+                    }
+                    else
+                    {
+                        amqpMessage.setBody(new AmqpValue(this.amqpBody));
+                    }
+                }
 
 		return amqpMessage;
 	}
