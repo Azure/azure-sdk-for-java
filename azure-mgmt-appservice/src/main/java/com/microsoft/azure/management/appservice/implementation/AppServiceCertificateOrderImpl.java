@@ -8,6 +8,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.CertificateDetails;
 import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -55,7 +56,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     protected Observable<AppServiceCertificateOrderInner> getInnerAsync() {
-        return this.manager().inner().appServiceCertificateOrders().getAsync(resourceGroupName(), name());
+        return this.manager().inner().appServiceCertificateOrders().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -126,11 +127,8 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public CertificateDetailsImpl signedCertificate() {
-        if (inner().signedCertificate() == null) {
-            return null;
-        }
-        return new CertificateDetailsImpl(inner().signedCertificate());
+    public CertificateDetails signedCertificate() {
+        return inner().signedCertificate();
     }
 
     @Override
@@ -139,19 +137,13 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public CertificateDetailsImpl intermediate() {
-        if (inner().intermediate() == null) {
-            return null;
-        }
-        return new CertificateDetailsImpl(inner().intermediate());
+    public CertificateDetails intermediate() {
+        return inner().intermediate();
     }
 
     @Override
-    public CertificateDetailsImpl root() {
-        if (inner().root() == null) {
-            return null;
-        }
-        return new CertificateDetailsImpl(inner().root());
+    public CertificateDetails root() {
+        return inner().root();
     }
 
     @Override

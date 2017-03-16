@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes the capabilities/features allowed for a specific SKU.
@@ -16,16 +17,19 @@ public class CapabilityInner {
     /**
      * Name of the SKU capability.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Value of the SKU capability.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**
      * Reason of the SKU capability.
      */
+    @JsonProperty(value = "reason")
     private String reason;
 
     /**

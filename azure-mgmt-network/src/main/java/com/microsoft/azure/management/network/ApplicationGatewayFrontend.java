@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayFrontendIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an application gateway frontend.
  */
 @Fluent()
+@Beta
 public interface ApplicationGatewayFrontend extends
     HasInner<ApplicationGatewayFrontendIPConfigurationInner>,
     ChildResource<ApplicationGateway>,

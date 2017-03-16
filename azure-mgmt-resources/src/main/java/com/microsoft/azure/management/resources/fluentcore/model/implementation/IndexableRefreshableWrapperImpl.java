@@ -50,7 +50,6 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
     @Override
     public Observable<FluentModelT> refreshAsync() {
         final IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> self = this;
-
         return getInnerAsync().map(new Func1<InnerModelT, FluentModelT>() {
             @Override
             public FluentModelT call(InnerModelT innerModelT) {

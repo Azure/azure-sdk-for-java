@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Http logs to file system configuration.
@@ -18,6 +19,7 @@ public class FileSystemHttpLogsConfig {
      * When reached old log files will be removed to make space for new ones.
      * Value can range between 25 and 100.
      */
+    @JsonProperty(value = "retentionInMb")
     private Integer retentionInMb;
 
     /**
@@ -25,11 +27,13 @@ public class FileSystemHttpLogsConfig {
      * Remove files older than X days.
      * 0 or lower means no retention.
      */
+    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /**
      * Enabled.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**

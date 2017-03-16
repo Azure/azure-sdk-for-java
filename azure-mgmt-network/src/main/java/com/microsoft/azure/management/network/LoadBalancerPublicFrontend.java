@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerPublicFrontend extends
     LoadBalancerFrontend,
     HasPublicIPAddress {

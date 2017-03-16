@@ -12,6 +12,7 @@ import java.util.UUID;
 import com.microsoft.azure.management.appservice.NotificationLevel;
 import com.microsoft.azure.management.appservice.Channels;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a recommendation rule that the recommendation engine can perform.
@@ -20,16 +21,19 @@ public class RecommendationRuleInner {
     /**
      * Unique name of the rule.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * UI friendly name of the rule.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * Localized name of the rule (Good for UI).
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -37,33 +41,39 @@ public class RecommendationRuleInner {
      * rule, if exists.
      * If such an object doesn't exist, it is set to null.
      */
+    @JsonProperty(value = "recommendationId")
     private UUID recommendationId;
 
     /**
      * Localized detailed description of the rule.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /**
      * Name of action that is recommended by this rule in string.
      */
+    @JsonProperty(value = "actionName")
     private String actionName;
 
     /**
      * Level of impact indicating how critical this rule is. Possible values
      * include: 'Critical', 'Warning', 'Information', 'NonUrgentSuggestion'.
      */
+    @JsonProperty(value = "level")
     private NotificationLevel level;
 
     /**
      * List of available channels that this rule applies. Possible values
      * include: 'Notification', 'Api', 'Email', 'Webhook', 'All'.
      */
+    @JsonProperty(value = "channels")
     private Channels channels;
 
     /**
      * An array of category tags that the rule contains.
      */
+    @JsonProperty(value = "tags")
     private List<String> tags;
 
     /**

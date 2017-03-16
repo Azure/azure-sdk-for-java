@@ -10,6 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetsInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -36,6 +37,7 @@ public interface VirtualMachineScaleSets extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<VirtualMachineScaleSet>,
+        SupportsBatchDeletion,
         HasManager<ComputeManager>,
         HasInner<VirtualMachineScaleSetsInner> {
     /**

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.Map;
 import com.microsoft.azure.management.appservice.ConnStringValueTypePair;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
 /**
@@ -19,6 +20,7 @@ public class ConnectionStringDictionaryInner extends Resource {
     /**
      * Connection strings.
      */
+    @JsonProperty(value = "properties")
     private Map<String, ConnStringValueTypePair> properties;
 
     /**

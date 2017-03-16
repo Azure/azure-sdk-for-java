@@ -219,7 +219,7 @@ public class AppServiceEnvironmentInner extends Resource {
     /**
      * Default Scale Factor for FrontEnds.
      */
-    @JsonProperty(value = "properties.defaultFrontEndScaleFactor")
+    @JsonProperty(value = "properties.defaultFrontEndScaleFactor", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultFrontEndScaleFactor;
 
     /**
@@ -685,17 +685,6 @@ public class AppServiceEnvironmentInner extends Resource {
      */
     public Integer defaultFrontEndScaleFactor() {
         return this.defaultFrontEndScaleFactor;
-    }
-
-    /**
-     * Set the defaultFrontEndScaleFactor value.
-     *
-     * @param defaultFrontEndScaleFactor the defaultFrontEndScaleFactor value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withDefaultFrontEndScaleFactor(Integer defaultFrontEndScaleFactor) {
-        this.defaultFrontEndScaleFactor = defaultFrontEndScaleFactor;
-        return this;
     }
 
     /**

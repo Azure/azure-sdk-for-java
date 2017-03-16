@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Error details for when validation fails.
@@ -16,11 +17,13 @@ public class ValidateResponseError {
     /**
      * Validation error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * Validation error message.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

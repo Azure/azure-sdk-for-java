@@ -60,7 +60,7 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Observable<SiteInner> getInner() {
-        return this.manager().inner().webApps().getAsync(resourceGroupName(), name());
+        return this.manager().inner().webApps().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

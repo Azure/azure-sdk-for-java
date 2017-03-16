@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Routing rules in production experiments.
@@ -17,6 +18,7 @@ public class Experiments {
     /**
      * List of ramp-up rules.
      */
+    @JsonProperty(value = "rampUpRules")
     private List<RampUpRule> rampUpRules;
 
     /**

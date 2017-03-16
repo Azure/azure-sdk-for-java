@@ -22,6 +22,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.Map;
@@ -44,9 +47,43 @@ public interface VirtualMachine extends
     void deallocate();
 
     /**
+     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
+     * <p>
+     * You are not billed for the compute resources that this Virtual Machine uses
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable deallocateAsync();
+
+    /**
+     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
+     * <p>
+     * You are not billed for the compute resources that this Virtual Machine uses
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
+
+    /**
      * Generalize the Virtual Machine.
      */
     void generalize();
+
+    /**
+     * Generalize the Virtual Machine asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable generalizeAsync();
+
+    /**
+     * Generalize the Virtual Machine asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> generalizeAsync(ServiceCallback<Void> callback);
 
     /**
      * Power off (stop) the virtual machine.
@@ -56,9 +93,43 @@ public interface VirtualMachine extends
     void powerOff();
 
     /**
+     * Power off (stop) the virtual machine asynchronously.
+     * <p>
+     * You will be billed for the compute resources that this Virtual Machine uses.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable powerOffAsync();
+
+    /**
+     * Power off (stop) the virtual machine asynchronously.
+     * <p>
+     * You will be billed for the compute resources that this Virtual Machine uses.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback);
+
+    /**
      * Restart the virtual machine.
      */
     void restart();
+
+    /**
+     * Restart the virtual machine asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable restartAsync();
+
+    /**
+     * Restart the virtual machine asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback);
 
     /**
      * Start the virtual machine.
@@ -66,9 +137,39 @@ public interface VirtualMachine extends
     void start();
 
     /**
+     * Start the virtual machine asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
+     * Start the virtual machine asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
+
+    /**
      * Redeploy the virtual machine.
      */
     void redeploy();
+
+    /**
+     * Redeploy the virtual machine asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable redeployAsync();
+
+    /**
+     * Redeploy the virtual machine asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> redeployAsync(ServiceCallback<Void> callback);
 
     /**
      * @return entry point to enabling, disabling and querying disk encryption

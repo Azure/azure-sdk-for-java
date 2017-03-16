@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -553,6 +554,12 @@ public class TestApplicationGateway {
             // Verify certificates
             Assert.assertTrue(resource.sslCertificates().size() == certCount - 1);
             Assert.assertTrue(!resource.sslCertificates().containsKey("cert1"));
+
+            // Test stop/start
+            resource.stop();
+            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, resource.operationalState());
+            resource.start();
+            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, resource.operationalState());
 
             return resource;
         }

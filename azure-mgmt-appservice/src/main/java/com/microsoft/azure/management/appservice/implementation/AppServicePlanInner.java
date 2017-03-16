@@ -93,6 +93,12 @@ public class AppServicePlanInner extends Resource {
     private String resourceGroup;
 
     /**
+     * Reserved.
+     */
+    @JsonProperty(value = "properties.reserved")
+    private Boolean reserved;
+
+    /**
      * Scaling worker count.
      */
     @JsonProperty(value = "properties.targetWorkerCount")
@@ -114,6 +120,7 @@ public class AppServicePlanInner extends Resource {
     /**
      * The sku property.
      */
+    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /**
@@ -268,6 +275,26 @@ public class AppServicePlanInner extends Resource {
      */
     public String resourceGroup() {
         return this.resourceGroup;
+    }
+
+    /**
+     * Get the reserved value.
+     *
+     * @return the reserved value
+     */
+    public Boolean reserved() {
+        return this.reserved;
+    }
+
+    /**
+     * Set the reserved value.
+     *
+     * @param reserved the reserved value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withReserved(Boolean reserved) {
+        this.reserved = reserved;
+        return this;
     }
 
     /**

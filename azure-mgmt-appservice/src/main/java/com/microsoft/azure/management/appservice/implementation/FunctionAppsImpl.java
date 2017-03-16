@@ -49,7 +49,7 @@ class FunctionAppsImpl
 
     @Override
     public FunctionApp getByGroup(String groupName, String name) {
-        SiteInner siteInner = this.inner().get(groupName, name);
+        SiteInner siteInner = this.inner().getByResourceGroup(groupName, name);
         if (siteInner == null) {
             return null;
         }
@@ -59,7 +59,7 @@ class FunctionAppsImpl
 
     @Override
     protected Observable<SiteInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getAsync(resourceGroupName, name);
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override

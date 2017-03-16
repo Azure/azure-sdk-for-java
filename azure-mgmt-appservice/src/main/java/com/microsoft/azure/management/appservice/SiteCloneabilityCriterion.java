@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An app cloneability criterion.
@@ -16,11 +17,13 @@ public class SiteCloneabilityCriterion {
     /**
      * Name of criterion.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Description of criterion.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /**

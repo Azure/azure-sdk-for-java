@@ -153,12 +153,7 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().localName(),
-                this.name()).map(new Func1<Void, Void>() {
-            @Override
-            public Void call(Void result) {
-                return result;
-            }
-        });
+                this.name());
     }
 
     @Override

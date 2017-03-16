@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Http logs configuration.
@@ -16,11 +17,13 @@ public class HttpLogsConfig {
     /**
      * Http logs to file system configuration.
      */
+    @JsonProperty(value = "fileSystem")
     private FileSystemHttpLogsConfig fileSystem;
 
     /**
      * Http logs to azure blob storage configuration.
      */
+    @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageHttpLogsConfig azureBlobStorage;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.InAvailabilityReasonType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Information regarding availbility of a resource name.
@@ -19,6 +20,7 @@ public class ResourceNameAvailabilityInner {
      * &lt;code&gt;false&lt;/code&gt; indicates the name is invalid,
      * unavailable, or both.
      */
+    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /**
@@ -28,6 +30,7 @@ public class ResourceNameAvailabilityInner {
      * already in use and is therefore unavailable. Possible values include:
      * 'Invalid', 'AlreadyExists'.
      */
+    @JsonProperty(value = "reason")
     private InAvailabilityReasonType reason;
 
     /**
@@ -37,6 +40,7 @@ public class ResourceNameAvailabilityInner {
      * that resource name is already in use, and direct them to select a
      * different name.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**

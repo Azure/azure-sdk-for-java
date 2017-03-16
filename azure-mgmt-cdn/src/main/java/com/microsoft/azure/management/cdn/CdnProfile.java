@@ -17,6 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
@@ -54,6 +58,23 @@ public interface CdnProfile extends
     String generateSsoUri();
 
     /**
+     * Asynchronously generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
+     *
+     * @return Observable to URI used to login to third party web portal.
+     */
+    @Method
+    Observable<String> generateSsoUriAsync();
+
+    /**
+     * Asynchronously generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    @Method
+    ServiceFuture<String> generateSsoUriAsync(ServiceCallback<String> callback);
+
+    /**
      * Starts stopped CDN endpoint in current profile.
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
@@ -61,11 +82,46 @@ public interface CdnProfile extends
     void startEndpoint(String endpointName);
 
     /**
+     * Starts stopped CDN endpoint in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startEndpointAsync(String endpointName);
+
+
+    /**
+     * Starts stopped CDN endpoint in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback);
+
+    /**
      * Stops running CDN endpoint in the current profile.
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      */
     void stopEndpoint(String endpointName);
+
+    /**
+     * Stops running CDN endpoint in the current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopEndpointAsync(String endpointName);
+
+    /**
+     * Stops running CDN endpoint in the current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback);
 
     /**
      * Forcibly purges CDN endpoint content in current profile.
@@ -76,12 +132,50 @@ public interface CdnProfile extends
     void purgeEndpointContent(String endpointName, List<String> contentPaths);
 
     /**
+     * Forcibly purges CDN endpoint content in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable purgeEndpointContentAsync(String endpointName, List<String> contentPaths);
+
+    /**
+     * Forcibly purges CDN endpoint content in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
+
+    /**
      * Forcibly pre-loads CDN endpoint content in current profile. Available for Verizon Profiles.
      *
      * @param endpointName name of the endpoint under the profile which is unique globally.
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
     void loadEndpointContent(String endpointName, List<String> contentPaths);
+
+    /**
+     * Forcibly pre-loads CDN endpoint content in current profile asynchronously. Available for Verizon Profiles.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable loadEndpointContentAsync(String endpointName, List<String> contentPaths);
+
+    /**
+     * Forcibly pre-loads CDN endpoint content in current profile asynchronously. Available for Verizon Profiles.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<Void> loadEndpointContentAsync(String endpointName, List<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile.
@@ -93,12 +187,49 @@ public interface CdnProfile extends
     CustomDomainValidationResult validateEndpointCustomDomain(String endpointName, String hostName);
 
     /**
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param hostName the host name of the custom domain. Must be a domain name.
+     * @return the Observable to CustomDomainValidationResult object if successful.
+     */
+    Observable<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName);
+
+
+    /**
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile asynchronously.
+     *
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param hostName the host name of the custom domain. Must be a domain name.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName, ServiceCallback<CustomDomainValidationResult> callback);
+
+    /**
      * Checks the availability of a endpoint name without creating the CDN endpoint.
      *
      * @param name the endpoint resource name to validate.
      * @return the CheckNameAvailabilityResult object if successful.
      */
     CheckNameAvailabilityResult checkEndpointNameAvailability(String name);
+
+    /**
+     * Checks the availability of a endpoint name without creating the CDN endpoint asynchronously.
+     *
+     * @param name the endpoint resource name to validate.
+     * @return the Observable to CheckNameAvailabilityResult object if successful.
+     */
+    Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
+
+    /**
+     * Checks the availability of a endpoint name without creating the CDN endpoint asynchronously.
+     *
+     * @param name the endpoint resource name to validate.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 
     /**
      * Checks if current instance of CDN profile Sku is Premium Verizon.

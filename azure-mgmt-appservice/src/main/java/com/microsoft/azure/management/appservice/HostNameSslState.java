@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * SSL-enabled hostname.
@@ -16,28 +17,40 @@ public class HostNameSslState {
     /**
      * Hostname.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * SSL type. Possible values include: 'Disabled', 'SniEnabled',
      * 'IpBasedEnabled'.
      */
+    @JsonProperty(value = "sslState")
     private SslState sslState;
 
     /**
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
+    @JsonProperty(value = "virtualIP")
     private String virtualIP;
 
     /**
      * SSL certificate thumbprint.
      */
+    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /**
      * Set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
      */
+    @JsonProperty(value = "toUpdate")
     private Boolean toUpdate;
+
+    /**
+     * Indicates whether the hostname is a standard or repository hostname.
+     * Possible values include: 'Standard', 'Repository'.
+     */
+    @JsonProperty(value = "hostType")
+    private HostType hostType;
 
     /**
      * Get the name value.
@@ -136,6 +149,26 @@ public class HostNameSslState {
      */
     public HostNameSslState withToUpdate(Boolean toUpdate) {
         this.toUpdate = toUpdate;
+        return this;
+    }
+
+    /**
+     * Get the hostType value.
+     *
+     * @return the hostType value
+     */
+    public HostType hostType() {
+        return this.hostType;
+    }
+
+    /**
+     * Set the hostType value.
+     *
+     * @param hostType the hostType value to set
+     * @return the HostNameSslState object itself.
+     */
+    public HostNameSslState withHostType(HostType hostType) {
+        this.hostType = hostType;
         return this;
     }
 

@@ -21,6 +21,8 @@ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
 
+import java.util.List;
+
 /**
  * The implementation for FunctionApp.
  */
@@ -77,6 +79,12 @@ class FunctionAppImpl
             return super.submitAppSettings(site);
         } else {
             return storageAccountToSet.getKeysAsync()
+                .flatMapIterable(new Func1<List<StorageAccountKey>, Iterable<StorageAccountKey>>() {
+                    @Override
+                    public Iterable<StorageAccountKey> call(List<StorageAccountKey> storageAccountKeys) {
+                        return storageAccountKeys;
+                    }
+                })
                 .first().flatMap(new Func1<StorageAccountKey, Observable<SiteInner>>() {
                 @Override
                 public Observable<SiteInner> call(StorageAccountKey storageAccountKey) {

@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -17,8 +20,8 @@ import com.microsoft.azure.management.appservice.CsmPublishingProfileOptions;
 import com.microsoft.azure.management.appservice.PublishingProfileFormat;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
@@ -45,7 +48,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in WebApps.
  */
-public final class WebAppsInner {
+public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsDelete<Void>, InnerSupportsListing<SiteInner> {
     /** The Retrofit service to perform REST calls. */
     private WebAppsService service;
     /** The service client containing this operation class. */
@@ -75,9 +78,9 @@ public final class WebAppsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("includeSlots") Boolean includeSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
@@ -219,6 +222,18 @@ public final class WebAppsInner {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
         Observable<Response<ResponseBody>> updateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConfigurationSnapshotInfo" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots")
+        Observable<Response<ResponseBody>> listConfigurationSnapshotInfo(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getConfigurationSnapshot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots/{snapshotId}")
+        Observable<Response<ResponseBody>> getConfigurationSnapshot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("snapshotId") String snapshotId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recoverSiteConfigurationSnapshot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots/{snapshotId}/recover")
+        Observable<Response<ResponseBody>> recoverSiteConfigurationSnapshot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("snapshotId") String snapshotId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeployments" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments")
         Observable<Response<ResponseBody>> listDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -349,11 +364,11 @@ public final class WebAppsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps migrateStorage" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate")
-        Observable<Response<ResponseBody>> migrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner options, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> migrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner migrationOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps beginMigrateStorage" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate")
-        Observable<Response<ResponseBody>> beginMigrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner options, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginMigrateStorage(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Body StorageMigrationOptionsInner migrationOptions, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps migrateMySql" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql")
@@ -406,7 +421,7 @@ public final class WebAppsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recover" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
@@ -563,6 +578,18 @@ public final class WebAppsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConfigurationSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
         Observable<Response<ResponseBody>> updateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConfigurationSnapshotInfoSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots")
+        Observable<Response<ResponseBody>> listConfigurationSnapshotInfoSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getConfigurationSnapshotSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots/{snapshotId}")
+        Observable<Response<ResponseBody>> getConfigurationSnapshotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("snapshotId") String snapshotId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recoverSiteConfigurationSnapshotSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots/{snapshotId}/recover")
+        Observable<Response<ResponseBody>> recoverSiteConfigurationSnapshotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("snapshotId") String snapshotId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listDeploymentsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments")
@@ -735,7 +762,7 @@ public final class WebAppsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listPublishingProfileXmlWithSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
-        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishingProfileXmlWithSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions publishingProfileOptions, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps recoverSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
@@ -1027,6 +1054,9 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      * Get all apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> list() {
@@ -1044,6 +1074,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listAsync(final ListOperationCallback<SiteInner> serviceCallback) {
@@ -1062,6 +1093,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      * Get all apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listAsync() {
@@ -1078,6 +1110,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      * Get all apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWithServiceResponseAsync() {
@@ -1098,6 +1131,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      * Get all apps for a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listSinglePageAsync() {
@@ -1131,6 +1165,9 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName) {
@@ -1149,6 +1186,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -1168,6 +1206,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -1185,6 +1224,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -1206,6 +1246,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -1237,6 +1278,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listByResourceGroup(final String resourceGroupName, final Boolean includeSlots) {
@@ -1256,6 +1300,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -1276,6 +1321,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listByResourceGroupAsync(final String resourceGroupName, final Boolean includeSlots) {
@@ -1294,6 +1340,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final Boolean includeSlots) {
@@ -1316,6 +1363,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default is false, which only gives you the production slot of all apps.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final Boolean includeSlots) {
@@ -1353,10 +1401,13 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
-    public SiteInner get(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public SiteInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -1366,10 +1417,11 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteInner> getAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<SiteInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1378,10 +1430,11 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
-    public Observable<SiteInner> getAsync(String resourceGroupName, String name) {
-        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+    public Observable<SiteInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
             @Override
             public SiteInner call(ServiceResponse<SiteInner> response) {
                 return response.body();
@@ -1395,9 +1448,10 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<SiteInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1408,12 +1462,12 @@ public final class WebAppsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SiteInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteInner> clientResponse = getDelegate(response);
+                        ServiceResponse<SiteInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1422,7 +1476,7 @@ public final class WebAppsInner {
             });
     }
 
-    private ServiceResponse<SiteInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SiteInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SiteInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -1436,6 +1490,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1450,6 +1507,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
@@ -1463,6 +1521,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1481,6 +1540,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1517,6 +1577,9 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1536,6 +1599,7 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
@@ -1554,6 +1618,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteInner> createOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1577,6 +1642,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1605,6 +1671,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1619,6 +1688,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
@@ -1632,6 +1702,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1650,6 +1721,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
@@ -1697,6 +1769,9 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdate(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1716,6 +1791,7 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
@@ -1734,6 +1810,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<SiteInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1757,6 +1834,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -1802,6 +1880,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name) {
         deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -1814,6 +1895,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -1826,6 +1908,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name) {
@@ -1843,6 +1926,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1882,6 +1966,9 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
         deleteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
@@ -1897,6 +1984,7 @@ public final class WebAppsInner {
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
@@ -1912,6 +2000,7 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
@@ -1932,6 +2021,7 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
@@ -1963,6 +2053,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1972,6 +2063,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name) {
@@ -1985,6 +2079,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
@@ -1997,6 +2092,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name) {
@@ -2014,6 +2110,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<ServiceResponse<CustomHostnameAnalysisResultInner>> analyzeCustomHostnameWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -2049,6 +2146,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostname(String resourceGroupName, String name, String hostName) {
@@ -2063,6 +2163,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param hostName Custom hostname
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
@@ -2076,6 +2177,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<CustomHostnameAnalysisResultInner> analyzeCustomHostnameAsync(String resourceGroupName, String name, String hostName) {
@@ -2094,6 +2196,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<ServiceResponse<CustomHostnameAnalysisResultInner>> analyzeCustomHostnameWithServiceResponseAsync(String resourceGroupName, String name, String hostName) {
@@ -2135,6 +2238,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
@@ -2148,6 +2254,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -2161,6 +2268,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -2179,6 +2287,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> applySlotConfigToProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -2213,6 +2322,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> applySlotConfigToProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -2223,6 +2333,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backup(String resourceGroupName, String name, BackupRequestInner request) {
@@ -2237,6 +2350,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> backupAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -2250,6 +2364,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> backupAsync(String resourceGroupName, String name, BackupRequestInner request) {
@@ -2268,6 +2383,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> backupWithServiceResponseAsync(String resourceGroupName, String name, BackupRequestInner request) {
@@ -2312,6 +2428,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
     public PagedList<BackupItemInner> listBackups(final String resourceGroupName, final String name) {
@@ -2331,6 +2450,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BackupItemInner>> listBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
@@ -2351,6 +2471,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<Page<BackupItemInner>> listBackupsAsync(final String resourceGroupName, final String name) {
@@ -2369,6 +2490,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2391,6 +2513,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2432,6 +2555,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestore(String resourceGroupName, String name, RestoreRequestInner request) {
@@ -2446,6 +2572,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
@@ -2459,6 +2586,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreRequestInner object
      */
     public Observable<RestoreRequestInner> discoverRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request) {
@@ -2477,6 +2605,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreRequestInner object
      */
     public Observable<ServiceResponse<RestoreRequestInner>> discoverRestoreWithServiceResponseAsync(String resourceGroupName, String name, RestoreRequestInner request) {
@@ -2522,6 +2651,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatus(String resourceGroupName, String name, String backupId) {
@@ -2536,6 +2668,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> getBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -2549,6 +2682,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> getBackupStatusAsync(String resourceGroupName, String name, String backupId) {
@@ -2567,6 +2701,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> getBackupStatusWithServiceResponseAsync(String resourceGroupName, String name, String backupId) {
@@ -2611,6 +2746,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteBackup(String resourceGroupName, String name, String backupId) {
         deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().body();
@@ -2624,6 +2762,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<Void> serviceCallback) {
@@ -2637,6 +2776,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteBackupAsync(String resourceGroupName, String name, String backupId) {
@@ -2655,6 +2795,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteBackupWithServiceResponseAsync(String resourceGroupName, String name, String backupId) {
@@ -2689,6 +2830,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -2700,6 +2842,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
@@ -2715,6 +2860,7 @@ public final class WebAppsInner {
      * @param backupId Id of backup
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -2729,6 +2875,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> listBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
@@ -2748,6 +2895,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> listBackupStatusSecretsWithServiceResponseAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
@@ -2797,6 +2945,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2812,6 +2963,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreResponseInner> restoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
@@ -2826,6 +2978,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RestoreResponseInner> restoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2845,6 +2998,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RestoreResponseInner>> restoreWithServiceResponseAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2877,6 +3031,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestore(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2892,6 +3049,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreResponseInner> beginRestoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
@@ -2906,6 +3064,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreResponseInner object
      */
     public Observable<RestoreResponseInner> beginRestoreAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2925,6 +3084,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreResponseInner object
      */
     public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreWithServiceResponseAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
@@ -2973,6 +3133,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) {
@@ -2987,6 +3150,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> updateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -3000,6 +3164,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> updateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings) {
@@ -3018,6 +3183,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> updateApplicationSettingsWithServiceResponseAsync(String resourceGroupName, String name, StringDictionaryInner appSettings) {
@@ -3062,6 +3228,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettings(String resourceGroupName, String name) {
@@ -3075,6 +3244,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> listApplicationSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -3087,6 +3257,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> listApplicationSettingsAsync(String resourceGroupName, String name) {
@@ -3104,6 +3275,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> listApplicationSettingsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3145,6 +3317,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
@@ -3159,6 +3334,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteAuthSettingsInner> updateAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
@@ -3172,6 +3348,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<SiteAuthSettingsInner> updateAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
@@ -3190,6 +3367,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<ServiceResponse<SiteAuthSettingsInner>> updateAuthSettingsWithServiceResponseAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
@@ -3234,6 +3412,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettings(String resourceGroupName, String name) {
@@ -3247,6 +3428,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteAuthSettingsInner> getAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
@@ -3259,6 +3441,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<SiteAuthSettingsInner> getAuthSettingsAsync(String resourceGroupName, String name) {
@@ -3276,6 +3459,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<ServiceResponse<SiteAuthSettingsInner>> getAuthSettingsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3317,6 +3501,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) {
@@ -3331,6 +3518,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param request Edited backup configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupRequestInner> updateBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
@@ -3344,6 +3532,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<BackupRequestInner> updateBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request) {
@@ -3362,6 +3551,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<ServiceResponse<BackupRequestInner>> updateBackupConfigurationWithServiceResponseAsync(String resourceGroupName, String name, BackupRequestInner request) {
@@ -3406,6 +3596,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteBackupConfiguration(String resourceGroupName, String name) {
         deleteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -3418,6 +3611,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -3430,6 +3624,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteBackupConfigurationAsync(String resourceGroupName, String name) {
@@ -3447,6 +3642,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteBackupConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3477,6 +3673,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> deleteBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -3486,6 +3683,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfiguration(String resourceGroupName, String name) {
@@ -3499,6 +3699,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupRequestInner> getBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
@@ -3511,6 +3712,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<BackupRequestInner> getBackupConfigurationAsync(String resourceGroupName, String name) {
@@ -3528,6 +3730,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<ServiceResponse<BackupRequestInner>> getBackupConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3569,6 +3772,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
@@ -3583,6 +3789,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ConnectionStringDictionaryInner> updateConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
@@ -3596,6 +3803,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ConnectionStringDictionaryInner> updateConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
@@ -3614,6 +3822,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateConnectionStringsWithServiceResponseAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
@@ -3658,6 +3867,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStrings(String resourceGroupName, String name) {
@@ -3671,6 +3883,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ConnectionStringDictionaryInner> listConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
@@ -3683,6 +3896,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ConnectionStringDictionaryInner> listConnectionStringsAsync(String resourceGroupName, String name) {
@@ -3700,6 +3914,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listConnectionStringsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3740,6 +3955,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfiguration(String resourceGroupName, String name) {
@@ -3753,6 +3971,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteLogsConfigInner> getDiagnosticLogsConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
@@ -3765,6 +3984,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<SiteLogsConfigInner> getDiagnosticLogsConfigurationAsync(String resourceGroupName, String name) {
@@ -3782,6 +4002,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<ServiceResponse<SiteLogsConfigInner>> getDiagnosticLogsConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -3823,6 +4044,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
@@ -3837,6 +4061,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteLogsConfigInner> updateDiagnosticLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
@@ -3850,6 +4075,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<SiteLogsConfigInner> updateDiagnosticLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
@@ -3868,6 +4094,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<ServiceResponse<SiteLogsConfigInner>> updateDiagnosticLogsConfigWithServiceResponseAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
@@ -3913,6 +4140,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) {
@@ -3927,6 +4157,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> updateMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -3940,6 +4171,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> updateMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata) {
@@ -3958,6 +4190,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> updateMetadataWithServiceResponseAsync(String resourceGroupName, String name, StringDictionaryInner metadata) {
@@ -4002,6 +4235,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadata(String resourceGroupName, String name) {
@@ -4015,6 +4251,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> listMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -4027,6 +4264,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> listMetadataAsync(String resourceGroupName, String name) {
@@ -4044,6 +4282,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> listMetadataWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4084,6 +4323,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentials(String resourceGroupName, String name) {
@@ -4097,6 +4339,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> listPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
@@ -4109,6 +4352,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<UserInner> listPublishingCredentialsAsync(String resourceGroupName, String name) {
@@ -4126,6 +4370,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<UserInner>> listPublishingCredentialsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4149,6 +4394,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentials(String resourceGroupName, String name) {
@@ -4162,6 +4410,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> beginListPublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
@@ -4174,6 +4423,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<UserInner> beginListPublishingCredentialsAsync(String resourceGroupName, String name) {
@@ -4191,6 +4441,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> beginListPublishingCredentialsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4232,6 +4483,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettings(String resourceGroupName, String name, PushSettingsInner pushSettings) {
@@ -4246,6 +4500,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param pushSettings Push settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PushSettingsInner> updateSitePushSettingsAsync(String resourceGroupName, String name, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
@@ -4259,6 +4514,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<PushSettingsInner> updateSitePushSettingsAsync(String resourceGroupName, String name, PushSettingsInner pushSettings) {
@@ -4277,6 +4533,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<ServiceResponse<PushSettingsInner>> updateSitePushSettingsWithServiceResponseAsync(String resourceGroupName, String name, PushSettingsInner pushSettings) {
@@ -4321,6 +4578,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettings(String resourceGroupName, String name) {
@@ -4334,6 +4594,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PushSettingsInner> listSitePushSettingsAsync(String resourceGroupName, String name, final ServiceCallback<PushSettingsInner> serviceCallback) {
@@ -4346,6 +4607,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<PushSettingsInner> listSitePushSettingsAsync(String resourceGroupName, String name) {
@@ -4363,6 +4625,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<ServiceResponse<PushSettingsInner>> listSitePushSettingsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4403,6 +4666,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner listSlotConfigurationNames(String resourceGroupName, String name) {
@@ -4416,6 +4682,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SlotConfigNamesResourceInner> listSlotConfigurationNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
@@ -4428,6 +4695,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SlotConfigNamesResourceInner object
      */
     public Observable<SlotConfigNamesResourceInner> listSlotConfigurationNamesAsync(String resourceGroupName, String name) {
@@ -4445,6 +4713,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SlotConfigNamesResourceInner object
      */
     public Observable<ServiceResponse<SlotConfigNamesResourceInner>> listSlotConfigurationNamesWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4486,6 +4755,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SlotConfigNamesResourceInner object if successful.
      */
     public SlotConfigNamesResourceInner updateSlotConfigurationNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
@@ -4500,6 +4772,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SlotConfigNamesResourceInner> updateSlotConfigurationNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
@@ -4513,6 +4786,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SlotConfigNamesResourceInner object
      */
     public Observable<SlotConfigNamesResourceInner> updateSlotConfigurationNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
@@ -4531,6 +4805,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SlotConfigNamesResourceInner object
      */
     public Observable<ServiceResponse<SlotConfigNamesResourceInner>> updateSlotConfigurationNamesWithServiceResponseAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
@@ -4575,6 +4850,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfiguration(String resourceGroupName, String name) {
@@ -4588,6 +4866,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -4600,6 +4879,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name) {
@@ -4617,6 +4897,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> getConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -4658,6 +4939,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4672,6 +4956,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -4685,6 +4970,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4703,6 +4989,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4748,6 +5035,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4762,6 +5052,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -4775,6 +5066,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4793,6 +5085,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> updateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
@@ -4832,11 +5125,291 @@ public final class WebAppsInner {
     }
 
     /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SiteConfigurationSnapshotInfoInner&gt; object if successful.
+     */
+    public List<SiteConfigurationSnapshotInfoInner> listConfigurationSnapshotInfo(String resourceGroupName, String name) {
+        return listConfigurationSnapshotInfoWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoAsync(String resourceGroupName, String name, final ServiceCallback<List<SiteConfigurationSnapshotInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listConfigurationSnapshotInfoWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SiteConfigurationSnapshotInfoInner&gt; object
+     */
+    public Observable<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoAsync(String resourceGroupName, String name) {
+        return listConfigurationSnapshotInfoWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>, List<SiteConfigurationSnapshotInfoInner>>() {
+            @Override
+            public List<SiteConfigurationSnapshotInfoInner> call(ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SiteConfigurationSnapshotInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>> listConfigurationSnapshotInfoWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.listConfigurationSnapshotInfo(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> clientResponse = listConfigurationSnapshotInfoDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<SiteConfigurationSnapshotInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<SiteConfigurationSnapshotInfoInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SiteConfigInner object if successful.
+     */
+    public SiteConfigInner getConfigurationSnapshot(String resourceGroupName, String name, String snapshotId) {
+        return getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SiteConfigInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId), serviceCallback);
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<SiteConfigInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId) {
+        return getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSnapshotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (snapshotId == null) {
+            throw new IllegalArgumentException("Parameter snapshotId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getConfigurationSnapshot(resourceGroupName, name, snapshotId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationSnapshotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SiteConfigInner> getConfigurationSnapshotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void recoverSiteConfigurationSnapshot(String resourceGroupName, String name, String snapshotId) {
+        recoverSiteConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).toBlocking().single().body();
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> recoverSiteConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(recoverSiteConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId), serviceCallback);
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> recoverSiteConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId) {
+        return recoverSiteConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> recoverSiteConfigurationSnapshotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (snapshotId == null) {
+            throw new IllegalArgumentException("Parameter snapshotId is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.recoverSiteConfigurationSnapshot(resourceGroupName, name, snapshotId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = recoverSiteConfigurationSnapshotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> recoverSiteConfigurationSnapshotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listDeployments(final String resourceGroupName, final String name) {
@@ -4856,6 +5429,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -4876,6 +5450,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listDeploymentsAsync(final String resourceGroupName, final String name) {
@@ -4894,6 +5469,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -4916,6 +5492,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4957,6 +5534,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeployment(String resourceGroupName, String name, String id) {
@@ -4971,6 +5551,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -4984,6 +5565,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id) {
@@ -5002,6 +5584,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> getDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id) {
@@ -5047,6 +5630,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id ID of an existing deployment.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) {
@@ -5062,6 +5648,7 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -5076,6 +5663,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id ID of an existing deployment.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment) {
@@ -5095,6 +5683,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id ID of an existing deployment.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> createDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, DeploymentInner deployment) {
@@ -5143,6 +5732,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteDeployment(String resourceGroupName, String name, String id) {
         deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().body();
@@ -5156,6 +5748,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Void> serviceCallback) {
@@ -5169,6 +5762,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteDeploymentAsync(String resourceGroupName, String name, String id) {
@@ -5187,6 +5781,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id) {
@@ -5221,6 +5816,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -5230,6 +5826,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IdentifierInner&gt; object if successful.
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiers(final String resourceGroupName, final String name) {
@@ -5249,6 +5848,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<IdentifierInner> serviceCallback) {
@@ -5269,6 +5869,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<Page<IdentifierInner>> listDomainOwnershipIdentifiersAsync(final String resourceGroupName, final String name) {
@@ -5287,6 +5888,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -5309,6 +5911,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<IdentifierInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<IdentifierInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersSinglePageAsync(final String resourceGroupName, final String name) {
@@ -5350,6 +5953,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
@@ -5364,6 +5970,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -5377,6 +5984,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
@@ -5395,6 +6003,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> getDomainOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
@@ -5440,6 +6049,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5455,6 +6067,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> createOrUpdateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -5469,6 +6082,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> createOrUpdateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5488,6 +6102,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> createOrUpdateDomainOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5536,6 +6151,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
         deleteDomainOwnershipIdentifierWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName).toBlocking().single().body();
@@ -5549,6 +6167,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, final ServiceCallback<Void> serviceCallback) {
@@ -5562,6 +6181,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
@@ -5580,6 +6200,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteDomainOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
@@ -5614,6 +6235,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -5625,6 +6247,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifier(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5640,6 +6265,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> updateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -5654,6 +6280,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> updateDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5673,6 +6300,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> updateDomainOwnershipIdentifierWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, IdentifierInner domainOwnershipIdentifier) {
@@ -5720,6 +6348,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
     public PagedList<HostNameBindingInner> listHostNameBindings(final String resourceGroupName, final String name) {
@@ -5739,6 +6370,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
@@ -5759,6 +6391,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<Page<HostNameBindingInner>> listHostNameBindingsAsync(final String resourceGroupName, final String name) {
@@ -5777,6 +6410,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -5799,6 +6433,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -5840,6 +6475,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBinding(String resourceGroupName, String name, String hostName) {
@@ -5854,6 +6492,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HostNameBindingInner> getHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
@@ -5867,6 +6506,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<HostNameBindingInner> getHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
@@ -5885,6 +6525,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<ServiceResponse<HostNameBindingInner>> getHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName) {
@@ -5930,6 +6571,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
@@ -5945,6 +6589,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HostNameBindingInner> createOrUpdateHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
@@ -5959,6 +6604,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<HostNameBindingInner> createOrUpdateHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
@@ -5978,6 +6624,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
@@ -6026,6 +6673,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteHostNameBinding(String resourceGroupName, String name, String hostName) {
         deleteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().body();
@@ -6039,6 +6689,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Void> serviceCallback) {
@@ -6052,6 +6703,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
@@ -6070,6 +6722,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName) {
@@ -6104,6 +6757,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -6115,6 +6769,9 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6130,6 +6787,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -6144,6 +6802,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6163,6 +6822,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> getHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6212,6 +6872,9 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6228,6 +6891,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> createOrUpdateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -6243,6 +6907,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> createOrUpdateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6263,6 +6928,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> createOrUpdateHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6315,6 +6981,9 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
         deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().body();
@@ -6329,6 +6998,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
@@ -6343,6 +7013,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6362,6 +7033,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6399,6 +7071,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -6411,6 +7084,9 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6427,6 +7103,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -6442,6 +7119,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6462,6 +7140,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> updateHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connectionEnvelope) {
@@ -6514,6 +7193,9 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6529,6 +7211,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
@@ -6543,6 +7226,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6562,6 +7246,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<ServiceResponse<HybridConnectionKeyInner>> listHybridConnectionKeysWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -6608,6 +7293,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnections(String resourceGroupName, String name) {
@@ -6621,6 +7309,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -6633,6 +7322,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name) {
@@ -6650,6 +7340,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> listHybridConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -6690,6 +7381,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnections(String resourceGroupName, String name) {
@@ -6703,6 +7397,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> listRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -6715,6 +7410,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> listRelayServiceConnectionsAsync(String resourceGroupName, String name) {
@@ -6732,6 +7428,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listRelayServiceConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -6773,6 +7470,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnection(String resourceGroupName, String name, String entityName) {
@@ -6787,6 +7487,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> getRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -6800,6 +7501,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> getRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
@@ -6818,6 +7520,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName) {
@@ -6863,6 +7566,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -6878,6 +7584,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -6892,6 +7599,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -6911,6 +7619,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -6959,6 +7668,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteRelayServiceConnection(String resourceGroupName, String name, String entityName) {
         deleteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().body();
@@ -6972,6 +7684,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Void> serviceCallback) {
@@ -6985,6 +7698,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
@@ -7003,6 +7717,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName) {
@@ -7037,6 +7752,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -7048,6 +7764,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -7063,6 +7782,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> updateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -7077,6 +7797,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> updateRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -7096,6 +7817,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -7143,6 +7865,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiers(final String resourceGroupName, final String name) {
@@ -7162,6 +7887,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
@@ -7182,6 +7908,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<Page<SiteInstanceInner>> listInstanceIdentifiersAsync(final String resourceGroupName, final String name) {
@@ -7200,6 +7927,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -7222,6 +7950,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersSinglePageAsync(final String resourceGroupName, final String name) {
@@ -7263,6 +7992,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) {
@@ -7283,6 +8015,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -7304,6 +8037,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId) {
@@ -7323,6 +8057,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsWithServiceResponseAsync(final String resourceGroupName, final String name, final String instanceId) {
@@ -7346,6 +8081,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsSinglePageAsync(final String resourceGroupName, final String name, final String instanceId) {
@@ -7391,6 +8127,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
@@ -7406,6 +8145,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -7420,6 +8160,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
@@ -7439,6 +8180,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId) {
@@ -7488,6 +8230,9 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
@@ -7504,6 +8249,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -7519,6 +8265,7 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
@@ -7539,6 +8286,7 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
@@ -7591,6 +8339,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
         deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().body();
@@ -7605,6 +8356,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Void> serviceCallback) {
@@ -7619,6 +8371,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
@@ -7638,6 +8391,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId) {
@@ -7675,6 +8429,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -7684,6 +8439,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneable(String resourceGroupName, String name) {
@@ -7697,6 +8455,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteCloneabilityInner> isCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
@@ -7709,6 +8468,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteCloneabilityInner object
      */
     public Observable<SiteCloneabilityInner> isCloneableAsync(String resourceGroupName, String name) {
@@ -7726,6 +8486,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteCloneabilityInner object
      */
     public Observable<ServiceResponse<SiteCloneabilityInner>> isCloneableWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -7766,6 +8527,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitions(final String resourceGroupName, final String name) {
@@ -7785,6 +8549,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
@@ -7805,6 +8570,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String name) {
@@ -7823,6 +8589,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -7845,6 +8612,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -7885,6 +8653,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
@@ -7904,6 +8675,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -7924,6 +8696,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name) {
@@ -7942,6 +8715,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -7964,6 +8738,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -8001,6 +8776,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -8022,6 +8800,7 @@ public final class WebAppsInner {
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -8044,6 +8823,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -8064,6 +8844,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -8088,6 +8869,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -8129,11 +8911,14 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageMigrationResponseInner object if successful.
      */
-    public StorageMigrationResponseInner migrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().last().body();
+    public StorageMigrationResponseInner migrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
+        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions).toBlocking().last().body();
     }
 
     /**
@@ -8143,12 +8928,13 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+    public ServiceFuture<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions), serviceCallback);
     }
 
     /**
@@ -8158,11 +8944,12 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
+    public Observable<StorageMigrationResponseInner> migrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
+        return migrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
                 return response.body();
@@ -8177,10 +8964,11 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<StorageMigrationResponseInner>> migrateStorageWithServiceResponseAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
+    public Observable<ServiceResponse<StorageMigrationResponseInner>> migrateStorageWithServiceResponseAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8193,12 +8981,12 @@ public final class WebAppsInner {
         if (subscriptionName == null) {
             throw new IllegalArgumentException("Parameter subscriptionName is required and cannot be null.");
         }
-        if (options == null) {
-            throw new IllegalArgumentException("Parameter options is required and cannot be null.");
+        if (migrationOptions == null) {
+            throw new IllegalArgumentException("Parameter migrationOptions is required and cannot be null.");
         }
-        Validator.validate(options);
+        Validator.validate(migrationOptions);
         final String apiVersion = "2016-08-01";
-        Observable<Response<ResponseBody>> observable = service.migrateStorage(resourceGroupName, name, this.client.subscriptionId(), subscriptionName, options, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.migrateStorage(resourceGroupName, name, this.client.subscriptionId(), subscriptionName, migrationOptions, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<StorageMigrationResponseInner>() { }.getType());
     }
 
@@ -8209,11 +8997,14 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StorageMigrationResponseInner object if successful.
      */
-    public StorageMigrationResponseInner beginMigrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).toBlocking().single().body();
+    public StorageMigrationResponseInner beginMigrateStorage(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
+        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions).toBlocking().single().body();
     }
 
     /**
@@ -8223,12 +9014,13 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options), serviceCallback);
+    public ServiceFuture<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions, final ServiceCallback<StorageMigrationResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions), serviceCallback);
     }
 
     /**
@@ -8238,11 +9030,12 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageMigrationResponseInner object
      */
-    public Observable<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
-        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, options).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
+    public Observable<StorageMigrationResponseInner> beginMigrateStorageAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
+        return beginMigrateStorageWithServiceResponseAsync(resourceGroupName, name, subscriptionName, migrationOptions).map(new Func1<ServiceResponse<StorageMigrationResponseInner>, StorageMigrationResponseInner>() {
             @Override
             public StorageMigrationResponseInner call(ServiceResponse<StorageMigrationResponseInner> response) {
                 return response.body();
@@ -8257,10 +9050,11 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param subscriptionName Azure subscription
-     * @param options Migration options
+     * @param migrationOptions Migration migrationOptions
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageMigrationResponseInner object
      */
-    public Observable<ServiceResponse<StorageMigrationResponseInner>> beginMigrateStorageWithServiceResponseAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner options) {
+    public Observable<ServiceResponse<StorageMigrationResponseInner>> beginMigrateStorageWithServiceResponseAsync(String resourceGroupName, String name, String subscriptionName, StorageMigrationOptionsInner migrationOptions) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8273,12 +9067,12 @@ public final class WebAppsInner {
         if (subscriptionName == null) {
             throw new IllegalArgumentException("Parameter subscriptionName is required and cannot be null.");
         }
-        if (options == null) {
-            throw new IllegalArgumentException("Parameter options is required and cannot be null.");
+        if (migrationOptions == null) {
+            throw new IllegalArgumentException("Parameter migrationOptions is required and cannot be null.");
         }
-        Validator.validate(options);
+        Validator.validate(migrationOptions);
         final String apiVersion = "2016-08-01";
-        return service.beginMigrateStorage(resourceGroupName, name, this.client.subscriptionId(), subscriptionName, options, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginMigrateStorage(resourceGroupName, name, this.client.subscriptionId(), subscriptionName, migrationOptions, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageMigrationResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<StorageMigrationResponseInner>> call(Response<ResponseBody> response) {
@@ -8306,6 +9100,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationInner object if successful.
      */
     public OperationInner migrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8320,6 +9117,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationInner> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
@@ -8333,6 +9131,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationInner> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8351,6 +9150,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationInner>> migrateMySqlWithServiceResponseAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8379,6 +9179,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationInner object if successful.
      */
     public OperationInner beginMigrateMySql(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8393,6 +9196,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationInner> beginMigrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope, final ServiceCallback<OperationInner> serviceCallback) {
@@ -8406,6 +9210,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationInner object
      */
     public Observable<OperationInner> beginMigrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8424,6 +9229,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param migrationRequestEnvelope MySql migration options
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationInner object
      */
     public Observable<ServiceResponse<OperationInner>> beginMigrateMySqlWithServiceResponseAsync(String resourceGroupName, String name, MigrateMySqlRequestInner migrationRequestEnvelope) {
@@ -8469,6 +9275,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeatures(String resourceGroupName, String name, String view) {
@@ -8483,6 +9292,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<NetworkFeaturesInner> listNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
@@ -8496,6 +9306,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkFeaturesInner object
      */
     public Observable<NetworkFeaturesInner> listNetworkFeaturesAsync(String resourceGroupName, String name, String view) {
@@ -8514,6 +9325,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkFeaturesInner object
      */
     public Observable<ServiceResponse<NetworkFeaturesInner>> listNetworkFeaturesWithServiceResponseAsync(String resourceGroupName, String name, String view) {
@@ -8558,6 +9370,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name) {
@@ -8571,6 +9386,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
@@ -8583,6 +9399,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
@@ -8600,6 +9417,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> startWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -8635,6 +9453,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds) {
@@ -8649,6 +9470,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param durationInSeconds The duration to keep capturing in seconds
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
@@ -8662,6 +9484,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds) {
@@ -8680,6 +9503,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> startWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds) {
@@ -8720,6 +9544,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTrace(String resourceGroupName, String name) {
@@ -8733,6 +9560,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name, final ServiceCallback<String> serviceCallback) {
@@ -8745,6 +9573,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
@@ -8762,6 +9591,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -8802,6 +9632,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void generateNewSitePublishingPassword(String resourceGroupName, String name) {
         generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -8814,6 +9647,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -8826,6 +9660,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name) {
@@ -8843,6 +9678,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> generateNewSitePublishingPasswordWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -8873,6 +9709,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> generateNewSitePublishingPasswordDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -8882,6 +9719,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name) {
@@ -8901,6 +9741,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -8921,6 +9762,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name) {
@@ -8939,6 +9781,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -8961,6 +9804,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSinglePageAsync(final String resourceGroupName, final String name) {
@@ -8996,6 +9840,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCounters(final String resourceGroupName, final String name, final String filter) {
@@ -9016,6 +9863,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -9037,6 +9885,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersAsync(final String resourceGroupName, final String name, final String filter) {
@@ -9056,6 +9905,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersWithServiceResponseAsync(final String resourceGroupName, final String name, final String filter) {
@@ -9079,6 +9929,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
@@ -9119,6 +9970,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlag(String resourceGroupName, String name) {
@@ -9132,6 +9986,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagAsync(String resourceGroupName, String name, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
@@ -9144,6 +9999,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SitePhpErrorLogFlagInner object
      */
     public Observable<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagAsync(String resourceGroupName, String name) {
@@ -9161,6 +10017,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SitePhpErrorLogFlagInner object
      */
     public Observable<ServiceResponse<SitePhpErrorLogFlagInner>> getSitePhpErrorLogFlagWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -9201,6 +10058,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOns(String resourceGroupName, String name) {
@@ -9214,6 +10074,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> listPremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -9226,6 +10087,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> listPremierAddOnsAsync(String resourceGroupName, String name) {
@@ -9243,6 +10105,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> listPremierAddOnsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -9284,6 +10147,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
@@ -9298,6 +10164,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -9311,6 +10178,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
@@ -9329,6 +10197,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> getPremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName) {
@@ -9374,6 +10243,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn) {
@@ -9389,6 +10261,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param premierAddOn A JSON representation of the edited premier add-on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> addPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -9403,6 +10276,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> addPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn) {
@@ -9422,6 +10296,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> addPremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnInner premierAddOn) {
@@ -9470,6 +10345,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deletePremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
         deletePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().body();
@@ -9483,6 +10361,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deletePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Void> serviceCallback) {
@@ -9496,6 +10375,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deletePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
@@ -9514,6 +10394,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deletePremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName) {
@@ -9547,6 +10428,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> deletePremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -9556,6 +10438,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name) {
@@ -9569,6 +10454,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
@@ -9581,6 +10467,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
@@ -9598,6 +10485,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -9612,9 +10500,9 @@ public final class WebAppsInner {
         }
         final String apiVersion = "2016-08-01";
         final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.withFormat(null);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), options, this.client.userAgent())
+        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
+        publishingProfileOptions.withFormat(null);
+        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -9638,6 +10526,9 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecrets(String resourceGroupName, String name, PublishingProfileFormat format) {
@@ -9655,6 +10546,7 @@ public final class WebAppsInner {
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
@@ -9671,6 +10563,7 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
@@ -9692,6 +10585,7 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsWithServiceResponseAsync(String resourceGroupName, String name, PublishingProfileFormat format) {
@@ -9705,9 +10599,9 @@ public final class WebAppsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.withFormat(format);
-        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), options, this.client.userAgent())
+        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
+        publishingProfileOptions.withFormat(format);
+        return service.listPublishingProfileXmlWithSecrets(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -9735,6 +10629,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9749,6 +10646,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
@@ -9762,6 +10660,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RecoverResponseInner> recoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9780,6 +10679,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RecoverResponseInner>> recoverWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9808,6 +10708,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecover(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9822,6 +10725,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
@@ -9835,6 +10739,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
     public Observable<RecoverResponseInner> beginRecoverAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9853,6 +10758,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
     public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -9897,6 +10803,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resetProductionSlotConfig(String resourceGroupName, String name) {
         resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -9909,6 +10818,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -9921,6 +10831,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> resetProductionSlotConfigAsync(String resourceGroupName, String name) {
@@ -9938,6 +10849,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> resetProductionSlotConfigWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -9968,6 +10880,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -9977,6 +10890,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restart(String resourceGroupName, String name) {
         restartWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -9989,6 +10905,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> restartAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -10001,6 +10918,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartAsync(String resourceGroupName, String name) {
@@ -10018,6 +10936,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -10055,6 +10974,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restart(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
         restartWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().body();
@@ -10069,6 +10991,7 @@ public final class WebAppsInner {
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> restartAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
@@ -10083,6 +11006,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
@@ -10102,6 +11026,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
@@ -10132,7 +11057,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> restartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -10142,6 +11067,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listSlots(final String resourceGroupName, final String name) {
@@ -10161,6 +11089,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -10181,6 +11110,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listSlotsAsync(final String resourceGroupName, final String name) {
@@ -10199,6 +11129,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listSlotsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -10221,6 +11152,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listSlotsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -10262,6 +11194,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner getSlot(String resourceGroupName, String name, String slot) {
@@ -10276,6 +11211,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> getSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
@@ -10289,6 +11225,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<SiteInner> getSlotAsync(String resourceGroupName, String name, String slot) {
@@ -10307,6 +11244,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<ServiceResponse<SiteInner>> getSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -10352,6 +11290,9 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10367,6 +11308,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
@@ -10381,6 +11323,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10400,6 +11343,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteInner>> createOrUpdateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10440,6 +11384,9 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner createOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10460,6 +11407,7 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
@@ -10479,6 +11427,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteInner> createOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10503,6 +11452,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteInner>> createOrUpdateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10535,6 +11485,9 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10550,6 +11503,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
@@ -10564,6 +11518,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10583,6 +11538,7 @@ public final class WebAppsInner {
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param slot Name of the deployment slot to create or update. By default, this API attempts to create or modify the production slot.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
@@ -10634,6 +11590,9 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteInner object if successful.
      */
     public SiteInner beginCreateOrUpdateSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10654,6 +11613,7 @@ public final class WebAppsInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
@@ -10673,6 +11633,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<SiteInner> beginCreateOrUpdateSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10697,6 +11658,7 @@ public final class WebAppsInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
      */
     public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Boolean skipDnsRegistration, Boolean skipCustomDomainVerification, Boolean forceDnsRegistration, String ttlInSeconds) {
@@ -10746,6 +11708,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteSlot(String resourceGroupName, String name, String slot) {
         deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -10759,6 +11724,7 @@ public final class WebAppsInner {
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -10772,6 +11738,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteSlotAsync(String resourceGroupName, String name, String slot) {
@@ -10790,6 +11757,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -10833,6 +11801,9 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteSlot(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
         deleteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration).toBlocking().single().body();
@@ -10849,6 +11820,7 @@ public final class WebAppsInner {
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration, final ServiceCallback<Void> serviceCallback) {
@@ -10865,6 +11837,7 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteSlotAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
@@ -10886,6 +11859,7 @@ public final class WebAppsInner {
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm Specify true if the App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default, the empty App Service plan is not deleted.
      * @param skipDnsRegistration If true, DNS registration is skipped
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Boolean deleteMetrics, Boolean deleteEmptyServerFarm, Boolean skipDnsRegistration) {
@@ -10920,6 +11894,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -10930,6 +11905,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot) {
@@ -10944,6 +11922,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
@@ -10957,6 +11936,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot) {
@@ -10975,6 +11955,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<ServiceResponse<CustomHostnameAnalysisResultInner>> analyzeCustomHostnameSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -11014,6 +11995,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CustomHostnameAnalysisResultInner object if successful.
      */
     public CustomHostnameAnalysisResultInner analyzeCustomHostnameSlot(String resourceGroupName, String name, String slot, String hostName) {
@@ -11029,6 +12013,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Custom hostname
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<CustomHostnameAnalysisResultInner> serviceCallback) {
@@ -11043,6 +12028,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<CustomHostnameAnalysisResultInner> analyzeCustomHostnameSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -11062,6 +12048,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Custom hostname
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomHostnameAnalysisResultInner object
      */
     public Observable<ServiceResponse<CustomHostnameAnalysisResultInner>> analyzeCustomHostnameSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -11107,6 +12094,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void applySlotConfigurationSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         applySlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
@@ -11121,6 +12111,7 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> applySlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -11135,6 +12126,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> applySlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -11154,6 +12146,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> applySlotConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -11191,6 +12184,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> applySlotConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -11202,6 +12196,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner backupSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -11217,6 +12214,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> backupSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -11231,6 +12229,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> backupSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -11250,6 +12249,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> backupSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -11298,6 +12298,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
     public PagedList<BackupItemInner> listBackupsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -11318,6 +12321,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BackupItemInner>> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
@@ -11339,6 +12343,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<Page<BackupItemInner>> listBackupsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -11358,6 +12363,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -11381,6 +12387,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<BackupItemInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -11426,6 +12433,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreRequestInner object if successful.
      */
     public RestoreRequestInner discoverRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
@@ -11441,6 +12451,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
@@ -11455,6 +12466,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreRequestInner object
      */
     public Observable<RestoreRequestInner> discoverRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
@@ -11474,6 +12486,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreRequestInner object
      */
     public Observable<ServiceResponse<RestoreRequestInner>> discoverRestoreSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
@@ -11523,6 +12536,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner getBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) {
@@ -11538,6 +12554,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> getBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -11552,6 +12569,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> getBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
@@ -11571,6 +12589,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> getBackupStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot) {
@@ -11619,6 +12638,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) {
         deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().body();
@@ -11633,6 +12655,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -11647,6 +12670,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
@@ -11666,6 +12690,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteBackupSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot) {
@@ -11703,6 +12728,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -11715,6 +12741,9 @@ public final class WebAppsInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupItemInner object if successful.
      */
     public BackupItemInner listBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
@@ -11731,6 +12760,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupItemInner> listBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
@@ -11746,6 +12776,7 @@ public final class WebAppsInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<BackupItemInner> listBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
@@ -11766,6 +12797,7 @@ public final class WebAppsInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupItemInner object
      */
     public Observable<ServiceResponse<BackupItemInner>> listBackupStatusSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
@@ -11819,6 +12851,9 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner restoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -11835,6 +12870,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreResponseInner> restoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
@@ -11850,6 +12886,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RestoreResponseInner> restoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -11870,6 +12907,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RestoreResponseInner>> restoreSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -11906,6 +12944,9 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RestoreResponseInner object if successful.
      */
     public RestoreResponseInner beginRestoreSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -11922,6 +12963,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RestoreResponseInner> beginRestoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
@@ -11937,6 +12979,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreResponseInner object
      */
     public Observable<RestoreResponseInner> beginRestoreSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -11957,6 +13000,7 @@ public final class WebAppsInner {
      * @param backupId ID of the backup.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
      * @param request Information on restore request
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RestoreResponseInner object
      */
     public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
@@ -12009,6 +13053,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production slot.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateApplicationSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
@@ -12024,6 +13071,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production slot.
      * @param appSettings Application settings of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> updateApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -12038,6 +13086,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production slot.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> updateApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
@@ -12057,6 +13106,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production slot.
      * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> updateApplicationSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
@@ -12105,6 +13155,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listApplicationSettingsSlot(String resourceGroupName, String name, String slot) {
@@ -12119,6 +13172,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> listApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -12132,6 +13186,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> listApplicationSettingsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12150,6 +13205,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> listApplicationSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12195,6 +13251,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner updateAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
@@ -12210,6 +13269,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteAuthSettingsInner> updateAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
@@ -12224,6 +13284,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<SiteAuthSettingsInner> updateAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
@@ -12243,6 +13304,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<ServiceResponse<SiteAuthSettingsInner>> updateAuthSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
@@ -12291,6 +13353,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteAuthSettingsInner object if successful.
      */
     public SiteAuthSettingsInner getAuthSettingsSlot(String resourceGroupName, String name, String slot) {
@@ -12305,6 +13370,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteAuthSettingsInner> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
@@ -12318,6 +13384,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<SiteAuthSettingsInner> getAuthSettingsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12336,6 +13403,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteAuthSettingsInner object
      */
     public Observable<ServiceResponse<SiteAuthSettingsInner>> getAuthSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12381,6 +13449,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production slot.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner updateBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -12396,6 +13467,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production slot.
      * @param request Edited backup configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupRequestInner> updateBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
@@ -12410,6 +13482,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production slot.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<BackupRequestInner> updateBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -12429,6 +13502,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production slot.
      * @param request Edited backup configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<ServiceResponse<BackupRequestInner>> updateBackupConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
@@ -12477,6 +13551,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
         deleteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -12490,6 +13567,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -12503,6 +13581,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12521,6 +13600,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteBackupConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12554,6 +13634,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> deleteBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -12564,6 +13645,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BackupRequestInner object if successful.
      */
     public BackupRequestInner getBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
@@ -12578,6 +13662,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<BackupRequestInner> getBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
@@ -12591,6 +13676,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<BackupRequestInner> getBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12609,6 +13695,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BackupRequestInner object
      */
     public Observable<ServiceResponse<BackupRequestInner>> getBackupConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12654,6 +13741,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production slot.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner updateConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
@@ -12669,6 +13759,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production slot.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ConnectionStringDictionaryInner> updateConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
@@ -12683,6 +13774,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production slot.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ConnectionStringDictionaryInner> updateConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
@@ -12702,6 +13794,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production slot.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateConnectionStringsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
@@ -12750,6 +13843,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectionStringDictionaryInner object if successful.
      */
     public ConnectionStringDictionaryInner listConnectionStringsSlot(String resourceGroupName, String name, String slot) {
@@ -12764,6 +13860,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ConnectionStringDictionaryInner> listConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
@@ -12777,6 +13874,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ConnectionStringDictionaryInner> listConnectionStringsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12795,6 +13893,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectionStringDictionaryInner object
      */
     public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listConnectionStringsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12839,6 +13938,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner getDiagnosticLogsConfigurationSlot(String resourceGroupName, String name, String slot) {
@@ -12853,6 +13955,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
@@ -12866,6 +13969,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<SiteLogsConfigInner> getDiagnosticLogsConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
@@ -12884,6 +13988,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<ServiceResponse<SiteLogsConfigInner>> getDiagnosticLogsConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -12929,6 +14034,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production slot.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteLogsConfigInner object if successful.
      */
     public SiteLogsConfigInner updateDiagnosticLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
@@ -12944,6 +14052,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production slot.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
@@ -12958,6 +14067,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production slot.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<SiteLogsConfigInner> updateDiagnosticLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
@@ -12977,6 +14087,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production slot.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteLogsConfigInner object
      */
     public Observable<ServiceResponse<SiteLogsConfigInner>> updateDiagnosticLogsConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
@@ -13026,6 +14137,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner updateMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
@@ -13041,6 +14155,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
      * @param metadata Edited metadata of the app or deployment slot. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> updateMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -13055,6 +14170,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> updateMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
@@ -13074,6 +14190,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
      * @param metadata Edited metadata of the app or deployment slot. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> updateMetadataSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
@@ -13122,6 +14239,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the StringDictionaryInner object if successful.
      */
     public StringDictionaryInner listMetadataSlot(String resourceGroupName, String name, String slot) {
@@ -13136,6 +14256,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<StringDictionaryInner> listMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
@@ -13149,6 +14270,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<StringDictionaryInner> listMetadataSlotAsync(String resourceGroupName, String name, String slot) {
@@ -13167,6 +14289,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StringDictionaryInner object
      */
     public Observable<ServiceResponse<StringDictionaryInner>> listMetadataSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -13211,6 +14334,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner listPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
@@ -13225,6 +14351,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> listPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
@@ -13238,6 +14365,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<UserInner> listPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -13256,6 +14384,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<UserInner>> listPublishingCredentialsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -13283,6 +14412,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner beginListPublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
@@ -13297,6 +14429,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> beginListPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
@@ -13310,6 +14443,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<UserInner> beginListPublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -13328,6 +14462,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> beginListPublishingCredentialsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -13373,6 +14508,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner updateSitePushSettingsSlot(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings) {
@@ -13388,6 +14526,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param pushSettings Push settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PushSettingsInner> updateSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings, final ServiceCallback<PushSettingsInner> serviceCallback) {
@@ -13402,6 +14541,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<PushSettingsInner> updateSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings) {
@@ -13421,6 +14561,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param pushSettings Push settings associated with web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<ServiceResponse<PushSettingsInner>> updateSitePushSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, PushSettingsInner pushSettings) {
@@ -13469,6 +14610,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PushSettingsInner object if successful.
      */
     public PushSettingsInner listSitePushSettingsSlot(String resourceGroupName, String name, String slot) {
@@ -13483,6 +14627,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PushSettingsInner> listSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PushSettingsInner> serviceCallback) {
@@ -13496,6 +14641,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<PushSettingsInner> listSitePushSettingsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -13514,6 +14660,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PushSettingsInner object
      */
     public Observable<ServiceResponse<PushSettingsInner>> listSitePushSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -13558,6 +14705,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner getConfigurationSlot(String resourceGroupName, String name, String slot) {
@@ -13572,6 +14722,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -13585,6 +14736,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
@@ -13603,6 +14755,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -13648,6 +14801,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner createOrUpdateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13663,6 +14819,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -13677,6 +14834,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13696,6 +14854,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13745,6 +14904,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteConfigInner object if successful.
      */
     public SiteConfigInner updateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13760,6 +14922,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
@@ -13774,6 +14937,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13793,6 +14957,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteConfigInner object
      */
     public Observable<ServiceResponse<SiteConfigInner>> updateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
@@ -13835,12 +15000,313 @@ public final class WebAppsInner {
     }
 
     /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SiteConfigurationSnapshotInfoInner&gt; object if successful.
+     */
+    public List<SiteConfigurationSnapshotInfoInner> listConfigurationSnapshotInfoSlot(String resourceGroupName, String name, String slot) {
+        return listConfigurationSnapshotInfoSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<SiteConfigurationSnapshotInfoInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listConfigurationSnapshotInfoSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SiteConfigurationSnapshotInfoInner&gt; object
+     */
+    public Observable<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoSlotAsync(String resourceGroupName, String name, String slot) {
+        return listConfigurationSnapshotInfoSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>, List<SiteConfigurationSnapshotInfoInner>>() {
+            @Override
+            public List<SiteConfigurationSnapshotInfoInner> call(ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the ID of the snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SiteConfigurationSnapshotInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>> listConfigurationSnapshotInfoSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.listConfigurationSnapshotInfoSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SiteConfigurationSnapshotInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> clientResponse = listConfigurationSnapshotInfoSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<SiteConfigurationSnapshotInfoInner>> listConfigurationSnapshotInfoSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<SiteConfigurationSnapshotInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<SiteConfigurationSnapshotInfoInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SiteConfigInner object if successful.
+     */
+    public SiteConfigInner getConfigurationSnapshotSlot(String resourceGroupName, String name, String snapshotId, String slot) {
+        return getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SiteConfigInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<SiteConfigInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+        return getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     * Gets a snapshot of the configuration of an app at a previous point in time.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSnapshotSlotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (snapshotId == null) {
+            throw new IllegalArgumentException("Parameter snapshotId is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getConfigurationSnapshotSlot(resourceGroupName, name, snapshotId, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationSnapshotSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SiteConfigInner> getConfigurationSnapshotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void recoverSiteConfigurationSnapshotSlot(String resourceGroupName, String name, String snapshotId, String slot) {
+        recoverSiteConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> recoverSiteConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(recoverSiteConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot), serviceCallback);
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> recoverSiteConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+        return recoverSiteConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Reverts the configuration of an app to a previous snapshot.
+     * Reverts the configuration of an app to a previous snapshot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param snapshotId The ID of the snapshot to read.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> recoverSiteConfigurationSnapshotSlotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (snapshotId == null) {
+            throw new IllegalArgumentException("Parameter snapshotId is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.recoverSiteConfigurationSnapshotSlot(resourceGroupName, name, snapshotId, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = recoverSiteConfigurationSnapshotSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> recoverSiteConfigurationSnapshotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listDeploymentsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -13861,6 +15327,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -13882,6 +15349,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -13901,6 +15369,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -13924,6 +15393,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -13969,6 +15439,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
@@ -13984,6 +15457,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -13998,6 +15472,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
@@ -14017,6 +15492,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> getDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot) {
@@ -14066,6 +15542,9 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
@@ -14082,6 +15561,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -14097,6 +15577,7 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
@@ -14117,6 +15598,7 @@ public final class WebAppsInner {
      * @param id ID of an existing deployment.
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> createDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
@@ -14169,6 +15651,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
         deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().body();
@@ -14183,6 +15668,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -14197,6 +15683,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
@@ -14216,6 +15703,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot) {
@@ -14253,6 +15741,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -14263,6 +15752,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IdentifierInner&gt; object if successful.
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
@@ -14283,6 +15775,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<IdentifierInner> serviceCallback) {
@@ -14304,6 +15797,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<Page<IdentifierInner>> listDomainOwnershipIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14323,6 +15817,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14346,6 +15841,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<IdentifierInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<IdentifierInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<IdentifierInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14391,6 +15887,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner getDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
@@ -14406,6 +15905,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> getDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -14420,6 +15920,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> getDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
@@ -14439,6 +15940,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> getDomainOwnershipIdentifierSlotWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
@@ -14488,6 +15990,9 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner createOrUpdateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14504,6 +16009,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -14519,6 +16025,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> createOrUpdateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14539,6 +16046,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> createOrUpdateDomainOwnershipIdentifierSlotWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14591,6 +16099,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
         deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(resourceGroupName, name, domainOwnershipIdentifierName, slot).toBlocking().single().body();
@@ -14605,6 +16116,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -14619,6 +16131,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
@@ -14638,6 +16151,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteDomainOwnershipIdentifierSlotWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot) {
@@ -14675,6 +16189,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -14687,6 +16202,9 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IdentifierInner object if successful.
      */
     public IdentifierInner updateDomainOwnershipIdentifierSlot(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14703,6 +16221,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<IdentifierInner> updateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier, final ServiceCallback<IdentifierInner> serviceCallback) {
@@ -14718,6 +16237,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<IdentifierInner> updateDomainOwnershipIdentifierSlotAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14738,6 +16258,7 @@ public final class WebAppsInner {
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IdentifierInner object
      */
     public Observable<ServiceResponse<IdentifierInner>> updateDomainOwnershipIdentifierSlotWithServiceResponseAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName, String slot, IdentifierInner domainOwnershipIdentifier) {
@@ -14789,6 +16310,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -14809,6 +16333,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
@@ -14830,6 +16355,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<Page<HostNameBindingInner>> listHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14849,6 +16375,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14872,6 +16399,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -14917,6 +16445,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner getHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
@@ -14932,6 +16463,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HostNameBindingInner> getHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
@@ -14946,6 +16478,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<HostNameBindingInner> getHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -14965,6 +16498,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<ServiceResponse<HostNameBindingInner>> getHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -15014,6 +16548,9 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HostNameBindingInner object if successful.
      */
     public HostNameBindingInner createOrUpdateHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
@@ -15030,6 +16567,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HostNameBindingInner> createOrUpdateHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
@@ -15045,6 +16583,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<HostNameBindingInner> createOrUpdateHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
@@ -15065,6 +16604,7 @@ public final class WebAppsInner {
      * @param hostName Hostname in the hostname binding.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
      * @param hostNameBinding Binding details. This is the JSON representation of a HostNameBinding object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HostNameBindingInner object
      */
     public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
@@ -15117,6 +16657,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
         deleteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().body();
@@ -15131,6 +16674,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param hostName Hostname in the hostname binding.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Void> serviceCallback) {
@@ -15145,6 +16689,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -15164,6 +16709,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
      * @param hostName Hostname in the hostname binding.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String hostName) {
@@ -15201,6 +16747,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -15213,6 +16760,9 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15229,6 +16779,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> getHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -15244,6 +16795,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> getHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15264,6 +16816,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> getHybridConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15317,6 +16870,9 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner createOrUpdateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15334,6 +16890,7 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> createOrUpdateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -15350,6 +16907,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> createOrUpdateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15371,6 +16929,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> createOrUpdateHybridConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15427,6 +16986,9 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
         deleteHybridConnectionSlotWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName, slot).toBlocking().single().body();
@@ -15442,6 +17004,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -15457,6 +17020,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15477,6 +17041,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteHybridConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15517,6 +17082,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -15530,6 +17096,9 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnectionSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15547,6 +17116,7 @@ public final class WebAppsInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> updateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -15563,6 +17133,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> updateHybridConnectionSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15584,6 +17155,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the hybrid connection
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> updateHybridConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, HybridConnectionInner connectionEnvelope) {
@@ -15640,6 +17212,9 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeysSlot(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15656,6 +17231,7 @@ public final class WebAppsInner {
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionKeyInner> listHybridConnectionKeysSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot, final ServiceCallback<HybridConnectionKeyInner> serviceCallback) {
@@ -15671,6 +17247,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<HybridConnectionKeyInner> listHybridConnectionKeysSlotAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15691,6 +17268,7 @@ public final class WebAppsInner {
      * @param namespaceName The namespace for this hybrid connection
      * @param relayName The relay name for this hybrid connection
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<ServiceResponse<HybridConnectionKeyInner>> listHybridConnectionKeysSlotWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, String slot) {
@@ -15741,6 +17319,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner listHybridConnectionsSlot(String resourceGroupName, String name, String slot) {
@@ -15755,6 +17336,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<HybridConnectionInner> listHybridConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HybridConnectionInner> serviceCallback) {
@@ -15768,6 +17350,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> listHybridConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -15786,6 +17369,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> listHybridConnectionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -15830,6 +17414,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner listRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) {
@@ -15844,6 +17431,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -15857,6 +17445,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -15875,6 +17464,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listRelayServiceConnectionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -15920,6 +17510,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner getRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
@@ -15935,6 +17528,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -15949,6 +17543,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> getRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
@@ -15968,6 +17563,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot) {
@@ -16017,6 +17613,9 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner createOrUpdateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16033,6 +17632,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -16048,6 +17648,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> createOrUpdateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16068,6 +17669,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16120,6 +17722,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
         deleteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().body();
@@ -16134,6 +17739,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -16148,6 +17754,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
@@ -16167,6 +17774,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot) {
@@ -16204,6 +17812,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -16216,6 +17825,9 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
     public RelayServiceConnectionEntityInner updateRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16232,6 +17844,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
@@ -16247,6 +17860,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<RelayServiceConnectionEntityInner> updateRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16267,6 +17881,7 @@ public final class WebAppsInner {
      * @param entityName Name of the hybrid connection configuration.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the production slot.
      * @param connectionEnvelope Details of the hybrid connection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
     public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
@@ -16318,6 +17933,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
@@ -16338,6 +17956,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
@@ -16359,6 +17978,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<Page<SiteInstanceInner>> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -16378,6 +17998,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -16401,6 +18022,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -16446,6 +18068,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) {
@@ -16467,6 +18092,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -16489,6 +18115,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
@@ -16509,6 +18136,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
      * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
@@ -16533,6 +18161,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
     ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId The ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
@@ -16582,6 +18211,9 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
@@ -16598,6 +18230,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -16613,6 +18246,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
@@ -16633,6 +18267,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
@@ -16686,6 +18321,9 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DeploymentInner object if successful.
      */
     public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
@@ -16703,6 +18341,7 @@ public final class WebAppsInner {
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
@@ -16719,6 +18358,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
@@ -16740,6 +18380,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param deployment Deployment details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeploymentInner object
      */
     public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
@@ -16796,6 +18437,9 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
         deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().body();
@@ -16811,6 +18455,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Void> serviceCallback) {
@@ -16826,6 +18471,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
@@ -16846,6 +18492,7 @@ public final class WebAppsInner {
      * @param id Deployment ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET api/sites/{siteName}/instances"
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
@@ -16886,6 +18533,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -16896,6 +18544,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteCloneabilityInner object if successful.
      */
     public SiteCloneabilityInner isCloneableSlot(String resourceGroupName, String name, String slot) {
@@ -16910,6 +18561,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteCloneabilityInner> isCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
@@ -16923,6 +18575,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteCloneabilityInner object
      */
     public Observable<SiteCloneabilityInner> isCloneableSlotAsync(String resourceGroupName, String name, String slot) {
@@ -16941,6 +18594,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteCloneabilityInner object
      */
     public Observable<ServiceResponse<SiteCloneabilityInner>> isCloneableSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -16985,6 +18639,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -17005,6 +18662,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
@@ -17026,6 +18684,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17045,6 +18704,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17068,6 +18728,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17112,6 +18773,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -17132,6 +18796,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -17153,6 +18818,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17172,6 +18838,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17195,6 +18862,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17236,6 +18904,9 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
@@ -17258,6 +18929,7 @@ public final class WebAppsInner {
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -17281,6 +18953,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
@@ -17302,6 +18975,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
      * @param details Specify "true" to include metric details in the response. It is "false" by default.
      * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
@@ -17327,6 +19001,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify "true" to include metric details in the response. It is "false" by default.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
@@ -17372,6 +19047,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NetworkFeaturesInner object if successful.
      */
     public NetworkFeaturesInner listNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) {
@@ -17387,6 +19065,7 @@ public final class WebAppsInner {
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<NetworkFeaturesInner> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
@@ -17401,6 +19080,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkFeaturesInner object
      */
     public Observable<NetworkFeaturesInner> listNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot) {
@@ -17420,6 +19100,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NetworkFeaturesInner object
      */
     public Observable<ServiceResponse<NetworkFeaturesInner>> listNetworkFeaturesSlotWithServiceResponseAsync(String resourceGroupName, String name, String view, String slot) {
@@ -17468,6 +19149,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
@@ -17482,6 +19166,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
@@ -17495,6 +19180,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
@@ -17513,6 +19199,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> startWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -17552,6 +19239,9 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
@@ -17567,6 +19257,7 @@ public final class WebAppsInner {
      * @param slot The name of the slot for this web app.
      * @param durationInSeconds The duration to keep capturing in seconds
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
@@ -17581,6 +19272,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
@@ -17600,6 +19292,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param durationInSeconds The duration to keep capturing in seconds
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> startWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
@@ -17644,6 +19337,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
     public String stopWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot) {
@@ -17658,6 +19354,7 @@ public final class WebAppsInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<String> serviceCallback) {
@@ -17671,6 +19368,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
@@ -17689,6 +19387,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     public Observable<ServiceResponse<String>> stopWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -17733,6 +19432,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) {
         generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -17746,6 +19448,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -17759,6 +19462,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot) {
@@ -17777,6 +19481,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> generateNewSitePublishingPasswordSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -17810,6 +19515,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> generateNewSitePublishingPasswordSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -17820,6 +19526,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot) {
@@ -17840,6 +19549,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -17861,6 +19571,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17880,6 +19591,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17903,6 +19615,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -17942,6 +19655,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -17963,6 +19679,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -17985,6 +19702,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -18005,6 +19723,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -18029,6 +19748,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param name Name of web app
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param slot Name of web app slot. If not specified then will default to production slot. **** CURRENTLY UNUSED *****
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -18073,6 +19793,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SitePhpErrorLogFlagInner object if successful.
      */
     public SitePhpErrorLogFlagInner getSitePhpErrorLogFlagSlot(String resourceGroupName, String name, String slot) {
@@ -18087,6 +19810,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SitePhpErrorLogFlagInner> serviceCallback) {
@@ -18100,6 +19824,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SitePhpErrorLogFlagInner object
      */
     public Observable<SitePhpErrorLogFlagInner> getSitePhpErrorLogFlagSlotAsync(String resourceGroupName, String name, String slot) {
@@ -18118,6 +19843,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SitePhpErrorLogFlagInner object
      */
     public Observable<ServiceResponse<SitePhpErrorLogFlagInner>> getSitePhpErrorLogFlagSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -18162,6 +19888,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner listPremierAddOnsSlot(String resourceGroupName, String name, String slot) {
@@ -18176,6 +19905,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> listPremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -18189,6 +19919,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> listPremierAddOnsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -18207,6 +19938,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> listPremierAddOnsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -18252,6 +19984,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner getPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
@@ -18267,6 +20002,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> getPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -18281,6 +20017,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> getPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
@@ -18300,6 +20037,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> getPremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
@@ -18349,6 +20087,9 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PremierAddOnInner object if successful.
      */
     public PremierAddOnInner addPremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn) {
@@ -18365,6 +20106,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
      * @param premierAddOn A JSON representation of the edited premier add-on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PremierAddOnInner> addPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn, final ServiceCallback<PremierAddOnInner> serviceCallback) {
@@ -18380,6 +20122,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<PremierAddOnInner> addPremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn) {
@@ -18400,6 +20143,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production slot.
      * @param premierAddOn A JSON representation of the edited premier add-on.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PremierAddOnInner object
      */
     public Observable<ServiceResponse<PremierAddOnInner>> addPremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnInner premierAddOn) {
@@ -18452,6 +20196,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deletePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
         deletePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().body();
@@ -18466,6 +20213,7 @@ public final class WebAppsInner {
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -18480,6 +20228,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deletePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
@@ -18499,6 +20248,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deletePremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
@@ -18535,6 +20285,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> deletePremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -18545,6 +20296,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot) {
@@ -18559,6 +20313,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
@@ -18572,6 +20327,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -18590,6 +20346,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -18607,9 +20364,9 @@ public final class WebAppsInner {
         }
         final String apiVersion = "2016-08-01";
         final PublishingProfileFormat format = null;
-        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.withFormat(null);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), options, this.client.userAgent())
+        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
+        publishingProfileOptions.withFormat(null);
+        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -18634,6 +20391,9 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
     public InputStream listPublishingProfileXmlWithSecretsSlot(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
@@ -18652,6 +20412,7 @@ public final class WebAppsInner {
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format, final ServiceCallback<InputStream> serviceCallback) {
@@ -18669,6 +20430,7 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
@@ -18691,6 +20453,7 @@ public final class WebAppsInner {
       FileZilla3
       WebDeploy -- default
       Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> listPublishingProfileXmlWithSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, PublishingProfileFormat format) {
@@ -18707,9 +20470,9 @@ public final class WebAppsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.withFormat(format);
-        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), options, this.client.userAgent())
+        CsmPublishingProfileOptions publishingProfileOptions = new CsmPublishingProfileOptions();
+        publishingProfileOptions.withFormat(format);
+        return service.listPublishingProfileXmlWithSecretsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), publishingProfileOptions, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -18738,6 +20501,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner recoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18753,6 +20519,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
@@ -18767,6 +20534,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<RecoverResponseInner> recoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18786,6 +20554,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RecoverResponseInner>> recoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18818,6 +20587,9 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecoverResponseInner object if successful.
      */
     public RecoverResponseInner beginRecoverSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18833,6 +20605,7 @@ public final class WebAppsInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<RecoverResponseInner> serviceCallback) {
@@ -18847,6 +20620,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
     public Observable<RecoverResponseInner> beginRecoverSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18866,6 +20640,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecoverResponseInner object
      */
     public Observable<ServiceResponse<RecoverResponseInner>> beginRecoverSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
@@ -18914,6 +20689,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void resetSlotConfigurationSlot(String resourceGroupName, String name, String slot) {
         resetSlotConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -18927,6 +20705,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> resetSlotConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -18940,6 +20719,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> resetSlotConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
@@ -18958,6 +20738,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> resetSlotConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -18991,6 +20772,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> resetSlotConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -19001,6 +20783,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restartSlot(String resourceGroupName, String name, String slot) {
         restartSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -19014,6 +20799,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> restartSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -19027,6 +20813,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartSlotAsync(String resourceGroupName, String name, String slot) {
@@ -19045,6 +20832,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -19086,6 +20874,9 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restartSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
         restartSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().body();
@@ -19101,6 +20892,7 @@ public final class WebAppsInner {
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> restartSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Void> serviceCallback) {
@@ -19116,6 +20908,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> restartSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
@@ -19136,6 +20929,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By default, the API always restarts and reprovisions the app.
      * @param synchronous Specify true to block until the app is restarted. By default, it is set to false, and the API responds immediately (asynchronous).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> restartSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
@@ -19169,7 +20963,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> restartSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -19181,6 +20975,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
@@ -19202,6 +20999,7 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
@@ -19224,6 +21022,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
@@ -19244,6 +21043,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
@@ -19268,6 +21068,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
@@ -19317,6 +21118,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void swapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         swapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().body();
@@ -19331,6 +21135,7 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -19345,6 +21150,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -19364,6 +21170,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> swapSlotSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -19396,6 +21203,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginSwapSlotSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         beginSwapSlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().body();
@@ -19410,6 +21220,7 @@ public final class WebAppsInner {
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginSwapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -19424,6 +21235,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginSwapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -19443,6 +21255,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginSwapSlotSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
@@ -19481,6 +21294,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -19491,6 +21305,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
      * @param slot Website Slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SnapshotInner&gt; object if successful.
      */
     public PagedList<SnapshotInner> listSnapshotsSlot(final String resourceGroupName, final String name, final String slot) {
@@ -19511,6 +21328,7 @@ public final class WebAppsInner {
      * @param name Website Name
      * @param slot Website Slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SnapshotInner>> listSnapshotsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
@@ -19532,6 +21350,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
      * @param slot Website Slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<Page<SnapshotInner>> listSnapshotsSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -19551,6 +21370,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
      * @param slot Website Slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -19574,6 +21394,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name
     ServiceResponse<PageImpl<SnapshotInner>> * @param slot Website Slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -19618,6 +21439,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControlSlot(String resourceGroupName, String name, String slot) {
@@ -19632,6 +21456,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> getSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -19645,6 +21470,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<SiteSourceControlInner> getSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
@@ -19663,6 +21489,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> getSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -19708,6 +21535,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19723,6 +21553,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> createOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -19737,6 +21568,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteSourceControlInner> createOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19756,6 +21588,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19788,6 +21621,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19803,6 +21639,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -19817,6 +21654,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19836,6 +21674,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for the production slot.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> beginCreateOrUpdateSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
@@ -19885,10 +21724,12 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
-     * @return the Object object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public Object deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public void deleteSourceControlSlot(String resourceGroupName, String name, String slot) {
+        deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
     /**
@@ -19899,9 +21740,10 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<Void> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -19912,12 +21754,13 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
-     * @return the observable to the Object object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
-        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+        return deleteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -19930,9 +21773,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for the production slot.
-     * @return the observable to the Object object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Void>> deleteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -19947,11 +21791,11 @@ public final class WebAppsInner {
         }
         final String apiVersion = "2016-08-01";
         return service.deleteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteSourceControlSlotDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteSourceControlSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -19960,10 +21804,10 @@ public final class WebAppsInner {
             });
     }
 
-    private ServiceResponse<Object> deleteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .register(202, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -19976,6 +21820,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void startSlot(String resourceGroupName, String name, String slot) {
         startSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -19989,6 +21836,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> startSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -20002,6 +21850,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> startSlotAsync(String resourceGroupName, String name, String slot) {
@@ -20020,6 +21869,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> startSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -20053,7 +21903,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> startSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -20064,6 +21914,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stopSlot(String resourceGroupName, String name, String slot) {
         stopSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -20077,6 +21930,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> stopSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -20090,6 +21944,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> stopSlotAsync(String resourceGroupName, String name, String slot) {
@@ -20108,6 +21963,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> stopSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -20141,7 +21997,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> stopSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -20152,6 +22008,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void syncRepositorySlot(String resourceGroupName, String name, String slot) {
         syncRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
@@ -20165,6 +22024,7 @@ public final class WebAppsInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> syncRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -20178,6 +22038,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> syncRepositorySlotAsync(String resourceGroupName, String name, String slot) {
@@ -20196,6 +22057,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> syncRepositorySlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -20229,6 +22091,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> syncRepositorySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -20239,6 +22102,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot) {
@@ -20259,6 +22125,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -20280,6 +22147,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -20299,6 +22167,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
@@ -20322,6 +22191,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -20361,6 +22231,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -20382,6 +22255,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -20404,6 +22278,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -20424,6 +22299,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -20448,6 +22324,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -20492,6 +22369,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnectionsSlot(String resourceGroupName, String name, String slot) {
@@ -20506,6 +22386,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
@@ -20519,6 +22400,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -20537,6 +22419,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetInfoInner>>> listVnetConnectionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
@@ -20582,6 +22465,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
@@ -20597,6 +22483,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -20611,6 +22498,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
@@ -20630,6 +22518,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> getVnetConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot) {
@@ -20679,6 +22568,9 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20695,6 +22587,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -20710,6 +22603,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20730,6 +22624,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateVnetConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20782,6 +22677,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
         deleteVnetConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().body();
@@ -20796,6 +22694,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Void> serviceCallback) {
@@ -20810,6 +22709,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
@@ -20829,6 +22729,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteVnetConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot) {
@@ -20866,6 +22767,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -20878,6 +22780,9 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20894,6 +22799,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> updateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -20909,6 +22815,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> updateVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20929,6 +22836,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> updateVnetConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
@@ -20982,6 +22890,9 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
@@ -20998,6 +22909,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -21013,6 +22925,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
@@ -21033,6 +22946,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> getVnetConnectionGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
@@ -21087,6 +23001,9 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21104,6 +23021,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -21120,6 +23038,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> createOrUpdateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21141,6 +23060,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateVnetConnectionGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21198,6 +23118,9 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21215,6 +23138,7 @@ public final class WebAppsInner {
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> updateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -21231,6 +23155,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> updateVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21252,6 +23177,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network.
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> updateVnetConnectionGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
@@ -21306,6 +23232,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
@@ -21326,6 +23255,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
@@ -21347,6 +23277,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
@@ -21366,6 +23297,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionWithServiceResponseAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
@@ -21389,6 +23321,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionSinglePageAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
@@ -21434,6 +23367,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().body();
@@ -21447,6 +23383,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -21460,6 +23397,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -21478,6 +23416,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> swapSlotWithProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -21506,6 +23445,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().body();
@@ -21519,6 +23461,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Void> serviceCallback) {
@@ -21532,6 +23475,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -21550,6 +23494,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginSwapSlotWithProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
@@ -21585,6 +23530,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -21594,6 +23540,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SnapshotInner&gt; object if successful.
      */
     public PagedList<SnapshotInner> listSnapshots(final String resourceGroupName, final String name) {
@@ -21613,6 +23562,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SnapshotInner>> listSnapshotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
@@ -21633,6 +23583,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<Page<SnapshotInner>> listSnapshotsAsync(final String resourceGroupName, final String name) {
@@ -21651,6 +23602,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -21673,6 +23625,7 @@ public final class WebAppsInner {
      *
     ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -21713,6 +23666,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner getSourceControl(String resourceGroupName, String name) {
@@ -21726,6 +23682,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> getSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -21738,6 +23695,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<SiteSourceControlInner> getSourceControlAsync(String resourceGroupName, String name) {
@@ -21755,6 +23713,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> getSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -21796,6 +23755,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner createOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21810,6 +23772,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> createOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -21823,6 +23786,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<SiteSourceControlInner> createOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21841,6 +23805,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSourceControlWithServiceResponseAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21869,6 +23834,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SiteSourceControlInner object if successful.
      */
     public SiteSourceControlInner beginCreateOrUpdateSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21883,6 +23851,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
@@ -21896,6 +23865,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21914,6 +23884,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteSourceControlInner object
      */
     public Observable<ServiceResponse<SiteSourceControlInner>> beginCreateOrUpdateSourceControlWithServiceResponseAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
@@ -21959,10 +23930,12 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @return the Object object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public Object deleteSourceControl(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public void deleteSourceControl(String resourceGroupName, String name) {
+        deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
@@ -21972,9 +23945,10 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Object> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceFuture<Void> deleteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -21984,12 +23958,13 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @return the observable to the Object object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteSourceControlAsync(String resourceGroupName, String name) {
-        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteSourceControlAsync(String resourceGroupName, String name) {
+        return deleteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -22001,9 +23976,10 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @return the observable to the Object object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> deleteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -22015,11 +23991,11 @@ public final class WebAppsInner {
         }
         final String apiVersion = "2016-08-01";
         return service.deleteSourceControl(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteSourceControlDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteSourceControlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -22028,10 +24004,10 @@ public final class WebAppsInner {
             });
     }
 
-    private ServiceResponse<Object> deleteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .register(202, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -22043,6 +24019,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void start(String resourceGroupName, String name) {
         startWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -22055,6 +24034,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> startAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -22067,6 +24047,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> startAsync(String resourceGroupName, String name) {
@@ -22084,6 +24065,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -22114,7 +24096,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> startDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -22124,6 +24106,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void stop(String resourceGroupName, String name) {
         stopWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -22136,6 +24121,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> stopAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -22148,6 +24134,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> stopAsync(String resourceGroupName, String name) {
@@ -22165,6 +24152,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> stopWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -22195,7 +24183,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> stopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -22205,6 +24193,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void syncRepository(String resourceGroupName, String name) {
         syncRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
@@ -22217,6 +24208,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> syncRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
@@ -22229,6 +24221,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> syncRepositoryAsync(String resourceGroupName, String name) {
@@ -22246,6 +24239,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> syncRepositoryWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -22276,6 +24270,7 @@ public final class WebAppsInner {
     private ServiceResponse<Void> syncRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -22285,6 +24280,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name) {
@@ -22304,6 +24302,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -22324,6 +24323,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name) {
@@ -22342,6 +24342,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -22364,6 +24365,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -22399,6 +24401,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsages(final String resourceGroupName, final String name, final String filter) {
@@ -22419,6 +24424,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -22440,6 +24446,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesAsync(final String resourceGroupName, final String name, final String filter) {
@@ -22459,6 +24466,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String filter) {
@@ -22482,6 +24490,7 @@ public final class WebAppsInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of the app.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
@@ -22522,6 +24531,9 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnetConnections(String resourceGroupName, String name) {
@@ -22535,6 +24547,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
@@ -22547,6 +24560,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name) {
@@ -22564,6 +24578,7 @@ public final class WebAppsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetInfoInner>>> listVnetConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -22605,6 +24620,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetConnection(String resourceGroupName, String name, String vnetName) {
@@ -22619,6 +24637,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -22632,6 +24651,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName) {
@@ -22650,6 +24670,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> getVnetConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
@@ -22695,6 +24716,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner createOrUpdateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22710,6 +24734,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> createOrUpdateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -22724,6 +24749,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> createOrUpdateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22743,6 +24769,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateVnetConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22791,6 +24818,9 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteVnetConnection(String resourceGroupName, String name, String vnetName) {
         deleteVnetConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().body();
@@ -22804,6 +24834,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteVnetConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Void> serviceCallback) {
@@ -22817,6 +24848,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteVnetConnectionAsync(String resourceGroupName, String name, String vnetName) {
@@ -22835,6 +24867,7 @@ public final class WebAppsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteVnetConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
@@ -22869,6 +24902,7 @@ public final class WebAppsInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -22880,6 +24914,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner updateVnetConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22895,6 +24932,7 @@ public final class WebAppsInner {
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetInfoInner> updateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
@@ -22909,6 +24947,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> updateVnetConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22928,6 +24967,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> updateVnetConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
@@ -22977,6 +25017,9 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner getVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
@@ -22992,6 +25035,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> getVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -23006,6 +25050,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> getVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
@@ -23025,6 +25070,7 @@ public final class WebAppsInner {
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> getVnetConnectionGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
@@ -23075,6 +25121,9 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner createOrUpdateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23091,6 +25140,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> createOrUpdateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -23106,6 +25156,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> createOrUpdateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23126,6 +25177,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateVnetConnectionGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23179,6 +25231,9 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23195,6 +25250,7 @@ public final class WebAppsInner {
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<VnetGatewayInner> updateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
@@ -23210,6 +25266,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> updateVnetConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23230,6 +25287,7 @@ public final class WebAppsInner {
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param connectionEnvelope The properties to update this gateway with.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> updateVnetConnectionGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -23279,6 +25337,9 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listNext(final String nextPageLink) {
@@ -23296,8 +25357,9 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -23317,6 +25379,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listNextAsync(final String nextPageLink) {
@@ -23334,6 +25397,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23355,6 +25419,7 @@ public final class WebAppsInner {
      * Get all apps for a subscription.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -23388,6 +25453,9 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listByResourceGroupNext(final String nextPageLink) {
@@ -23405,8 +25473,9 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -23426,6 +25495,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -23443,6 +25513,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23464,6 +25535,7 @@ public final class WebAppsInner {
      * Gets all web, mobile, and API apps in the specified resource group.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -23497,6 +25569,9 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
     public PagedList<BackupItemInner> listBackupsNext(final String nextPageLink) {
@@ -23514,8 +25589,9 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BackupItemInner>> listBackupsNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
@@ -23535,6 +25611,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<Page<BackupItemInner>> listBackupsNextAsync(final String nextPageLink) {
@@ -23552,6 +25629,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23573,6 +25651,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsNextSinglePageAsync(final String nextPageLink) {
@@ -23606,6 +25685,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listDeploymentsNext(final String nextPageLink) {
@@ -23623,8 +25705,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listDeploymentsNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -23644,6 +25727,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listDeploymentsNextAsync(final String nextPageLink) {
@@ -23661,6 +25745,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23682,6 +25767,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsNextSinglePageAsync(final String nextPageLink) {
@@ -23715,6 +25801,9 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IdentifierInner&gt; object if successful.
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersNext(final String nextPageLink) {
@@ -23732,8 +25821,9 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<IdentifierInner>> serviceFuture, final ListOperationCallback<IdentifierInner> serviceCallback) {
@@ -23753,6 +25843,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<Page<IdentifierInner>> listDomainOwnershipIdentifiersNextAsync(final String nextPageLink) {
@@ -23770,6 +25861,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23791,6 +25883,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
     ServiceResponse<PageImpl<IdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersNextSinglePageAsync(final String nextPageLink) {
@@ -23824,6 +25917,9 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsNext(final String nextPageLink) {
@@ -23841,8 +25937,9 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsNextAsync(final String nextPageLink, final ServiceFuture<List<HostNameBindingInner>> serviceFuture, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
@@ -23862,6 +25959,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<Page<HostNameBindingInner>> listHostNameBindingsNextAsync(final String nextPageLink) {
@@ -23879,6 +25977,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -23900,6 +25999,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsNextSinglePageAsync(final String nextPageLink) {
@@ -23933,6 +26033,9 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersNext(final String nextPageLink) {
@@ -23950,8 +26053,9 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInstanceInner>> serviceFuture, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
@@ -23971,6 +26075,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<Page<SiteInstanceInner>> listInstanceIdentifiersNextAsync(final String nextPageLink) {
@@ -23988,6 +26093,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24009,6 +26115,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersNextSinglePageAsync(final String nextPageLink) {
@@ -24042,6 +26149,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsNext(final String nextPageLink) {
@@ -24059,8 +26169,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -24080,6 +26191,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listInstanceDeploymentsNextAsync(final String nextPageLink) {
@@ -24097,6 +26209,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24118,6 +26231,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsNextSinglePageAsync(final String nextPageLink) {
@@ -24151,6 +26265,9 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsNext(final String nextPageLink) {
@@ -24168,8 +26285,9 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
@@ -24189,6 +26307,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink) {
@@ -24206,6 +26325,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24227,6 +26347,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
@@ -24260,6 +26381,9 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsNext(final String nextPageLink) {
@@ -24277,8 +26401,9 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -24298,6 +26423,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsNextAsync(final String nextPageLink) {
@@ -24315,6 +26441,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24336,6 +26463,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -24369,6 +26497,9 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersNext(final String nextPageLink) {
@@ -24386,8 +26517,9 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersNextAsync(final String nextPageLink, final ServiceFuture<List<PerfMonResponseInner>> serviceFuture, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -24407,6 +26539,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersNextAsync(final String nextPageLink) {
@@ -24424,6 +26557,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24445,6 +26579,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersNextSinglePageAsync(final String nextPageLink) {
@@ -24478,6 +26613,9 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listSlotsNext(final String nextPageLink) {
@@ -24495,8 +26633,9 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInner>> listSlotsNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInner>> serviceFuture, final ListOperationCallback<SiteInner> serviceCallback) {
@@ -24516,6 +26655,7 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listSlotsNextAsync(final String nextPageLink) {
@@ -24533,6 +26673,7 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listSlotsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24554,6 +26695,7 @@ public final class WebAppsInner {
      * Gets an app's deployment slots.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listSlotsNextSinglePageAsync(final String nextPageLink) {
@@ -24587,6 +26729,9 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
     public PagedList<BackupItemInner> listBackupsSlotNext(final String nextPageLink) {
@@ -24604,8 +26749,9 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<BackupItemInner>> listBackupsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
@@ -24625,6 +26771,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<Page<BackupItemInner>> listBackupsSlotNextAsync(final String nextPageLink) {
@@ -24642,6 +26789,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24663,6 +26811,7 @@ public final class WebAppsInner {
      * Gets existing backups of an app.
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listBackupsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -24696,6 +26845,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listDeploymentsSlotNext(final String nextPageLink) {
@@ -24713,8 +26865,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listDeploymentsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -24734,6 +26887,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listDeploymentsSlotNextAsync(final String nextPageLink) {
@@ -24751,6 +26905,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24772,6 +26927,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -24805,6 +26961,9 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IdentifierInner&gt; object if successful.
      */
     public PagedList<IdentifierInner> listDomainOwnershipIdentifiersSlotNext(final String nextPageLink) {
@@ -24822,8 +26981,9 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<IdentifierInner>> serviceFuture, final ListOperationCallback<IdentifierInner> serviceCallback) {
@@ -24843,6 +27003,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<Page<IdentifierInner>> listDomainOwnershipIdentifiersSlotNextAsync(final String nextPageLink) {
@@ -24860,6 +27021,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;IdentifierInner&gt; object
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24881,6 +27043,7 @@ public final class WebAppsInner {
      * Lists ownership identifiers for domain associated with web app.
      *
     ServiceResponse<PageImpl<IdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;IdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<IdentifierInner>>> listDomainOwnershipIdentifiersSlotNextSinglePageAsync(final String nextPageLink) {
@@ -24914,6 +27077,9 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
     public PagedList<HostNameBindingInner> listHostNameBindingsSlotNext(final String nextPageLink) {
@@ -24931,8 +27097,9 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<HostNameBindingInner>> listHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<HostNameBindingInner>> serviceFuture, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
@@ -24952,6 +27119,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<Page<HostNameBindingInner>> listHostNameBindingsSlotNextAsync(final String nextPageLink) {
@@ -24969,6 +27137,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -24990,6 +27159,7 @@ public final class WebAppsInner {
      * Get hostname bindings for an app or a deployment slot.
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> listHostNameBindingsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25023,6 +27193,9 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
     public PagedList<SiteInstanceInner> listInstanceIdentifiersSlotNext(final String nextPageLink) {
@@ -25040,8 +27213,9 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SiteInstanceInner>> listInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SiteInstanceInner>> serviceFuture, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
@@ -25061,6 +27235,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<Page<SiteInstanceInner>> listInstanceIdentifiersSlotNextAsync(final String nextPageLink) {
@@ -25078,6 +27253,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25099,6 +27275,7 @@ public final class WebAppsInner {
      * Gets all scale-out instances of an app.
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> listInstanceIdentifiersSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25132,6 +27309,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
     public PagedList<DeploymentInner> listInstanceDeploymentsSlotNext(final String nextPageLink) {
@@ -25149,8 +27329,9 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DeploymentInner>> listInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<DeploymentInner>> serviceFuture, final ListOperationCallback<DeploymentInner> serviceCallback) {
@@ -25170,6 +27351,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<Page<DeploymentInner>> listInstanceDeploymentsSlotNextAsync(final String nextPageLink) {
@@ -25187,6 +27369,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25208,6 +27391,7 @@ public final class WebAppsInner {
      * List deployments for an app, or a deployment slot, or for an instance of a scaled-out app.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> listInstanceDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25241,6 +27425,9 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
     public PagedList<ResourceMetricDefinitionInner> listMetricDefinitionsSlotNext(final String nextPageLink) {
@@ -25258,8 +27445,9 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricDefinitionInner>> serviceFuture, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
@@ -25279,6 +27467,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefinitionsSlotNextAsync(final String nextPageLink) {
@@ -25296,6 +27485,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25317,6 +27507,7 @@ public final class WebAppsInner {
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefinitionsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25350,6 +27541,9 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetricsSlotNext(final String nextPageLink) {
@@ -25367,8 +27561,9 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ResourceMetricInner>> listMetricsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<ResourceMetricInner>> serviceFuture, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
@@ -25388,6 +27583,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsSlotNextAsync(final String nextPageLink) {
@@ -25405,6 +27601,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25426,6 +27623,7 @@ public final class WebAppsInner {
      * Gets performance metrics of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25459,6 +27657,9 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PerfMonResponseInner&gt; object if successful.
      */
     public PagedList<PerfMonResponseInner> listPerfMonCountersSlotNext(final String nextPageLink) {
@@ -25476,8 +27677,9 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<PerfMonResponseInner>> listPerfMonCountersSlotNextAsync(final String nextPageLink, final ServiceFuture<List<PerfMonResponseInner>> serviceFuture, final ListOperationCallback<PerfMonResponseInner> serviceCallback) {
@@ -25497,6 +27699,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<Page<PerfMonResponseInner>> listPerfMonCountersSlotNextAsync(final String nextPageLink) {
@@ -25514,6 +27717,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PerfMonResponseInner&gt; object
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25535,6 +27739,7 @@ public final class WebAppsInner {
      * Gets perfmon counters for web app.
      *
     ServiceResponse<PageImpl<PerfMonResponseInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PerfMonResponseInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<PerfMonResponseInner>>> listPerfMonCountersSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25568,6 +27773,9 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) {
@@ -25585,8 +27793,9 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
@@ -25606,6 +27815,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink) {
@@ -25623,6 +27833,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25644,6 +27855,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25677,6 +27889,9 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SnapshotInner&gt; object if successful.
      */
     public PagedList<SnapshotInner> listSnapshotsSlotNext(final String nextPageLink) {
@@ -25694,8 +27909,9 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SnapshotInner>> listSnapshotsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
@@ -25715,6 +27931,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<Page<SnapshotInner>> listSnapshotsSlotNextAsync(final String nextPageLink) {
@@ -25732,6 +27949,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25753,6 +27971,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
     ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25786,6 +28005,9 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsagesSlotNext(final String nextPageLink) {
@@ -25803,8 +28025,9 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -25824,6 +28047,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesSlotNextAsync(final String nextPageLink) {
@@ -25841,6 +28065,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25862,6 +28087,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesSlotNextSinglePageAsync(final String nextPageLink) {
@@ -25895,6 +28121,9 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
     public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) {
@@ -25912,8 +28141,9 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
@@ -25933,6 +28163,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink) {
@@ -25950,6 +28181,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextWithServiceResponseAsync(final String nextPageLink) {
@@ -25971,6 +28203,7 @@ public final class WebAppsInner {
      * Get the difference in configuration settings between two web app slots.
      *
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextSinglePageAsync(final String nextPageLink) {
@@ -26004,6 +28237,9 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SnapshotInner&gt; object if successful.
      */
     public PagedList<SnapshotInner> listSnapshotsNext(final String nextPageLink) {
@@ -26021,8 +28257,9 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SnapshotInner>> listSnapshotsNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
@@ -26042,6 +28279,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<Page<SnapshotInner>> listSnapshotsNextAsync(final String nextPageLink) {
@@ -26059,6 +28297,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SnapshotInner&gt; object
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsNextWithServiceResponseAsync(final String nextPageLink) {
@@ -26080,6 +28319,7 @@ public final class WebAppsInner {
      * Returns all Snapshots to the user.
      *
     ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsNextSinglePageAsync(final String nextPageLink) {
@@ -26113,6 +28353,9 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
     public PagedList<CsmUsageQuotaInner> listUsagesNext(final String nextPageLink) {
@@ -26130,8 +28373,9 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink, final ServiceFuture<List<CsmUsageQuotaInner>> serviceFuture, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
@@ -26151,6 +28395,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<Page<CsmUsageQuotaInner>> listUsagesNextAsync(final String nextPageLink) {
@@ -26168,6 +28413,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -26189,6 +28435,7 @@ public final class WebAppsInner {
      * Gets the quota usage information of an app (or deployment slot, if specified).
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> listUsagesNextSinglePageAsync(final String nextPageLink) {

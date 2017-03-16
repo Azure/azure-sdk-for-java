@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Network access control entry.
@@ -16,21 +17,25 @@ public class NetworkAccessControlEntry {
     /**
      * Action object. Possible values include: 'Permit', 'Deny'.
      */
+    @JsonProperty(value = "action")
     private AccessControlEntryAction action;
 
     /**
      * Description.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /**
      * Order of precedence.
      */
+    @JsonProperty(value = "order")
     private Integer order;
 
     /**
      * Remote subnet.
      */
+    @JsonProperty(value = "remoteSubnet")
     private String remoteSubnet;
 
     /**

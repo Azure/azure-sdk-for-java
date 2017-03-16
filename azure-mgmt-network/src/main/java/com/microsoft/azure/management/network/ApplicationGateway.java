@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
@@ -21,16 +22,42 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import rx.Completable;
+
 /**
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
+@Beta
 public interface ApplicationGateway extends
         GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
         HasPrivateIPAddress {
+
+    // Actions
+    /**
+     * Starts the application gateway.
+     */
+    void start();
+
+    /**
+     * Stops the application gateway.
+     */
+    void stop();
+
+    /**
+     * Starts the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
+     * Stops the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopAsync();
 
     // Getters
 

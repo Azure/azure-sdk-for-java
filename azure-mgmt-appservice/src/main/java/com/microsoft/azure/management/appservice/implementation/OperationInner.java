@@ -12,6 +12,7 @@ import com.microsoft.azure.management.appservice.OperationStatus;
 import java.util.List;
 import com.microsoft.azure.management.appservice.ErrorEntity;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Operation.
@@ -20,42 +21,50 @@ public class OperationInner {
     /**
      * Operation ID.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * Operation name.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * The current status of the operation. Possible values include:
      * 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created'.
      */
+    @JsonProperty(value = "status")
     private OperationStatus status;
 
     /**
      * Any errors associate with the operation.
      */
+    @JsonProperty(value = "errors")
     private List<ErrorEntity> errors;
 
     /**
      * Time when operation has started.
      */
+    @JsonProperty(value = "createdTime")
     private DateTime createdTime;
 
     /**
      * Time when operation has been updated.
      */
+    @JsonProperty(value = "modifiedTime")
     private DateTime modifiedTime;
 
     /**
      * Time when operation will expire.
      */
+    @JsonProperty(value = "expirationTime")
     private DateTime expirationTime;
 
     /**
      * Applicable only for stamp operation ids.
      */
+    @JsonProperty(value = "geoMasterOperationId")
     private String geoMasterOperationId;
 
     /**
