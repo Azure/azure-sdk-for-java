@@ -198,13 +198,20 @@ public interface Subscription extends
          * The stage of the subscription definition allowing to specify whether expired message can be moved
          * to secondary dead-letter subscription.
          */
-        interface WithExpiredMessageMovedToDeadLetterQueue {
+        interface WithExpiredMessageMovedToDeadLetterSubscription {
             /**
              * Specifies that expired message must be moved to dead-letter subscription.
              *
              * @return the next stage of subscription definition
              */
-            WithCreate withExpiredMessageMovedToDeadLetterQueue();
+            WithCreate withExpiredMessageMovedToDeadLetterSubscription();
+
+            /**
+             * Specifies that expired message should not be moved to dead-letter subscription.
+             *
+             * @return the next stage of subscription definition
+             */
+            WithCreate withoutExpiredMessageMovedToDeadLetterSubscription();
         }
 
         /**
@@ -262,7 +269,7 @@ public interface Subscription extends
                 Subscription.DefinitionStages.WithDefaultMessageTTL,
                 Subscription.DefinitionStages.WithSession,
                 Subscription.DefinitionStages.WithMessageBatching,
-                Subscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterQueue,
+                Subscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
                 Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
                 Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException,
                 Subscription.DefinitionStages.WithAuthorizationRule {
@@ -368,7 +375,7 @@ public interface Subscription extends
         }
 
         /**
-         * The stage of the queue definition allowing to specify whether expired message can be moved
+         * The stage of the subscription update allowing to specify whether expired message can be moved
          * to secondary dead-letter subscription.
          */
         interface WithExpiredMessageMovedToDeadLetterSubscription {
@@ -388,7 +395,7 @@ public interface Subscription extends
         }
 
         /**
-         * The stage of the queue definition allowing to specify maximum delivery count of message before
+         * The stage of the subscription definition allowing to specify maximum delivery count of message before
          * moving it to dead-letter queue.
          */
         interface WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount {

@@ -179,83 +179,94 @@ class SubscriptionImpl extends
 
     @Override
     public SubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        return null;
+        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
+        this.inner().withAutoDeleteOnIdle(timeSpan.toString());
+        return this;
     }
 
     @Override
     public SubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
-        return null;
+        TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
+        this.inner().withLockDuration(timeSpan.toString());
+        return this;
     }
 
     @Override
     public SubscriptionImpl withDefaultMessageTTL(Period ttl) {
-        return null;
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
+        return this;
     }
 
     @Override
     public SubscriptionImpl withSession() {
-        return null;
+        this.inner().withRequiresSession(true);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withoutSession() {
-        return null;
+        this.inner().withRequiresSession(false);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withMessageBatching() {
-        return null;
+        this.inner().withEnableBatchedOperations(true);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withoutMessageBatching() {
-        return null;
-    }
-
-    @Override
-    public SubscriptionImpl withExpiredMessageMovedToDeadLetterQueue() {
-        return null;
+        this.inner().withEnableBatchedOperations(false);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(int deliveryCount) {
-        return null;
+        this.inner().withMaxDeliveryCount(deliveryCount);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
-        return null;
+        this.inner().withDeadLetteringOnFilterEvaluationExceptions(true);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withoutMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException() {
-        return null;
-    }
-
-    @Override
-    public SubscriptionImpl withNewAuthorizationRule(String name, AccessRights... rights) {
-        return null;
-    }
-
-    @Override
-    public SubscriptionImpl withoutNewAuthorizationRule(String name) {
-        return null;
+        this.inner().withDeadLetteringOnFilterEvaluationExceptions(false);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withExpiredMessageMovedToDeadLetterSubscription() {
-        return null;
+        this.inner().withDeadLetteringOnMessageExpiration(true);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withoutExpiredMessageMovedToDeadLetterSubscription() {
-        return null;
+        this.inner().withDeadLetteringOnMessageExpiration(false);
+        return this;
     }
 
     @Override
     public SubscriptionImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
-        return null;
+        this.inner().withMaxDeliveryCount(deliveryCount);
+        return this;
     }
+
+    @Override
+    public SubscriptionImpl withNewAuthorizationRule(String name, AccessRights... rights) {
+        return this;
+    }
+
+    @Override
+    public SubscriptionImpl withoutNewAuthorizationRule(String name) {
+        return this;
+    }
+
 
     @Override
     protected Observable<SubscriptionResourceInner> getInnerAsync() {

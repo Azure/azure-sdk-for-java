@@ -144,7 +144,7 @@ public interface Topic extends
              * @param sizeInMB size in MB
              * @return the next stage of topic definition
              */
-            WithCreate withSizeInMB(int sizeInMB);
+            WithCreate withSizeInMB(long sizeInMB);
         }
 
         /**
@@ -315,7 +315,7 @@ public interface Topic extends
              * @param sizeInMB size in MB
              * @return the next stage of topic update
              */
-            Update withSizeInMB(int sizeInMB);
+            Update withSizeInMB(long sizeInMB);
         }
 
         /**

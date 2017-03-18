@@ -77,7 +77,11 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public NamespaceImpl withSku(NamespaceSku sku) {
+    public NamespaceImpl withSku(NamespaceSku namespaceSku) {
+        this.inner().withSku(new Sku()
+                .withName(namespaceSku.name())
+                .withTier(namespaceSku.tier())
+                .withCapacity(namespaceSku.capacity()));
         return this;
     }
 
@@ -118,6 +122,7 @@ class NamespaceImpl extends GroupableResourceImpl<
 
     @Override
     protected Observable<NamespaceResourceInner> getInnerAsync() {
-        return null;
+        return this.manager().inner().namespaces().getByResourceGroupAsync(this.resourceGroupName(),
+                this.name());
     }
 }

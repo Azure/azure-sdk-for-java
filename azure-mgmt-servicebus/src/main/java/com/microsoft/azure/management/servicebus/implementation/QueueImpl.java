@@ -206,82 +206,114 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     }
 
     @Override
-    public QueueImpl withSizeInMB(int sizeInMB) {
+    public QueueImpl withSizeInMB(long sizeInMB) {
+        this.inner().withMaxSizeInMegabytes(sizeInMB);
         return this;
     }
 
     @Override
     public QueueImpl withPartitioning() {
+        this.inner().withEnablePartitioning(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutPartitioning() {
+        this.inner().withEnablePartitioning(false);
         return this;
     }
 
     @Override
     public QueueImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
+        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
+        this.inner().withAutoDeleteOnIdle(timeSpan.toString());
         return this;
     }
 
     @Override
     public QueueImpl withMessageLockDurationInSeconds(int durationInSeconds) {
+        TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
+        this.inner().withLockDuration(timeSpan.toString());
         return this;
     }
 
     @Override
     public QueueImpl withDefaultMessageTTL(Period ttl) {
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
         return this;
     }
 
     @Override
     public QueueImpl withSession() {
+        this.inner().withRequiresSession(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutSession() {
+        this.inner().withRequiresSession(false);
         return this;
     }
 
     @Override
     public QueueImpl withExpressMessage() {
+        this.inner().withEnableExpress(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutExpressMessage() {
+        this.inner().withEnableExpress(false);
         return this;
     }
 
     @Override
     public QueueImpl withMessageBatching() {
+        this.inner().withEnableBatchedOperations(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutMessageBatching() {
-        return this;
-    }
-
-    @Override
-    public QueueImpl withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration) {
+        this.inner().withEnableBatchedOperations(false);
         return this;
     }
 
     @Override
     public QueueImpl withExpiredMessageMovedToDeadLetterQueue() {
+        this.inner().withDeadLetteringOnMessageExpiration(true);
         return this;
     }
 
     @Override
     public QueueImpl withoutExpiredMessageMovedToDeadLetterQueue() {
+        this.inner().withDeadLetteringOnMessageExpiration(false);
         return this;
     }
 
     @Override
     public QueueImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
+        this.inner().withMaxDeliveryCount(deliveryCount);
+        return this;
+    }
+
+    @Override
+    public QueueImpl withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration) {
+        this.inner().withRequiresDuplicateDetection(true);
+        this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
+                .fromPeriod(duplicateDetectionHistoryDuration)
+                .toString());
+        return this;
+    }
+
+    @Override
+    public QueueImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
+        return withDuplicateMessageDetection(duration);
+    }
+
+    @Override
+    public QueueImpl withoutDuplicateMessageDetection() {
+        this.inner().withRequiresDuplicateDetection(false);
         return this;
     }
 
@@ -292,16 +324,6 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     @Override
     public QueueImpl withoutNewAuthorizationRule(String name) {
-        return this;
-    }
-
-    @Override
-    public QueueImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
-        return this;
-    }
-
-    @Override
-    public QueueImpl withoutDuplicateMessageDetection() {
         return this;
     }
 

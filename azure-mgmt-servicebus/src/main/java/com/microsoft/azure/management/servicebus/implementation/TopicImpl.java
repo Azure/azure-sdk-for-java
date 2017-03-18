@@ -192,52 +192,77 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     }
 
     @Override
-    public TopicImpl withSizeInMB(int sizeInMB) {
+    public TopicImpl withSizeInMB(long sizeInMB) {
+        this.inner().withMaxSizeInMegabytes(sizeInMB);
         return this;
     }
 
     @Override
     public TopicImpl withPartitioning() {
+        this.inner().withEnablePartitioning(true);
         return this;
     }
 
     @Override
     public TopicImpl withoutPartitioning() {
+        this.inner().withEnablePartitioning(false);
         return this;
     }
 
     @Override
     public TopicImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
+        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
+        this.inner().withAutoDeleteOnIdle(timeSpan.toString());
         return this;
     }
 
     @Override
     public TopicImpl withDefaultMessageTTL(Period ttl) {
+        this.inner().withDefaultMessageTimeToLive(TimeSpan.fromPeriod(ttl).toString());
         return this;
     }
 
     @Override
     public TopicImpl withExpressMessage() {
+        this.inner().withEnableExpress(true);
         return this;
     }
 
     @Override
     public TopicImpl withoutExpressMessage() {
+        this.inner().withEnableExpress(false);
         return this;
     }
 
     @Override
     public TopicImpl withMessageBatching() {
+        this.inner().withEnableBatchedOperations(true);
         return this;
     }
 
     @Override
     public TopicImpl withoutMessageBatching() {
+        this.inner().withEnableBatchedOperations(false);
         return this;
     }
 
     @Override
     public TopicImpl withDuplicateMessageDetection(Period duplicateDetectionHistoryDuration) {
+        this.inner().withRequiresDuplicateDetection(true);
+        this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
+                .fromPeriod(duplicateDetectionHistoryDuration)
+                .toString());
+        return this;
+    }
+
+    @Override
+    public TopicImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
+       return withDuplicateMessageDetection(duration);
+    }
+
+    @Override
+    public TopicImpl withoutDuplicateMessageDetection() {
+        this.inner().withRequiresDuplicateDetection(false);
         return this;
     }
 
@@ -248,16 +273,6 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     public TopicImpl withoutNewAuthorizationRule(String name) {
-        return this;
-    }
-
-    @Override
-    public TopicImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
-        return this;
-    }
-
-    @Override
-    public TopicImpl withoutDuplicateMessageDetection() {
         return this;
     }
 

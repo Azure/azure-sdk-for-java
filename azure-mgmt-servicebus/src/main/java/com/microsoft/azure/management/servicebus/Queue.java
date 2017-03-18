@@ -154,7 +154,7 @@ public interface Queue extends
              * @param sizeInMB size in MB
              * @return the next stage of queue definition
              */
-            WithCreate withSizeInMB(int sizeInMB);
+            WithCreate withSizeInMB(long sizeInMB);
         }
 
         /**
@@ -372,7 +372,7 @@ public interface Queue extends
              * @param sizeInMB size in MB
              * @return the next stage of queue update
              */
-            Update withSizeInMB(int sizeInMB);
+            Update withSizeInMB(long sizeInMB);
         }
 
         /**

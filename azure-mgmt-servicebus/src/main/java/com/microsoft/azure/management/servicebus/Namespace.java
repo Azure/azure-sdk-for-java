@@ -91,10 +91,10 @@ public interface Namespace extends
             /**
              * Specifies the namespace sku.
              *
-             * @param sku the sku
+             * @param namespaceSku the sku
              * @return next stage of the service bus namespace definition
              */
-            WithCreate withSku(NamespaceSku sku);
+            WithCreate withSku(NamespaceSku namespaceSku);
         }
 
         /**
@@ -175,7 +175,13 @@ public interface Namespace extends
          * The stage of the service bus namespace update allowing to change the sku.
          */
         interface WithSku {
-            Update withSku(NamespaceSku sku);
+            /**
+             * Specifies the namespace sku.
+             *
+             * @param namespaceSku the sku
+             * @return next stage of the service bus namespace update
+             */
+            Update withSku(NamespaceSku namespaceSku);
         }
 
         /**

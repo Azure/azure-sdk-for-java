@@ -8,9 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.AccessRights;
-import com.microsoft.azure.management.servicebus.Subscription;
-import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRule;
+import com.microsoft.azure.management.servicebus.*;
 import rx.Observable;
 
 import java.util.ArrayList;
@@ -75,11 +73,13 @@ class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<Sub
     }
 
     @Override
-    public void listKeys() {
+    public AuthorizationKeys getKeys() {
+        return null;
     }
 
     @Override
-    public void regenerateKeys() {
+    public AuthorizationKeys regenerateKey(Policykey policykey) {
+        return null;
     }
 
     @Override

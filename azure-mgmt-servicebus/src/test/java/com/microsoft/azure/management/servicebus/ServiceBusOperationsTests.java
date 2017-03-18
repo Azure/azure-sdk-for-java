@@ -14,7 +14,6 @@ import com.microsoft.azure.management.servicebus.implementation.QueueResourceInn
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.rest.RestClient;
 import org.junit.Test;
-
 import java.util.concurrent.TimeUnit;
 
 public class ServiceBusOperationsTests extends TestBase {
@@ -49,7 +48,6 @@ public class ServiceBusOperationsTests extends TestBase {
 
     @Test
     public void canOperateOnNamespaces() {
-
     }
 
     @Test
