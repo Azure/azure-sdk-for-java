@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Namespace;
@@ -13,8 +14,10 @@ import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRules;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -46,53 +49,86 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public NamespaceAuthorizationRule.DefinitionStages.Blank define(String name) {
-        return null;
+    public NamespaceAuthorizationRuleImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
     public Observable<NamespaceAuthorizationRule> getByNameAsync(String name) {
-        return null;
+        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name)
+                .map(new Func1<SharedAccessAuthorizationRuleInner, NamespaceAuthorizationRule>() {
+                    @Override
+                    public NamespaceAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
     }
 
     @Override
     public NamespaceAuthorizationRule getByName(String name) {
-        return null;
-    }
-
-    @Override
-    public void deleteByName(String name) {
-    }
-
-    @Override
-    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return null;
+        return getByNameAsync(name).toBlocking().last();
     }
 
     @Override
     public Completable deleteByNameAsync(String name) {
-        return null;
+        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                name).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                name,
+                callback);
+    }
+
+    @Override
+    public void deleteByName(String name) {
+        deleteByNameAsync(name).await();
     }
 
     @Override
     public Observable<NamespaceAuthorizationRule> listAsync() {
-        return null;
+        return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
+                this.namespaceName).flatMap(new Func1<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>,
+                Observable<NamespaceAuthorizationRule>>() {
+            @Override
+            public Observable<NamespaceAuthorizationRule> call(ServiceResponse<Page<SharedAccessAuthorizationRuleInner>> r) {
+                return Observable.from(r.body().items()).map(new Func1<SharedAccessAuthorizationRuleInner, NamespaceAuthorizationRule>() {
+                    @Override
+                    public NamespaceAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public PagedList<NamespaceAuthorizationRule> list() {
-        return null;
+        return this.wrapList(this.inner().listAuthorizationRules(this.resourceGroupName,
+                this.namespaceName));
     }
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(String name) {
-        return null;
+        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
+                this.namespaceName,
+                name,
+                new SharedAccessAuthorizationRuleInner(),
+                this.manager());
     }
 
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
-        return null;
+        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
+                this.namespaceName,
+                inner.name(),
+                inner,
+                this.manager());
     }
 
 

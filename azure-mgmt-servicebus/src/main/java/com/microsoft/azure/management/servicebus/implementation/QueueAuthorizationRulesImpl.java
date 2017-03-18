@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Queue;
@@ -13,8 +14,10 @@ import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRules;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -49,52 +52,91 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    public QueueAuthorizationRule.DefinitionStages.Blank define(String name) {
-        return null;
+    public QueueAuthorizationRuleImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
     public Observable<QueueAuthorizationRule> getByNameAsync(String name) {
-        return null;
+        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, this.queueName, name)
+                .map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
+                    @Override
+                    public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
     }
 
     @Override
     public QueueAuthorizationRule getByName(String name) {
-        return null;
+        return getByNameAsync(name).toBlocking().last();
     }
 
     @Override
     public Completable deleteByNameAsync(String name) {
-        return null;
+        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName,
+                name).toCompletable();
     }
 
     @Override
     public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return null;
+        return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName,
+                name,
+                callback);
     }
 
     @Override
     public void deleteByName(String name) {
+        deleteByNameAsync(name).await();
     }
 
     @Override
     public Observable<QueueAuthorizationRule> listAsync() {
-        return null;
+        return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName).flatMap(new Func1<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>,
+                Observable<QueueAuthorizationRule>>() {
+            @Override
+            public Observable<QueueAuthorizationRule> call(ServiceResponse<Page<SharedAccessAuthorizationRuleInner>> r) {
+                return Observable.from(r.body().items()).map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
+                    @Override
+                    public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public PagedList<QueueAuthorizationRule> list() {
-        return null;
+        return this.wrapList(this.inner().listAuthorizationRules(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName));
     }
 
     @Override
     protected QueueAuthorizationRuleImpl wrapModel(String name) {
-        return null;
+        return new QueueAuthorizationRuleImpl(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName,
+                name,
+                new SharedAccessAuthorizationRuleInner(),
+                this.manager());
     }
 
     @Override
     protected QueueAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
-        return null;
+        return new QueueAuthorizationRuleImpl(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName,
+                inner.name(),
+                inner,
+                this.manager());
     }
 
     @Override

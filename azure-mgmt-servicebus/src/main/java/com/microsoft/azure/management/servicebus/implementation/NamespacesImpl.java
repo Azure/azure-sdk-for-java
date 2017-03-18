@@ -27,16 +27,20 @@ class NamespacesImpl extends TopLevelModifiableResourcesImpl<
 
     @Override
     protected NamespaceImpl wrapModel(String name) {
-        return null;
+        return new NamespaceImpl(name,
+                new NamespaceResourceInner(),
+                this.manager());
     }
 
     @Override
     protected NamespaceImpl wrapModel(NamespaceResourceInner inner) {
-        return null;
+        return new NamespaceImpl(inner.name(),
+                inner,
+                this.manager());
     }
 
     @Override
     public Namespace.DefinitionStages.Blank define(String name) {
-        return null;
+        return wrapModel(name);
     }
 }
