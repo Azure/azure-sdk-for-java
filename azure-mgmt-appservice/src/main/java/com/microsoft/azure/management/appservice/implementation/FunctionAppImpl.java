@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.FunctionApp;
@@ -46,8 +47,18 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewConsumptionPlan(String regionName) {
-        return withNewAppServicePlan(SdkContext.randomResourceName(regionName + "Plan", 32), regionName)
+        return withNewAppServicePlan(regionName, AppServiceOperatingSystem.WINDOWS)
             .withPricingTier(new AppServicePricingTier("Dynamic", "Y1"));
+    }
+
+    @Override
+    public FunctionApp.DefinitionStages.WithNewAppServicePlan withNewAppServicePlan(Region region) {
+        return withNewAppServicePlan(region.name());
+    }
+
+    @Override
+    public FunctionApp.DefinitionStages.WithNewAppServicePlan withNewAppServicePlan(String regionName) {
+        return withNewAppServicePlan(regionName, AppServiceOperatingSystem.WINDOWS);
     }
 
     @Override

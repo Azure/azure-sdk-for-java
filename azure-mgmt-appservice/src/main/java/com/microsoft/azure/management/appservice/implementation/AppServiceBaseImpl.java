@@ -10,6 +10,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.HostNameBinding;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import rx.Observable;
 import rx.functions.Func1;
@@ -220,10 +222,14 @@ abstract class AppServiceBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(String name) {
-        appServicePlan = (AppServicePlanImpl) this.manager().appServicePlans().define(name).withRegion(regionName());
+    public FluentImplT withNewAppServicePlan() {
+        String planName = SdkContext.randomResourceName(name() + "plan", 32);
+        appServicePlan = (AppServicePlanImpl) (this.manager().appServicePlans()
+                .define(planName))
+                .withRegion(regionName());
+        appServicePlan.withOperatingSystem(operatingSystem());
         String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", name, "");
+                resourceGroupName(), "Microsoft.Web", "serverFarms", planName, "");
         inner().withServerFarmId(id);
         return (FluentImplT) this;
     }
@@ -250,14 +256,14 @@ abstract class AppServiceBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(String name, Region region) {
-        return withNewAppServicePlan(name, region.name());
+    public FluentImplT withNewAppServicePlan(Region region, AppServiceOperatingSystem operatingSystem) {
+        return withNewAppServicePlan(region.name(), operatingSystem);
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(String name, String regionName) {
-        withNewAppServicePlan(name).withRegion(regionName);
-        appServicePlan.withRegion(regionName);
+    public FluentImplT withNewAppServicePlan(String regionName, AppServiceOperatingSystem operatingSystem) {
+        withNewAppServicePlan().withRegion(regionName);
+        appServicePlan.withRegion(regionName).withOperatingSystem(operatingSystem);
         return (FluentImplT) this;
     }
 

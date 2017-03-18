@@ -63,7 +63,7 @@ public interface FunctionApp extends
              * @param name the name of the app service plan
              * @param region the region of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name, Region region);
+            WithNewAppServicePlan withNewAppServicePlan(Region region);
 
             /**
              * Creates a new app service plan to use.
@@ -71,7 +71,7 @@ public interface FunctionApp extends
              * @param name the name of the app service plan
              * @param regionName the region of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name, String regionName);
+            WithNewAppServicePlan withNewAppServicePlan(String regionName);
 
             /**
              * Creates a new consumption plan to use.
@@ -203,7 +203,7 @@ public interface FunctionApp extends
              * @return the next stage of the function app definition
              * @param name the name of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name);
+            WithNewAppServicePlan withNewAppServicePlan();
 
             /**
              * Creates a new consumption plan to use.

@@ -61,14 +61,14 @@ public interface WebApp extends
              * @param name the name of the app service plan
              * @param region the region of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name, Region region);
+            WithNewAppServicePlan withNewAppServicePlan(Region region, AppServiceOperatingSystem operatingSystem);
             /**
              * Creates a new app service plan to use.
              * @return the next stage of the web app definition
              * @param name the name of the app service plan
              * @param regionName the region of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name, String regionName);
+            WithNewAppServicePlan withNewAppServicePlan(String regionName, AppServiceOperatingSystem operatingSystem);
 
             /**
              * Uses an existing app service plan for the web app.
@@ -120,7 +120,7 @@ public interface WebApp extends
              * @return the next stage of the web app definition
              * @param name the name of the app service plan
              */
-            WithNewAppServicePlan withNewAppServicePlan(String name);
+            WithNewAppServicePlan withNewAppServicePlan();
 
             /**
              * Uses an existing app service plan for the web app.

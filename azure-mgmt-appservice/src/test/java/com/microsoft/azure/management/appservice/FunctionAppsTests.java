@@ -71,7 +71,7 @@ public class FunctionAppsTests extends AppServiceTest {
         // Create with app service plan
         FunctionApp functionApp3 = appServiceManager.functionApps().define(WEBAPP_NAME_3)
                 .withExistingResourceGroup(RG_NAME_2)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_1, Region.US_WEST)
+                .withNewAppServicePlan(Region.US_WEST)
                 .withPricingTier(AppServicePricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
@@ -98,7 +98,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // Scale
         functionApp3.update()
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_2)
+                .withNewAppServicePlan()
                 .withPricingTier(AppServicePricingTier.STANDARD_S2)
                 .apply();
         Assert.assertNotEquals(functionApp3.appServicePlanId(), functionApp1.appServicePlanId());

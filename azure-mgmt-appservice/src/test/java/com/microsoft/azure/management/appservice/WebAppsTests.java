@@ -44,13 +44,13 @@ public class WebAppsTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
                 .withNewResourceGroup(RG_NAME_1, Region.US_WEST)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_1, Region.US_WEST)
+                .withNewAppServicePlan(Region.US_WEST, AppServiceOperatingSystem.WINDOWS)
                 .withPricingTier(AppServicePricingTier.BASIC_B1)
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
                 .create();
         Assert.assertNotNull(webApp1);
         Assert.assertEquals(Region.US_WEST, webApp1.region());
-        AppServicePlan plan1 = appServiceManager.appServicePlans().getByGroup(RG_NAME_1, APP_SERVICE_PLAN_NAME_1);
+        AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assert.assertNotNull(plan1);
         Assert.assertEquals(Region.US_WEST, plan1.region());
         Assert.assertEquals(AppServicePricingTier.BASIC_B1, plan1.pricingTier());
@@ -77,10 +77,10 @@ public class WebAppsTests extends AppServiceTest {
 
         // Update
         webApp1.update()
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME_2)
+                .withNewAppServicePlan()
                 .withPricingTier(AppServicePricingTier.STANDARD_S2)
                 .apply();
-        AppServicePlan plan2 = appServiceManager.appServicePlans().getByGroup(RG_NAME_1, APP_SERVICE_PLAN_NAME_2);
+        AppServicePlan plan2 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assert.assertNotNull(plan2);
         Assert.assertEquals(Region.US_WEST, plan2.region());
         Assert.assertEquals(AppServicePricingTier.STANDARD_S2, plan2.pricingTier());

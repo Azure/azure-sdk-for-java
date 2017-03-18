@@ -30,6 +30,7 @@ public class AppServicePlansTests extends AppServiceTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withPricingTier(AppServicePricingTier.PREMIUM_P1)
+                .withOperatingSystem(AppServiceOperatingSystem.WINDOWS)
                 .withPerSiteScaling(false)
                 .withCapacity(2)
                 .create();

@@ -242,6 +242,11 @@ public interface WebAppBase extends
     Map<String, ConnectionString> connectionStrings();
 
     /**
+     * @return the operating system the web app is running on
+     */
+    AppServiceOperatingSystem operatingSystem();
+
+    /**
      * @return the URL and credentials for publishing through FTP or Git
      */
     PublishingProfile getPublishingProfile();

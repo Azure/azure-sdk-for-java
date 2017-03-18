@@ -30,7 +30,7 @@ public class WebAppConfigTests extends AppServiceTest {
         // Create with new app service plan
         appServiceManager.webApps().define(WEBAPP_NAME)
                 .withNewResourceGroup(RG_NAME, Region.US_WEST)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME, Region.US_WEST)
+                .withNewAppServicePlan(Region.US_WEST, AppServiceOperatingSystem.WINDOWS)
                 .withPricingTier(AppServicePricingTier.BASIC_B1)
                 .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
                 .create();

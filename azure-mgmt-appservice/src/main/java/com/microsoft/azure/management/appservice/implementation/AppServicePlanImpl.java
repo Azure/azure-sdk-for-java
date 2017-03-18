@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
@@ -70,6 +71,15 @@ class AppServicePlanImpl
     }
 
     @Override
+    public AppServiceOperatingSystem operatingSystem() {
+        if (inner().reserved() != null && inner().reserved()) {
+            return AppServiceOperatingSystem.LINUX;
+        } else {
+            return AppServiceOperatingSystem.WINDOWS;
+        }
+    }
+
+    @Override
     public AppServicePlanImpl withPricingTier(AppServicePricingTier pricingTier) {
         if (pricingTier == null) {
             throw new IllegalArgumentException("pricingTier == null");
@@ -90,6 +100,14 @@ class AppServicePlanImpl
             throw new IllegalArgumentException("Capacity is at least 1.");
         }
         inner().sku().withCapacity(capacity);
+        return this;
+    }
+
+    @Override
+    public AppServicePlan.DefinitionStages.WithCreate withOperatingSystem(AppServiceOperatingSystem operatingSystem) {
+        if (AppServiceOperatingSystem.LINUX.equals(operatingSystem)) {
+            inner().withReserved(true);
+        }
         return this;
     }
 }
