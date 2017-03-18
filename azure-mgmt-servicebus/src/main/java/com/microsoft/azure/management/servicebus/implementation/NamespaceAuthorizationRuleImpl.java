@@ -8,8 +8,11 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.AccessRights;
+import com.microsoft.azure.management.servicebus.AuthorizationKeys;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
+import com.microsoft.azure.management.servicebus.Policykey;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,11 +53,31 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
     }
 
     @Override
-    public void listKeys() {
+    public AuthorizationKeys getKeys() {
+        return this.manager().inner().namespaces()
+                .listKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.name())
+                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
+                    @Override
+                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
+                        return new AuthorizationKeysImpl(inner);
+                    }
+                }).toBlocking().last();
     }
 
     @Override
-    public void regenerateKeys() {
+    public AuthorizationKeys regenerateKey(Policykey policykey) {
+        return this.manager().inner().namespaces()
+                .regenerateKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.name())
+                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
+                    @Override
+                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
+                        return new AuthorizationKeysImpl(inner);
+                    }
+                }).toBlocking().last();
     }
 
     @Override
@@ -68,12 +91,15 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
     }
 
     @Override
-    protected Observable<NamespaceAuthorizationRule> createChildResourceAsync() {
-        return null;
+    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
+        return this.manager().inner().namespaces()
+                .getAuthorizationRuleAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.name());
     }
 
     @Override
-    protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
+    protected Observable<NamespaceAuthorizationRule> createChildResourceAsync() {
         return null;
     }
 }

@@ -7,9 +7,7 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.SharedAccessAuthorizationRuleInner;
@@ -32,14 +30,14 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
     List<AccessRights> rights();
 
     /**
-     * @return the primary and secondary keys
+     * @return the primary, secondary keys and connection strings.
      */
-    void listKeys();
+    AuthorizationKeys getKeys();
 
     /**
      * Regenerates primary or secondary keys.
      */
-    void regenerateKeys();
+    AuthorizationKeys regenerateKey(Policykey policykey);
 
     /**
      * Grouping of commons authorization rule definition stages shared between different service bus

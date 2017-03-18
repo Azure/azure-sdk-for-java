@@ -206,16 +206,6 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     }
 
     @Override
-    protected Observable<QueueResourceInner> getInnerAsync() {
-        return null;
-    }
-
-    @Override
-    protected Observable<Queue> createChildResourceAsync() {
-        return null;
-    }
-
-    @Override
     public QueueImpl withSizeInMB(int sizeInMB) {
         return this;
     }
@@ -313,5 +303,18 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     @Override
     public QueueImpl withoutDuplicateMessageDetection() {
         return this;
+    }
+
+    @Override
+    protected Observable<QueueResourceInner> getInnerAsync() {
+        return this.manager().inner().queues()
+                .getAsync(this.resourceGroupName(),
+                        this.parentName,
+                        this.name());
+    }
+
+    @Override
+    protected Observable<Queue> createChildResourceAsync() {
+        return null;
     }
 }

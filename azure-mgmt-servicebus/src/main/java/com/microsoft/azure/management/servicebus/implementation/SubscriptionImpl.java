@@ -178,16 +178,6 @@ class SubscriptionImpl extends
     }
 
     @Override
-    protected Observable<SubscriptionResourceInner> getInnerAsync() {
-        return null;
-    }
-
-    @Override
-    protected Observable<Subscription> createChildResourceAsync() {
-        return null;
-    }
-
-    @Override
     public SubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
         return null;
     }
@@ -264,6 +254,20 @@ class SubscriptionImpl extends
 
     @Override
     public SubscriptionImpl withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(int deliveryCount) {
+        return null;
+    }
+
+    @Override
+    protected Observable<SubscriptionResourceInner> getInnerAsync() {
+        return this.manager().inner().subscriptions()
+                .getAsync(this.resourceGroupName(),
+                        this.namespaceName,
+                        this.parentName,
+                        this.name());
+    }
+
+    @Override
+    protected Observable<Subscription> createChildResourceAsync() {
         return null;
     }
 }

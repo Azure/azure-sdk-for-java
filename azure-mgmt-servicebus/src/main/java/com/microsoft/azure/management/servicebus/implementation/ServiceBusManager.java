@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
  */
 public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClientImpl> {
     // Collections
-
+    private NamespacesImpl namespaces;
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -91,7 +91,9 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
      * @return the service bus namespace management API entry point
      */
     public Namespaces namespaces() {
-        // TODO:
-        return null;
+        if (namespaces == null) {
+            namespaces = new NamespacesImpl(this.inner().namespaces(), this);
+        }
+        return namespaces;
     }
 }

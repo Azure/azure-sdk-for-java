@@ -8,10 +8,9 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.AccessRights;
-import com.microsoft.azure.management.servicebus.Queue;
-import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
+import com.microsoft.azure.management.servicebus.*;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,11 +66,33 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
     }
 
     @Override
-    public void listKeys() {
+    public AuthorizationKeys getKeys() {
+        return this.manager().inner().queues()
+                .listKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.queueName(),
+                        this.name())
+                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
+                    @Override
+                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
+                        return new AuthorizationKeysImpl(inner);
+                    }
+                }).toBlocking().last();
     }
 
     @Override
-    public void regenerateKeys() {
+    public AuthorizationKeys regenerateKey(Policykey policykey) {
+        return this.manager().inner().queues()
+                .regenerateKeysAsync(this.resourceGroupName(),
+                    this.namespaceName(),
+                    this.queueName(),
+                    this.name())
+                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
+                    @Override
+                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
+                        return new AuthorizationKeysImpl(inner);
+                    }
+                }).toBlocking().last();
     }
 
     @Override
@@ -86,7 +107,11 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
 
     @Override
     protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
-        return null;
+        return this.manager().inner().queues()
+                .getAuthorizationRuleAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.queueName(),
+                        this.name());
     }
 
     @Override

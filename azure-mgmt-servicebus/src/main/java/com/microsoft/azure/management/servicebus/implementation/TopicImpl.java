@@ -273,7 +273,10 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     protected Observable<TopicResourceInner> getInnerAsync() {
-        return null;
+        return this.manager().inner().topics()
+                .getAsync(this.resourceGroupName(),
+                        this.parentName,
+                        this.name());
     }
 
     @Override
