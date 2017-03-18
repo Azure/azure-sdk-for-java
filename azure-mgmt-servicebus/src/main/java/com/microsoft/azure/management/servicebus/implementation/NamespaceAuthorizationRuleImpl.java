@@ -7,10 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.AccessRights;
-import com.microsoft.azure.management.servicebus.AuthorizationKeys;
-import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
-import com.microsoft.azure.management.servicebus.Policykey;
+import com.microsoft.azure.management.servicebus.*;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -110,6 +107,16 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
 
     @Override
     protected Observable<NamespaceAuthorizationRule> createChildResourceAsync() {
-        return null;
+        final NamespaceAuthorizationRule self = this;
+        return this.manager().inner().namespaces().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+                this.namespaceName(),
+                this.name(),
+                this.inner()).map(new Func1<SharedAccessAuthorizationRuleInner, NamespaceAuthorizationRule>() {
+            @Override
+            public NamespaceAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                setInner(inner);
+                return self;
+            }
+        });
     }
 }

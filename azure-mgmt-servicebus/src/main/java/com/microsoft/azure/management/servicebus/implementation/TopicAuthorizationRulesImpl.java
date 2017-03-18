@@ -8,7 +8,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRules;
@@ -17,14 +16,13 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for TopicAuthorizationRules.
  */
 class TopicAuthorizationRulesImpl
-        extends IndependentChildResourcesImpl<
+        extends ServiceBusChildResourcesImpl<
         TopicAuthorizationRule,
         TopicAuthorizationRuleImpl,
         SharedAccessAuthorizationRuleInner,
@@ -57,21 +55,6 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public Observable<TopicAuthorizationRule> getByNameAsync(String name) {
-        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, this.topicName, name)
-                .map(new Func1<SharedAccessAuthorizationRuleInner, TopicAuthorizationRule>() {
-                    @Override
-                    public TopicAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-    }
-
-    @Override
-    public TopicAuthorizationRule getByName(String name) {
-        return getByNameAsync(name).toBlocking().last();
-    }
-    @Override
     public Completable deleteByNameAsync(String name) {
         return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
@@ -89,33 +72,25 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-        deleteByNameAsync(name).await();
+    protected Observable<SharedAccessAuthorizationRuleInner> getInnerByNameAsync(String name) {
+        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                this.topicName,
+                name);
     }
 
     @Override
-    public Observable<TopicAuthorizationRule> listAsync() {
+    protected Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listInnerAsync() {
         return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
                 this.namespaceName,
-                this.topicName).flatMap(new Func1<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>,
-                Observable<TopicAuthorizationRule>>() {
-            @Override
-            public Observable<TopicAuthorizationRule> call(ServiceResponse<Page<SharedAccessAuthorizationRuleInner>> r) {
-                return Observable.from(r.body().items()).map(new Func1<SharedAccessAuthorizationRuleInner, TopicAuthorizationRule>() {
-                    @Override
-                    public TopicAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-            }
-        });
+                this.topicName);
     }
 
     @Override
-    public PagedList<TopicAuthorizationRule> list() {
-        return this.wrapList(this.inner().listAuthorizationRules(this.resourceGroupName,
+    protected PagedList<SharedAccessAuthorizationRuleInner> listInner() {
+        return this.inner().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
-                this.topicName));
+                this.topicName);
     }
 
     @Override

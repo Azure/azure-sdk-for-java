@@ -8,7 +8,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.Queues;
@@ -17,14 +16,13 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for Queues.
  */
 class QueuesImpl
-        extends IndependentChildResourcesImpl<
+        extends ServiceBusChildResourcesImpl<
         Queue,
         QueueImpl,
         QueueResourceInner,
@@ -53,22 +51,6 @@ class QueuesImpl
     }
 
     @Override
-    public Observable<Queue> getByNameAsync(String name) {
-        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name)
-                .map(new Func1<QueueResourceInner, Queue>() {
-                    @Override
-                    public Queue call(QueueResourceInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-    }
-
-    @Override
-    public Queue getByName(String name) {
-        return getByNameAsync(name).toBlocking().last();
-    }
-
-    @Override
     public Completable deleteByNameAsync(String name) {
         return this.inner().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
@@ -84,32 +66,20 @@ class QueuesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-        deleteByNameAsync(name).await();
+    protected Observable<QueueResourceInner> getInnerByNameAsync(String name) {
+        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    public Observable<Queue> listAsync() {
-        return this.inner().listByNamspaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName)
-                .flatMap(new Func1<ServiceResponse<Page<QueueResourceInner>>, Observable<Queue>>() {
-                    @Override
-                    public Observable<Queue> call(ServiceResponse<Page<QueueResourceInner>> r) {
-                        return Observable.from(r.body().items()).map(new Func1<QueueResourceInner, Queue>() {
-                            @Override
-                            public Queue call(QueueResourceInner inner) {
-                                return wrapModel(inner);
-                            }
-                        });
-                    }
-                });
+    protected Observable<ServiceResponse<Page<QueueResourceInner>>> listInnerAsync() {
+        return this.inner().listByNamspaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    public PagedList<Queue> list() {
-        return this.wrapList(this.inner().listByNamspace(this.resourceGroupName,
-                this.namespaceName));
+    protected PagedList<QueueResourceInner> listInner() {
+        return this.inner().listByNamspace(this.resourceGroupName,
+                this.namespaceName);
     }
-
 
     @Override
     protected QueueImpl wrapModel(String name) {
@@ -132,6 +102,7 @@ class QueuesImpl
     @Override
     public PagedList<Queue> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }
@@ -139,6 +110,7 @@ class QueuesImpl
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }
@@ -146,6 +118,7 @@ class QueuesImpl
     @Override
     public Observable<Queue> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }

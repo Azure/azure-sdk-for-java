@@ -125,6 +125,17 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
 
     @Override
     protected Observable<TopicAuthorizationRule> createChildResourceAsync() {
-        return null;
+        final TopicAuthorizationRule self = this;
+        return this.manager().inner().topics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+                this.namespaceName(),
+                this.topicName(),
+                this.name(),
+                this.inner()).map(new Func1<SharedAccessAuthorizationRuleInner, TopicAuthorizationRule>() {
+            @Override
+            public TopicAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                setInner(inner);
+                return self;
+            }
+        });
     }
 }

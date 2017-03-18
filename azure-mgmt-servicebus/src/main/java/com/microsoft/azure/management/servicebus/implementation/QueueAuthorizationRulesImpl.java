@@ -8,7 +8,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRules;
@@ -17,14 +16,13 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for QueueAuthorizationRules.
  */
 class QueueAuthorizationRulesImpl
-        extends IndependentChildResourcesImpl<
+        extends ServiceBusChildResourcesImpl<
                 QueueAuthorizationRule,
                 QueueAuthorizationRuleImpl,
                 SharedAccessAuthorizationRuleInner,
@@ -57,22 +55,6 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    public Observable<QueueAuthorizationRule> getByNameAsync(String name) {
-        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, this.queueName, name)
-                .map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
-                    @Override
-                    public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-    }
-
-    @Override
-    public QueueAuthorizationRule getByName(String name) {
-        return getByNameAsync(name).toBlocking().last();
-    }
-
-    @Override
     public Completable deleteByNameAsync(String name) {
         return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
@@ -90,33 +72,25 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-        deleteByNameAsync(name).await();
+    protected Observable<SharedAccessAuthorizationRuleInner> getInnerByNameAsync(String name) {
+        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName,
+                this.namespaceName,
+                this.queueName,
+                name);
     }
 
     @Override
-    public Observable<QueueAuthorizationRule> listAsync() {
+    protected Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listInnerAsync() {
         return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
                 this.namespaceName,
-                this.queueName).flatMap(new Func1<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>,
-                Observable<QueueAuthorizationRule>>() {
-            @Override
-            public Observable<QueueAuthorizationRule> call(ServiceResponse<Page<SharedAccessAuthorizationRuleInner>> r) {
-                return Observable.from(r.body().items()).map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
-                    @Override
-                    public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-            }
-        });
+                this.queueName);
     }
 
     @Override
-    public PagedList<QueueAuthorizationRule> list() {
-        return this.wrapList(this.inner().listAuthorizationRules(this.resourceGroupName,
+    protected PagedList<SharedAccessAuthorizationRuleInner> listInner() {
+        return this.inner().listAuthorizationRules(this.resourceGroupName,
                 this.namespaceName,
-                this.queueName));
+                this.queueName);
     }
 
     @Override

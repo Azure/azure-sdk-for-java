@@ -126,6 +126,17 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
 
     @Override
     protected Observable<QueueAuthorizationRule> createChildResourceAsync() {
-        return null;
+        final QueueAuthorizationRule self = this;
+        return this.manager().inner().topics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+                this.namespaceName(),
+                this.queueName(),
+                this.name(),
+                this.inner()).map(new Func1<SharedAccessAuthorizationRuleInner, QueueAuthorizationRule>() {
+            @Override
+            public QueueAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
+                setInner(inner);
+                return self;
+            }
+        });
     }
 }

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for Queue.
@@ -337,6 +338,18 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     @Override
     protected Observable<Queue> createChildResourceAsync() {
-        return null;
+        final Queue self = this;
+        return this.manager().inner().queues()
+                .createOrUpdateAsync(this.resourceGroupName(),
+                        this.parentName,
+                        this.name(),
+                        this.inner())
+                .map(new Func1<QueueResourceInner, Queue>() {
+                    @Override
+                    public Queue call(QueueResourceInner inner) {
+                        setInner(inner);
+                        return self;
+                    }
+                });
     }
 }

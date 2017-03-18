@@ -13,6 +13,7 @@ import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for Subscription.
@@ -279,6 +280,19 @@ class SubscriptionImpl extends
 
     @Override
     protected Observable<Subscription> createChildResourceAsync() {
-        return null;
+        final Subscription self = this;
+        return this.manager().inner().subscriptions()
+                .createOrUpdateAsync(this.resourceGroupName(),
+                        this.namespaceName,
+                        this.parentName,
+                        this.name(),
+                        this.inner())
+                .map(new Func1<SubscriptionResourceInner, Subscription>() {
+                    @Override
+                    public Subscription call(SubscriptionResourceInner inner) {
+                        setInner(inner);
+                        return self;
+                    }
+                });
     }
 }

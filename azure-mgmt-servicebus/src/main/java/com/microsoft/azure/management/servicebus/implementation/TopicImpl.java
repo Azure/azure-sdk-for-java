@@ -13,6 +13,7 @@ import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for Topic.
@@ -296,6 +297,18 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     protected Observable<Topic> createChildResourceAsync() {
-        return null;
+        final Topic self = this;
+        return this.manager().inner().topics()
+                .createOrUpdateAsync(this.resourceGroupName(),
+                        this.parentName,
+                        this.name(),
+                        this.inner())
+                .map(new Func1<TopicResourceInner, Topic>() {
+                    @Override
+                    public Topic call(TopicResourceInner inner) {
+                        setInner(inner);
+                        return self;
+                    }
+                });
     }
 }

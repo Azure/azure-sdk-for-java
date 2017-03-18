@@ -8,7 +8,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRules;
@@ -17,14 +16,13 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for NamespaceAuthorizationRules.
  */
 class NamespaceAuthorizationRulesImpl
-        extends IndependentChildResourcesImpl<
+        extends ServiceBusChildResourcesImpl<
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRuleImpl,
         SharedAccessAuthorizationRuleInner,
@@ -54,22 +52,6 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Observable<NamespaceAuthorizationRule> getByNameAsync(String name) {
-        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name)
-                .map(new Func1<SharedAccessAuthorizationRuleInner, NamespaceAuthorizationRule>() {
-                    @Override
-                    public NamespaceAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-    }
-
-    @Override
-    public NamespaceAuthorizationRule getByName(String name) {
-        return getByNameAsync(name).toBlocking().last();
-    }
-
-    @Override
     public Completable deleteByNameAsync(String name) {
         return this.inner().deleteAuthorizationRuleAsync(this.resourceGroupName,
                 this.namespaceName,
@@ -85,31 +67,20 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-        deleteByNameAsync(name).await();
+    protected Observable<SharedAccessAuthorizationRuleInner> getInnerByNameAsync(String name) {
+        return this.inner().getAuthorizationRuleAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    public Observable<NamespaceAuthorizationRule> listAsync() {
+    protected Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listInnerAsync() {
         return this.inner().listAuthorizationRulesWithServiceResponseAsync(this.resourceGroupName,
-                this.namespaceName).flatMap(new Func1<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>,
-                Observable<NamespaceAuthorizationRule>>() {
-            @Override
-            public Observable<NamespaceAuthorizationRule> call(ServiceResponse<Page<SharedAccessAuthorizationRuleInner>> r) {
-                return Observable.from(r.body().items()).map(new Func1<SharedAccessAuthorizationRuleInner, NamespaceAuthorizationRule>() {
-                    @Override
-                    public NamespaceAuthorizationRule call(SharedAccessAuthorizationRuleInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-            }
-        });
+                this.namespaceName);
     }
 
     @Override
-    public PagedList<NamespaceAuthorizationRule> list() {
-        return this.wrapList(this.inner().listAuthorizationRules(this.resourceGroupName,
-                this.namespaceName));
+    protected PagedList<SharedAccessAuthorizationRuleInner> listInner() {
+        return this.inner().listAuthorizationRules(this.resourceGroupName,
+                this.namespaceName);
     }
 
     @Override

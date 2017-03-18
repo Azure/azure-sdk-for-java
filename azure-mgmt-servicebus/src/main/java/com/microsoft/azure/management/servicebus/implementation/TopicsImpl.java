@@ -8,7 +8,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.Topics;
@@ -17,14 +16,13 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for Topics.
  */
 class TopicsImpl
-        extends IndependentChildResourcesImpl<
+        extends ServiceBusChildResourcesImpl<
         Topic,
         TopicImpl,
         TopicResourceInner,
@@ -52,22 +50,6 @@ class TopicsImpl
     }
 
     @Override
-    public Observable<Topic> getByNameAsync(String name) {
-        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name)
-                .map(new Func1<TopicResourceInner, Topic>() {
-                    @Override
-                    public Topic call(TopicResourceInner inner) {
-                        return wrapModel(inner);
-                    }
-                });
-    }
-
-    @Override
-    public Topic getByName(String name) {
-        return getByNameAsync(name).toBlocking().last();
-    }
-
-    @Override
     public Completable deleteByNameAsync(String name) {
         return this.inner().deleteAsync(this.resourceGroupName,
                 this.namespaceName,
@@ -83,30 +65,19 @@ class TopicsImpl
     }
 
     @Override
-    public void deleteByName(String name) {
-        deleteByNameAsync(name).await();
+    protected Observable<TopicResourceInner> getInnerByNameAsync(String name) {
+        return this.inner().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    public Observable<Topic> listAsync() {
-        return this.inner().listByNamespaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName)
-                .flatMap(new Func1<ServiceResponse<Page<TopicResourceInner>>, Observable<Topic>>() {
-                    @Override
-                    public Observable<Topic> call(ServiceResponse<Page<TopicResourceInner>> r) {
-                        return Observable.from(r.body().items()).map(new Func1<TopicResourceInner, Topic>() {
-                            @Override
-                            public Topic call(TopicResourceInner inner) {
-                                return wrapModel(inner);
-                            }
-                        });
-                    }
-                });
+    protected Observable<ServiceResponse<Page<TopicResourceInner>>> listInnerAsync() {
+        return this.inner().listByNamespaceWithServiceResponseAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    public PagedList<Topic> list() {
-        return this.wrapList(this.inner().listByNamespace(this.resourceGroupName,
-                this.namespaceName));
+    protected PagedList<TopicResourceInner> listInner() {
+        return this.inner().listByNamespace(this.resourceGroupName,
+                this.namespaceName);
     }
 
     @Override
@@ -130,6 +101,7 @@ class TopicsImpl
     @Override
     public PagedList<Topic> listByParent(String resourceGroupName, String parentName) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }
@@ -137,6 +109,7 @@ class TopicsImpl
     @Override
     public Completable deleteByParentAsync(String groupName, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }
@@ -144,6 +117,7 @@ class TopicsImpl
     @Override
     public Observable<Topic> getByParentAsync(String resourceGroup, String parentName, String name) {
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
+        // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
         throw new NotImplementedException();
     }
