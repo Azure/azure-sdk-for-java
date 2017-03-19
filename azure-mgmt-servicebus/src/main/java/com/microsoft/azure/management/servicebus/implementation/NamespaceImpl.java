@@ -140,7 +140,7 @@ class NamespaceImpl extends GroupableResourceImpl<
         return this.manager().inner().namespaces().getByResourceGroupAsync(this.resourceGroupName(),
                 this.name());
     }
-    
+
     @Override
     public Observable<Namespace> createResourceAsync() {
         Completable createNamespaceCompletable = this.manager().inner().namespaces()
