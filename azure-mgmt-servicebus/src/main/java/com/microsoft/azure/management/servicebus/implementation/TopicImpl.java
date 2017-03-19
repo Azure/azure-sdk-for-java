@@ -8,12 +8,18 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for Topic.
@@ -24,6 +30,11 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         Topic,
         Topic.Definition,
         Topic.Update {
+    private List<Creatable<Subscription>> subscriptionsToCreate;
+    private List<Creatable<TopicAuthorizationRule>> rulesToCreate;
+    private List<String> subscriptionsToDelete;
+    private List<String> rulesToDelete;
+
     TopicImpl(String resourceGroupName,
               String namespaceName,
               String name,
@@ -31,6 +42,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
+        initChildrenOperationsCache();
     }
 
     @Override
@@ -177,7 +189,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     }
 
     @Override
-    public Subscriptions subscriptions() {
+    public SubscriptionsImpl subscriptions() {
         return new SubscriptionsImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
@@ -185,7 +197,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     }
 
     @Override
-    public TopicAuthorizationRules TopicAuthorizationRules() {
+    public TopicAuthorizationRulesImpl authorizationRules() {
         return new TopicAuthorizationRulesImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
@@ -269,21 +281,25 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     public TopicImpl withNewAuthorizationRule(String name, AccessRights... rights) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
         return this;
     }
 
     @Override
-    public TopicImpl withoutNewAuthorizationRule(String name) {
+    public TopicImpl withoutAuthorizationRule(String name) {
+        this.rulesToDelete.add(name);
         return this;
     }
 
     @Override
-    public TopicImpl withNewSubscription(String name, int maxSizeInMB) {
+    public TopicImpl withNewSubscription(String name) {
+        this.subscriptionsToCreate.add(this.subscriptions().define(name));
         return this;
     }
 
     @Override
     public TopicImpl withoutSubscription(String name) {
+        this.subscriptionsToDelete.add(name);
         return this;
     }
 
@@ -297,18 +313,64 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     protected Observable<Topic> createChildResourceAsync() {
-        final Topic self = this;
-        return this.manager().inner().topics()
+        Completable createQueueCompletable = this.manager().inner().topics()
                 .createOrUpdateAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name(),
                         this.inner())
-                .map(new Func1<TopicResourceInner, Topic>() {
+                .map(new Func1<TopicResourceInner, TopicResourceInner>() {
                     @Override
-                    public Topic call(TopicResourceInner inner) {
+                    public TopicResourceInner call(TopicResourceInner inner) {
                         setInner(inner);
+                        return inner;
+                    }
+                }).toCompletable();
+        Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
+        final Topic self = this;
+        return Completable.concat(createQueueCompletable, childrenOperationsCompletable)
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        initChildrenOperationsCache();
+                    }
+                })
+                .toObservable()
+                .map(new Func1<Object, Topic>() {
+                    @Override
+                    public Topic call(Object o) {
+                        initChildrenOperationsCache();
                         return self;
                     }
                 });
+    }
+
+    private void initChildrenOperationsCache() {
+        this.subscriptionsToCreate = new ArrayList<>();
+        this.rulesToCreate = new ArrayList<>();
+        this.subscriptionsToDelete = new ArrayList<>();
+        this.rulesToDelete = new ArrayList<>();
+    }
+
+    private Completable submitChildrenOperationsAsync() {
+        Observable<?> subscriptionsCreateStream = Observable.empty();
+        if (this.subscriptionsToCreate.size() > 0) {
+            subscriptionsCreateStream = this.subscriptions().createAsync(this.subscriptionsToCreate);
+        }
+        Observable<?> rulesCreateStream = Observable.empty();
+        if (this.rulesToCreate.size() > 0) {
+            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
+        }
+        Observable<?> subcriptionsDeleteStream = Observable.empty();
+        if (this.subscriptionsToDelete.size() > 0) {
+            subcriptionsDeleteStream = this.subscriptions().deleteByNameAsync(this.subscriptionsToDelete);
+        }
+        Observable<?> rulesDeleteStream = Observable.empty();
+        if (this.rulesToDelete.size() > 0) {
+            rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
+        }
+        return Observable.mergeDelayError(subscriptionsCreateStream,
+                rulesCreateStream,
+                subcriptionsDeleteStream,
+                rulesDeleteStream).toCompletable();
     }
 }

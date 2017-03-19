@@ -114,7 +114,7 @@ public interface Topic extends
     /**
      * @return entry point to manage authorization rules for the service bus topic
      */
-    TopicAuthorizationRules TopicAuthorizationRules();
+    TopicAuthorizationRules authorizationRules();
 
     /**
      * The entirety of the topic definition.
@@ -247,10 +247,9 @@ public interface Topic extends
              * Creates a subscription entity for the service bus topic.
              *
              * @param name queue name
-             * @param maxSizeInMB maximum size of memory allocated for the subscription entity
              * @return the next stage of topic definition
              */
-            WithCreate withNewSubscription(String name, int maxSizeInMB);
+            WithCreate withNewSubscription(String name);
         }
 
         /**
@@ -415,10 +414,9 @@ public interface Topic extends
              * Creates a subscription entity for the service bus topic.
              *
              * @param name queue name
-             * @param maxSizeInMB maximum size of memory allocated for the subscription entity
              * @return next stage of the service bus topic update
              */
-            Update withNewSubscription(String name, int maxSizeInMB);
+            Update withNewSubscription(String name);
 
             /**
              * Removes a subscription entity associated with the service bus topic.
@@ -449,7 +447,7 @@ public interface Topic extends
              * @param name rule name
              * @return next stage of the topic update
              */
-            Update withoutNewAuthorizationRule(String name);
+            Update withoutAuthorizationRule(String name);
         }
     }
 }

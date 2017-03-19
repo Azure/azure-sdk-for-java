@@ -45,7 +45,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
      */
     interface DefinitionStages {
         /**
-         * The stage of the rule definition allowing to specify the access rights.
+         * The stage of the rule definition allowing to specify an access rights.
          *
          * @param <T> the next stage
          */
@@ -57,6 +57,21 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
              * @return the next stage
              */
             T withAccessRight(AccessRights rights);
+        }
+
+        /**
+         * The stage of the rule definition allowing to specify multiple access rights.
+         *
+         * @param <T> the next stage
+         */
+        interface WithAccessRights<T> {
+            /**
+             * Specifies the access rights.
+             *
+             * @param rights the access rights
+             * @return the next stage
+             */
+            T withAccessRights(AccessRights... rights);
         }
     }
 
@@ -78,6 +93,13 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
              * @return the next stage
              */
             T withAccessRight(AccessRights rights);
+            /**
+             * Specifies the access rights.
+             *
+             * @param rights the access rights
+             * @return the next stage
+             */
+            T withAccessRights(AccessRights... rights);
             /**
              * Removes the access rights.
              *

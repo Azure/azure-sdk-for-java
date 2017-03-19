@@ -8,12 +8,18 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for Queue.
@@ -24,6 +30,8 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         Queue,
         Queue.Definition,
         Queue.Update  {
+    private List<Creatable<QueueAuthorizationRule>> rulesToCreate;
+    private List<String> rulesToDelete;
 
     QueueImpl(String resourceGroupName,
               String namespaceName,
@@ -32,6 +40,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
+        initChildrenOperationsCache();
     }
 
     @Override
@@ -199,7 +208,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     }
 
     @Override
-    public QueueAuthorizationRules authorizationRules() {
+    public QueueAuthorizationRulesImpl authorizationRules() {
         return new QueueAuthorizationRulesImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
@@ -320,11 +329,13 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     @Override
     public QueueImpl withNewAuthorizationRule(String name, AccessRights... rights) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
         return this;
     }
 
     @Override
-    public QueueImpl withoutNewAuthorizationRule(String name) {
+    public QueueImpl withoutAuthorizationRule(String name) {
+        this.rulesToDelete.add(name);
         return this;
     }
 
@@ -338,18 +349,51 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     @Override
     protected Observable<Queue> createChildResourceAsync() {
-        final Queue self = this;
-        return this.manager().inner().queues()
+        Completable createQueueCompletable = this.manager().inner().queues()
                 .createOrUpdateAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name(),
                         this.inner())
-                .map(new Func1<QueueResourceInner, Queue>() {
+                .map(new Func1<QueueResourceInner, QueueResourceInner>() {
                     @Override
-                    public Queue call(QueueResourceInner inner) {
+                    public QueueResourceInner call(QueueResourceInner inner) {
                         setInner(inner);
+                        return inner;
+                    }
+                }).toCompletable();
+        Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
+        final Queue self = this;
+        return Completable.concat(createQueueCompletable, childrenOperationsCompletable)
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        initChildrenOperationsCache();
+                    }
+                })
+                .toObservable()
+                .map(new Func1<Object, Queue>() {
+                    @Override
+                    public Queue call(Object o) {
+                        initChildrenOperationsCache();
                         return self;
                     }
                 });
+    }
+
+    private void initChildrenOperationsCache() {
+        this.rulesToCreate = new ArrayList<>();
+        this.rulesToDelete = new ArrayList<>();
+    }
+
+    private Completable submitChildrenOperationsAsync() {
+        Observable<?> rulesCreateStream = Observable.empty();
+        if (this.rulesToCreate.size() > 0) {
+            rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
+        }
+        Observable<?> rulesDeleteStream = Observable.empty();
+        if (this.rulesToDelete.size() > 0) {
+            rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
+        }
+        return Observable.mergeDelayError(rulesCreateStream, rulesDeleteStream).toCompletable();
     }
 }

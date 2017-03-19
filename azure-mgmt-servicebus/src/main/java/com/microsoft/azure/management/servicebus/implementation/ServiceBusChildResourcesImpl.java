@@ -17,8 +17,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.rest.ServiceResponse;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for service bus child entities.
@@ -80,8 +84,20 @@ abstract class ServiceBusChildResourcesImpl<
         deleteByNameAsync(name).await();
     }
 
+    public Observable<String> deleteByNameAsync(List<String> names) {
+        List<Observable<String>> items = new ArrayList<>();
+        for (final String name : names) {
+            items.add(this.deleteByNameAsync(name).<String>toObservable().map(new Func1<String, String>() {
+                @Override
+                public String call(String s) {
+                    return name;
+                }
+            }));
+        }
+        return Observable.mergeDelayError(items);
+    }
+
     protected abstract Observable<InnerT> getInnerByNameAsync(String name);
     protected abstract Observable<ServiceResponse<Page<InnerT>>> listInnerAsync();
     protected abstract PagedList<InnerT> listInner();
-    // TODO protected abstract Observable<String> deleteByNameAsync(List<String> name);
 }

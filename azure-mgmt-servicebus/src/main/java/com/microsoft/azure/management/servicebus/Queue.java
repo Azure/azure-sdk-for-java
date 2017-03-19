@@ -551,7 +551,7 @@ public interface Queue extends
              * @param name rule name
              * @return next stage of the queue update
              */
-            Update withoutNewAuthorizationRule(String name);
+            Update withoutAuthorizationRule(String name);
         }
     }
 }

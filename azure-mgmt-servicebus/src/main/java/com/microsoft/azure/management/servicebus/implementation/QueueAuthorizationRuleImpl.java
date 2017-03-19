@@ -107,6 +107,17 @@ class QueueAuthorizationRuleImpl extends IndependentChildResourceImpl<QueueAutho
     }
 
     @Override
+    public QueueAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
+        if (rights == null) {
+            return this;
+        }
+        for (AccessRights r : rights) {
+            withAccessRight(r);
+        }
+        return this;
+    }
+
+    @Override
     public QueueAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
         if (this.inner().rights() != null
                 && this.inner().rights().contains(rights)) {

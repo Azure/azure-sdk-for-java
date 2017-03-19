@@ -106,6 +106,17 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
     }
 
     @Override
+    public TopicAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
+        if (rights == null) {
+            return this;
+        }
+        for (AccessRights r : rights) {
+            withAccessRight(r);
+        }
+        return this;
+    }
+
+    @Override
     public TopicAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
         if (this.inner().rights() != null
                 && this.inner().rights().contains(rights)) {

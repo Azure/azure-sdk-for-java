@@ -89,6 +89,17 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
     }
 
     @Override
+    public NamespaceAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
+        if (rights == null) {
+            return this;
+        }
+        for (AccessRights r : rights) {
+            withAccessRight(r);
+        }
+        return this;
+    }
+
+    @Override
     public NamespaceAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
         if (this.inner().rights() != null
                 && this.inner().rights().contains(rights)) {

@@ -88,6 +88,11 @@ class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<Sub
     }
 
     @Override
+    public SubscriptionAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
+        return null;
+    }
+
+    @Override
     public SubscriptionAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
         return null;
     }

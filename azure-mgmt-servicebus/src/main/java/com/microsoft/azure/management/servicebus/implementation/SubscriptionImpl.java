@@ -259,17 +259,6 @@ class SubscriptionImpl extends
     }
 
     @Override
-    public SubscriptionImpl withNewAuthorizationRule(String name, AccessRights... rights) {
-        return this;
-    }
-
-    @Override
-    public SubscriptionImpl withoutNewAuthorizationRule(String name) {
-        return this;
-    }
-
-
-    @Override
     protected Observable<SubscriptionResourceInner> getInnerAsync() {
         return this.manager().inner().subscriptions()
                 .getAsync(this.resourceGroupName(),

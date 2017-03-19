@@ -271,8 +271,7 @@ public interface Subscription extends
                 Subscription.DefinitionStages.WithMessageBatching,
                 Subscription.DefinitionStages.WithExpiredMessageMovedToDeadLetterSubscription,
                 Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount,
-                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException,
-                Subscription.DefinitionStages.WithAuthorizationRule {
+                Subscription.DefinitionStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
         }
     }
 
@@ -287,8 +286,7 @@ public interface Subscription extends
             Subscription.UpdateStages.WithMessageBatching,
             Subscription.UpdateStages.WithExpiredMessageMovedToDeadLetterSubscription,
             Subscription.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
-            Subscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException,
-            Subscription.UpdateStages.WithAuthorizationRule {
+            Subscription.UpdateStages.WithMessageMovedToDeadLetterSubscriptionOnFilterEvaluationException {
     }
 
     /**
