@@ -19,11 +19,11 @@ public final class RXMapper<T> implements Func1<Object, T> {
     private final T value;
 
     /**
-     * Shortcut for mapping an arbitrary observable to one returning an instance of a specific type, using the IO scheduler.
-     * @param fromObservable an observable
+     * Shortcut for mapping the output of an arbitrary observable to one returning an instance of a specific type, using the IO scheduler.
+     * @param fromObservable the source observable
      * @param toValue the value to emit to the observer
      * @param <T> the type of the value to emit
-     * @return an observable to be emitted
+     * @return an observable emitting the specified value
      */
     public static <T> Observable<T> map(Observable<?> fromObservable, final T toValue) {
         if (fromObservable != null) {
@@ -35,10 +35,31 @@ public final class RXMapper<T> implements Func1<Object, T> {
     }
 
     /**
-     * @param s the string to return
+     * Shortcut for mapping an arbitrary observable to void, using the IO scheduler.
+     * @param fromObservable the source observable
+     * @return a void-emitting observable
+     */
+    public static Observable<Void> mapToVoid(Observable<?> fromObservable) {
+        if (fromObservable != null) {
+            return fromObservable.subscribeOn(Schedulers.io())
+                    .map(new RXMapper<Void>());
+        } else {
+            return Observable.empty();
+        }
+    }
+
+    /**
+     * @param value the value to emit
      */
     private RXMapper(T value) {
         this.value = value;
+    }
+
+    /**
+     * Void emitting mapper.
+     */
+    private RXMapper() {
+        this.value = null;
     }
 
     @Override

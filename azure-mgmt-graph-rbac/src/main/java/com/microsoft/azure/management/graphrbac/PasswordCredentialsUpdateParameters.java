@@ -19,7 +19,7 @@ public class PasswordCredentialsUpdateParameters {
     /**
      * A collection of PasswordCredentials.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "value", required = true)
     private List<PasswordCredentialInner> value;
 
     /**

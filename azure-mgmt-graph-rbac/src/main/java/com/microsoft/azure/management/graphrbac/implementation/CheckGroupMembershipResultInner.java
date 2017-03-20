@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Server response for IsMemberOf API call.
@@ -18,6 +19,7 @@ public class CheckGroupMembershipResultInner {
      * either direct or transitive membership in the specified group;
      * otherwise, false.
      */
+    @JsonProperty(value = "value")
     private Boolean value;
 
     /**

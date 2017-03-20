@@ -29,7 +29,8 @@ public class Sku {
     private SkuTier tier;
 
     /**
-     * The specified messaging units for the tier.
+     * The specified messaging units for the tier. For Premium tier, capacity
+     * are 1,2 and 4.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
