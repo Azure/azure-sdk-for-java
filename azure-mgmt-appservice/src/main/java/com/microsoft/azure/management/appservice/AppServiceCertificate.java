@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -21,6 +22,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure app service certificate.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServiceCertificate extends
         GroupableResource<AppServiceManager, CertificateInner>,
         Refreshable<AppServiceCertificate> {

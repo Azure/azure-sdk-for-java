@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.WebAppsInner;
@@ -22,6 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Entry point for web app management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface WebApps extends
         SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -30,6 +31,7 @@ import java.util.Map;
  * the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServiceDomain extends
         GroupableResource<AppServiceManager, DomainInner>,
         HasName,
