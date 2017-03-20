@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
@@ -43,7 +45,8 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Namespaces.
  */
-public class NamespacesInner implements InnerSupportsListing<NamespaceResourceInner> {
+
+public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<NamespaceResourceInner> {
     /** The Retrofit service to perform REST calls. */
     private NamespacesService service;
     /** The service client containing this operation class. */
@@ -89,9 +92,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces listAuthorizationRules" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules")
@@ -650,8 +653,8 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @return the NamespaceResourceInner object if successful.
      */
-    public NamespaceResourceInner get(String resourceGroupName, String namespaceName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
+    public NamespaceResourceInner getByResourceGroup(String resourceGroupName, String namespaceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
     }
 
     /**
@@ -662,8 +665,8 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NamespaceResourceInner> getAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NamespaceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName), serviceCallback);
+    public ServiceFuture<NamespaceResourceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NamespaceResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName), serviceCallback);
     }
 
     /**
@@ -673,8 +676,8 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @return the observable to the NamespaceResourceInner object
      */
-    public Observable<NamespaceResourceInner> getAsync(String resourceGroupName, String namespaceName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NamespaceResourceInner>, NamespaceResourceInner>() {
+    public Observable<NamespaceResourceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NamespaceResourceInner>, NamespaceResourceInner>() {
             @Override
             public NamespaceResourceInner call(ServiceResponse<NamespaceResourceInner> response) {
                 return response.body();
@@ -689,7 +692,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @return the observable to the NamespaceResourceInner object
      */
-    public Observable<ServiceResponse<NamespaceResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
+    public Observable<ServiceResponse<NamespaceResourceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -702,12 +705,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NamespaceResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NamespaceResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<NamespaceResourceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -716,7 +719,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<NamespaceResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NamespaceResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<NamespaceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NamespaceResourceInner>() { }.getType())
                 .registerError(CloudException.class)
