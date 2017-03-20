@@ -16,102 +16,33 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of queue Resource.
+ * Description of topic resource.
  */
 @JsonFlatten
-public class QueueResourceInner extends Resource {
+public class TopicInner extends Resource {
     /**
-     * The duration of a peek-lock; that is, the amount of time that the
-     * message is locked for other receivers. The maximum value for
-     * LockDuration is 5 minutes; the default value is 1 minute.
-     */
-    @JsonProperty(value = "properties.lockDuration")
-    private String lockDuration;
-
-    /**
-     * Last time a message was sent, or the last time there was a receive
-     * request to this queue.
+     * Last time the message was sent, or a request was received, for this
+     * topic.
      */
     @JsonProperty(value = "properties.accessedAt", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime accessedAt;
 
     /**
-     * the TimeSpan idle interval after which the queue is automatically
-     * deleted. The minimum duration is 5 minutes.
+     * TimeSpan idle interval after which the topic is automatically deleted.
+     * The minimum duration is 5 minutes. The service accepts a C# Standard
+     * TimeSpan Format for loc duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx .
+     * Format is 'DD.HH:MM:SS' and default value of this property is 10675199
+     * days.
      */
     @JsonProperty(value = "properties.autoDeleteOnIdle")
     private String autoDeleteOnIdle;
 
     /**
-     * The exact time the message was created.
+     * Exact time the Tpoic was created.
      */
     @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime createdAt;
-
-    /**
-     * The default message time to live value. This is the duration after which
-     * the message expires, starting from when the message is sent to Service
-     * Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
-     */
-    @JsonProperty(value = "properties.defaultMessageTimeToLive")
-    private String defaultMessageTimeToLive;
-
-    /**
-     * TimeSpan structure that defines the duration of the duplicate detection
-     * history. The default value is 10 minutes.
-     */
-    @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
-    private String duplicateDetectionHistoryTimeWindow;
-
-    /**
-     * A value that indicates whether server-side batched operations are
-     * enabled.
-     */
-    @JsonProperty(value = "properties.enableBatchedOperations")
-    private Boolean enableBatchedOperations;
-
-    /**
-     * A value that indicates whether this queue has dead letter support when a
-     * message expires.
-     */
-    @JsonProperty(value = "properties.deadLetteringOnMessageExpiration")
-    private Boolean deadLetteringOnMessageExpiration;
-
-    /**
-     * A value that indicates whether Express Entities are enabled. An express
-     * queue holds a message in memory temporarily before writing it to
-     * persistent storage.
-     */
-    @JsonProperty(value = "properties.enableExpress")
-    private Boolean enableExpress;
-
-    /**
-     * A value that indicates whether the queue is to be partitioned across
-     * multiple message brokers.
-     */
-    @JsonProperty(value = "properties.enablePartitioning")
-    private Boolean enablePartitioning;
-
-    /**
-     * The maximum delivery count. A message is automatically deadlettered
-     * after this number of deliveries.
-     */
-    @JsonProperty(value = "properties.maxDeliveryCount")
-    private Integer maxDeliveryCount;
-
-    /**
-     * The maximum size of the queue in megabytes, which is the size of memory
-     * allocated for the queue.
-     */
-    @JsonProperty(value = "properties.maxSizeInMegabytes")
-    private Long maxSizeInMegabytes;
-
-    /**
-     * The number of messages in the queue.
-     */
-    @JsonProperty(value = "properties.messageCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long messageCount;
 
     /**
      * The countDetails property.
@@ -120,20 +51,65 @@ public class QueueResourceInner extends Resource {
     private MessageCountDetails countDetails;
 
     /**
-     * A value indicating if this queue requires duplicate detection.
+     * Default message time to live value. This is the duration after which the
+     * message expires, starting from when the message is sent to Service Bus.
+     * This is the default value used when TimeToLive is not set on a message
+     * itself. The service accepts a C# Standard TimeSpan Format for loc
+     * duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx .
+     * Format is 'DD.HH:MM:SS' and default value of this property is 10675199
+     * days.
+     */
+    @JsonProperty(value = "properties.defaultMessageTimeToLive")
+    private String defaultMessageTimeToLive;
+
+    /**
+     * TimeSpan structure that defines the duration of the duplicate detection
+     * history. The default value is 10 minutes. The service accepts a C#
+     * Standard TimeSpan Format for loc duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx .
+     * Format is 'DD.HH:MM:SS' and default value of this property is 10675199
+     * days.
+     */
+    @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
+    private String duplicateDetectionHistoryTimeWindow;
+
+    /**
+     * Value that indicates whether server-side batched operations are enabled.
+     */
+    @JsonProperty(value = "properties.enableBatchedOperations")
+    private Boolean enableBatchedOperations;
+
+    /**
+     * Value that indicates whether Express Entities are enabled. An express
+     * topic holds a message in memory temporarily before writing it to
+     * persistent storage.
+     */
+    @JsonProperty(value = "properties.enableExpress")
+    private Boolean enableExpress;
+
+    /**
+     * Value that indicates whether the topic to be partitioned across multiple
+     * message brokers is enabled.
+     */
+    @JsonProperty(value = "properties.enablePartitioning")
+    private Boolean enablePartitioning;
+
+    /**
+     * Maximum size of the topic in megabytes, which is the size of the memory
+     * allocated for the topic.
+     */
+    @JsonProperty(value = "properties.maxSizeInMegabytes")
+    private Long maxSizeInMegabytes;
+
+    /**
+     * Value indicating if this topic requires duplicate detection.
      */
     @JsonProperty(value = "properties.requiresDuplicateDetection")
     private Boolean requiresDuplicateDetection;
 
     /**
-     * A value that indicates whether the queue supports the concept of
-     * sessions.
-     */
-    @JsonProperty(value = "properties.requiresSession")
-    private Boolean requiresSession;
-
-    /**
-     * The size of the queue, in bytes.
+     * Size of the topic, in bytes.
      */
     @JsonProperty(value = "properties.sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long sizeInBytes;
@@ -143,40 +119,26 @@ public class QueueResourceInner extends Resource {
      * Possible values include: 'Active', 'Creating', 'Deleting', 'Disabled',
      * 'ReceiveDisabled', 'Renaming', 'Restoring', 'SendDisabled', 'Unknown'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private EntityStatus status;
 
     /**
-     * A value that indicates whether the queue supports ordering.
+     * Number of subscriptions.
+     */
+    @JsonProperty(value = "properties.subscriptionCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer subscriptionCount;
+
+    /**
+     * Value that indicates whether the topic supports ordering.
      */
     @JsonProperty(value = "properties.supportOrdering")
     private Boolean supportOrdering;
 
     /**
-     * The exact time the message was updated.
+     * The exact time the Topic was updated.
      */
     @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime updatedAt;
-
-    /**
-     * Get the lockDuration value.
-     *
-     * @return the lockDuration value
-     */
-    public String lockDuration() {
-        return this.lockDuration;
-    }
-
-    /**
-     * Set the lockDuration value.
-     *
-     * @param lockDuration the lockDuration value to set
-     * @return the QueueResourceInner object itself.
-     */
-    public QueueResourceInner withLockDuration(String lockDuration) {
-        this.lockDuration = lockDuration;
-        return this;
-    }
 
     /**
      * Get the accessedAt value.
@@ -200,9 +162,9 @@ public class QueueResourceInner extends Resource {
      * Set the autoDeleteOnIdle value.
      *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withAutoDeleteOnIdle(String autoDeleteOnIdle) {
+    public TopicInner withAutoDeleteOnIdle(String autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
         return this;
     }
@@ -214,6 +176,15 @@ public class QueueResourceInner extends Resource {
      */
     public DateTime createdAt() {
         return this.createdAt;
+    }
+
+    /**
+     * Get the countDetails value.
+     *
+     * @return the countDetails value
+     */
+    public MessageCountDetails countDetails() {
+        return this.countDetails;
     }
 
     /**
@@ -229,9 +200,9 @@ public class QueueResourceInner extends Resource {
      * Set the defaultMessageTimeToLive value.
      *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withDefaultMessageTimeToLive(String defaultMessageTimeToLive) {
+    public TopicInner withDefaultMessageTimeToLive(String defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
         return this;
     }
@@ -249,9 +220,9 @@ public class QueueResourceInner extends Resource {
      * Set the duplicateDetectionHistoryTimeWindow value.
      *
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow) {
+    public TopicInner withDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow) {
         this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
         return this;
     }
@@ -269,30 +240,10 @@ public class QueueResourceInner extends Resource {
      * Set the enableBatchedOperations value.
      *
      * @param enableBatchedOperations the enableBatchedOperations value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
+    public TopicInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnMessageExpiration value.
-     *
-     * @return the deadLetteringOnMessageExpiration value
-     */
-    public Boolean deadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
-    }
-
-    /**
-     * Set the deadLetteringOnMessageExpiration value.
-     *
-     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set
-     * @return the QueueResourceInner object itself.
-     */
-    public QueueResourceInner withDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
 
@@ -309,9 +260,9 @@ public class QueueResourceInner extends Resource {
      * Set the enableExpress value.
      *
      * @param enableExpress the enableExpress value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withEnableExpress(Boolean enableExpress) {
+    public TopicInner withEnableExpress(Boolean enableExpress) {
         this.enableExpress = enableExpress;
         return this;
     }
@@ -329,30 +280,10 @@ public class QueueResourceInner extends Resource {
      * Set the enablePartitioning value.
      *
      * @param enablePartitioning the enablePartitioning value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withEnablePartitioning(Boolean enablePartitioning) {
+    public TopicInner withEnablePartitioning(Boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
-        return this;
-    }
-
-    /**
-     * Get the maxDeliveryCount value.
-     *
-     * @return the maxDeliveryCount value
-     */
-    public Integer maxDeliveryCount() {
-        return this.maxDeliveryCount;
-    }
-
-    /**
-     * Set the maxDeliveryCount value.
-     *
-     * @param maxDeliveryCount the maxDeliveryCount value to set
-     * @return the QueueResourceInner object itself.
-     */
-    public QueueResourceInner withMaxDeliveryCount(Integer maxDeliveryCount) {
-        this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
 
@@ -369,29 +300,11 @@ public class QueueResourceInner extends Resource {
      * Set the maxSizeInMegabytes value.
      *
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withMaxSizeInMegabytes(Long maxSizeInMegabytes) {
+    public TopicInner withMaxSizeInMegabytes(Long maxSizeInMegabytes) {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
         return this;
-    }
-
-    /**
-     * Get the messageCount value.
-     *
-     * @return the messageCount value
-     */
-    public Long messageCount() {
-        return this.messageCount;
-    }
-
-    /**
-     * Get the countDetails value.
-     *
-     * @return the countDetails value
-     */
-    public MessageCountDetails countDetails() {
-        return this.countDetails;
     }
 
     /**
@@ -407,30 +320,10 @@ public class QueueResourceInner extends Resource {
      * Set the requiresDuplicateDetection value.
      *
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
+    public TopicInner withRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
-        return this;
-    }
-
-    /**
-     * Get the requiresSession value.
-     *
-     * @return the requiresSession value
-     */
-    public Boolean requiresSession() {
-        return this.requiresSession;
-    }
-
-    /**
-     * Set the requiresSession value.
-     *
-     * @param requiresSession the requiresSession value to set
-     * @return the QueueResourceInner object itself.
-     */
-    public QueueResourceInner withRequiresSession(Boolean requiresSession) {
-        this.requiresSession = requiresSession;
         return this;
     }
 
@@ -453,14 +346,12 @@ public class QueueResourceInner extends Resource {
     }
 
     /**
-     * Set the status value.
+     * Get the subscriptionCount value.
      *
-     * @param status the status value to set
-     * @return the QueueResourceInner object itself.
+     * @return the subscriptionCount value
      */
-    public QueueResourceInner withStatus(EntityStatus status) {
-        this.status = status;
-        return this;
+    public Integer subscriptionCount() {
+        return this.subscriptionCount;
     }
 
     /**
@@ -476,9 +367,9 @@ public class QueueResourceInner extends Resource {
      * Set the supportOrdering value.
      *
      * @param supportOrdering the supportOrdering value to set
-     * @return the QueueResourceInner object itself.
+     * @return the TopicInner object itself.
      */
-    public QueueResourceInner withSupportOrdering(Boolean supportOrdering) {
+    public TopicInner withSupportOrdering(Boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }

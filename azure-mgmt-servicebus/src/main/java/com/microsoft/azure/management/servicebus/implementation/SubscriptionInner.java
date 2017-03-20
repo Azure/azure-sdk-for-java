@@ -19,7 +19,7 @@ import com.microsoft.azure.Resource;
  * Description of subscription resource.
  */
 @JsonFlatten
-public class SubscriptionResourceInner extends Resource {
+public class SubscriptionInner extends Resource {
     /**
      * Last time there was a receive request to this subscription.
      */
@@ -28,7 +28,10 @@ public class SubscriptionResourceInner extends Resource {
 
     /**
      * TimeSpan idle interval after which the topic is automatically deleted.
-     * The minimum duration is 5 minutes.
+     * The minimum duration is 5 minutes. The service accepts a C# Standard
+     * TimeSpan Format for loc duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx. Format
+     * is 'DD.HH:MM:SS' and default value of this property is 10675199 days.
      */
     @JsonProperty(value = "properties.autoDeleteOnIdle")
     private String autoDeleteOnIdle;
@@ -40,7 +43,7 @@ public class SubscriptionResourceInner extends Resource {
     private MessageCountDetails countDetails;
 
     /**
-     * Exact time the message was created.
+     * Exact time the Subscription was created.
      */
     @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime createdAt;
@@ -49,7 +52,11 @@ public class SubscriptionResourceInner extends Resource {
      * Default message time to live value. This is the duration after which the
      * message expires, starting from when the message is sent to Service Bus.
      * This is the default value used when TimeToLive is not set on a message
-     * itself.
+     * itself. The service accepts a C# Standard TimeSpan Format for loc
+     * duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx .
+     * Format is 'DD.HH:MM:SS' and default value of this property is 10675199
+     * days.
      */
     @JsonProperty(value = "properties.defaultMessageTimeToLive")
     private String defaultMessageTimeToLive;
@@ -75,7 +82,9 @@ public class SubscriptionResourceInner extends Resource {
     private Boolean enableBatchedOperations;
 
     /**
-     * The lock duration time span for the subscription.
+     * The lock duration time span for the subscription. The service accepts a
+     * C# Standard TimeSpan Format for loc duration
+     * https://msdn.microsoft.com/en-us/library/ee372286(v=vs.110).aspx.
      */
     @JsonProperty(value = "properties.lockDuration")
     private String lockDuration;
@@ -107,7 +116,7 @@ public class SubscriptionResourceInner extends Resource {
     private EntityStatus status;
 
     /**
-     * The exact time the message was updated.
+     * The exact time the subscription was updated.
      */
     @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime updatedAt;
@@ -134,9 +143,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the autoDeleteOnIdle value.
      *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withAutoDeleteOnIdle(String autoDeleteOnIdle) {
+    public SubscriptionInner withAutoDeleteOnIdle(String autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
         return this;
     }
@@ -172,9 +181,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the defaultMessageTimeToLive value.
      *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withDefaultMessageTimeToLive(String defaultMessageTimeToLive) {
+    public SubscriptionInner withDefaultMessageTimeToLive(String defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
         return this;
     }
@@ -192,9 +201,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the deadLetteringOnFilterEvaluationExceptions value.
      *
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
+    public SubscriptionInner withDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
     }
@@ -212,9 +221,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the deadLetteringOnMessageExpiration value.
      *
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
+    public SubscriptionInner withDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
         this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
@@ -232,9 +241,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the enableBatchedOperations value.
      *
      * @param enableBatchedOperations the enableBatchedOperations value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
+    public SubscriptionInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -252,9 +261,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the lockDuration value.
      *
      * @param lockDuration the lockDuration value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withLockDuration(String lockDuration) {
+    public SubscriptionInner withLockDuration(String lockDuration) {
         this.lockDuration = lockDuration;
         return this;
     }
@@ -272,9 +281,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the maxDeliveryCount value.
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withMaxDeliveryCount(Integer maxDeliveryCount) {
+    public SubscriptionInner withMaxDeliveryCount(Integer maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
@@ -301,9 +310,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the requiresSession value.
      *
      * @param requiresSession the requiresSession value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withRequiresSession(Boolean requiresSession) {
+    public SubscriptionInner withRequiresSession(Boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
@@ -321,9 +330,9 @@ public class SubscriptionResourceInner extends Resource {
      * Set the status value.
      *
      * @param status the status value to set
-     * @return the SubscriptionResourceInner object itself.
+     * @return the SubscriptionInner object itself.
      */
-    public SubscriptionResourceInner withStatus(EntityStatus status) {
+    public SubscriptionInner withStatus(EntityStatus status) {
         this.status = status;
         return this;
     }

@@ -18,7 +18,7 @@ public class RegenerateKeysParameters {
      * Key that needs to be regenerated. Possible values include: 'PrimaryKey',
      * 'SecondaryKey'.
      */
-    @JsonProperty(value = "Policykey")
+    @JsonProperty(value = "policykey")
     private Policykey policykey;
 
     /**

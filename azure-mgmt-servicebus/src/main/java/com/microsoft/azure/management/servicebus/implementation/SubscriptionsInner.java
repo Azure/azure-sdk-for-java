@@ -67,7 +67,7 @@ public class SubscriptionsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Subscriptions createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionName") String subscriptionName, @Path("subscriptionId") String subscriptionId, @Body SubscriptionResourceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionName") String subscriptionName, @Path("subscriptionId") String subscriptionId, @Body SubscriptionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Subscriptions delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}", method = "DELETE", hasBody = true)
@@ -84,38 +84,42 @@ public class SubscriptionsInner {
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the PagedList&lt;SubscriptionResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public PagedList<SubscriptionResourceInner> listByTopic(final String resourceGroupName, final String namespaceName, final String topicName) {
-        ServiceResponse<Page<SubscriptionResourceInner>> response = listByTopicSinglePageAsync(resourceGroupName, namespaceName, topicName).toBlocking().single();
-        return new PagedList<SubscriptionResourceInner>(response.body()) {
+    public PagedList<SubscriptionInner> listByTopic(final String resourceGroupName, final String namespaceName, final String topicName) {
+        ServiceResponse<Page<SubscriptionInner>> response = listByTopicSinglePageAsync(resourceGroupName, namespaceName, topicName).toBlocking().single();
+        return new PagedList<SubscriptionInner>(response.body()) {
             @Override
-            public Page<SubscriptionResourceInner> nextPage(String nextPageLink) {
+            public Page<SubscriptionInner> nextPage(String nextPageLink) {
                 return listByTopicNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SubscriptionResourceInner>> listByTopicAsync(final String resourceGroupName, final String namespaceName, final String topicName, final ListOperationCallback<SubscriptionResourceInner> serviceCallback) {
+    public ServiceFuture<List<SubscriptionInner>> listByTopicAsync(final String resourceGroupName, final String namespaceName, final String topicName, final ListOperationCallback<SubscriptionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByTopicSinglePageAsync(resourceGroupName, namespaceName, topicName),
-            new Func1<String, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(String nextPageLink) {
                     return listByTopicNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -123,36 +127,38 @@ public class SubscriptionsInner {
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the observable to the PagedList&lt;SubscriptionResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<Page<SubscriptionResourceInner>> listByTopicAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
+    public Observable<Page<SubscriptionInner>> listByTopicAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
         return listByTopicWithServiceResponseAsync(resourceGroupName, namespaceName, topicName)
-            .map(new Func1<ServiceResponse<Page<SubscriptionResourceInner>>, Page<SubscriptionResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
                 @Override
-                public Page<SubscriptionResourceInner> call(ServiceResponse<Page<SubscriptionResourceInner>> response) {
+                public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
                     return response.body();
                 }
             });
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the observable to the PagedList&lt;SubscriptionResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> listByTopicWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listByTopicWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
         return listByTopicSinglePageAsync(resourceGroupName, namespaceName, topicName)
-            .concatMap(new Func1<ServiceResponse<Page<SubscriptionResourceInner>>, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(ServiceResponse<Page<SubscriptionResourceInner>> page) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -163,14 +169,15 @@ public class SubscriptionsInner {
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
-    ServiceResponse<PageImpl<SubscriptionResourceInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-    ServiceResponse<PageImpl<SubscriptionResourceInner>> * @param namespaceName The namespace name
-    ServiceResponse<PageImpl<SubscriptionResourceInner>> * @param topicName The topic name.
-     * @return the PagedList&lt;SubscriptionResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<SubscriptionInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<SubscriptionInner>> * @param namespaceName The namespace name
+    ServiceResponse<PageImpl<SubscriptionInner>> * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> listByTopicSinglePageAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listByTopicSinglePageAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -187,12 +194,12 @@ public class SubscriptionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByTopic(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SubscriptionResourceInner>> result = listByTopicDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubscriptionResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<SubscriptionInner>> result = listByTopicDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -200,9 +207,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SubscriptionResourceInner>> listByTopicDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<SubscriptionResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionInner>> listByTopicDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -215,9 +222,12 @@ public class SubscriptionsInner {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @param parameters Parameters supplied to create a subscription resource.
-     * @return the SubscriptionResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SubscriptionInner object if successful.
      */
-    public SubscriptionResourceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionResourceInner parameters) {
+    public SubscriptionInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters).toBlocking().single().body();
     }
 
@@ -230,9 +240,10 @@ public class SubscriptionsInner {
      * @param subscriptionName The subscription name.
      * @param parameters Parameters supplied to create a subscription resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SubscriptionResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionResourceInner parameters, final ServiceCallback<SubscriptionResourceInner> serviceCallback) {
+    public ServiceFuture<SubscriptionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionInner parameters, final ServiceCallback<SubscriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters), serviceCallback);
     }
 
@@ -244,12 +255,13 @@ public class SubscriptionsInner {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @param parameters Parameters supplied to create a subscription resource.
-     * @return the observable to the SubscriptionResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SubscriptionInner object
      */
-    public Observable<SubscriptionResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters).map(new Func1<ServiceResponse<SubscriptionResourceInner>, SubscriptionResourceInner>() {
+    public Observable<SubscriptionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName, parameters).map(new Func1<ServiceResponse<SubscriptionInner>, SubscriptionInner>() {
             @Override
-            public SubscriptionResourceInner call(ServiceResponse<SubscriptionResourceInner> response) {
+            public SubscriptionInner call(ServiceResponse<SubscriptionInner> response) {
                 return response.body();
             }
         });
@@ -263,9 +275,10 @@ public class SubscriptionsInner {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @param parameters Parameters supplied to create a subscription resource.
-     * @return the observable to the SubscriptionResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SubscriptionInner object
      */
-    public Observable<ServiceResponse<SubscriptionResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionResourceInner parameters) {
+    public Observable<ServiceResponse<SubscriptionInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, SubscriptionInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -289,11 +302,11 @@ public class SubscriptionsInner {
         }
         Validator.validate(parameters);
         return service.createOrUpdate(resourceGroupName, namespaceName, topicName, subscriptionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubscriptionResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubscriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SubscriptionResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SubscriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SubscriptionResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<SubscriptionInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -302,9 +315,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<SubscriptionResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SubscriptionResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SubscriptionResourceInner>() { }.getType())
+    private ServiceResponse<SubscriptionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SubscriptionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SubscriptionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -316,6 +329,9 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
         deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName).toBlocking().single().body();
@@ -329,6 +345,7 @@ public class SubscriptionsInner {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, final ServiceCallback<Void> serviceCallback) {
@@ -342,6 +359,7 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
@@ -360,6 +378,7 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
@@ -410,9 +429,12 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
-     * @return the SubscriptionResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SubscriptionInner object if successful.
      */
-    public SubscriptionResourceInner get(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
+    public SubscriptionInner get(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
         return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName).toBlocking().single().body();
     }
 
@@ -424,9 +446,10 @@ public class SubscriptionsInner {
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SubscriptionResourceInner> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, final ServiceCallback<SubscriptionResourceInner> serviceCallback) {
+    public ServiceFuture<SubscriptionInner> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, final ServiceCallback<SubscriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName), serviceCallback);
     }
 
@@ -437,12 +460,13 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
-     * @return the observable to the SubscriptionResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SubscriptionInner object
      */
-    public Observable<SubscriptionResourceInner> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName).map(new Func1<ServiceResponse<SubscriptionResourceInner>, SubscriptionResourceInner>() {
+    public Observable<SubscriptionInner> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, subscriptionName).map(new Func1<ServiceResponse<SubscriptionInner>, SubscriptionInner>() {
             @Override
-            public SubscriptionResourceInner call(ServiceResponse<SubscriptionResourceInner> response) {
+            public SubscriptionInner call(ServiceResponse<SubscriptionInner> response) {
                 return response.body();
             }
         });
@@ -455,9 +479,10 @@ public class SubscriptionsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param subscriptionName The subscription name.
-     * @return the observable to the SubscriptionResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SubscriptionInner object
      */
-    public Observable<ServiceResponse<SubscriptionResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
+    public Observable<ServiceResponse<SubscriptionInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -477,11 +502,11 @@ public class SubscriptionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.get(resourceGroupName, namespaceName, topicName, subscriptionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubscriptionResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubscriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SubscriptionResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SubscriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SubscriptionResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<SubscriptionInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -490,43 +515,47 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<SubscriptionResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SubscriptionResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SubscriptionResourceInner>() { }.getType())
+    private ServiceResponse<SubscriptionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SubscriptionInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SubscriptionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;SubscriptionResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public PagedList<SubscriptionResourceInner> listByTopicNext(final String nextPageLink) {
-        ServiceResponse<Page<SubscriptionResourceInner>> response = listByTopicNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<SubscriptionResourceInner>(response.body()) {
+    public PagedList<SubscriptionInner> listByTopicNext(final String nextPageLink) {
+        ServiceResponse<Page<SubscriptionInner>> response = listByTopicNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SubscriptionInner>(response.body()) {
             @Override
-            public Page<SubscriptionResourceInner> nextPage(String nextPageLink) {
+            public Page<SubscriptionInner> nextPage(String nextPageLink) {
                 return listByTopicNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SubscriptionResourceInner>> listByTopicNextAsync(final String nextPageLink, final ServiceFuture<List<SubscriptionResourceInner>> serviceFuture, final ListOperationCallback<SubscriptionResourceInner> serviceCallback) {
+    public ServiceFuture<List<SubscriptionInner>> listByTopicNextAsync(final String nextPageLink, final ServiceFuture<List<SubscriptionInner>> serviceFuture, final ListOperationCallback<SubscriptionInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByTopicNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(String nextPageLink) {
                     return listByTopicNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -534,32 +563,34 @@ public class SubscriptionsInner {
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;SubscriptionResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<Page<SubscriptionResourceInner>> listByTopicNextAsync(final String nextPageLink) {
+    public Observable<Page<SubscriptionInner>> listByTopicNextAsync(final String nextPageLink) {
         return listByTopicNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<SubscriptionResourceInner>>, Page<SubscriptionResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
                 @Override
-                public Page<SubscriptionResourceInner> call(ServiceResponse<Page<SubscriptionResourceInner>> response) {
+                public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
                     return response.body();
                 }
             });
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;SubscriptionResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> listByTopicNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listByTopicNextWithServiceResponseAsync(final String nextPageLink) {
         return listByTopicNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<SubscriptionResourceInner>>, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(ServiceResponse<Page<SubscriptionResourceInner>> page) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -570,23 +601,24 @@ public class SubscriptionsInner {
     }
 
     /**
-     * Lsit all the subscriptions under a specified topic.
+     * List all the subscriptions under a specified topic.
      *
-    ServiceResponse<PageImpl<SubscriptionResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;SubscriptionResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> listByTopicNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listByTopicNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listByTopicNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SubscriptionResourceInner>> result = listByTopicNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<SubscriptionResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<SubscriptionInner>> result = listByTopicNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SubscriptionInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -594,9 +626,9 @@ public class SubscriptionsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<SubscriptionResourceInner>> listByTopicNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<SubscriptionResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionInner>> listByTopicNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

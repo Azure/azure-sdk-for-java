@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.Policykey;
 import com.microsoft.azure.management.servicebus.RegenerateKeysParameters;
 import com.microsoft.azure.Page;
@@ -64,13 +65,13 @@ public class QueuesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface QueuesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues listByNamspace" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues listByNamespace" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues")
-        Observable<Response<ResponseBody>> listByNamspace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByNamespace(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Body QueueResourceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("subscriptionId") String subscriptionId, @Body QueueInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}", method = "DELETE", hasBody = true)
@@ -86,7 +87,7 @@ public class QueuesInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues createOrUpdateAuthorizationRule" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}")
-        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Body SharedAccessAuthorizationRuleInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SharedAccessAuthorizationRuleInner parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues deleteAuthorizationRule" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}", method = "DELETE", hasBody = true)
@@ -104,9 +105,9 @@ public class QueuesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/queues/{queueName}/authorizationRules/{authorizationRuleName}/regenerateKeys")
         Observable<Response<ResponseBody>> regenerateKeys(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("queueName") String queueName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RegenerateKeysParameters parameters, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues listByNamspaceNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues listByNamespaceNext" })
         @GET
-        Observable<Response<ResponseBody>> listByNamspaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByNamespaceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Queues listAuthorizationRulesNext" })
         @GET
@@ -119,14 +120,17 @@ public class QueuesInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the PagedList&lt;QueueResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;QueueInner&gt; object if successful.
      */
-    public PagedList<QueueResourceInner> listByNamspace(final String resourceGroupName, final String namespaceName) {
-        ServiceResponse<Page<QueueResourceInner>> response = listByNamspaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
-        return new PagedList<QueueResourceInner>(response.body()) {
+    public PagedList<QueueInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<QueueInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
+        return new PagedList<QueueInner>(response.body()) {
             @Override
-            public Page<QueueResourceInner> nextPage(String nextPageLink) {
-                return listByNamspaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            public Page<QueueInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -137,15 +141,16 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<QueueResourceInner>> listByNamspaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<QueueResourceInner> serviceCallback) {
+    public ServiceFuture<List<QueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<QueueInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByNamspaceSinglePageAsync(resourceGroupName, namespaceName),
-            new Func1<String, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+            listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
+            new Func1<String, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(String nextPageLink) {
-                    return listByNamspaceNextSinglePageAsync(nextPageLink);
+                public Observable<ServiceResponse<Page<QueueInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -156,13 +161,14 @@ public class QueuesInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the PagedList&lt;QueueResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;QueueInner&gt; object
      */
-    public Observable<Page<QueueResourceInner>> listByNamspaceAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamspaceWithServiceResponseAsync(resourceGroupName, namespaceName)
-            .map(new Func1<ServiceResponse<Page<QueueResourceInner>>, Page<QueueResourceInner>>() {
+    public Observable<Page<QueueInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
+            .map(new Func1<ServiceResponse<Page<QueueInner>>, Page<QueueInner>>() {
                 @Override
-                public Page<QueueResourceInner> call(ServiceResponse<Page<QueueResourceInner>> response) {
+                public Page<QueueInner> call(ServiceResponse<Page<QueueInner>> response) {
                     return response.body();
                 }
             });
@@ -173,18 +179,19 @@ public class QueuesInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the PagedList&lt;QueueResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;QueueInner&gt; object
      */
-    public Observable<ServiceResponse<Page<QueueResourceInner>>> listByNamspaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
-        return listByNamspaceSinglePageAsync(resourceGroupName, namespaceName)
-            .concatMap(new Func1<ServiceResponse<Page<QueueResourceInner>>, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+    public Observable<ServiceResponse<Page<QueueInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+        return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
+            .concatMap(new Func1<ServiceResponse<Page<QueueInner>>, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(ServiceResponse<Page<QueueResourceInner>> page) {
+                public Observable<ServiceResponse<Page<QueueInner>>> call(ServiceResponse<Page<QueueInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByNamspaceNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -192,11 +199,12 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-    ServiceResponse<PageImpl<QueueResourceInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-    ServiceResponse<PageImpl<QueueResourceInner>> * @param namespaceName The namespace name
-     * @return the PagedList&lt;QueueResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<QueueInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<QueueInner>> * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;QueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<QueueResourceInner>>> listByNamspaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<ServiceResponse<Page<QueueInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -209,13 +217,13 @@ public class QueuesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByNamspace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+        return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<QueueInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<QueueResourceInner>> result = listByNamspaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<QueueResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<QueueInner>> result = listByNamespaceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<QueueInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -223,9 +231,9 @@ public class QueuesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<QueueResourceInner>> listByNamspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<QueueResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<QueueResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<QueueInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<QueueInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<QueueInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -237,9 +245,12 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param parameters Parameters supplied to create or update a queue resource.
-     * @return the QueueResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QueueInner object if successful.
      */
-    public QueueResourceInner createOrUpdate(String resourceGroupName, String namespaceName, String queueName, QueueResourceInner parameters) {
+    public QueueInner createOrUpdate(String resourceGroupName, String namespaceName, String queueName, QueueInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).toBlocking().single().body();
     }
 
@@ -251,9 +262,10 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param parameters Parameters supplied to create or update a queue resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<QueueResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, QueueResourceInner parameters, final ServiceCallback<QueueResourceInner> serviceCallback) {
+    public ServiceFuture<QueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, QueueInner parameters, final ServiceCallback<QueueInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters), serviceCallback);
     }
 
@@ -264,12 +276,13 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param parameters Parameters supplied to create or update a queue resource.
-     * @return the observable to the QueueResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueueInner object
      */
-    public Observable<QueueResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, QueueResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).map(new Func1<ServiceResponse<QueueResourceInner>, QueueResourceInner>() {
+    public Observable<QueueInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String queueName, QueueInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, parameters).map(new Func1<ServiceResponse<QueueInner>, QueueInner>() {
             @Override
-            public QueueResourceInner call(ServiceResponse<QueueResourceInner> response) {
+            public QueueInner call(ServiceResponse<QueueInner> response) {
                 return response.body();
             }
         });
@@ -282,9 +295,10 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param parameters Parameters supplied to create or update a queue resource.
-     * @return the observable to the QueueResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueueInner object
      */
-    public Observable<ServiceResponse<QueueResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, QueueResourceInner parameters) {
+    public Observable<ServiceResponse<QueueInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, QueueInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -305,11 +319,11 @@ public class QueuesInner {
         }
         Validator.validate(parameters);
         return service.createOrUpdate(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueueResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueueInner>>>() {
                 @Override
-                public Observable<ServiceResponse<QueueResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<QueueInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<QueueResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<QueueInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -318,9 +332,9 @@ public class QueuesInner {
             });
     }
 
-    private ServiceResponse<QueueResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<QueueResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<QueueResourceInner>() { }.getType())
+    private ServiceResponse<QueueInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<QueueInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<QueueInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -331,6 +345,9 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String namespaceName, String queueName) {
         deleteWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
@@ -343,6 +360,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<Void> serviceCallback) {
@@ -355,6 +373,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName) {
@@ -372,6 +391,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
@@ -418,9 +438,12 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @return the QueueResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the QueueInner object if successful.
      */
-    public QueueResourceInner get(String resourceGroupName, String namespaceName, String queueName) {
+    public QueueInner get(String resourceGroupName, String namespaceName, String queueName) {
         return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).toBlocking().single().body();
     }
 
@@ -431,9 +454,10 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<QueueResourceInner> getAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<QueueResourceInner> serviceCallback) {
+    public ServiceFuture<QueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName, final ServiceCallback<QueueInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName), serviceCallback);
     }
 
@@ -443,12 +467,13 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @return the observable to the QueueResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueueInner object
      */
-    public Observable<QueueResourceInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<QueueResourceInner>, QueueResourceInner>() {
+    public Observable<QueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, queueName).map(new Func1<ServiceResponse<QueueInner>, QueueInner>() {
             @Override
-            public QueueResourceInner call(ServiceResponse<QueueResourceInner> response) {
+            public QueueInner call(ServiceResponse<QueueInner> response) {
                 return response.body();
             }
         });
@@ -460,9 +485,10 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @return the observable to the QueueResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the QueueInner object
      */
-    public Observable<ServiceResponse<QueueResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
+    public Observable<ServiceResponse<QueueInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -479,11 +505,11 @@ public class QueuesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.get(resourceGroupName, namespaceName, queueName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueueResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QueueInner>>>() {
                 @Override
-                public Observable<ServiceResponse<QueueResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<QueueInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<QueueResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<QueueInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -492,9 +518,9 @@ public class QueuesInner {
             });
     }
 
-    private ServiceResponse<QueueResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<QueueResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<QueueResourceInner>() { }.getType())
+    private ServiceResponse<QueueInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<QueueInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<QueueInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -505,6 +531,9 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRules(final String resourceGroupName, final String namespaceName, final String queueName) {
@@ -524,6 +553,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName, final String queueName, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -544,6 +574,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName, final String queueName) {
@@ -562,6 +593,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final String queueName) {
@@ -584,6 +616,7 @@ public class QueuesInner {
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param namespaceName The namespace name
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesSinglePageAsync(final String resourceGroupName, final String namespaceName, final String queueName) {
@@ -630,11 +663,14 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
-    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters).toBlocking().single().body();
+    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, rights).toBlocking().single().body();
     }
 
     /**
@@ -644,12 +680,13 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters), serviceCallback);
+    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, List<AccessRights> rights, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, rights), serviceCallback);
     }
 
     /**
@@ -659,11 +696,12 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, parameters).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
+    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName, rights).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
             @Override
             public SharedAccessAuthorizationRuleInner call(ServiceResponse<SharedAccessAuthorizationRuleInner> response) {
                 return response.body();
@@ -678,10 +716,11 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
+    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, List<AccessRights> rights) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -697,14 +736,16 @@ public class QueuesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, queueName, authorizationRuleName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        if (rights == null) {
+            throw new IllegalArgumentException("Parameter rights is required and cannot be null.");
+        }
+        Validator.validate(rights);
+        SharedAccessAuthorizationRuleInner parameters = new SharedAccessAuthorizationRuleInner();
+        parameters.withRights(rights);
+        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, queueName, authorizationRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> call(Response<ResponseBody> response) {
@@ -732,6 +773,9 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
         deleteAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, queueName, authorizationRuleName).toBlocking().single().body();
@@ -745,6 +789,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -758,6 +803,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -776,6 +822,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -826,6 +873,9 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
     public SharedAccessAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -840,6 +890,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -853,6 +904,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -871,6 +923,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> getAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -920,6 +973,9 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -934,6 +990,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -947,6 +1004,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -965,6 +1023,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -1014,6 +1073,9 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -1028,6 +1090,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1041,6 +1104,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -1059,6 +1123,7 @@ public class QueuesInner {
      * @param namespaceName The namespace name
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName) {
@@ -1105,6 +1170,9 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, Policykey policykey) {
@@ -1120,6 +1188,7 @@ public class QueuesInner {
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, Policykey policykey, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1134,6 +1203,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, Policykey policykey) {
@@ -1153,6 +1223,7 @@ public class QueuesInner {
      * @param queueName The queue name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName, Policykey policykey) {
@@ -1201,14 +1272,17 @@ public class QueuesInner {
      * Gets the queues within a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;QueueResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;QueueInner&gt; object if successful.
      */
-    public PagedList<QueueResourceInner> listByNamspaceNext(final String nextPageLink) {
-        ServiceResponse<Page<QueueResourceInner>> response = listByNamspaceNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<QueueResourceInner>(response.body()) {
+    public PagedList<QueueInner> listByNamespaceNext(final String nextPageLink) {
+        ServiceResponse<Page<QueueInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<QueueInner>(response.body()) {
             @Override
-            public Page<QueueResourceInner> nextPage(String nextPageLink) {
-                return listByNamspaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            public Page<QueueInner> nextPage(String nextPageLink) {
+                return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -1219,15 +1293,16 @@ public class QueuesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<QueueResourceInner>> listByNamspaceNextAsync(final String nextPageLink, final ServiceFuture<List<QueueResourceInner>> serviceFuture, final ListOperationCallback<QueueResourceInner> serviceCallback) {
+    public ServiceFuture<List<QueueInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<QueueInner>> serviceFuture, final ListOperationCallback<QueueInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByNamspaceNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+            listByNamespaceNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(String nextPageLink) {
-                    return listByNamspaceNextSinglePageAsync(nextPageLink);
+                public Observable<ServiceResponse<Page<QueueInner>>> call(String nextPageLink) {
+                    return listByNamespaceNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -1237,13 +1312,14 @@ public class QueuesInner {
      * Gets the queues within a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;QueueResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;QueueInner&gt; object
      */
-    public Observable<Page<QueueResourceInner>> listByNamspaceNextAsync(final String nextPageLink) {
-        return listByNamspaceNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<QueueResourceInner>>, Page<QueueResourceInner>>() {
+    public Observable<Page<QueueInner>> listByNamespaceNextAsync(final String nextPageLink) {
+        return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<QueueInner>>, Page<QueueInner>>() {
                 @Override
-                public Page<QueueResourceInner> call(ServiceResponse<Page<QueueResourceInner>> response) {
+                public Page<QueueInner> call(ServiceResponse<Page<QueueInner>> response) {
                     return response.body();
                 }
             });
@@ -1253,18 +1329,19 @@ public class QueuesInner {
      * Gets the queues within a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;QueueResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;QueueInner&gt; object
      */
-    public Observable<ServiceResponse<Page<QueueResourceInner>>> listByNamspaceNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByNamspaceNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<QueueResourceInner>>, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+    public Observable<ServiceResponse<Page<QueueInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByNamespaceNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<QueueInner>>, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(ServiceResponse<Page<QueueResourceInner>> page) {
+                public Observable<ServiceResponse<Page<QueueInner>>> call(ServiceResponse<Page<QueueInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByNamspaceNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByNamespaceNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1272,21 +1349,22 @@ public class QueuesInner {
     /**
      * Gets the queues within a namespace.
      *
-    ServiceResponse<PageImpl<QueueResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;QueueResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<QueueInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;QueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<QueueResourceInner>>> listByNamspaceNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<QueueInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByNamspaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<QueueResourceInner>>>>() {
+        return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<QueueInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<QueueResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<QueueInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<QueueResourceInner>> result = listByNamspaceNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<QueueResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<QueueInner>> result = listByNamespaceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<QueueInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1294,9 +1372,9 @@ public class QueuesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<QueueResourceInner>> listByNamspaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<QueueResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<QueueResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<QueueInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<QueueInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<QueueInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1305,6 +1383,9 @@ public class QueuesInner {
      * Gets all authorization rules for a queue.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRulesNext(final String nextPageLink) {
@@ -1323,6 +1404,7 @@ public class QueuesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink, final ServiceFuture<List<SharedAccessAuthorizationRuleInner>> serviceFuture, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -1341,6 +1423,7 @@ public class QueuesInner {
      * Gets all authorization rules for a queue.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink) {
@@ -1357,6 +1440,7 @@ public class QueuesInner {
      * Gets all authorization rules for a queue.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1377,6 +1461,7 @@ public class QueuesInner {
      * Gets all authorization rules for a queue.
      *
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextSinglePageAsync(final String nextPageLink) {

@@ -133,6 +133,19 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
      * The NamespacesInner object to access its operations.
      */
     private NamespacesInner namespaces;
@@ -219,6 +232,7 @@ public class ServiceBusManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.namespaces = new NamespacesInner(restClient().retrofit(), this);
         this.queues = new QueuesInner(restClient().retrofit(), this);
         this.topics = new TopicsInner(restClient().retrofit(), this);
