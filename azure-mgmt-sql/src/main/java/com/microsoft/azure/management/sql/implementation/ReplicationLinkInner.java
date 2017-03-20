@@ -13,49 +13,75 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents an Azure SQL database replication link.
+ * Represents a database replication link.
  */
 @JsonFlatten
-public class ReplicationLinkInner extends SqlSubResource {
+public class ReplicationLinkInner extends SubResource {
     /**
-     * The name of the Azure SQL server hosting the partner Azure SQL Database.
+     * Location of the server that contains this firewall rule.
+     */
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /**
+     * Type of resource this is.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /**
+     * Legacy value indicating whether termination is allowed.  Currently
+     * always returns true.
+     */
+    @JsonProperty(value = "properties.isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isTerminationAllowed;
+
+    /**
+     * Replication mode of this replication link.
+     */
+    @JsonProperty(value = "properties.replicationMode", access = JsonProperty.Access.WRITE_ONLY)
+    private String replicationMode;
+
+    /**
+     * The name of the server hosting the partner database.
      */
     @JsonProperty(value = "properties.partnerServer", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerServer;
 
     /**
-     * The name of the partner Azure SQL Database.
+     * The name of the partner database.
      */
     @JsonProperty(value = "properties.partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerDatabase;
 
     /**
-     * The Azure Region of the partner Azure SQL Database.
+     * The Azure Region of the partner database.
      */
     @JsonProperty(value = "properties.partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerLocation;
 
     /**
-     * The role of the Azure SQL database in the replication link. Possible
-     * values include: 'Primary', 'Secondary', 'NonReadableSecondary',
-     * 'Source', 'Copy'.
+     * The role of the database in the replication link. Possible values
+     * include: 'Primary', 'Secondary', 'NonReadableSecondary', 'Source',
+     * 'Copy'.
      */
     @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole role;
 
     /**
-     * The role of the partner Azure SQL Database in the replication link.
-     * Possible values include: 'Primary', 'Secondary', 'NonReadableSecondary',
+     * The role of the partner database in the replication link. Possible
+     * values include: 'Primary', 'Secondary', 'NonReadableSecondary',
      * 'Source', 'Copy'.
      */
     @JsonProperty(value = "properties.partnerRole", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole partnerRole;
 
     /**
-     * The start time for the replication link (ISO8601 format).
+     * The start time for the replication link.
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
@@ -72,6 +98,42 @@ public class ReplicationLinkInner extends SqlSubResource {
      */
     @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
+
+    /**
+     * Get the location value.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the isTerminationAllowed value.
+     *
+     * @return the isTerminationAllowed value
+     */
+    public Boolean isTerminationAllowed() {
+        return this.isTerminationAllowed;
+    }
+
+    /**
+     * Get the replicationMode value.
+     *
+     * @return the replicationMode value
+     */
+    public String replicationMode() {
+        return this.replicationMode;
+    }
 
     /**
      * Get the partnerServer value.

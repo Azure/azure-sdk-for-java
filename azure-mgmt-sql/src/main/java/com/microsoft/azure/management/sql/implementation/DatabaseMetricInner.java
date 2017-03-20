@@ -10,11 +10,13 @@ package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents Azure SQL Database metrics.
+ * Represents database metrics.
  */
-public class DatabaseMetricInner {
+public class DatabaseMetricInner extends SubResource {
     /**
      * The name of the resource.
      */

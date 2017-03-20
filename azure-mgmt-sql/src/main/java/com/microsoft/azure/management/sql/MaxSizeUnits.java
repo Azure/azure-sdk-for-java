@@ -12,35 +12,38 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TargetElasticPoolEditions.
+ * Defines values for MaxSizeUnits.
  */
-public enum TargetElasticPoolEditions {
-    /** Enum value Basic. */
-    BASIC("Basic"),
+public enum MaxSizeUnits {
+    /** Enum value Megabytes. */
+    MEGABYTES("Megabytes"),
 
-    /** Enum value Standard. */
-    STANDARD("Standard"),
+    /** Enum value Gigabytes. */
+    GIGABYTES("Gigabytes"),
 
-    /** Enum value Premium. */
-    PREMIUM("Premium");
+    /** Enum value Terabytes. */
+    TERABYTES("Terabytes"),
 
-    /** The actual serialized value for a TargetElasticPoolEditions instance. */
+    /** Enum value Petabytes. */
+    PETABYTES("Petabytes");
+
+    /** The actual serialized value for a MaxSizeUnits instance. */
     private String value;
 
-    TargetElasticPoolEditions(String value) {
+    MaxSizeUnits(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TargetElasticPoolEditions instance.
+     * Parses a serialized value to a MaxSizeUnits instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TargetElasticPoolEditions object, or null if unable to parse.
+     * @return the parsed MaxSizeUnits object, or null if unable to parse.
      */
     @JsonCreator
-    public static TargetElasticPoolEditions fromString(String value) {
-        TargetElasticPoolEditions[] items = TargetElasticPoolEditions.values();
-        for (TargetElasticPoolEditions item : items) {
+    public static MaxSizeUnits fromString(String value) {
+        MaxSizeUnits[] items = MaxSizeUnits.values();
+        for (MaxSizeUnits item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

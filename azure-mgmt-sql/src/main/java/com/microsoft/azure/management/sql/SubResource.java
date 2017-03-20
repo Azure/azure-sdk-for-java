@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Subresource properties.
  */
-public class SqlSubResource {
+public class SubResource {
     /**
      * Resource name.
      */

@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SloUsageMetric {
     /**
      * The serviceLevelObjective for SLO usage metric. Possible values include:
-     * 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
+     * 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3', 'P4', 'P6', 'P11',
+     * 'P15', 'System', 'System2', 'ElasticPool'.
      */
     @JsonProperty(value = "serviceLevelObjective")
     private ServiceObjectiveName serviceLevelObjective;

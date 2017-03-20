@@ -8,26 +8,27 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.sql.TransparentDataEncryptionActivityStates;
+import com.microsoft.azure.management.sql.TransparentDataEncryptionActivityStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents an Azure SQL Database Transparent Data Encryption Scan.
+ * Represents a database transparent data encryption Scan.
  */
 @JsonFlatten
-public class TransparentDataEncryptionActivityInner extends SqlSubResource {
+public class TransparentDataEncryptionActivityInner extends SubResource {
     /**
-     * The status of the Azure SQL database. Possible values include:
-     * 'Encrypting', 'Decrypting'.
+     * The status of the database. Possible values include: 'Encrypting',
+     * 'Decrypting'.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private TransparentDataEncryptionActivityStates status;
+    private TransparentDataEncryptionActivityStatus status;
 
     /**
-     * The percent complete of the transparent data encryption scan for a Azure
-     * SQL Database.
+     * The percent complete of the transparent data encryption scan for a
+     * database.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentComplete;
@@ -37,7 +38,7 @@ public class TransparentDataEncryptionActivityInner extends SqlSubResource {
      *
      * @return the status value
      */
-    public TransparentDataEncryptionActivityStates status() {
+    public TransparentDataEncryptionActivityStatus status() {
         return this.status;
     }
 

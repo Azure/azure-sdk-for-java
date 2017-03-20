@@ -14,13 +14,14 @@ import com.microsoft.azure.management.sql.SloUsageMetric;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
  * Represents a Service Tier Advisor.
  */
 @JsonFlatten
-public class ServiceTierAdvisorInner extends SqlSubResource {
+public class ServiceTierAdvisorInner extends SubResource {
     /**
      * The observation period start (ISO8601 format).
      */

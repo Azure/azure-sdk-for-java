@@ -8,28 +8,27 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.sql.ElasticPoolEditions;
+import com.microsoft.azure.management.sql.ElasticPoolEdition;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Represents an Azure SQL Recommended Elastic Pool.
+ * Represents a recommented elastic pool.
  */
 @JsonFlatten
-public class RecommendedElasticPoolInner extends Resource {
+public class RecommendedElasticPoolInner extends ProxyResourceInner {
     /**
-     * The edition of the Azure SQL Recommended Elastic Pool. The
-     * ElasticPoolEditions enumeration contains all the valid editions.
-     * Possible values include: 'Basic', 'Standard', 'Premium'.
+     * The edition of the recommended elastic pool. The ElasticPoolEdition
+     * enumeration contains all the valid editions. Possible values include:
+     * 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(value = "properties.databaseEdition", access = JsonProperty.Access.WRITE_ONLY)
-    private ElasticPoolEditions databaseEdition;
+    private ElasticPoolEdition databaseEdition;
 
     /**
-     * The DTU for the SQL Azure Recommended Elastic Pool.
+     * The DTU for the recommended elastic pool.
      */
     @JsonProperty(value = "properties.dtu")
     private Double dtu;
@@ -77,13 +76,13 @@ public class RecommendedElasticPoolInner extends Resource {
     private Double maxObservedStorageMB;
 
     /**
-     * The list of Azure SQL Databases in this pool. Expanded property.
+     * The list of databases in this pool. Expanded property.
      */
     @JsonProperty(value = "properties.databases", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseInner> databases;
 
     /**
-     * The list of Azure SQL Databases housed in the server. Expanded property.
+     * The list of databases housed in the server. Expanded property.
      */
     @JsonProperty(value = "properties.metrics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedElasticPoolMetricInner> metrics;
@@ -93,7 +92,7 @@ public class RecommendedElasticPoolInner extends Resource {
      *
      * @return the databaseEdition value
      */
-    public ElasticPoolEditions databaseEdition() {
+    public ElasticPoolEdition databaseEdition() {
         return this.databaseEdition;
     }
 

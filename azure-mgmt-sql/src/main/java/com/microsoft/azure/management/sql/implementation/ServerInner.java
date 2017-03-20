@@ -9,15 +9,23 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.sql.ServerVersion;
+import java.util.UUID;
+import com.microsoft.azure.management.sql.ServerState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Represents an Azure SQL server.
+ * Represents a server.
  */
 @JsonFlatten
-public class ServerInner extends Resource {
+public class ServerInner extends TrackedResourceInner {
+    /**
+     * Kind of sql server.  This is metadata used for the Azure portal
+     * experience.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
     /**
      * The fully qualified domain name of the server.
      */
@@ -42,6 +50,37 @@ public class ServerInner extends Resource {
      */
     @JsonProperty(value = "properties.administratorLoginPassword")
     private String administratorLoginPassword;
+
+    /**
+     * The ID of the Active Azure Directory object with admin permissions on
+     * this server. Legacy parameter, always null. To check for Active
+     * Directory admin, query .../servers/{serverName}/administrators.
+     */
+    @JsonProperty(value = "properties.externalAdministratorSid", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID externalAdministratorSid;
+
+    /**
+     * The display name of the Azure Active Directory object with admin
+     * permissions on this server. Legacy parameter, always null. To check for
+     * Active Directory admin, query .../servers/{serverName}/administrators.
+     */
+    @JsonProperty(value = "properties.externalAdministratorLogin", access = JsonProperty.Access.WRITE_ONLY)
+    private String externalAdministratorLogin;
+
+    /**
+     * The state of the server. Possible values include: 'Ready', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private ServerState state;
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public String kind() {
+        return this.kind;
+    }
 
     /**
      * Get the fullyQualifiedDomainName value.
@@ -110,6 +149,33 @@ public class ServerInner extends Resource {
     public ServerInner withAdministratorLoginPassword(String administratorLoginPassword) {
         this.administratorLoginPassword = administratorLoginPassword;
         return this;
+    }
+
+    /**
+     * Get the externalAdministratorSid value.
+     *
+     * @return the externalAdministratorSid value
+     */
+    public UUID externalAdministratorSid() {
+        return this.externalAdministratorSid;
+    }
+
+    /**
+     * Get the externalAdministratorLogin value.
+     *
+     * @return the externalAdministratorLogin value
+     */
+    public String externalAdministratorLogin() {
+        return this.externalAdministratorLogin;
+    }
+
+    /**
+     * Get the state value.
+     *
+     * @return the state value
+     */
+    public ServerState state() {
+        return this.state;
     }
 
 }

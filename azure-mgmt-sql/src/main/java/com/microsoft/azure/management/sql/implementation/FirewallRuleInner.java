@@ -10,13 +10,14 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.sql.SqlSubResource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SubResource;
 
 /**
- * Represents an Azure SQL server firewall rule.
+ * Represents a server firewall rule.
  */
 @JsonFlatten
-public class ServerFirewallRuleInner extends SqlSubResource {
+public class FirewallRuleInner extends SubResource {
     /**
      * Kind of server that contains this firewall rule.
      */
@@ -30,17 +31,24 @@ public class ServerFirewallRuleInner extends SqlSubResource {
     private String location;
 
     /**
-     * The start IP address of the Azure SQL server firewall rule. Must be IPv4
-     * format.
+     * Type of resource this is.
      */
-    @JsonProperty(value = "properties.startIpAddress")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /**
+     * The start IP address of the firewall rule. Must be IPv4 format. Use
+     * value '0.0.0.0' to represent all Azure-internal IP addresses.
+     */
+    @JsonProperty(value = "properties.startIpAddress", required = true)
     private String startIpAddress;
 
     /**
-     * The end IP address of the Azure SQL server firewall rule. Must be IPv4
-     * format.
+     * The end IP address of the firewall rule. Must be IPv4 format. Must be
+     * greater than or equal to startIpAddress. Use value '0.0.0.0' to
+     * represent all Azure-internal IP addresses.
      */
-    @JsonProperty(value = "properties.endIpAddress")
+    @JsonProperty(value = "properties.endIpAddress", required = true)
     private String endIpAddress;
 
     /**
@@ -62,6 +70,15 @@ public class ServerFirewallRuleInner extends SqlSubResource {
     }
 
     /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the startIpAddress value.
      *
      * @return the startIpAddress value
@@ -74,9 +91,9 @@ public class ServerFirewallRuleInner extends SqlSubResource {
      * Set the startIpAddress value.
      *
      * @param startIpAddress the startIpAddress value to set
-     * @return the ServerFirewallRuleInner object itself.
+     * @return the FirewallRuleInner object itself.
      */
-    public ServerFirewallRuleInner withStartIpAddress(String startIpAddress) {
+    public FirewallRuleInner withStartIpAddress(String startIpAddress) {
         this.startIpAddress = startIpAddress;
         return this;
     }
@@ -94,9 +111,9 @@ public class ServerFirewallRuleInner extends SqlSubResource {
      * Set the endIpAddress value.
      *
      * @param endIpAddress the endIpAddress value to set
-     * @return the ServerFirewallRuleInner object itself.
+     * @return the FirewallRuleInner object itself.
      */
-    public ServerFirewallRuleInner withEndIpAddress(String endIpAddress) {
+    public FirewallRuleInner withEndIpAddress(String endIpAddress) {
         this.endIpAddress = endIpAddress;
         return this;
     }

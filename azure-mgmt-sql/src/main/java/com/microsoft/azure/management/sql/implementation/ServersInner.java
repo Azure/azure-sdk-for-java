@@ -61,22 +61,6 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
      * used by Retrofit to perform actually REST calls.
      */
     interface ServersService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers createOrUpdateFirewallRule" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
-        Observable<Response<ResponseBody>> createOrUpdateFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Body ServerFirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers deleteFirewallRule" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers getFirewallRule" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
-        Observable<Response<ResponseBody>> getFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers listFirewallRules" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules")
-        Observable<Response<ResponseBody>> listFirewallRules(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.Servers list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -112,374 +96,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Creates or updates an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServerFirewallRuleInner object if successful.
-     */
-    public ServerFirewallRuleInner createOrUpdateFirewallRule(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
-        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Creates or updates an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates or updates an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServerFirewallRuleInner object
-     */
-    public Observable<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
-        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
-            @Override
-            public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServerFirewallRuleInner object
-     */
-    public Observable<ServiceResponse<ServerFirewallRuleInner>> createOrUpdateFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (firewallRuleName == null) {
-            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.createOrUpdateFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFirewallRuleInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServerFirewallRuleInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServerFirewallRuleInner> clientResponse = createOrUpdateFirewallRuleDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServerFirewallRuleInner> createOrUpdateFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ServerFirewallRuleInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
-                .register(201, new TypeToken<ServerFirewallRuleInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
-        deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
-    }
-
-    /**
-     * Deletes an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
-        return deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (firewallRuleName == null) {
-            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.deleteFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteFirewallRuleDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServerFirewallRuleInner object if successful.
-     */
-    public ServerFirewallRuleInner getFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
-        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().body();
-    }
-
-    /**
-     * Returns an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
-    }
-
-    /**
-     * Returns an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServerFirewallRuleInner object
-     */
-    public Observable<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
-        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
-            @Override
-            public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns an Azure SQL server firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param firewallRuleName The name of the Azure SQL server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServerFirewallRuleInner object
-     */
-    public Observable<ServiceResponse<ServerFirewallRuleInner>> getFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (firewallRuleName == null) {
-            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFirewallRuleInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServerFirewallRuleInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServerFirewallRuleInner> clientResponse = getFirewallRuleDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServerFirewallRuleInner> getFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ServerFirewallRuleInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns a list of Azure SQL server firewall rules.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;ServerFirewallRuleInner&gt; object if successful.
-     */
-    public List<ServerFirewallRuleInner> listFirewallRules(String resourceGroupName, String serverName) {
-        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().body();
-    }
-
-    /**
-     * Returns a list of Azure SQL server firewall rules.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerFirewallRuleInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Returns a list of Azure SQL server firewall rules.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
-     */
-    public Observable<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName) {
-        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServerFirewallRuleInner>>, List<ServerFirewallRuleInner>>() {
-            @Override
-            public List<ServerFirewallRuleInner> call(ServiceResponse<List<ServerFirewallRuleInner>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Returns a list of Azure SQL server firewall rules.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
-     */
-    public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> listFirewallRulesWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listFirewallRules(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServerFirewallRuleInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ServerFirewallRuleInner>> result = listFirewallRulesDelegate(response);
-                        ServiceResponse<List<ServerFirewallRuleInner>> clientResponse = new ServiceResponse<List<ServerFirewallRuleInner>>(result.body().items(), result.response());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<ServerFirewallRuleInner>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ServerFirewallRuleInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ServerFirewallRuleInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers.
      *
      * @return the PagedList<ServerInner> object if successful.
      */
@@ -496,7 +113,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
@@ -506,7 +123,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers.
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
@@ -522,7 +139,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers.
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
@@ -554,10 +171,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Creates a new Azure SQL server.
+     * Creates or updates a new server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -569,10 +186,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Creates a new Azure SQL server.
+     * Creates or updates a new server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -583,10 +200,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Creates a new Azure SQL server.
+     * Creates or updates a new server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
@@ -601,10 +218,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Creates a new Azure SQL server.
+     * Creates or updates a new server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
@@ -650,7 +267,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
      * Deletes a SQL server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -663,7 +280,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
      * Deletes a SQL server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -676,7 +293,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
      * Deletes a SQL server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -693,7 +310,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
      * Deletes a SQL server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -731,10 +348,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL server.
+     * Gets a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -745,10 +362,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL server.
+     * Gets a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -758,10 +375,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL server.
+     * Gets a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
      */
@@ -775,10 +392,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL server.
+     * Gets a server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
      */
@@ -815,7 +432,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers in a resource group.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the PagedList<ServerInner> object if successful.
@@ -833,7 +450,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers in a resource group.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -844,7 +461,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers in a resource group.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the observable to the List&lt;ServerInner&gt; object
@@ -861,7 +478,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about an Azure SQL server.
+     * Returns a list of servers in a resource group.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the observable to the List&lt;ServerInner&gt; object
@@ -897,10 +514,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL server usage.
+     * Returns server usages.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -911,10 +528,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL server usage.
+     * Returns server usages.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -924,10 +541,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL server usage.
+     * Returns server usages.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ServerMetricInner&gt; object
      */
@@ -941,10 +558,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL server usage.
+     * Returns server usages.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ServerMetricInner&gt; object
      */
@@ -982,10 +599,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL database Service Objective.
+     * Gets a database service objective.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -997,10 +614,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL database Service Objective.
+     * Gets a database service objective.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1011,10 +628,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL database Service Objective.
+     * Gets a database service objective.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceObjectiveInner object
@@ -1029,10 +646,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Gets information about an Azure SQL database Service Objective.
+     * Gets a database service objective.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceObjectiveInner object
@@ -1073,10 +690,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL database Service Objectives.
+     * Returns database service objectives.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1087,10 +704,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL database Service Objectives.
+     * Returns database service objectives.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1100,10 +717,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL database Service Objectives.
+     * Returns database service objectives.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ServiceObjectiveInner&gt; object
      */
@@ -1117,10 +734,10 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     }
 
     /**
-     * Returns information about Azure SQL database Service Objectives.
+     * Returns database service objectives.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the Azure SQL server.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ServiceObjectiveInner&gt; object
      */

@@ -11,13 +11,18 @@ package com.microsoft.azure.management.sql.implementation;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Represents the activity on an Azure SQL Elastic Pool.
+ * Represents the activity on an elastic pool.
  */
 @JsonFlatten
-public class ElasticPoolActivityInner extends Resource {
+public class ElasticPoolActivityInner extends ProxyResourceInner {
+    /**
+     * The geo-location where the resource lives.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
     /**
      * The time the operation finished (ISO8601 format).
      */
@@ -79,7 +84,7 @@ public class ElasticPoolActivityInner extends Resource {
     private Integer requestedDtu;
 
     /**
-     * The requested name for the Elastic Pool if available.
+     * The requested name for the elastic pool if available.
      */
     @JsonProperty(value = "properties.requestedElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedElasticPoolName;
@@ -91,13 +96,13 @@ public class ElasticPoolActivityInner extends Resource {
     private Long requestedStorageLimitInGB;
 
     /**
-     * The name of the Elastic Pool.
+     * The name of the elastic pool.
      */
     @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
 
     /**
-     * The name of the Azure SQL server the Elastic Pool is in.
+     * The name of the server the elastic pool is in.
      */
     @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
@@ -113,6 +118,50 @@ public class ElasticPoolActivityInner extends Resource {
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
+
+    /**
+     * The requested storage limit in MB.
+     */
+    @JsonProperty(value = "properties.requestedStorageLimitInMB", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer requestedStorageLimitInMB;
+
+    /**
+     * The requested per database DTU guarantee.
+     */
+    @JsonProperty(value = "properties.requestedDatabaseDtuGuarantee", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer requestedDatabaseDtuGuarantee;
+
+    /**
+     * The requested per database DTU cap.
+     */
+    @JsonProperty(value = "properties.requestedDatabaseDtuCap", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer requestedDatabaseDtuCap;
+
+    /**
+     * The requested DTU guarantee.
+     */
+    @JsonProperty(value = "properties.requestedDtuGuarantee", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer requestedDtuGuarantee;
+
+    /**
+     * Get the location value.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location value.
+     *
+     * @param location the location value to set
+     * @return the ElasticPoolActivityInner object itself.
+     */
+    public ElasticPoolActivityInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
     /**
      * Get the endTime value.
@@ -256,6 +305,42 @@ public class ElasticPoolActivityInner extends Resource {
      */
     public String state() {
         return this.state;
+    }
+
+    /**
+     * Get the requestedStorageLimitInMB value.
+     *
+     * @return the requestedStorageLimitInMB value
+     */
+    public Integer requestedStorageLimitInMB() {
+        return this.requestedStorageLimitInMB;
+    }
+
+    /**
+     * Get the requestedDatabaseDtuGuarantee value.
+     *
+     * @return the requestedDatabaseDtuGuarantee value
+     */
+    public Integer requestedDatabaseDtuGuarantee() {
+        return this.requestedDatabaseDtuGuarantee;
+    }
+
+    /**
+     * Get the requestedDatabaseDtuCap value.
+     *
+     * @return the requestedDatabaseDtuCap value
+     */
+    public Integer requestedDatabaseDtuCap() {
+        return this.requestedDatabaseDtuCap;
+    }
+
+    /**
+     * Get the requestedDtuGuarantee value.
+     *
+     * @return the requestedDtuGuarantee value
+     */
+    public Integer requestedDtuGuarantee() {
+        return this.requestedDtuGuarantee;
     }
 
 }

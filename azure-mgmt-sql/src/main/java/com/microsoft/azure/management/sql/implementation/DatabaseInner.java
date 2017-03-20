@@ -11,128 +11,218 @@ package com.microsoft.azure.management.sql.implementation;
 import org.joda.time.DateTime;
 import java.util.UUID;
 import com.microsoft.azure.management.sql.CreateMode;
-import com.microsoft.azure.management.sql.DatabaseEditions;
+import com.microsoft.azure.management.sql.DatabaseEdition;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import java.util.List;
-import com.microsoft.azure.management.sql.UpgradeHint;
+import com.microsoft.azure.management.sql.RecommendedIndex;
+import com.microsoft.azure.management.sql.ReadScale;
+import com.microsoft.azure.management.sql.SampleName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Represents an Azure SQL Database.
+ * Represents a database.
  */
 @JsonFlatten
-public class DatabaseInner extends Resource {
+public class DatabaseInner extends TrackedResourceInner {
     /**
-     * The collation of the Azure SQL database.
+     * Kind of database.  This is metadata used for the Azure portal
+     * experience.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /**
+     * The collation of the database. If createMode is not Default, this value
+     * is ignored.
      */
     @JsonProperty(value = "properties.collation")
     private String collation;
 
     /**
-     * The creation date of the Azure SQL database (ISO8601 format).
+     * The creation date of the database (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * The containment state of the Azure SQL database.
+     * The containment state of the database.
      */
     @JsonProperty(value = "properties.containmentState", access = JsonProperty.Access.WRITE_ONLY)
     private Long containmentState;
 
     /**
-     * The current Service Level Objective ID of the Azure SQL database. This
-     * is the ID of the Service Level Objective that is currently active.
+     * The current service level objective ID of the database. This is the ID
+     * of the service level objective that is currently active.
      */
     @JsonProperty(value = "properties.currentServiceObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID currentServiceObjectiveId;
 
     /**
-     * The ID of the Azure SQL database.
+     * The ID of the database.
      */
     @JsonProperty(value = "properties.databaseId", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseId;
 
     /**
-     * The recovery period start date of the Azure SQL database. This records
-     * the start date and time when recovery is available for this Azure SQL
-     * Database (ISO8601 format).
+     * This records the earliest start date and time that restore is available
+     * for this database (ISO8601 format).
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;
 
     /**
-     * Specifies the type of database to create. Possible values include:
-     * 'Copy', 'Default', 'NonReadableSecondary', 'OnlineSecondary',
-     * 'PointInTimeRestore', 'Recovery', 'Restore'.
+     * Specifies the mode of database creation.
+     *
+     * Default: regular database creation.
+     *
+     * Copy: creates a database as a copy of an existing database.
+     * sourceDatabaseId must be specified as the resource ID of the source
+     * database.
+     *
+     * OnlineSecondary/NonReadableSecondary: creates a database as a (readable
+     * or nonreadable) secondary replica of an existing database.
+     * sourceDatabaseId must be specified as the resource ID of the existing
+     * primary database.
+     *
+     * PointInTimeRestore: Creates a database by restoring a point in time
+     * backup of an existing database. sourceDatabaseId must be specified as
+     * the resource ID of the existing database, and restorePointInTime must be
+     * specified.
+     *
+     * Recovery: Creates a database by restoring a geo-replicated backup.
+     * sourceDatabaseId must be specified as the recoverable database resource
+     * ID to restore.
+     *
+     * Restore: Creates a database by restoring a backup of a deleted database.
+     * sourceDatabaseId must be specified. If sourceDatabaseId is the
+     * database's original resource ID, then sourceDatabaseDeletionDate must be
+     * specified. Otherwise sourceDatabaseId must be the restorable dropped
+     * database resource ID and sourceDatabaseDeletionDate is ignored.
+     * restorePointInTime may also be specified to restore from an earlier
+     * point in time.
+     *
+     * RestoreLongTermRetentionBackup: Creates a database by restoring from a
+     * long term retention vault. recoveryServicesRecoveryPointResourceId must
+     * be specified as the recovery point resource ID.
+     *
+     * Copy, NonReadableSecondary, OnlineSecondary and
+     * RestoreLongTermRetentionBackup are not supported for DataWarehouse
+     * edition. Possible values include: 'Copy', 'Default',
+     * 'NonReadableSecondary', 'OnlineSecondary', 'PointInTimeRestore',
+     * 'Recovery', 'Restore', 'RestoreLongTermRetentionBackup'.
      */
     @JsonProperty(value = "properties.createMode")
     private CreateMode createMode;
 
     /**
-     * Conditional. Specifies the resource ID of the source database. If
-     * createMode is not set to Default, then this value must be specified. The
-     * name of the source database must be the same. NOTE: Collation, Edition,
-     * and MaxSizeBytes must remain the same while the link is active. Values
-     * specified for these parameters will be ignored.
+     * Conditional. If createMode is Copy, NonReadableSecondary,
+     * OnlineSecondary, PointInTimeRestore, Recovery, or Restore, then this
+     * value is required. Specifies the resource ID of the source database. If
+     * createMode is NonReadableSecondary or OnlineSecondary, the name of the
+     * source database must be the same as the new database being created.
      */
     @JsonProperty(value = "properties.sourceDatabaseId")
     private String sourceDatabaseId;
 
     /**
-     * The edition of the Azure SQL database. The DatabaseEditions enumeration
-     * contains all the valid editions. Possible values include: 'Web',
-     * 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
-     * 'DataWarehouse'.
+     * Conditional. If createMode is Restore and sourceDatabaseId is the
+     * deleted database's original resource id when it existed (as opposed to
+     * its current restorable dropped database id), then this value is
+     * required. Specifies the time that the database was deleted.
      */
-    @JsonProperty(value = "properties.edition")
-    private DatabaseEditions edition;
+    @JsonProperty(value = "properties.sourceDatabaseDeletionDate")
+    private DateTime sourceDatabaseDeletionDate;
 
     /**
-     * The max size of the Azure SQL database expressed in bytes. Note: Only
-     * the following sizes are supported (in addition to limitations being
-     * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20 GB
-     * | 30 GB … 150 GB | 200 GB … 500 GB }.
+     * Conditional. If createMode is PointInTimeRestore, this value is
+     * required. If createMode is Restore, this value is optional. Specifies
+     * the point in time (ISO8601 format) of the source database that will be
+     * restored to create the new database. Must be greater than or equal to
+     * the source database's earliestRestoreDate value.
+     */
+    @JsonProperty(value = "properties.restorePointInTime")
+    private DateTime restorePointInTime;
+
+    /**
+     * Conditional. If createMode is RestoreLongTermRetentionBackup, then this
+     * value is required. Specifies the resource ID of the recovery point to
+     * restore from.
+     */
+    @JsonProperty(value = "properties.recoveryServicesRecoveryPointResourceId")
+    private DateTime recoveryServicesRecoveryPointResourceId;
+
+    /**
+     * The edition of the database. The DatabaseEditions enumeration contains
+     * all the valid editions. If createMode is NonReadableSecondary or
+     * OnlineSecondary, this value is ignored. To see possible values, query
+     * the capabilities API
+     * (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
+     * referred to by operationId: "Capabilities_ListByLocation.". Possible
+     * values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium',
+     * 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'.
+     */
+    @JsonProperty(value = "properties.edition")
+    private DatabaseEdition edition;
+
+    /**
+     * The max size of the database expressed in bytes. If createMode is not
+     * Default, this value is ignored. To see possible values, query the
+     * capabilities API
+     * (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
+     * referred to by operationId: "Capabilities_ListByLocation.".
      */
     @JsonProperty(value = "properties.maxSizeBytes")
     private String maxSizeBytes;
 
     /**
-     * The configured Service Level Objective ID of the Azure SQL database.
-     * This is the Service Level Objective that is in the process of being
-     * applied to the Azure SQL database. Once successfully updated, it will
-     * match the value of currentServiceObjectiveId property.
+     * The configured service level objective ID of the database. This is the
+     * service level objective that is in the process of being applied to the
+     * database. Once successfully updated, it will match the value of
+     * currentServiceObjectiveId property. If requestedServiceObjectiveId and
+     * requestedServiceObjectiveName are both updated, the value of
+     * requestedServiceObjectiveId overrides the value of
+     * requestedServiceObjectiveName. To see possible values, query the
+     * capabilities API
+     * (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
+     * referred to by operationId: "Capabilities_ListByLocation.".
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveId")
     private UUID requestedServiceObjectiveId;
 
     /**
-     * The name of the configured Service Level Objective of the Azure SQL
-     * database. This is the Service Level Objective that is in the process of
-     * being applied to the Azure SQL database. Once successfully updated, it
-     * will match the value of serviceLevelObjective property. Possible values
-     * include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
+     * The name of the configured service level objective of the database. This
+     * is the service level objective that is in the process of being applied
+     * to the database. Once successfully updated, it will match the value of
+     * serviceLevelObjective property. To see possible values, query the
+     * capabilities API
+     * (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities)
+     * referred to by operationId: "Capabilities_ListByLocation.". Possible
+     * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3', 'P4',
+     * 'P6', 'P11', 'P15', 'System', 'System2', 'ElasticPool'.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveName")
     private ServiceObjectiveName requestedServiceObjectiveName;
 
     /**
-     * The current Service Level Objective of the Azure SQL database. Possible
-     * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
+     * The current service level objective of the database. Possible values
+     * include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3', 'P4', 'P6',
+     * 'P11', 'P15', 'System', 'System2', 'ElasticPool'.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceObjectiveName serviceLevelObjective;
 
     /**
-     * The status of the Azure SQL database.
+     * The status of the database.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
-     * The name of the Azure SQL Elastic Pool the database is in.
+     * The name of the elastic pool the database is in. If elasticPoolName and
+     * requestedServiceObjectiveName are both updated, the value of
+     * requestedServiceObjectiveName is ignored. Not supported for
+     * DataWarehouse edition.
      */
     @JsonProperty(value = "properties.elasticPoolName")
     private String elasticPoolName;
@@ -150,18 +240,6 @@ public class DatabaseInner extends Resource {
     private List<ServiceTierAdvisorInner> serviceTierAdvisors;
 
     /**
-     * The upgrade hint for this database.
-     */
-    @JsonProperty(value = "properties.upgradeHint", access = JsonProperty.Access.WRITE_ONLY)
-    private UpgradeHint upgradeHint;
-
-    /**
-     * The schemas from this database.
-     */
-    @JsonProperty(value = "properties.schemas", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SchemaInner> schemas;
-
-    /**
      * The transparent data encryption info for this database.
      */
     @JsonProperty(value = "properties.transparentDataEncryption", access = JsonProperty.Access.WRITE_ONLY)
@@ -171,7 +249,40 @@ public class DatabaseInner extends Resource {
      * The recommended indices for this database.
      */
     @JsonProperty(value = "properties.recommendedIndex", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RecommendedIndexInner> recommendedIndex;
+    private List<RecommendedIndex> recommendedIndex;
+
+    /**
+     * The id indicating the failover group containing this database.
+     */
+    @JsonProperty(value = "properties.failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID failoverGroupId;
+
+    /**
+     * Conditional. If the database is a geo-secondary, readScale indicates
+     * whether read-only connections are allowed to this database or not. Not
+     * supported for DataWarehouse edition. Possible values include: 'Enabled',
+     * 'Disabled'.
+     */
+    @JsonProperty(value = "properties.readScale")
+    private ReadScale readScale;
+
+    /**
+     * Indicates the name of the sample schema to apply when creating this
+     * database. If createMode is not Default, this value is ignored. Not
+     * supported for DataWarehouse edition. Possible values include:
+     * 'AdventureWorksLT'.
+     */
+    @JsonProperty(value = "properties.sampleName")
+    private SampleName sampleName;
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public String kind() {
+        return this.kind;
+    }
 
     /**
      * Get the collation value.
@@ -279,11 +390,71 @@ public class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the sourceDatabaseDeletionDate value.
+     *
+     * @return the sourceDatabaseDeletionDate value
+     */
+    public DateTime sourceDatabaseDeletionDate() {
+        return this.sourceDatabaseDeletionDate;
+    }
+
+    /**
+     * Set the sourceDatabaseDeletionDate value.
+     *
+     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSourceDatabaseDeletionDate(DateTime sourceDatabaseDeletionDate) {
+        this.sourceDatabaseDeletionDate = sourceDatabaseDeletionDate;
+        return this;
+    }
+
+    /**
+     * Get the restorePointInTime value.
+     *
+     * @return the restorePointInTime value
+     */
+    public DateTime restorePointInTime() {
+        return this.restorePointInTime;
+    }
+
+    /**
+     * Set the restorePointInTime value.
+     *
+     * @param restorePointInTime the restorePointInTime value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withRestorePointInTime(DateTime restorePointInTime) {
+        this.restorePointInTime = restorePointInTime;
+        return this;
+    }
+
+    /**
+     * Get the recoveryServicesRecoveryPointResourceId value.
+     *
+     * @return the recoveryServicesRecoveryPointResourceId value
+     */
+    public DateTime recoveryServicesRecoveryPointResourceId() {
+        return this.recoveryServicesRecoveryPointResourceId;
+    }
+
+    /**
+     * Set the recoveryServicesRecoveryPointResourceId value.
+     *
+     * @param recoveryServicesRecoveryPointResourceId the recoveryServicesRecoveryPointResourceId value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withRecoveryServicesRecoveryPointResourceId(DateTime recoveryServicesRecoveryPointResourceId) {
+        this.recoveryServicesRecoveryPointResourceId = recoveryServicesRecoveryPointResourceId;
+        return this;
+    }
+
+    /**
      * Get the edition value.
      *
      * @return the edition value
      */
-    public DatabaseEditions edition() {
+    public DatabaseEdition edition() {
         return this.edition;
     }
 
@@ -293,7 +464,7 @@ public class DatabaseInner extends Resource {
      * @param edition the edition value to set
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withEdition(DatabaseEditions edition) {
+    public DatabaseInner withEdition(DatabaseEdition edition) {
         this.edition = edition;
         return this;
     }
@@ -415,24 +586,6 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the upgradeHint value.
-     *
-     * @return the upgradeHint value
-     */
-    public UpgradeHint upgradeHint() {
-        return this.upgradeHint;
-    }
-
-    /**
-     * Get the schemas value.
-     *
-     * @return the schemas value
-     */
-    public List<SchemaInner> schemas() {
-        return this.schemas;
-    }
-
-    /**
      * Get the transparentDataEncryption value.
      *
      * @return the transparentDataEncryption value
@@ -446,8 +599,57 @@ public class DatabaseInner extends Resource {
      *
      * @return the recommendedIndex value
      */
-    public List<RecommendedIndexInner> recommendedIndex() {
+    public List<RecommendedIndex> recommendedIndex() {
         return this.recommendedIndex;
+    }
+
+    /**
+     * Get the failoverGroupId value.
+     *
+     * @return the failoverGroupId value
+     */
+    public UUID failoverGroupId() {
+        return this.failoverGroupId;
+    }
+
+    /**
+     * Get the readScale value.
+     *
+     * @return the readScale value
+     */
+    public ReadScale readScale() {
+        return this.readScale;
+    }
+
+    /**
+     * Set the readScale value.
+     *
+     * @param readScale the readScale value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withReadScale(ReadScale readScale) {
+        this.readScale = readScale;
+        return this;
+    }
+
+    /**
+     * Get the sampleName value.
+     *
+     * @return the sampleName value
+     */
+    public SampleName sampleName() {
+        return this.sampleName;
+    }
+
+    /**
+     * Set the sampleName value.
+     *
+     * @param sampleName the sampleName value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSampleName(SampleName sampleName) {
+        this.sampleName = sampleName;
+        return this;
     }
 
 }

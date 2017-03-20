@@ -35,6 +35,9 @@ public final class CreateMode {
     /** Static value Restore for CreateMode. */
     public static final CreateMode RESTORE = new CreateMode("Restore");
 
+    /** Static value RestoreLongTermRetentionBackup for CreateMode. */
+    public static final CreateMode RESTORE_LONG_TERM_RETENTION_BACKUP = new CreateMode("RestoreLongTermRetentionBackup");
+
     private String value;
 
     /**
