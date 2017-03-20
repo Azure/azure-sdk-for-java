@@ -54,7 +54,11 @@ class ApplicationPackagesImpl extends
         List<ApplicationPackageInner> applicationPackageList = this.parent.inner().packages();
 
         for (ApplicationPackageInner applicationPackage: applicationPackageList) {
-            childResources.add(new ApplicationPackageImpl(applicationPackage.version(), this.parent(), applicationPackage, this.parent().parent().manager().inner().applicationPackages()));
+            childResources.add(new ApplicationPackageImpl(
+                    applicationPackage.version(),
+                    this.parent(),
+                    applicationPackage,
+                    this.parent().parent().manager().inner().applicationPackages()));
         }
 
         return childResources;
