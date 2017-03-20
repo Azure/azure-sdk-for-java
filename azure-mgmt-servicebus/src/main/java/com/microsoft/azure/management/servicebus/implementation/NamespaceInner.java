@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.servicebus.Sku;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Description of a namespace resource.
  */
 @JsonFlatten
-public class NamespaceInner extends TrackedResourceInner {
+public class NamespaceInner extends Resource {
     /**
      * The sku property.
      */
