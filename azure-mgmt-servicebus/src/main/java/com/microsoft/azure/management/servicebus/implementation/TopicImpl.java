@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -313,7 +313,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     protected Observable<Topic> createChildResourceAsync() {
-        Completable createQueueCompletable = this.manager().inner().topics()
+        Completable createTopicCompletable = this.manager().inner().topics()
                 .createOrUpdateAsync(this.resourceGroupName(),
                         this.parentName,
                         this.name(),
@@ -327,21 +327,14 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
                 }).toCompletable();
         Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
         final Topic self = this;
-        return Completable.concat(createQueueCompletable, childrenOperationsCompletable)
-                .doOnError(new Action1<Throwable>() {
+        return Completable.concat(createTopicCompletable, childrenOperationsCompletable)
+                .doOnTerminate(new Action0() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void call() {
                         initChildrenOperationsCache();
                     }
                 })
-                .toObservable()
-                .map(new Func1<Object, Topic>() {
-                    @Override
-                    public Topic call(Object o) {
-                        initChildrenOperationsCache();
-                        return self;
-                    }
-                });
+                .andThen(Observable.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -360,17 +353,17 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         if (this.rulesToCreate.size() > 0) {
             rulesCreateStream = this.authorizationRules().createAsync(this.rulesToCreate);
         }
-        Observable<?> subcriptionsDeleteStream = Observable.empty();
+        Observable<?> subscriptionsDeleteStream = Observable.empty();
         if (this.subscriptionsToDelete.size() > 0) {
-            subcriptionsDeleteStream = this.subscriptions().deleteByNameAsync(this.subscriptionsToDelete);
+            subscriptionsDeleteStream = this.subscriptions().deleteByNameAsync(this.subscriptionsToDelete);
         }
         Observable<?> rulesDeleteStream = Observable.empty();
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Observable.mergeDelayError(subscriptionsCreateStream,
-                rulesCreateStream,
-                subcriptionsDeleteStream,
-                rulesDeleteStream).toCompletable();
+        return Completable.mergeDelayError(subscriptionsCreateStream.toCompletable(),
+                rulesCreateStream.toCompletable(),
+                subscriptionsDeleteStream.toCompletable(),
+                rulesDeleteStream.toCompletable());
     }
 }

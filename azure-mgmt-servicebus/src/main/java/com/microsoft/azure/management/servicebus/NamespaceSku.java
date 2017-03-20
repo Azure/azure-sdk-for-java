@@ -17,11 +17,11 @@ public final class NamespaceSku {
     /** Static value NamespaceSku for STANDARD. */
     public static final NamespaceSku STANDARD = new NamespaceSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
     /** Static value NamespaceSku for PREMIUM_CAPACITY1. */
-    public static final NamespaceSku PREMIUM_CAPACITY1 = new NamespaceSku(new Sku().withCapacity(1).withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final NamespaceSku PREMIUM_CAPACITY1 = new NamespaceSku(new Sku().withCapacity(1).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY2. */
-    public static final NamespaceSku PREMIUM_CAPACITY2 = new NamespaceSku(new Sku().withCapacity(2).withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final NamespaceSku PREMIUM_CAPACITY2 = new NamespaceSku(new Sku().withCapacity(2).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
     /** Static value NamespaceSku for PREMIUM_CAPACITY4. */
-    public static final NamespaceSku PREMIUM_CAPACITY4 = new NamespaceSku(new Sku().withCapacity(4).withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final NamespaceSku PREMIUM_CAPACITY4 = new NamespaceSku(new Sku().withCapacity(4).withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
 
     private final Sku sku;
 

@@ -6,13 +6,17 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.servicebus.implementation.NamespaceResourceInner;
 import com.microsoft.azure.management.servicebus.implementation.QueueResourceInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.rest.RestClient;
+import org.junit.Assert;
 import org.junit.Test;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +35,7 @@ public class ServiceBusOperationsTests extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javasbrg", 20);
+        RG_NAME = generateRandomResourceName("javasb", 20);
 
         resourceManager = ResourceManager
                 .authenticate(restClient)
@@ -43,11 +47,71 @@ public class ServiceBusOperationsTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-   //     resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
-    public void canOperateOnNamespaces() {
+    public void canCRUDOnSimpleNamespace() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
+
+        String namespaceDNSLabel = generateRandomResourceName("javasb", 15);
+        serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .create();
+
+        Namespace namespace = serviceBusManager.namespaces()
+                .getByGroup(RG_NAME, namespaceDNSLabel);
+        Assert.assertNotNull(namespace);
+        Assert.assertNotNull(namespace.inner());
+
+        PagedList<Namespace> namespaces = serviceBusManager.namespaces().listByGroup(RG_NAME);
+        Assert.assertNotNull(namespaces);
+        Assert.assertTrue(namespaces.size() > 0);
+        boolean found = false;
+        for (Namespace n : namespaces) {
+            if (n.name().equalsIgnoreCase(namespace.name())) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue(found);
+
+        Assert.assertNotNull(namespace.dnsLabel());
+        Assert.assertTrue(namespace.dnsLabel().equalsIgnoreCase(namespaceDNSLabel));
+        Assert.assertNotNull(namespace.fqdn());
+        Assert.assertTrue(namespace.fqdn().contains(namespaceDNSLabel));
+        Assert.assertNotNull(namespace.sku());
+        Assert.assertTrue(namespace.sku().equals(NamespaceSku.PREMIUM_CAPACITY1));
+        Assert.assertNotNull(namespace.region());
+        Assert.assertTrue(namespace.region().equals(region));
+        Assert.assertNotNull(namespace.resourceGroupName());
+        Assert.assertTrue(namespace.resourceGroupName().equalsIgnoreCase(RG_NAME));
+        Assert.assertNotNull(namespace.createdAt());
+        Assert.assertNotNull(namespace.queues());
+        Assert.assertEquals(0, namespace.queues().list().size());
+        Assert.assertNotNull(namespace.topics());
+        Assert.assertEquals(0, namespace.topics().list().size());
+        Assert.assertNotNull(namespace.authorizationRules());
+        PagedList<NamespaceAuthorizationRule> defaultNsRules = namespace.authorizationRules().list();
+        Assert.assertEquals(1, defaultNsRules.size());
+        NamespaceAuthorizationRule defaultNsRule = defaultNsRules.get(0);
+        Assert.assertTrue(defaultNsRule.name().equalsIgnoreCase("RootManageSharedAccessKey"));
+        Assert.assertNotNull(defaultNsRule.rights());
+        Assert.assertNotNull(defaultNsRule.namespaceName());
+        Assert.assertTrue(defaultNsRule.namespaceName().equalsIgnoreCase(namespaceDNSLabel));
+        Assert.assertNotNull(defaultNsRule.resourceGroupName());
+        Assert.assertTrue(defaultNsRule.resourceGroupName().equalsIgnoreCase(RG_NAME));
+        namespace.update()
+                .withSku(NamespaceSku.PREMIUM_CAPACITY2)
+                .apply();
+        Assert.assertTrue(namespace.sku().equals(NamespaceSku.PREMIUM_CAPACITY2));
+        serviceBusManager.namespaces().deleteByGroup(RG_NAME, namespace.name());
     }
 
     @Test

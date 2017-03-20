@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -364,20 +364,13 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
         final Queue self = this;
         return Completable.concat(createQueueCompletable, childrenOperationsCompletable)
-                .doOnError(new Action1<Throwable>() {
+                .doOnTerminate(new Action0() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void call() {
                         initChildrenOperationsCache();
                     }
                 })
-                .toObservable()
-                .map(new Func1<Object, Queue>() {
-                    @Override
-                    public Queue call(Object o) {
-                        initChildrenOperationsCache();
-                        return self;
-                    }
-                });
+                .andThen(Observable.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -394,6 +387,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Observable.mergeDelayError(rulesCreateStream, rulesDeleteStream).toCompletable();
+        return Completable.mergeDelayError(rulesCreateStream.toCompletable(),
+                rulesDeleteStream.toCompletable());
     }
 }

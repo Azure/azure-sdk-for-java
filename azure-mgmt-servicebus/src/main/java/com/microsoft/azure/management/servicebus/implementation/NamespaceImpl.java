@@ -13,7 +13,7 @@ import com.microsoft.azure.management.servicebus.*;
 import org.joda.time.DateTime;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -157,20 +157,13 @@ class NamespaceImpl extends GroupableResourceImpl<
         Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
         final Namespace self = this;
         return Completable.concat(createNamespaceCompletable, childrenOperationsCompletable)
-                .doOnError(new Action1<Throwable>() {
+                .doOnTerminate(new Action0() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void call() {
                         initChildrenOperationsCache();
                     }
                 })
-                .toObservable()
-                .map(new Func1<Object, Namespace>() {
-                    @Override
-                    public Namespace call(Object o) {
-                        initChildrenOperationsCache();
-                        return self;
-                    }
-                });
+                .andThen(Observable.just(self));
     }
 
     private void initChildrenOperationsCache() {
@@ -207,12 +200,11 @@ class NamespaceImpl extends GroupableResourceImpl<
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Observable.mergeDelayError(queuesCreateStream,
-                topicsCreateStream,
-                rulesCreateStream,
-                queuesDeleteStream,
-                topicsDeleteStream,
-                rulesDeleteStream).toCompletable();
+        return Completable.mergeDelayError(queuesCreateStream.toCompletable(),
+                    topicsCreateStream.toCompletable(),
+                    rulesCreateStream.toCompletable(),
+                    queuesDeleteStream.toCompletable(),
+                    topicsDeleteStream.toCompletable(),
+                    rulesDeleteStream.toCompletable());
     }
-
 }
