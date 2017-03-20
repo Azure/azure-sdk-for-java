@@ -8,10 +8,9 @@ package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
@@ -279,6 +278,7 @@ public interface Subscription extends
      * The template for a subscription update operation, containing all the settings that can be modified.
      */
     interface Update extends
+            Appliable<Subscription>,
             Subscription.UpdateStages.WithDeleteOnIdle,
             Subscription.UpdateStages.WithMessageLockDuration,
             Subscription.UpdateStages.WithDefaultMessageTTL,
