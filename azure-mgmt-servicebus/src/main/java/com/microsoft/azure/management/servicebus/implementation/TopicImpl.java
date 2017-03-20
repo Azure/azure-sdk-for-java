@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -38,11 +39,15 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     TopicImpl(String resourceGroupName,
               String namespaceName,
               String name,
+              Region region,
               TopicResourceInner inner,
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
+        if (inner.location() == null) {
+            inner.withLocation(region.toString());
+        }
     }
 
     @Override
@@ -113,6 +118,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         return new Period()
                 .withDays(timeSpan.days())
                 .withHours(timeSpan.hours())
+                .withMinutes(timeSpan.minutes())
                 .withSeconds(timeSpan.seconds())
                 .withMillis(timeSpan.milliseconds());
     }
@@ -126,6 +132,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         return new Period()
                 .withDays(timeSpan.days())
                 .withHours(timeSpan.hours())
+                .withMinutes(timeSpan.minutes())
                 .withSeconds(timeSpan.seconds())
                 .withMillis(timeSpan.milliseconds());
     }
@@ -193,6 +200,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         return new SubscriptionsImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
+                this.region(),
                 manager());
     }
 
@@ -201,6 +209,7 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         return new TopicAuthorizationRulesImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
+                this.region(),
                 manager());
     }
 

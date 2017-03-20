@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.Queues;
@@ -32,11 +33,13 @@ class QueuesImpl
         implements Queues {
     private final String resourceGroupName;
     private final String namespaceName;
+    private final Region region;
 
-    QueuesImpl(String resourceGroupName, String namespaceName, ServiceBusManager manager) {
+    QueuesImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
         super(manager.inner().queues(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
+        this.region = region;
     }
 
     @Override
@@ -86,6 +89,7 @@ class QueuesImpl
         return new QueueImpl(this.resourceGroupName,
                 this.namespaceName,
                 name,
+                this.region,
                 new QueueResourceInner(),
                 this.manager());
     }
@@ -95,6 +99,7 @@ class QueuesImpl
         return new QueueImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }

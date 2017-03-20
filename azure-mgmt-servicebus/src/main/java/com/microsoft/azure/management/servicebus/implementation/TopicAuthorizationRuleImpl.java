@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.*;
 import rx.Observable;
@@ -30,16 +31,22 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
         TopicAuthorizationRule.Definition,
         TopicAuthorizationRule.Update {
     private final String namespaceName;
+    private final Region region;
 
     TopicAuthorizationRuleImpl(String resourceGroupName,
                                String namespaceName,
                                String topicName,
                                String name,
+                               Region region,
                                SharedAccessAuthorizationRuleInner inner,
                                ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
+        this.region = region;
         this.withExistingParentResource(resourceGroupName, topicName);
+        if (inner.location() == null) {
+            inner.withLocation(this.region.toString());
+        }
     }
 
     @Override

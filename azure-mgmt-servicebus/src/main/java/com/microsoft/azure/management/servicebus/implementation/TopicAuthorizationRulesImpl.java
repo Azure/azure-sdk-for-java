@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRules;
@@ -33,15 +34,18 @@ class TopicAuthorizationRulesImpl
     private final String resourceGroupName;
     private final String namespaceName;
     private final String topicName;
+    private final Region region;
 
     TopicAuthorizationRulesImpl(String resourceGroupName,
                                 String namespaceName,
                                 String topicName,
+                                Region region,
                                 ServiceBusManager manager) {
         super(manager.inner().topics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;
+        this.region = region;
     }
 
     @Override
@@ -99,6 +103,7 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 name,
+                this.region,
                 new SharedAccessAuthorizationRuleInner(),
                 this.manager());
     }
@@ -109,6 +114,7 @@ class TopicAuthorizationRulesImpl
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }

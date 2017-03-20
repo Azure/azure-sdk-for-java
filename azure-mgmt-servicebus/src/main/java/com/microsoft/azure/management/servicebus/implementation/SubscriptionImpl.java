@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.*;
@@ -26,16 +27,22 @@ class SubscriptionImpl extends
         Subscription.Definition,
         Subscription.Update {
     private final String namespaceName;
+    private final Region region;
 
     SubscriptionImpl(String resourceGroupName,
                      String namespaceName,
                      String topicName,
                      String name,
+                     Region region,
                      SubscriptionResourceInner inner,
                      ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
+        this.region = region;
         this.withExistingParentResource(resourceGroupName, topicName);
+        if (inner.location() == null) {
+            inner.withLocation(this.region.toString());
+        }
     }
 
     @Override
@@ -100,6 +107,7 @@ class SubscriptionImpl extends
         return new Period()
                 .withDays(timeSpan.days())
                 .withHours(timeSpan.hours())
+                .withMinutes(timeSpan.minutes())
                 .withSeconds(timeSpan.seconds())
                 .withMillis(timeSpan.milliseconds());
     }
@@ -175,6 +183,7 @@ class SubscriptionImpl extends
                 this.namespaceName,
                 this.parentName,
                 this.name(),
+                this.region,
                 manager());
     }
 

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.servicebus.*;
 import rx.Observable;
@@ -27,13 +28,20 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
         NamespaceAuthorizationRule,
         NamespaceAuthorizationRule.Definition,
         NamespaceAuthorizationRule.Update {
+    private final Region region;
+
     NamespaceAuthorizationRuleImpl(String resourceGroupName,
                                    String namespaceName,
                                    String name,
+                                   Region region,
                                    SharedAccessAuthorizationRuleInner inner,
                                    ServiceBusManager manager) {
         super(name, inner, manager);
+        this.region = region;
         this.withExistingParentResource(resourceGroupName, namespaceName);
+        if (inner.location() == null) {
+            inner.withLocation(this.region.toString());
+        }
     }
 
     @Override

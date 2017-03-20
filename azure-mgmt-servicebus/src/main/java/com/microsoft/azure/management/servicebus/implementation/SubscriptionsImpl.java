@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Subscription;
 import com.microsoft.azure.management.servicebus.Subscriptions;
 import com.microsoft.azure.management.servicebus.Topic;
@@ -33,15 +34,18 @@ class SubscriptionsImpl
     private final String resourceGroupName;
     private final String namespaceName;
     private final String topicName;
+    private final Region region;
 
     protected SubscriptionsImpl(String resourceGroupName,
                                 String namespaceName,
                                 String topicName,
+                                Region region,
                                 ServiceBusManager manager) {
         super(manager.inner().subscriptions(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;
+        this.region = region;
     }
 
     @Override
@@ -96,6 +100,7 @@ class SubscriptionsImpl
                 this.namespaceName,
                 this.topicName,
                 name,
+                this.region,
                 new SubscriptionResourceInner(),
                 this.manager());
     }
@@ -106,6 +111,7 @@ class SubscriptionsImpl
                 this.namespaceName,
                 this.topicName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }

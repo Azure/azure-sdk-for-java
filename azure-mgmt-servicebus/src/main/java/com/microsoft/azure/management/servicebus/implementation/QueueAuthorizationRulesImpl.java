@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRules;
@@ -33,15 +34,18 @@ class QueueAuthorizationRulesImpl
     private final String resourceGroupName;
     private final String namespaceName;
     private final String queueName;
+    private final Region region;
 
     QueueAuthorizationRulesImpl(String resourceGroupName,
                                 String namespaceName,
                                 String queueName,
+                                Region region,
                                 ServiceBusManager manager) {
         super(manager.inner().queues(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.queueName = queueName;
+        this.region = region;
     }
 
     @Override
@@ -99,6 +103,7 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 name,
+                this.region,
                 new SharedAccessAuthorizationRuleInner(),
                 this.manager());
     }
@@ -109,6 +114,7 @@ class QueueAuthorizationRulesImpl
                 this.namespaceName,
                 this.queueName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }

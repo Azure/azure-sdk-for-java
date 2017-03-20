@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.microsoft.azure.management.servicebus.Subscription;
 import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRule;
@@ -33,17 +34,20 @@ class SubscriptionAuthorizationRulesImpl
     private final String namespaceName;
     private final String topicName;
     private final String subscriptionName;
+    private final Region region;
 
     SubscriptionAuthorizationRulesImpl(String resourceGroupName,
                                        String namespaceName,
                                        String topicName,
                                        String subscriptionName,
+                                       Region region,
                                        ServiceBusManager manager) {
         super(manager.inner().subscriptions(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
+        this.region = region;
     }
 
     @Override

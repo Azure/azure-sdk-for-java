@@ -73,6 +73,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     public QueuesImpl queues() {
         return new QueuesImpl(this.resourceGroupName(),
                 this.name(),
+                this.region(),
                 this.manager());
     }
 
@@ -80,6 +81,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     public TopicsImpl topics() {
         return new TopicsImpl(this.resourceGroupName(),
                 this.name(),
+                this.region(),
                 this.manager());
     }
 
@@ -87,6 +89,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     public NamespaceAuthorizationRulesImpl authorizationRules() {
         return new NamespaceAuthorizationRulesImpl(this.resourceGroupName(),
                 this.name(),
+                this.region(),
                 manager());
     }
 

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -36,11 +37,15 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     QueueImpl(String resourceGroupName,
               String namespaceName,
               String name,
+              Region region,
               QueueResourceInner inner,
               ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
+        if (inner.location() == null) {
+            inner.withLocation(region.toString());
+        }
     }
 
     @Override
@@ -131,6 +136,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
                 .withDays(timeSpan.days())
                 .withHours(timeSpan.hours())
                 .withSeconds(timeSpan.seconds())
+                .withMinutes(timeSpan.minutes())
                 .withMillis(timeSpan.milliseconds());
     }
 
@@ -143,6 +149,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         return new Period()
                 .withDays(timeSpan.days())
                 .withHours(timeSpan.hours())
+                .withMinutes(timeSpan.minutes())
                 .withSeconds(timeSpan.seconds())
                 .withMillis(timeSpan.milliseconds());
     }
@@ -212,6 +219,7 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         return new QueueAuthorizationRulesImpl(this.resourceGroupName(),
                 this.parentName,
                 this.name(),
+                this.region(),
                 manager());
     }
 

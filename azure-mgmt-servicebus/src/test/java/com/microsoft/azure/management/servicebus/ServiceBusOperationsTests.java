@@ -16,6 +16,7 @@ import com.microsoft.azure.management.servicebus.implementation.NamespaceResourc
 import com.microsoft.azure.management.servicebus.implementation.QueueResourceInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.rest.RestClient;
+import org.joda.time.Period;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +58,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .define(RG_NAME)
                 .withRegion(region);
 
-        String namespaceDNSLabel = generateRandomResourceName("javasb", 15);
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
@@ -112,6 +113,126 @@ public class ServiceBusOperationsTests extends TestBase {
                 .apply();
         Assert.assertTrue(namespace.sku().equals(NamespaceSku.PREMIUM_CAPACITY2));
         serviceBusManager.namespaces().deleteByGroup(RG_NAME, namespace.name());
+    }
+
+    @Test
+    public void canCreateNamespaceThenCRUDOnQueue() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
+
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .create();
+        Assert.assertNotNull(namespace);
+        Assert.assertNotNull(namespace.inner());
+
+        String queueName = generateRandomResourceName("queue1-", 15);
+        Queue queue = namespace.queues()
+                .define(queueName)
+                .create();
+
+        Assert.assertNotNull(queue);
+        Assert.assertNotNull(queue.inner());
+        Assert.assertNotNull(queue.name());
+        Assert.assertTrue(queue.name().equalsIgnoreCase(queueName));
+        // Default lock duration is 1 minute, assert TimeSpan("00:01:00") parsing
+        //
+        Assert.assertEquals("00:01:00", queue.inner().lockDuration());
+        Assert.assertEquals(60, queue.lockDurationInSeconds());
+
+        Period dupDetectionDuration = queue.duplicateMessageDetectionHistoryDuration();
+        Assert.assertNotNull(dupDetectionDuration);
+        Assert.assertEquals(10, dupDetectionDuration.getMinutes());
+        // Default message TTL is TimeSpan.Max, assert parsing
+        //
+        Assert.assertEquals("10675199.02:48:05.4775807", queue.inner().defaultMessageTimeToLive());
+        Period msgTtlDuration = queue.defaultMessageTtlDuration();
+        Assert.assertNotNull(msgTtlDuration);
+        // Assert the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
+        //
+        Assert.assertEquals(10675199, msgTtlDuration.getDays());
+        Assert.assertEquals(2, msgTtlDuration.getHours());
+        Assert.assertEquals(48, msgTtlDuration.getMinutes());
+        // Assert the default max size In MB
+        //
+        Assert.assertEquals(1024, queue.maxSizeInMB());
+        // Assert the default auto delete idle duration TimeSpan("10675199.02:48:05.4775807")
+        // TODO
+        // Assert.assertEquals(48, queue.deleteOnIdleDurationInMinutes());
+
+        PagedList<Queue> queuesInNamespace = namespace.queues().list();
+        Assert.assertNotNull(queuesInNamespace);
+        Assert.assertTrue(queuesInNamespace.size() > 0);
+        Queue foundQueue = null;
+        for (Queue q : queuesInNamespace) {
+            if (q.name().equalsIgnoreCase(queueName)) {
+                foundQueue = q;
+                break;
+            }
+        }
+        Assert.assertNotNull(foundQueue);
+        // Dead lettering disabled by default
+        //
+        Assert.assertFalse(foundQueue.isDeadLetteringEnabledForExpiredMessages());
+        foundQueue = foundQueue.update()
+                .withMessageLockDurationInSeconds(120)
+                .withDefaultMessageTTL(new Period().withMinutes(20))
+                .withExpiredMessageMovedToDeadLetterQueue()
+                .withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(25)
+                .apply();
+        Assert.assertEquals(120, foundQueue.lockDurationInSeconds());
+        Assert.assertTrue(foundQueue.isDeadLetteringEnabledForExpiredMessages());
+        Assert.assertEquals(25, foundQueue.maxDeliveryCountBeforeDeadLetteringMessage());
+        namespace.queues().deleteByName(foundQueue.name());
+    }
+
+    @Test
+    public void canCreateDeleteQueueWithNamespace() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
+
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String queueName = generateRandomResourceName("queue1-", 15);
+        // Create NS with Queue
+        //
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .withNewQueue(queueName, 1024)
+                .create();
+        Assert.assertNotNull(namespace);
+        Assert.assertNotNull(namespace.inner());
+        // Lookup queue
+        //
+        PagedList<Queue> queuesInNamespace = namespace.queues().list();
+        Assert.assertNotNull(queuesInNamespace);
+        Assert.assertEquals(1, queuesInNamespace.size());
+        Queue foundQueue = null;
+        for (Queue q : queuesInNamespace) {
+            if (q.name().equalsIgnoreCase(queueName)) {
+                foundQueue = q;
+                break;
+            }
+        }
+        Assert.assertNotNull(foundQueue);
+        // Remove Queue
+        //
+        namespace.update()
+                .withoutQueue(queueName)
+                .apply();
+        queuesInNamespace = namespace.queues().list();
+        Assert.assertNotNull(queuesInNamespace);
+        Assert.assertEquals(0, queuesInNamespace.size());
     }
 
     @Test

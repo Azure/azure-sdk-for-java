@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRules;
@@ -32,13 +33,16 @@ class NamespaceAuthorizationRulesImpl
         implements NamespaceAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;
+    private final Region region;
 
     NamespaceAuthorizationRulesImpl(String resourceGroupName,
                                     String namespaceName,
+                                    Region region,
                                     ServiceBusManager manager) {
         super(manager.inner().namespaces(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
+        this.region = region;
     }
 
     @Override
@@ -88,6 +92,7 @@ class NamespaceAuthorizationRulesImpl
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 name,
+                this.region,
                 new SharedAccessAuthorizationRuleInner(),
                 this.manager());
     }
@@ -98,6 +103,7 @@ class NamespaceAuthorizationRulesImpl
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }

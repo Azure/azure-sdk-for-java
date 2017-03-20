@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.Topics;
@@ -32,11 +33,13 @@ class TopicsImpl
         implements Topics {
     private final String resourceGroupName;
     private final String namespaceName;
+    private final Region region;
 
-    TopicsImpl(String resourceGroupName, String namespaceName, ServiceBusManager manager) {
+    TopicsImpl(String resourceGroupName, String namespaceName, Region region, ServiceBusManager manager) {
         super(manager.inner().topics(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
+        this.region = region;
     }
 
     @Override
@@ -85,6 +88,7 @@ class TopicsImpl
         return new TopicImpl(this.resourceGroupName,
                 this.namespaceName,
                 name,
+                this.region,
                 new TopicResourceInner(),
                 this.manager());
     }
@@ -94,6 +98,7 @@ class TopicsImpl
         return new TopicImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),
+                this.region,
                 inner,
                 this.manager());
     }
