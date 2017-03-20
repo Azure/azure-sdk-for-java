@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.Policykey;
 import com.microsoft.azure.management.servicebus.RegenerateKeysParameters;
 import com.microsoft.azure.Page;
@@ -70,7 +71,7 @@ public class TopicsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Topics createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Body TopicResourceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("subscriptionId") String subscriptionId, @Body TopicInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Topics delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}", method = "DELETE", hasBody = true)
@@ -86,7 +87,7 @@ public class TopicsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Topics createOrUpdateAuthorizationRule" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules/{authorizationRuleName}")
-        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Body SharedAccessAuthorizationRuleInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("topicName") String topicName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SharedAccessAuthorizationRuleInner parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Topics getAuthorizationRule" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules/{authorizationRuleName}")
@@ -119,13 +120,16 @@ public class TopicsInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the PagedList&lt;TopicResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TopicInner&gt; object if successful.
      */
-    public PagedList<TopicResourceInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
-        ServiceResponse<Page<TopicResourceInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
-        return new PagedList<TopicResourceInner>(response.body()) {
+    public PagedList<TopicInner> listByNamespace(final String resourceGroupName, final String namespaceName) {
+        ServiceResponse<Page<TopicInner>> response = listByNamespaceSinglePageAsync(resourceGroupName, namespaceName).toBlocking().single();
+        return new PagedList<TopicInner>(response.body()) {
             @Override
-            public Page<TopicResourceInner> nextPage(String nextPageLink) {
+            public Page<TopicInner> nextPage(String nextPageLink) {
                 return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -137,14 +141,15 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TopicResourceInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<TopicResourceInner> serviceCallback) {
+    public ServiceFuture<List<TopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<TopicInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
-            new Func1<String, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(String nextPageLink) {
                     return listByNamespaceNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -156,13 +161,14 @@ public class TopicsInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the PagedList&lt;TopicResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TopicInner&gt; object
      */
-    public Observable<Page<TopicResourceInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<Page<TopicInner>> listByNamespaceAsync(final String resourceGroupName, final String namespaceName) {
         return listByNamespaceWithServiceResponseAsync(resourceGroupName, namespaceName)
-            .map(new Func1<ServiceResponse<Page<TopicResourceInner>>, Page<TopicResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<TopicInner>>, Page<TopicInner>>() {
                 @Override
-                public Page<TopicResourceInner> call(ServiceResponse<Page<TopicResourceInner>> response) {
+                public Page<TopicInner> call(ServiceResponse<Page<TopicInner>> response) {
                     return response.body();
                 }
             });
@@ -173,13 +179,14 @@ public class TopicsInner {
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the PagedList&lt;TopicResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TopicInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TopicResourceInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<ServiceResponse<Page<TopicInner>>> listByNamespaceWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
         return listByNamespaceSinglePageAsync(resourceGroupName, namespaceName)
-            .concatMap(new Func1<ServiceResponse<Page<TopicResourceInner>>, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<TopicInner>>, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(ServiceResponse<Page<TopicResourceInner>> page) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(ServiceResponse<Page<TopicInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -192,11 +199,12 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-    ServiceResponse<PageImpl<TopicResourceInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-    ServiceResponse<PageImpl<TopicResourceInner>> * @param namespaceName The namespace name
-     * @return the PagedList&lt;TopicResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<TopicInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+    ServiceResponse<PageImpl<TopicInner>> * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TopicResourceInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
+    public Observable<ServiceResponse<Page<TopicInner>>> listByNamespaceSinglePageAsync(final String resourceGroupName, final String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -210,12 +218,12 @@ public class TopicsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByNamespace(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TopicResourceInner>> result = listByNamespaceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TopicResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<TopicInner>> result = listByNamespaceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TopicInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -223,9 +231,9 @@ public class TopicsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TopicResourceInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<TopicResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<TopicResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<TopicInner>> listByNamespaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TopicInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TopicInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -237,9 +245,12 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param parameters Parameters supplied to create a topic resource.
-     * @return the TopicResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TopicInner object if successful.
      */
-    public TopicResourceInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, TopicResourceInner parameters) {
+    public TopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName, TopicInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).toBlocking().single().body();
     }
 
@@ -251,9 +262,10 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param parameters Parameters supplied to create a topic resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TopicResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, TopicResourceInner parameters, final ServiceCallback<TopicResourceInner> serviceCallback) {
+    public ServiceFuture<TopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, TopicInner parameters, final ServiceCallback<TopicInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters), serviceCallback);
     }
 
@@ -264,12 +276,13 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param parameters Parameters supplied to create a topic resource.
-     * @return the observable to the TopicResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TopicInner object
      */
-    public Observable<TopicResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, TopicResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).map(new Func1<ServiceResponse<TopicResourceInner>, TopicResourceInner>() {
+    public Observable<TopicInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String topicName, TopicInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, parameters).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
             @Override
-            public TopicResourceInner call(ServiceResponse<TopicResourceInner> response) {
+            public TopicInner call(ServiceResponse<TopicInner> response) {
                 return response.body();
             }
         });
@@ -282,9 +295,10 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param parameters Parameters supplied to create a topic resource.
-     * @return the observable to the TopicResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TopicInner object
      */
-    public Observable<ServiceResponse<TopicResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, TopicResourceInner parameters) {
+    public Observable<ServiceResponse<TopicInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, TopicInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -305,11 +319,11 @@ public class TopicsInner {
         }
         Validator.validate(parameters);
         return service.createOrUpdate(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TopicResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TopicInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TopicResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<TopicInner> clientResponse = createOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -318,9 +332,9 @@ public class TopicsInner {
             });
     }
 
-    private ServiceResponse<TopicResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TopicResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TopicResourceInner>() { }.getType())
+    private ServiceResponse<TopicInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TopicInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TopicInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -331,6 +345,9 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String namespaceName, String topicName) {
         deleteWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
@@ -343,6 +360,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<Void> serviceCallback) {
@@ -355,6 +373,7 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName, String topicName) {
@@ -372,6 +391,7 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
@@ -418,9 +438,12 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the TopicResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TopicInner object if successful.
      */
-    public TopicResourceInner get(String resourceGroupName, String namespaceName, String topicName) {
+    public TopicInner get(String resourceGroupName, String namespaceName, String topicName) {
         return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).toBlocking().single().body();
     }
 
@@ -431,9 +454,10 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TopicResourceInner> getAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<TopicResourceInner> serviceCallback) {
+    public ServiceFuture<TopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName, final ServiceCallback<TopicInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName), serviceCallback);
     }
 
@@ -443,12 +467,13 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the observable to the TopicResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TopicInner object
      */
-    public Observable<TopicResourceInner> getAsync(String resourceGroupName, String namespaceName, String topicName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<TopicResourceInner>, TopicResourceInner>() {
+    public Observable<TopicInner> getAsync(String resourceGroupName, String namespaceName, String topicName) {
+        return getWithServiceResponseAsync(resourceGroupName, namespaceName, topicName).map(new Func1<ServiceResponse<TopicInner>, TopicInner>() {
             @Override
-            public TopicResourceInner call(ServiceResponse<TopicResourceInner> response) {
+            public TopicInner call(ServiceResponse<TopicInner> response) {
                 return response.body();
             }
         });
@@ -460,9 +485,10 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @return the observable to the TopicResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TopicInner object
      */
-    public Observable<ServiceResponse<TopicResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
+    public Observable<ServiceResponse<TopicInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -479,11 +505,11 @@ public class TopicsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.get(resourceGroupName, namespaceName, topicName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopicInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TopicResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TopicInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TopicResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<TopicInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -492,9 +518,9 @@ public class TopicsInner {
             });
     }
 
-    private ServiceResponse<TopicResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TopicResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TopicResourceInner>() { }.getType())
+    private ServiceResponse<TopicInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TopicInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TopicInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -505,6 +531,9 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRules(final String resourceGroupName, final String namespaceName, final String topicName) {
@@ -524,6 +553,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName, final String topicName, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -544,6 +574,7 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
@@ -562,6 +593,7 @@ public class TopicsInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesWithServiceResponseAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
@@ -584,6 +616,7 @@ public class TopicsInner {
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param namespaceName The namespace name
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param topicName The topic name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesSinglePageAsync(final String resourceGroupName, final String namespaceName, final String topicName) {
@@ -630,11 +663,14 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
-    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, parameters).toBlocking().single().body();
+    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, rights).toBlocking().single().body();
     }
 
     /**
@@ -644,12 +680,13 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, parameters), serviceCallback);
+    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, List<AccessRights> rights, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, rights), serviceCallback);
     }
 
     /**
@@ -659,11 +696,12 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, parameters).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
+    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName, rights).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
             @Override
             public SharedAccessAuthorizationRuleInner call(ServiceResponse<SharedAccessAuthorizationRuleInner> response) {
                 return response.body();
@@ -678,10 +716,11 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
+    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, List<AccessRights> rights) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -697,14 +736,16 @@ public class TopicsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, topicName, authorizationRuleName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        if (rights == null) {
+            throw new IllegalArgumentException("Parameter rights is required and cannot be null.");
+        }
+        Validator.validate(rights);
+        SharedAccessAuthorizationRuleInner parameters = new SharedAccessAuthorizationRuleInner();
+        parameters.withRights(rights);
+        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, topicName, authorizationRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> call(Response<ResponseBody> response) {
@@ -732,6 +773,9 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
     public SharedAccessAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -746,6 +790,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -759,6 +804,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -777,6 +823,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> getAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -826,6 +873,9 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
         deleteAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName).toBlocking().single().body();
@@ -839,6 +889,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -852,6 +903,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -870,6 +922,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -920,6 +973,9 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -934,6 +990,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -947,6 +1004,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -965,6 +1023,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -1014,6 +1073,9 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -1028,6 +1090,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1041,6 +1104,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -1059,6 +1123,7 @@ public class TopicsInner {
      * @param namespaceName The namespace name
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
@@ -1105,6 +1170,9 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, Policykey policykey) {
@@ -1120,6 +1188,7 @@ public class TopicsInner {
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, Policykey policykey, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1134,6 +1203,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, Policykey policykey) {
@@ -1153,6 +1223,7 @@ public class TopicsInner {
      * @param topicName The topic name.
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName, Policykey policykey) {
@@ -1201,13 +1272,16 @@ public class TopicsInner {
      * Gets all the topics in a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;TopicResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TopicInner&gt; object if successful.
      */
-    public PagedList<TopicResourceInner> listByNamespaceNext(final String nextPageLink) {
-        ServiceResponse<Page<TopicResourceInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<TopicResourceInner>(response.body()) {
+    public PagedList<TopicInner> listByNamespaceNext(final String nextPageLink) {
+        ServiceResponse<Page<TopicInner>> response = listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TopicInner>(response.body()) {
             @Override
-            public Page<TopicResourceInner> nextPage(String nextPageLink) {
+            public Page<TopicInner> nextPage(String nextPageLink) {
                 return listByNamespaceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1219,14 +1293,15 @@ public class TopicsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TopicResourceInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<TopicResourceInner>> serviceFuture, final ListOperationCallback<TopicResourceInner> serviceCallback) {
+    public ServiceFuture<List<TopicInner>> listByNamespaceNextAsync(final String nextPageLink, final ServiceFuture<List<TopicInner>> serviceFuture, final ListOperationCallback<TopicInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByNamespaceNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(String nextPageLink) {
                     return listByNamespaceNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1237,13 +1312,14 @@ public class TopicsInner {
      * Gets all the topics in a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;TopicResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TopicInner&gt; object
      */
-    public Observable<Page<TopicResourceInner>> listByNamespaceNextAsync(final String nextPageLink) {
+    public Observable<Page<TopicInner>> listByNamespaceNextAsync(final String nextPageLink) {
         return listByNamespaceNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<TopicResourceInner>>, Page<TopicResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<TopicInner>>, Page<TopicInner>>() {
                 @Override
-                public Page<TopicResourceInner> call(ServiceResponse<Page<TopicResourceInner>> response) {
+                public Page<TopicInner> call(ServiceResponse<Page<TopicInner>> response) {
                     return response.body();
                 }
             });
@@ -1253,13 +1329,14 @@ public class TopicsInner {
      * Gets all the topics in a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;TopicResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TopicInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TopicResourceInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<TopicInner>>> listByNamespaceNextWithServiceResponseAsync(final String nextPageLink) {
         return listByNamespaceNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<TopicResourceInner>>, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<TopicInner>>, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(ServiceResponse<Page<TopicResourceInner>> page) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(ServiceResponse<Page<TopicInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1272,21 +1349,22 @@ public class TopicsInner {
     /**
      * Gets all the topics in a namespace.
      *
-    ServiceResponse<PageImpl<TopicResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;TopicResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<TopicInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TopicInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TopicResourceInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<TopicInner>>> listByNamespaceNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listByNamespaceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopicResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopicInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TopicResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TopicInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TopicResourceInner>> result = listByNamespaceNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<TopicResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<TopicInner>> result = listByNamespaceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TopicInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1294,9 +1372,9 @@ public class TopicsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TopicResourceInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<TopicResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<TopicResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<TopicInner>> listByNamespaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TopicInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TopicInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1305,6 +1383,9 @@ public class TopicsInner {
      * Gets authorization rules for a topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRulesNext(final String nextPageLink) {
@@ -1323,6 +1404,7 @@ public class TopicsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink, final ServiceFuture<List<SharedAccessAuthorizationRuleInner>> serviceFuture, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -1341,6 +1423,7 @@ public class TopicsInner {
      * Gets authorization rules for a topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink) {
@@ -1357,6 +1440,7 @@ public class TopicsInner {
      * Gets authorization rules for a topic.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1377,6 +1461,7 @@ public class TopicsInner {
      * Gets authorization rules for a topic.
      *
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextSinglePageAsync(final String nextPageLink) {
