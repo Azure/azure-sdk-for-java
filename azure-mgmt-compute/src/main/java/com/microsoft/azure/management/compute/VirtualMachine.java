@@ -312,12 +312,12 @@ public interface VirtualMachine extends
     /**
      * @return an observable that emits extensions attached to the virtual machine
      */
-    Observable<VirtualMachineExtension> getExtensionsAsync();
+    Observable<VirtualMachineExtension> listExtensionsAsync();
 
     /**
      * @return the extensions attached to the Virtual Machine
      */
-    Map<String, VirtualMachineExtension> getExtensions();
+    Map<String, VirtualMachineExtension> listExtensions();
 
     /**
      * @return the plan value
