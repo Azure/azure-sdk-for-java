@@ -56,9 +56,8 @@ final class PolicyDefinitionImpl extends
     }
 
     @Override
-    public PolicyDefinitionImpl refresh() {
-        setInner(innerCollection.get(name()));
-        return this;
+    protected Observable<PolicyDefinitionInner> getInnerAsync() {
+        return innerCollection.getAsync(name());
     }
 
     @Override

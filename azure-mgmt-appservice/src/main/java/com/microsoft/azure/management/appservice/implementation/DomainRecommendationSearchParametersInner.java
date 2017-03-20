@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Domain recommendation search parameters.
@@ -16,11 +17,13 @@ public class DomainRecommendationSearchParametersInner {
     /**
      * Keywords to be used for generating domain recommendations.
      */
+    @JsonProperty(value = "keywords")
     private String keywords;
 
     /**
      * Maximum number of recommendations.
      */
+    @JsonProperty(value = "maxDomainRecommendations")
     private Integer maxDomainRecommendations;
 
     /**

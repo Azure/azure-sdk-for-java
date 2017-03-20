@@ -15,15 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ApplicationGatewayWebApplicationFirewallConfiguration {
     /**
-     * Whether the web application firewall is enabled.
+     * Whether the web application firewall is enabled or not.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /**
      * Web application firewall mode. Possible values are: 'Detection' and
      * 'Prevention'. Possible values include: 'Detection', 'Prevention'.
      */
+    @JsonProperty(value = "firewallMode")
     private ApplicationGatewayFirewallMode firewallMode;
 
     /**

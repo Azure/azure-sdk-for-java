@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the PolicyClientImpl class.
  */
-public final class PolicyClientImpl extends AzureServiceClient {
+public class PolicyClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

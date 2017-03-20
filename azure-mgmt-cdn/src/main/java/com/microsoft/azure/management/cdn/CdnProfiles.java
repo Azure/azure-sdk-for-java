@@ -10,16 +10,20 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Observable;
 
 import java.util.List;
 
@@ -29,13 +33,14 @@ import java.util.List;
 @Fluent
 public interface CdnProfiles extends
         SupportsCreating<CdnProfile.DefinitionStages.Blank>,
-        SupportsListing<CdnProfile>,
-        SupportsListingByGroup<CdnProfile>,
+        SupportsListingAsync<CdnProfile>,
+        SupportsListingByGroupAsync<CdnProfile>,
         SupportsGettingByGroup<CdnProfile>,
         SupportsGettingById<CdnProfile>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<CdnProfile>,
+        SupportsBatchDeletion,
         HasManager<CdnManager>,
         HasInner<ProfilesInner> {
 
@@ -59,6 +64,23 @@ public interface CdnProfiles extends
      * @return the CheckNameAvailabilityResult object if successful.
      */
     CheckNameAvailabilityResult checkEndpointNameAvailability(String name);
+
+    /**
+     * Checks the availability of a endpoint name without creating the CDN endpoint asynchronously.
+     *
+     * @param name the endpoint resource name to validate.
+     * @return the Observable to CheckNameAvailabilityResult object if successful.
+     */
+    Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
+
+    /**
+     * Checks the availability of a endpoint name without creating the CDN endpoint asynchronously.
+     *
+     * @param name the endpoint resource name to validate.
+     * @param callback the callback to call on success or failure
+     * @return a representation of the deferred computation of this call
+     */
+    ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 
     /**
      * Lists all of the available CDN REST API operations.

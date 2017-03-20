@@ -11,7 +11,10 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImagesInSku;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.rest.RestException;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,5 +72,34 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
                 return null;
             }
         };
+    }
+
+    @Override
+    public Observable<VirtualMachineImage> listAsync() {
+        final VirtualMachineImagesInSkuImpl self = this;
+        return ReadableWrappersImpl.convertListToInnerAsync(innerCollection.listAsync(this.sku.region().toString(),
+                this.sku.publisher().name(),
+                this.sku.offer().name(),
+                this.sku.name())).flatMap(new Func1<VirtualMachineImageResourceInner, Observable<VirtualMachineImage>>() {
+            @Override
+            public Observable<VirtualMachineImage> call(final VirtualMachineImageResourceInner virtualMachineImageResourceInner) {
+                return innerCollection.getAsync(self.sku.region().toString(),
+                        self.sku.publisher().name(),
+                        self.sku.offer().name(),
+                        self.sku.name(),
+                        virtualMachineImageResourceInner.name()).map(new Func1<VirtualMachineImageInner, VirtualMachineImage>() {
+                    @Override
+                    public VirtualMachineImage call(VirtualMachineImageInner virtualMachineImageInner) {
+                        return new VirtualMachineImageImpl(
+                                self.sku.region(),
+                                self.sku.publisher().name(),
+                                self.sku.offer().name(),
+                                self.sku.name(),
+                                virtualMachineImageResourceInner.name(),
+                                virtualMachineImageInner);
+                    }
+                });
+            }
+        });
     }
 }

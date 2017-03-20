@@ -5,14 +5,12 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 
@@ -21,36 +19,16 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworksImpl
-        extends GroupableResourcesImpl<
-            Network,
-            NetworkImpl,
-            VirtualNetworkInner,
-            VirtualNetworksInner,
-            NetworkManager>
-        implements Networks {
+    extends TopLevelModifiableResourcesImpl<
+        Network,
+        NetworkImpl,
+        VirtualNetworkInner,
+        VirtualNetworksInner,
+        NetworkManager>
+    implements Networks {
 
     NetworksImpl(final NetworkManager networkManager) {
         super(networkManager.inner().virtualNetworks(), networkManager);
-    }
-
-    @Override
-    public PagedList<Network> list() {
-        return wrapList(this.inner().listAll());
-    }
-
-    @Override
-    public PagedList<Network> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
-    }
-
-    @Override
-    public NetworkImpl getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

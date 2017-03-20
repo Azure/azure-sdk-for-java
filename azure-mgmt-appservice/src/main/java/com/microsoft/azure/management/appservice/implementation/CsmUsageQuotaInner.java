@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.LocalizableString;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Usage of the quota resource.
@@ -18,26 +19,31 @@ public class CsmUsageQuotaInner {
     /**
      * Units of measurement for the quota resourse.
      */
+    @JsonProperty(value = "unit")
     private String unit;
 
     /**
      * Next reset time for the resource counter.
      */
+    @JsonProperty(value = "nextResetTime")
     private DateTime nextResetTime;
 
     /**
      * The current value of the resource counter.
      */
+    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /**
      * The resource limit.
      */
+    @JsonProperty(value = "limit")
     private Long limit;
 
     /**
      * Quota name.
      */
+    @JsonProperty(value = "name")
     private LocalizableString name;
 
     /**

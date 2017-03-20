@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The IIS handler mappings used to define which handler processes HTTP
@@ -20,16 +21,19 @@ public class HandlerMapping {
      * Requests with this extension will be handled using the specified FastCGI
      * application.
      */
+    @JsonProperty(value = "extension")
     private String extension;
 
     /**
      * The absolute path to the FastCGI application.
      */
+    @JsonProperty(value = "scriptProcessor")
     private String scriptProcessor;
 
     /**
      * Command-line arguments to be passed to the script processor.
      */
+    @JsonProperty(value = "arguments")
     private String arguments;
 
     /**

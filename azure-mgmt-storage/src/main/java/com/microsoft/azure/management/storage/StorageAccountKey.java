@@ -17,20 +17,20 @@ public class StorageAccountKey {
     /**
      * Name of the key.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /**
      * Base 64-encoded value of the key.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
      * Permissions for the key -- read-only or full permissions. Possible
      * values include: 'READ', 'FULL'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "permissions", access = JsonProperty.Access.WRITE_ONLY)
     private KeyPermission permissions;
 
     /**

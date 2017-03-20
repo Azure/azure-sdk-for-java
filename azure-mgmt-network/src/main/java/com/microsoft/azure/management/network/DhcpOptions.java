@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DhcpOptions contains an array of DNS servers available to VMs deployed in
@@ -19,6 +20,7 @@ public class DhcpOptions {
     /**
      * The list of DNS servers IP addresses.
      */
+    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /**

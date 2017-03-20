@@ -11,6 +11,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import com.microsoft.azure.management.network.implementation.VpnClientRootCertificateInner;
 import com.microsoft.azure.management.network.implementation.VpnClientRevokedCertificateInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * VpnClientConfiguration for P2S client.
@@ -20,16 +21,19 @@ public class VpnClientConfiguration {
      * The reference of the address space resource which represents Address
      * space for P2S VpnClient.
      */
+    @JsonProperty(value = "vpnClientAddressPool")
     private AddressSpace vpnClientAddressPool;
 
     /**
      * VpnClientRootCertificate for virtual network gateway.
      */
+    @JsonProperty(value = "vpnClientRootCertificates")
     private List<VpnClientRootCertificateInner> vpnClientRootCertificates;
 
     /**
      * VpnClientRevokedCertificate for Virtual network gateway.
      */
+    @JsonProperty(value = "vpnClientRevokedCertificates")
     private List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates;
 
     /**

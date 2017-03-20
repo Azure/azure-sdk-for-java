@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DNS settings of a network interface.
@@ -20,6 +21,7 @@ public class NetworkInterfaceDnsSettings {
      * combined with other IPs, it must be the only value in dnsServers
      * collection.
      */
+    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /**
@@ -28,18 +30,21 @@ public class NetworkInterfaceDnsSettings {
      * of the Availability Set. This property is what is configured on each of
      * those VMs.
      */
+    @JsonProperty(value = "appliedDnsServers")
     private List<String> appliedDnsServers;
 
     /**
      * Relative DNS name for this NIC used for internal communications between
      * VMs in the same virtual network.
      */
+    @JsonProperty(value = "internalDnsNameLabel")
     private String internalDnsNameLabel;
 
     /**
      * Fully qualified DNS name supporting internal communications between VMs
      * in the same virtual network.
      */
+    @JsonProperty(value = "internalFqdn")
     private String internalFqdn;
 
     /**
@@ -47,6 +52,7 @@ public class NetworkInterfaceDnsSettings {
      * for the primary NIC of the VM. This DNS name can be constructed by
      * concatenating the VM name with the value of internalDomainNameSuffix.
      */
+    @JsonProperty(value = "internalDomainNameSuffix")
     private String internalDomainNameSuffix;
 
     /**

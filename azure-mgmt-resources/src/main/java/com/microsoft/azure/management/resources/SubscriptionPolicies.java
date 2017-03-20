@@ -20,20 +20,20 @@ public class SubscriptionPolicies {
      * location placement Id of Public_2014-09-01 has access to Azure public
      * regions.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "locationPlacementId", access = JsonProperty.Access.WRITE_ONLY)
     private String locationPlacementId;
 
     /**
      * The subscription quota ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "quotaId", access = JsonProperty.Access.WRITE_ONLY)
     private String quotaId;
 
     /**
      * The subscription spending limit. Possible values include: 'On', 'Off',
      * 'CurrentPeriodOff'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "spendingLimit", access = JsonProperty.Access.WRITE_ONLY)
     private SpendingLimit spendingLimit;
 
     /**

@@ -18,12 +18,13 @@ public class ImageStorageProfile {
     /**
      * The OS disk.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "osDisk", required = true)
     private ImageOSDisk osDisk;
 
     /**
      * The data disks.
      */
+    @JsonProperty(value = "dataDisks")
     private List<ImageDataDisk> dataDisks;
 
     /**

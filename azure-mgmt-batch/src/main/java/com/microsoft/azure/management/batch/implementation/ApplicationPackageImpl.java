@@ -11,7 +11,10 @@ import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.PackageState;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -101,19 +104,26 @@ public class ApplicationPackageImpl
 
     @Override
     public void activate(String format) {
-        this.client.activate(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name(), format);
+        this.activateAsync(format).await();
+    }
+
+    @Override
+    public Completable activateAsync(String format) {
+        return this.client.activateAsync(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name(), format).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> activateAsync(String format, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.activateAsync(format).<Void>toObservable(), callback);
     }
 
     @Override
     public void delete() {
-        this.client.delete(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name());
+        this.deleteAsync().toBlocking().last();
     }
 
     @Override
-    public ApplicationPackage refresh() {
-        ApplicationPackageInner inner =
-                this.client.get(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name());
-        this.setInner(inner);
-        return this;
+    protected Observable<ApplicationPackageInner> getInnerAsync() {
+        return this.client.getAsync(this.parent().parent().resourceGroupName(), this.parent().parent().name(), this.parent().name(), this.name());
     }
 }

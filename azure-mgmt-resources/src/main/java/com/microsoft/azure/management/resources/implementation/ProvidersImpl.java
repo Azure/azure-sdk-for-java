@@ -10,6 +10,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -32,12 +34,42 @@ final class ProvidersImpl
 
     @Override
     public Provider unregister(String resourceProviderNamespace) {
-        return wrapModel(client.unregister(resourceProviderNamespace));
+        return this.unregisterAsync(resourceProviderNamespace).toBlocking().last();
+    }
+
+    @Override
+    public Observable<Provider> unregisterAsync(String resourceProviderNamespace) {
+        return client.unregisterAsync(resourceProviderNamespace).map(new Func1<ProviderInner, Provider>() {
+            @Override
+            public Provider call(ProviderInner providerInner) {
+                return wrapModel(providerInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<Provider> unregisterAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback) {
+        return ServiceFuture.fromBody(this.unregisterAsync(resourceProviderNamespace), callback);
     }
 
     @Override
     public Provider register(String resourceProviderNamespace) {
-        return wrapModel(client.register(resourceProviderNamespace));
+        return this.registerAsync(resourceProviderNamespace).toBlocking().last();
+    }
+
+    @Override
+    public Observable<Provider> registerAsync(String resourceProviderNamespace) {
+        return client.registerAsync(resourceProviderNamespace).map(new Func1<ProviderInner, Provider>() {
+            @Override
+            public Provider call(ProviderInner providerInner) {
+                return wrapModel(providerInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<Provider> registerAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback) {
+        return ServiceFuture.fromBody(this.registerAsync(resourceProviderNamespace), callback);
     }
 
     @Override
@@ -62,5 +94,10 @@ final class ProvidersImpl
             return null;
         }
         return new ProviderImpl(inner);
+    }
+
+    @Override
+    public Observable<Provider> listAsync() {
+        return wrapPageAsync(this.client.listAsync());
     }
 }

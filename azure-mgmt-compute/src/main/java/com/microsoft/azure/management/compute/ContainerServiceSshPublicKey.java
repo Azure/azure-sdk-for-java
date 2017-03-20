@@ -18,7 +18,7 @@ public class ContainerServiceSshPublicKey {
      * Certificate public key used to authenticate with VMs through SSH. The
      * certificate must be in PEM format with or without headers.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "keyData", required = true)
     private String keyData;
 
     /**

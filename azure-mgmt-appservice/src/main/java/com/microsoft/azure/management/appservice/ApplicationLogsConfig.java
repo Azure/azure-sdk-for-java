@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application logs configuration.
@@ -16,16 +17,19 @@ public class ApplicationLogsConfig {
     /**
      * Application logs to file system configuration.
      */
+    @JsonProperty(value = "fileSystem")
     private FileSystemApplicationLogsConfig fileSystem;
 
     /**
      * Application logs to azure table storage configuration.
      */
+    @JsonProperty(value = "azureTableStorage")
     private AzureTableStorageApplicationLogsConfig azureTableStorage;
 
     /**
      * Application logs to blob storage configuration.
      */
+    @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageApplicationLogsConfig azureBlobStorage;
 
     /**

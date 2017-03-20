@@ -17,24 +17,25 @@ public class TldLegalAgreementInner {
     /**
      * Unique identifier for the agreement.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "agreementKey", required = true)
     private String agreementKey;
 
     /**
      * Agreement title.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "title", required = true)
     private String title;
 
     /**
      * Agreement details.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "content", required = true)
     private String content;
 
     /**
      * URL where a copy of the agreement details is hosted.
      */
+    @JsonProperty(value = "url")
     private String url;
 
     /**

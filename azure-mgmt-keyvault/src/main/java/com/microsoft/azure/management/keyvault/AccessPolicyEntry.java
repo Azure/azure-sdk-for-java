@@ -20,7 +20,7 @@ public class AccessPolicyEntry {
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
     /**
@@ -28,18 +28,19 @@ public class AccessPolicyEntry {
      * Azure Active Directory tenant for the vault. The object ID must be
      * unique for the list of access policies.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /**
      * Application ID of the client making request on behalf of a principal.
      */
+    @JsonProperty(value = "applicationId")
     private UUID applicationId;
 
     /**
      * Permissions the identity has for keys, secrets and certificates.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "permissions", required = true)
     private Permissions permissions;
 
     /**

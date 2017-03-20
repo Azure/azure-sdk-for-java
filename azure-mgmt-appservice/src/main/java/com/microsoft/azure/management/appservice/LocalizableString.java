@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Localizable string object containing the name and a localized value.
@@ -16,11 +17,13 @@ public class LocalizableString {
     /**
      * Non-localized name.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**
      * Localized name.
      */
+    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**

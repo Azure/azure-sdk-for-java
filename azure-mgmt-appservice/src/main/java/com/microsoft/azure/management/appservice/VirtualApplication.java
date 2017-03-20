@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Virtual application in an app.
@@ -17,22 +18,26 @@ public class VirtualApplication {
     /**
      * Virtual path.
      */
+    @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
     /**
      * Physical path.
      */
+    @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "preloadEnabled")
     private Boolean preloadEnabled;
 
     /**
      * Virtual directories for virtual application.
      */
+    @JsonProperty(value = "virtualDirectories")
     private List<VirtualDirectory> virtualDirectories;
 
     /**

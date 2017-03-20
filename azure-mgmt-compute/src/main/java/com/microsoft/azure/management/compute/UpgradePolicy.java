@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes an upgrade policy - automatic or manual.
@@ -16,6 +17,7 @@ public class UpgradePolicy {
     /**
      * The upgrade mode. Possible values include: 'Automatic', 'Manual'.
      */
+    @JsonProperty(value = "mode")
     private UpgradeMode mode;
 
     /**

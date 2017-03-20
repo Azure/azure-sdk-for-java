@@ -213,17 +213,14 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl refresh() {
+    protected Observable<VirtualMachineExtensionInner> getInnerAsync() {
         String name;
         if (this.isReference()) {
             name = ResourceUtils.nameFromResourceId(this.inner().id());
         } else {
             name = this.inner().name();
         }
-        VirtualMachineExtensionInner inner =
-                this.client.get(this.parent().resourceGroupName(), this.parent().name(), name);
-        this.setInner(inner);
-        return this;
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), name);
     }
 
     // Implementation of ExternalChildResourceImpl createAsyncStreaming,  updateAsync and deleteAsync
@@ -290,13 +287,12 @@ class VirtualMachineExtensionImpl
     public Observable<Void> deleteAsync() {
         return this.client.deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name())
-                .map(new Func1<Object, Void>() {
-                    @Override
-                    public Void call(Object o) {
-                        return null;
-                    }
-                });
+                this.name()).map(new Func1<OperationStatusResponseInner, Void>() {
+            @Override
+            public Void call(OperationStatusResponseInner operationStatusResponseInner) {
+                return null;
+            }
+        });
     }
 
     /**

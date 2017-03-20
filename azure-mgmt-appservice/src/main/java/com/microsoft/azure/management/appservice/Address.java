@@ -17,36 +17,37 @@ public class Address {
     /**
      * Address 1.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "address1", required = true)
     private String address1;
 
     /**
      * Address 2.
      */
+    @JsonProperty(value = "address2")
     private String address2;
 
     /**
      * City.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "city", required = true)
     private String city;
 
     /**
      * Country.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "country", required = true)
     private String country;
 
     /**
      * Postal code.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "postalCode", required = true)
     private String postalCode;
 
     /**
      * State.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "state", required = true)
     private String state;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
 /**
@@ -18,6 +19,7 @@ public class StringDictionaryInner extends Resource {
     /**
      * Settings.
      */
+    @JsonProperty(value = "properties")
     private Map<String, String> properties;
 
     /**

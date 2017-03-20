@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Trigger based on total requests.
@@ -16,11 +17,13 @@ public class RequestsBasedTrigger {
     /**
      * Count.
      */
+    @JsonProperty(value = "count")
     private Integer count;
 
     /**
      * Time interval.
      */
+    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /**

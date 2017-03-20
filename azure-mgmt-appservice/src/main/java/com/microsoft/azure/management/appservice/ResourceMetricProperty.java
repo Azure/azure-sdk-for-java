@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource metric property.
@@ -16,11 +17,13 @@ public class ResourceMetricProperty {
     /**
      * Key for resource metric property.
      */
+    @JsonProperty(value = "key")
     private String key;
 
     /**
      * Value of pair.
      */
+    @JsonProperty(value = "value")
     private String value;
 
     /**

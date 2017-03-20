@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains information about SSH certificate public key and the path on the
@@ -19,12 +20,14 @@ public class SshPublicKey {
      * stored. If the file already exists, the specified key is appended to the
      * file.
      */
+    @JsonProperty(value = "path")
     private String path;
 
     /**
      * Certificate public key used to authenticate to the VM through SSH. The
      * certificate must be in Pem format with or without headers.
      */
+    @JsonProperty(value = "keyData")
     private String keyData;
 
     /**

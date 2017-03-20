@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a single certificate reference in a Key Vault, and where the
@@ -18,12 +19,14 @@ public class VaultCertificate {
      * The URL referencing a secret in a Key Vault which contains a properly
      * formatted certificate.
      */
+    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /**
      * The Certificate store in LocalMachine to add the certificate to on
      * Windows, leave empty on Linux.
      */
+    @JsonProperty(value = "certificateStore")
     private String certificateStore;
 
     /**

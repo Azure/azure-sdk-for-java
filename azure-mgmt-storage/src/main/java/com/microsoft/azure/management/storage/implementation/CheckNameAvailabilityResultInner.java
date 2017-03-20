@@ -20,7 +20,7 @@ public class CheckNameAvailabilityResultInner {
      * you to use. If true, the name is available. If false, the name has
      * already been taken or is invalid and cannot be used.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /**
@@ -28,13 +28,13 @@ public class CheckNameAvailabilityResultInner {
      * Reason element is only returned if NameAvailable is false. Possible
      * values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private Reason reason;
 
     /**
      * Gets an error message explaining the Reason value in more detail.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**

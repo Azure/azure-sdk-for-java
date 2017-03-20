@@ -149,7 +149,7 @@ class WindowsVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor 
         return this.computeManager
                 .inner()
                 .virtualMachines()
-                .getAsync(rgName, vmName)
+                .getByResourceGroupAsync(rgName, vmName)
                 .flatMap(new Func1<VirtualMachineInner, Observable<VirtualMachineInner>>() {
                     @Override
                     public Observable<VirtualMachineInner> call(VirtualMachineInner virtualMachine) {

@@ -46,12 +46,14 @@ public class PolicyDefinitionInner {
     /**
      * The ID of the policy definition.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The name of the policy definition. If you do not specify a value for
      * name, the value is inferred from the name value in the request URI.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**

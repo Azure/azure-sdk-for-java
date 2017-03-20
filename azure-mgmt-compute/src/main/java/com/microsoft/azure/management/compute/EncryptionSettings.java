@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Encryption settings for disk or snapshot.
@@ -20,16 +21,19 @@ public class EncryptionSettings {
      * EncryptionSettings is null in the request object, the existing settings
      * remain unchanged.
      */
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
      * Key Vault Secret Url and vault id of the disk encryption key.
      */
+    @JsonProperty(value = "diskEncryptionKey")
     private KeyVaultAndSecretReference diskEncryptionKey;
 
     /**
      * Key Vault Key Url and vault id of the key encryption key.
      */
+    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultAndKeyReference keyEncryptionKey;
 
     /**

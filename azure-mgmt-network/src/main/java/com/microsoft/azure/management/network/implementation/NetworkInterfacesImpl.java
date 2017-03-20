@@ -13,8 +13,7 @@ import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 import java.util.ArrayList;
 
@@ -23,36 +22,16 @@ import java.util.ArrayList;
  */
 @LangDefinition
 class NetworkInterfacesImpl
-        extends GroupableResourcesImpl<
-            NetworkInterface,
-            NetworkInterfaceImpl,
-            NetworkInterfaceInner,
-            NetworkInterfacesInner,
-            NetworkManager>
-        implements NetworkInterfaces {
+    extends TopLevelModifiableResourcesImpl<
+        NetworkInterface,
+        NetworkInterfaceImpl,
+        NetworkInterfaceInner,
+        NetworkInterfacesInner,
+        NetworkManager>
+    implements NetworkInterfaces {
 
     NetworkInterfacesImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkInterfaces(), networkManager);
-    }
-
-    @Override
-    public PagedList<NetworkInterface> list() {
-        return wrapList(this.inner().listAll());
-    }
-
-    @Override
-    public PagedList<NetworkInterface> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
-    }
-
-    @Override
-    public NetworkInterface getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

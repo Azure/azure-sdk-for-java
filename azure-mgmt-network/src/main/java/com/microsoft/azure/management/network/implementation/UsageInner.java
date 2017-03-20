@@ -18,25 +18,25 @@ public class UsageInner {
     /**
      * An enum describing the unit of measurement.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "unit", required = true)
     private String unit;
 
     /**
      * The current value of the usage.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "currentValue", required = true)
     private long currentValue;
 
     /**
      * The limit of usage.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "limit", required = true)
     private long limit;
 
     /**
      * The name of the type of usage.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private UsageName name;
 
     /**

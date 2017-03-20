@@ -6,7 +6,9 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Externalized child resource abstract implementation.
@@ -30,7 +32,8 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
         extends
             ChildResourceImpl<InnerModelT, ParentImplT, ParentT>
         implements
-            ExternalChildResource<FluentModelT, ParentT>  {
+            ExternalChildResource<FluentModelT, ParentT>,
+            Refreshable<FluentModelT> {
     /**
      * State representing any pending action that needs to be performed on this child resource.
      */
@@ -51,9 +54,6 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
         super(innerObject, parent);
         this.name = name;
     }
-
-    @Override
-    public abstract String id();
 
     @Override
     public String name() {
@@ -103,6 +103,25 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     public String childResourceKey() {
         return name();
     }
+
+    @Override
+    public final FluentModelT refresh() {
+        return refreshAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<FluentModelT> refreshAsync() {
+        final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
+        return this.getInnerAsync().map(new Func1<InnerModelT, FluentModelT>() {
+            @Override
+            public FluentModelT call(InnerModelT innerModelT) {
+                self.setInner(innerModelT);
+                return (FluentModelT) self;
+            }
+        });
+    }
+
+    protected abstract Observable<InnerModelT> getInnerAsync();
 
     /**
      * The possible operation pending on a child resource in-memory.

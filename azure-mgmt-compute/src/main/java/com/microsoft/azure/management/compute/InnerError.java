@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Inner error details.
@@ -16,11 +17,13 @@ public class InnerError {
     /**
      * The exception type.
      */
+    @JsonProperty(value = "exceptiontype")
     private String exceptiontype;
 
     /**
      * The internal error message or exception dump.
      */
+    @JsonProperty(value = "errordetail")
     private String errordetail;
 
     /**

@@ -80,6 +80,9 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RecommendedElasticPoolInner object if successful.
      */
     public RecommendedElasticPoolInner get(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -93,6 +96,7 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<RecommendedElasticPoolInner> getAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<RecommendedElasticPoolInner> serviceCallback) {
@@ -105,6 +109,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendedElasticPoolInner object
      */
     public Observable<RecommendedElasticPoolInner> getAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -122,6 +127,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendedElasticPoolInner object
      */
     public Observable<ServiceResponse<RecommendedElasticPoolInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -166,6 +172,9 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner getDatabases(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName) {
@@ -180,6 +189,7 @@ public class RecommendedElasticPoolsInner {
      * @param recommendedElasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
@@ -193,6 +203,7 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
     public Observable<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName) {
@@ -211,6 +222,7 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param databaseName The name of the Azure SQL database to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseInner object
      */
     public Observable<ServiceResponse<DatabaseInner>> getDatabasesWithServiceResponseAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, String databaseName) {
@@ -256,6 +268,9 @@ public class RecommendedElasticPoolsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendedElasticPoolInner&gt; object if successful.
      */
     public List<RecommendedElasticPoolInner> list(String resourceGroupName, String serverName) {
@@ -268,6 +283,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RecommendedElasticPoolInner>> listAsync(String resourceGroupName, String serverName, final ServiceCallback<List<RecommendedElasticPoolInner>> serviceCallback) {
@@ -279,6 +295,7 @@ public class RecommendedElasticPoolsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendedElasticPoolInner&gt; object
      */
     public Observable<List<RecommendedElasticPoolInner>> listAsync(String resourceGroupName, String serverName) {
@@ -295,6 +312,7 @@ public class RecommendedElasticPoolsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendedElasticPoolInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendedElasticPoolInner>>> listWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -336,6 +354,9 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listDatabases(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -349,6 +370,7 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
@@ -361,6 +383,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
     public Observable<List<DatabaseInner>> listDatabasesAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -378,6 +401,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
     public Observable<ServiceResponse<List<DatabaseInner>>> listDatabasesWithServiceResponseAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -422,6 +446,9 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RecommendedElasticPoolMetricInner&gt; object if successful.
      */
     public List<RecommendedElasticPoolMetricInner> listMetrics(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -435,6 +462,7 @@ public class RecommendedElasticPoolsInner {
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<RecommendedElasticPoolMetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName, final ServiceCallback<List<RecommendedElasticPoolMetricInner>> serviceCallback) {
@@ -447,6 +475,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendedElasticPoolMetricInner&gt; object
      */
     public Observable<List<RecommendedElasticPoolMetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
@@ -464,6 +493,7 @@ public class RecommendedElasticPoolsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the Azure SQL server.
      * @param recommendedElasticPoolName The name of the Azure SQL Recommended Elastic Pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RecommendedElasticPoolMetricInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendedElasticPoolMetricInner>>> listMetricsWithServiceResponseAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {

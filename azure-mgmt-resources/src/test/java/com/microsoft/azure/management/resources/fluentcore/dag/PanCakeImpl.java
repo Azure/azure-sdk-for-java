@@ -111,8 +111,8 @@ class PancakeImpl
     }
 
     @Override
-    public IPancake refresh() {
-        return this;
+    protected Observable<PancakeInner> getInnerAsync() {
+        return null;
     }
 
     private Observable<IPancake> toErrorObservable(Throwable throwable) {

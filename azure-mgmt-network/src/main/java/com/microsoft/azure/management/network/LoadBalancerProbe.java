@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ProbeInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of a load balancing probe.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerProbe extends
     HasInner<ProbeInner>,
     ChildResource<LoadBalancer>,

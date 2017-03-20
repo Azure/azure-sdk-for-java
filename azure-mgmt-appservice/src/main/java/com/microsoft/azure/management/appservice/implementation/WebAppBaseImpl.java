@@ -29,6 +29,7 @@ import com.microsoft.azure.management.appservice.PhpVersion;
 import com.microsoft.azure.management.appservice.PlatformArchitecture;
 import com.microsoft.azure.management.appservice.PythonVersion;
 import com.microsoft.azure.management.appservice.RemoteVisualStudioVersion;
+import com.microsoft.azure.management.appservice.ScmType;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.UsageState;
@@ -742,7 +743,7 @@ abstract class WebAppBaseImpl<
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
         inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(inner, (FluentImplT) this, this.manager().inner().webApps());
+        return new HostNameBindingImpl<>(inner, (FluentImplT) this);
     }
 
     @Override
@@ -813,7 +814,7 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
-        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this, myManager);
+        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this);
     }
 
     @Override
@@ -1094,7 +1095,7 @@ abstract class WebAppBaseImpl<
         if (inner().siteConfig() == null) {
             inner().withSiteConfig(new SiteConfigInner());
         }
-        inner().siteConfig().withScmType("LocalGit");
+        inner().siteConfig().withScmType(ScmType.LOCAL_GIT);
         return (FluentImplT) this;
     }
 
@@ -1106,10 +1107,25 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public FluentT refresh() {
-        SiteInner inner = getInner().toBlocking().single();
-        inner.withSiteConfig(getConfigInner().toBlocking().single());
-        setInner(inner);
-        return this.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+    public Observable<FluentT> refreshAsync() {
+        return super.refreshAsync().flatMap(new Func1<FluentT, Observable<FluentT>>() {
+            @Override
+            public Observable<FluentT> call(final FluentT fluentT) {
+                return getConfigInner().flatMap(new Func1<SiteConfigInner, Observable<FluentT>>() {
+                    @Override
+                    public Observable<FluentT> call(SiteConfigInner siteConfigInner) {
+                        fluentT.inner().withSiteConfig(siteConfigInner);
+                        final WebAppBaseImpl<FluentT, FluentImplT> impl = (WebAppBaseImpl<FluentT, FluentImplT>) fluentT;
+
+                        return impl.cacheAppSettingsAndConnectionStrings();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected Observable<SiteInner> getInnerAsync() {
+        return getInner();
     }
 }

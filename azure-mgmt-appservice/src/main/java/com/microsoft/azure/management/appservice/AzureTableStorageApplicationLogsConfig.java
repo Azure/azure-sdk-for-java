@@ -18,12 +18,13 @@ public class AzureTableStorageApplicationLogsConfig {
      * Log level. Possible values include: 'Off', 'Verbose', 'Information',
      * 'Warning', 'Error'.
      */
+    @JsonProperty(value = "level")
     private LogLevel level;
 
     /**
      * SAS URL to an Azure table with add/query/delete permissions.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "sasUrl", required = true)
     private String sasUrl;
 
     /**

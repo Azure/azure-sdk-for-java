@@ -18,7 +18,7 @@ public class CreationData {
      * Possible values include: 'Empty', 'Attach', 'FromImage', 'Import',
      * 'Copy', 'Restore'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOption createOption;
 
     /**
@@ -26,11 +26,13 @@ public class CreationData {
      * storage account containing the blob to import as a disk. Required only
      * if the blob is in a different subscription.
      */
+    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /**
      * Disk source information.
      */
+    @JsonProperty(value = "imageReference")
     private ImageDiskReference imageReference;
 
     /**
@@ -39,6 +41,7 @@ public class CreationData {
      * containing the id of the source snapshot to be copied into a managed
      * disk.
      */
+    @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /**
@@ -46,6 +49,7 @@ public class CreationData {
      * disk. If creationOption is Restore, this is the ARM-like id of the
      * source disk restore point.
      */
+    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /**

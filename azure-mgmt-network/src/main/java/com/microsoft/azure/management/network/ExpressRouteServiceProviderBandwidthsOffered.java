@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contains bandwidths offered in ExpressRouteServiceProvider resources.
@@ -16,11 +17,13 @@ public class ExpressRouteServiceProviderBandwidthsOffered {
     /**
      * The OfferName.
      */
+    @JsonProperty(value = "offerName")
     private String offerName;
 
     /**
      * The ValueInMbps.
      */
+    @JsonProperty(value = "valueInMbps")
     private Integer valueInMbps;
 
     /**

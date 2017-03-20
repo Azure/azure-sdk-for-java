@@ -18,13 +18,13 @@ public class GrantAccessDataInner {
     /**
      * Possible values include: 'None', 'Read'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "access", required = true)
     private AccessLevel access;
 
     /**
      * Time duration in seconds until the SAS access expires.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "durationInSeconds", required = true)
     private int durationInSeconds;
 
     /**

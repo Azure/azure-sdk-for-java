@@ -18,17 +18,19 @@ public class DeploymentExtendedInner {
     /**
      * The ID of the deployment.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The name of the deployment.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Deployment properties.
      */
+    @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
     /**

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Application logs azure blob storage configuration.
@@ -17,12 +18,14 @@ public class AzureBlobStorageApplicationLogsConfig {
      * Log level. Possible values include: 'Off', 'Verbose', 'Information',
      * 'Warning', 'Error'.
      */
+    @JsonProperty(value = "level")
     private LogLevel level;
 
     /**
      * SAS url to a azure blob container with read/write/list/delete
      * permissions.
      */
+    @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
     /**
@@ -30,6 +33,7 @@ public class AzureBlobStorageApplicationLogsConfig {
      * Remove blobs older than X days.
      * 0 or lower means no retention.
      */
+    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /**

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.ExpressRouteCircuitArpTable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Response for ListArpTable associated with the Express Route Circuits API.
@@ -18,11 +19,13 @@ public class ExpressRouteCircuitsArpTableListResultInner {
     /**
      * Gets list of the ARP table.
      */
+    @JsonProperty(value = "value")
     private List<ExpressRouteCircuitArpTable> value;
 
     /**
      * The URL to get the next set of results.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**

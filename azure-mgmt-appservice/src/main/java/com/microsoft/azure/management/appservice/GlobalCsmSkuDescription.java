@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice;
 
 import java.util.List;
 import com.microsoft.azure.management.appservice.implementation.CapabilityInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Global SKU Description.
@@ -18,26 +19,31 @@ public class GlobalCsmSkuDescription {
     /**
      * Name of the resource SKU.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Service Tier of the resource SKU.
      */
+    @JsonProperty(value = "tier")
     private String tier;
 
     /**
      * Min, max, and default scale values of the SKU.
      */
+    @JsonProperty(value = "capacity")
     private SkuCapacity capacity;
 
     /**
      * Locations of the SKU.
      */
+    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /**
      * Capabilities of the SKU, e.g., is traffic manager enabled?.
      */
+    @JsonProperty(value = "capabilities")
     private List<CapabilityInner> capabilities;
 
     /**

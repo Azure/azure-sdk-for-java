@@ -17,7 +17,7 @@ public class SubResourceReadOnly {
     /**
      * Resource Id.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**

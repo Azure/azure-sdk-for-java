@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.ComputeModeOptions;
 import com.microsoft.azure.management.appservice.WorkerSizeOptions;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Stamp capacity information.
@@ -18,33 +19,39 @@ public class StampCapacityInner {
     /**
      * Name of the stamp.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Available capacity (# of machines, bytes of storage etc...).
      */
+    @JsonProperty(value = "availableCapacity")
     private Long availableCapacity;
 
     /**
      * Total capacity (# of machines, bytes of storage etc...).
      */
+    @JsonProperty(value = "totalCapacity")
     private Long totalCapacity;
 
     /**
      * Name of the unit.
      */
+    @JsonProperty(value = "unit")
     private String unit;
 
     /**
      * Shared/dedicated workers. Possible values include: 'Shared',
      * 'Dedicated', 'Dynamic'.
      */
+    @JsonProperty(value = "computeMode")
     private ComputeModeOptions computeMode;
 
     /**
      * Size of the machines. Possible values include: 'Default', 'Small',
      * 'Medium', 'Large'.
      */
+    @JsonProperty(value = "workerSize")
     private WorkerSizeOptions workerSize;
 
     /**
@@ -53,23 +60,27 @@ public class StampCapacityInner {
      * 1 - Medium
      * 2 - Large.
      */
+    @JsonProperty(value = "workerSizeId")
     private Integer workerSizeId;
 
     /**
      * If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
      * Basic apps are not used for capacity allocation.
      */
+    @JsonProperty(value = "excludeFromCapacityAllocation")
     private Boolean excludeFromCapacityAllocation;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all apps;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "isApplicableForAllComputeModes")
     private Boolean isApplicableForAllComputeModes;
 
     /**
      * Shared or Dedicated.
      */
+    @JsonProperty(value = "siteMode")
     private String siteMode;
 
     /**

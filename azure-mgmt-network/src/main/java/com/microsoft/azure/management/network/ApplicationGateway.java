@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
@@ -21,16 +22,42 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import rx.Completable;
+
 /**
  * Entry point for application gateway management API in Azure.
  */
 @Fluent
+@Beta
 public interface ApplicationGateway extends
         GroupableResource<NetworkManager, ApplicationGatewayInner>,
         Refreshable<ApplicationGateway>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
         HasPrivateIPAddress {
+
+    // Actions
+    /**
+     * Starts the application gateway.
+     */
+    void start();
+
+    /**
+     * Stops the application gateway.
+     */
+    void stop();
+
+    /**
+     * Starts the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
+     * Stops the application gateway asynchronously.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopAsync();
 
     // Getters
 
@@ -93,6 +120,11 @@ public interface ApplicationGateway extends
      * @return backend address pools of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayBackend> backends();
+
+    /**
+     * @return probes of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayProbe> probes();
 
     /**
      * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
@@ -232,6 +264,18 @@ public interface ApplicationGateway extends
              * @return the first stage of the listener definition
              */
             ApplicationGatewayListener.DefinitionStages.Blank<WithCreate> defineListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a probe.
+         */
+        interface WithProbe {
+            /**
+             * Begins the definition of a new probe.
+             * @param name a unique name for the probe
+             * @return the first stage of a probe definition
+             */
+            ApplicationGatewayProbe.DefinitionStages.Blank<WithCreate> defineProbe(String name);
         }
 
         /**
@@ -399,7 +443,8 @@ public interface ApplicationGateway extends
             WithPrivateIPAddress,
             WithPrivateFrontend,
             WithPublicFrontend,
-            WithPublicIPAddress {
+            WithPublicIPAddress,
+            WithProbe {
         }
     }
 
@@ -653,6 +698,32 @@ public interface ApplicationGateway extends
         }
 
         /**
+         * The stage of an application gateway update allowing to modify probes.
+         */
+        interface WithProbe {
+            /**
+             * Begins the definition of a new probe.
+             * @param name a unique name for the probe
+             * @return the first stage of a probe definition
+             */
+            ApplicationGatewayProbe.UpdateDefinitionStages.Blank<Update> defineProbe(String name);
+
+            /**
+             * Begins the update of an existing probe.
+             * @param name the name of an existing probe
+             * @return the first stage of a probe update
+             */
+            ApplicationGatewayProbe.Update updateProbe(String name);
+
+            /**
+             * Removes a probe from the application gateway.
+             * @param name the name of an existing probe
+             * @return the next stage of the update
+             */
+            Update withoutProbe(String name);
+        }
+
+        /**
          * The stage of an application gateway update allowing to specify the size.
          */
         interface WithSize {
@@ -801,6 +872,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithSslCert,
         UpdateStages.WithListener,
         UpdateStages.WithRequestRoutingRule,
-        UpdateStages.WithExistingSubnet {
+        UpdateStages.WithExistingSubnet,
+        UpdateStages.WithProbe {
     }
 }

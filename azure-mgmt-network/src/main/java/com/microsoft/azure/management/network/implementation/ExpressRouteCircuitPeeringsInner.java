@@ -15,8 +15,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteCircuitPeerings.
  */
-public final class ExpressRouteCircuitPeeringsInner {
+public class ExpressRouteCircuitPeeringsInner {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteCircuitPeeringsService service;
     /** The service client containing this operation class. */
@@ -97,6 +97,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String circuitName, String peeringName) {
         deleteWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().last().body();
@@ -109,6 +112,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<Void> serviceCallback) {
@@ -121,6 +125,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -138,6 +143,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -153,7 +159,7 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -164,6 +170,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String circuitName, String peeringName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().body();
@@ -176,6 +185,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<Void> serviceCallback) {
@@ -188,6 +198,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -205,6 +216,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -220,7 +232,7 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginDelete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -240,6 +252,7 @@ public final class ExpressRouteCircuitPeeringsInner {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -249,6 +262,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitPeeringInner object if successful.
      */
     public ExpressRouteCircuitPeeringInner get(String resourceGroupName, String circuitName, String peeringName) {
@@ -262,6 +278,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitPeeringInner> getAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
@@ -274,6 +291,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ExpressRouteCircuitPeeringInner> getAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -291,6 +309,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> getWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -306,7 +325,7 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.get(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
@@ -335,6 +354,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitPeeringInner object if successful.
      */
     public ExpressRouteCircuitPeeringInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -349,6 +371,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters, final ServiceCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
@@ -362,6 +385,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -380,6 +404,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -399,7 +424,7 @@ public final class ExpressRouteCircuitPeeringsInner {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
         Validator.validate(peeringParameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitPeeringInner>() { }.getType());
     }
@@ -411,6 +436,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExpressRouteCircuitPeeringInner object if successful.
      */
     public ExpressRouteCircuitPeeringInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -425,6 +453,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ExpressRouteCircuitPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters, final ServiceCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
@@ -438,6 +467,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ExpressRouteCircuitPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -456,6 +486,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -475,7 +506,7 @@ public final class ExpressRouteCircuitPeeringsInner {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
         Validator.validate(peeringParameters);
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
@@ -503,6 +534,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitPeeringInner> list(final String resourceGroupName, final String circuitName) {
@@ -521,6 +555,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteCircuitPeeringInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
@@ -540,6 +575,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitPeeringInner>> listAsync(final String resourceGroupName, final String circuitName) {
@@ -557,6 +593,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String circuitName) {
@@ -578,6 +615,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param circuitName The name of the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
@@ -590,7 +628,7 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>>>() {
                 @Override
@@ -616,6 +654,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitPeeringInner> listNext(final String nextPageLink) {
@@ -632,8 +673,9 @@ public final class ExpressRouteCircuitPeeringsInner {
      * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteCircuitPeeringInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ExpressRouteCircuitPeeringInner>> serviceFuture, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
@@ -652,6 +694,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitPeeringInner>> listNextAsync(final String nextPageLink) {
@@ -668,6 +711,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -688,6 +732,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * Gets all peerings in a specified express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listNextSinglePageAsync(final String nextPageLink) {

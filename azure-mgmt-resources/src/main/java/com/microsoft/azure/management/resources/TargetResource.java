@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Target resource.
@@ -16,16 +17,19 @@ public class TargetResource {
     /**
      * The ID of the resource.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * The name of the resource.
      */
+    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /**
      * The type of the resource.
      */
+    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**

@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -15,8 +18,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -41,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Disks.
  */
-public final class DisksInner {
+public class DisksInner implements InnerSupportsGet<DiskInner>, InnerSupportsDelete<OperationStatusResponseInner>, InnerSupportsListing<DiskInner> {
     /** The Retrofit service to perform REST calls. */
     private DisksService service;
     /** The service client containing this operation class. */
@@ -79,9 +82,9 @@ public final class DisksInner {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Body DiskUpdateInner disk, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("diskName") String diskName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.Disks delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}", method = "DELETE", hasBody = true)
@@ -131,6 +134,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DiskInner object if successful.
      */
     public DiskInner createOrUpdate(String resourceGroupName, String diskName, DiskInner disk) {
@@ -144,6 +150,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
@@ -156,6 +163,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DiskInner> createOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
@@ -173,6 +181,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DiskInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String diskName, DiskInner disk) {
@@ -200,6 +209,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DiskInner object if successful.
      */
     public DiskInner beginCreateOrUpdate(String resourceGroupName, String diskName, DiskInner disk) {
@@ -213,6 +225,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DiskInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk, final ServiceCallback<DiskInner> serviceCallback) {
@@ -225,6 +238,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
     public Observable<DiskInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskName, DiskInner disk) {
@@ -242,6 +256,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Put disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
     public Observable<ServiceResponse<DiskInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String diskName, DiskInner disk) {
@@ -287,6 +302,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DiskInner object if successful.
      */
     public DiskInner update(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -300,6 +318,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
@@ -312,6 +331,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<DiskInner> updateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -329,6 +349,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<DiskInner>> updateWithServiceResponseAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -356,6 +377,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DiskInner object if successful.
      */
     public DiskInner beginUpdate(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -369,6 +393,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<DiskInner> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk, final ServiceCallback<DiskInner> serviceCallback) {
@@ -381,6 +406,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
     public Observable<DiskInner> beginUpdateAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -398,6 +424,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param disk Disk object supplied in the body of the Patch disk operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
     public Observable<ServiceResponse<DiskInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String diskName, DiskUpdateInner disk) {
@@ -442,10 +469,13 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DiskInner object if successful.
      */
-    public DiskInner get(String resourceGroupName, String diskName) {
-        return getWithServiceResponseAsync(resourceGroupName, diskName).toBlocking().single().body();
+    public DiskInner getByResourceGroup(String resourceGroupName, String diskName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, diskName).toBlocking().single().body();
     }
 
     /**
@@ -454,10 +484,11 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DiskInner> getAsync(String resourceGroupName, String diskName, final ServiceCallback<DiskInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
+    public ServiceFuture<DiskInner> getByResourceGroupAsync(String resourceGroupName, String diskName, final ServiceCallback<DiskInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, diskName), serviceCallback);
     }
 
     /**
@@ -465,10 +496,11 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
-    public Observable<DiskInner> getAsync(String resourceGroupName, String diskName) {
-        return getWithServiceResponseAsync(resourceGroupName, diskName).map(new Func1<ServiceResponse<DiskInner>, DiskInner>() {
+    public Observable<DiskInner> getByResourceGroupAsync(String resourceGroupName, String diskName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, diskName).map(new Func1<ServiceResponse<DiskInner>, DiskInner>() {
             @Override
             public DiskInner call(ServiceResponse<DiskInner> response) {
                 return response.body();
@@ -481,9 +513,10 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DiskInner object
      */
-    public Observable<ServiceResponse<DiskInner>> getWithServiceResponseAsync(String resourceGroupName, String diskName) {
+    public Observable<ServiceResponse<DiskInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String diskName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -494,12 +527,12 @@ public final class DisksInner {
             throw new IllegalArgumentException("Parameter diskName is required and cannot be null.");
         }
         final String apiVersion = "2016-04-30-preview";
-        return service.get(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, diskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DiskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DiskInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DiskInner> clientResponse = getDelegate(response);
+                        ServiceResponse<DiskInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -508,7 +541,7 @@ public final class DisksInner {
             });
     }
 
-    private ServiceResponse<DiskInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DiskInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DiskInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<DiskInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -520,6 +553,9 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner delete(String resourceGroupName, String diskName) {
@@ -532,6 +568,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -543,6 +580,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String diskName) {
@@ -559,6 +597,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> deleteWithServiceResponseAsync(String resourceGroupName, String diskName) {
@@ -581,6 +620,9 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginDelete(String resourceGroupName, String diskName) {
@@ -593,6 +635,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -604,6 +647,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginDeleteAsync(String resourceGroupName, String diskName) {
@@ -620,6 +664,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String diskName) {
@@ -660,6 +705,9 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DiskInner&gt; object if successful.
      */
     public PagedList<DiskInner> listByResourceGroup(final String resourceGroupName) {
@@ -677,6 +725,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DiskInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DiskInner> serviceCallback) {
@@ -695,6 +744,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<Page<DiskInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -711,6 +761,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -731,6 +782,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
     ServiceResponse<PageImpl1<DiskInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DiskInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -765,6 +817,9 @@ public final class DisksInner {
     /**
      * Lists all the disks under a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DiskInner&gt; object if successful.
      */
     public PagedList<DiskInner> list() {
@@ -781,6 +836,7 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DiskInner>> listAsync(final ListOperationCallback<DiskInner> serviceCallback) {
@@ -798,6 +854,7 @@ public final class DisksInner {
     /**
      * Lists all the disks under a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<Page<DiskInner>> listAsync() {
@@ -813,6 +870,7 @@ public final class DisksInner {
     /**
      * Lists all the disks under a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listWithServiceResponseAsync() {
@@ -832,6 +890,7 @@ public final class DisksInner {
     /**
      * Lists all the disks under a subscription.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DiskInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listSinglePageAsync() {
@@ -866,6 +925,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AccessUriInner object if successful.
      */
     public AccessUriInner grantAccess(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -879,6 +941,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
@@ -891,6 +954,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<AccessUriInner> grantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -908,6 +972,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<AccessUriInner>> grantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -935,6 +1000,9 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AccessUriInner object if successful.
      */
     public AccessUriInner beginGrantAccess(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -948,6 +1016,7 @@ public final class DisksInner {
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData, final ServiceCallback<AccessUriInner> serviceCallback) {
@@ -960,6 +1029,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AccessUriInner object
      */
     public Observable<AccessUriInner> beginGrantAccessAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -977,6 +1047,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param grantAccessData Access data object supplied in the body of the get disk access operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AccessUriInner object
      */
     public Observable<ServiceResponse<AccessUriInner>> beginGrantAccessWithServiceResponseAsync(String resourceGroupName, String diskName, GrantAccessDataInner grantAccessData) {
@@ -1021,6 +1092,9 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner revokeAccess(String resourceGroupName, String diskName) {
@@ -1033,6 +1107,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1044,6 +1119,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<OperationStatusResponseInner> revokeAccessAsync(String resourceGroupName, String diskName) {
@@ -1060,6 +1136,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> revokeAccessWithServiceResponseAsync(String resourceGroupName, String diskName) {
@@ -1082,6 +1159,9 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatusResponseInner object if successful.
      */
     public OperationStatusResponseInner beginRevokeAccess(String resourceGroupName, String diskName) {
@@ -1094,6 +1174,7 @@ public final class DisksInner {
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String diskName, final ServiceCallback<OperationStatusResponseInner> serviceCallback) {
@@ -1105,6 +1186,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<OperationStatusResponseInner> beginRevokeAccessAsync(String resourceGroupName, String diskName) {
@@ -1121,6 +1203,7 @@ public final class DisksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskName The name of the disk within the given subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatusResponseInner object
      */
     public Observable<ServiceResponse<OperationStatusResponseInner>> beginRevokeAccessWithServiceResponseAsync(String resourceGroupName, String diskName) {
@@ -1160,6 +1243,9 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DiskInner&gt; object if successful.
      */
     public PagedList<DiskInner> listByResourceGroupNext(final String nextPageLink) {
@@ -1176,8 +1262,9 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DiskInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DiskInner>> serviceFuture, final ListOperationCallback<DiskInner> serviceCallback) {
@@ -1196,6 +1283,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<Page<DiskInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -1212,6 +1300,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1232,6 +1321,7 @@ public final class DisksInner {
      * Lists all the disks under a resource group.
      *
     ServiceResponse<PageImpl1<DiskInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DiskInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -1264,6 +1354,9 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;DiskInner&gt; object if successful.
      */
     public PagedList<DiskInner> listNext(final String nextPageLink) {
@@ -1280,8 +1373,9 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<DiskInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DiskInner>> serviceFuture, final ListOperationCallback<DiskInner> serviceCallback) {
@@ -1300,6 +1394,7 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<Page<DiskInner>> listNextAsync(final String nextPageLink) {
@@ -1316,6 +1411,7 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DiskInner&gt; object
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1336,6 +1432,7 @@ public final class DisksInner {
      * Lists all the disks under a subscription.
      *
     ServiceResponse<PageImpl1<DiskInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DiskInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DiskInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Metric information.
@@ -18,26 +19,31 @@ public class PerfMonSet {
     /**
      * Unique key name of the counter.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Start time of the period.
      */
+    @JsonProperty(value = "startTime")
     private DateTime startTime;
 
     /**
      * End time of the period.
      */
+    @JsonProperty(value = "endTime")
     private DateTime endTime;
 
     /**
      * Presented time grain.
      */
+    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /**
      * Collection of workers that are active during this time.
      */
+    @JsonProperty(value = "values")
     private List<PerfMonSample> values;
 
     /**

@@ -20,20 +20,20 @@ public class ValidateRequestInner {
     /**
      * Resource name to verify.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Resource type used for verification. Possible values include:
      * 'ServerFarm', 'Site'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "type", required = true)
     private ValidateResourceTypes type;
 
     /**
      * Expected location of the resource.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**

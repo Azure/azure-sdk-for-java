@@ -77,7 +77,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResource refresh() {
+    protected Observable<GenericResourceInner> getInnerAsync() {
         return null;
     }
 

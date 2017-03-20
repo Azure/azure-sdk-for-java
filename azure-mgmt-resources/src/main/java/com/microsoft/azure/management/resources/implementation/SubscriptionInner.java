@@ -20,25 +20,25 @@ public class SubscriptionInner {
      * The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * The subscription ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
      * The tenant ID.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
      * The subscription display name.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
@@ -46,12 +46,13 @@ public class SubscriptionInner {
      * Disabled, and Deleted. Possible values include: 'Enabled', 'Warned',
      * 'PastDue', 'Disabled', 'Deleted'.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
 
     /**
      * The subscription policies.
      */
+    @JsonProperty(value = "subscriptionPolicies")
     private SubscriptionPolicies subscriptionPolicies;
 
     /**
@@ -59,6 +60,7 @@ public class SubscriptionInner {
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For
      * example, 'Legacy, RoleBased'.
      */
+    @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
 
     /**

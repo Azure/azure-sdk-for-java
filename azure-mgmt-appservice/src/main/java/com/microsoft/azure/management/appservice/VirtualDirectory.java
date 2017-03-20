@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Directory for virtual application.
@@ -16,11 +17,13 @@ public class VirtualDirectory {
     /**
      * Path to virtual application.
      */
+    @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
     /**
      * Physical path.
      */
+    @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
     /**

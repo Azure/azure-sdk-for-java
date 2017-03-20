@@ -19,8 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -44,15 +44,13 @@ class HostNameBindingImpl<
             HostNameBinding,
             HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
             HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
-    private WebAppsInner client;
     private final FluentImplT parent;
     private String domainName;
     private String name;
 
-    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent, WebAppsInner client) {
+    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent) {
         super(innerObject);
         this.parent = parent;
-        this.client = client;
         this.name = innerObject.name();
         if (name != null && name.contains("/")) {
             this.name = name.replace(parent.name() + "/", "");
@@ -138,12 +136,30 @@ class HostNameBindingImpl<
 
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> refresh() {
-        if (parent instanceof DeploymentSlot) {
-            this.setInner(client.getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name()));
-        } else {
-            this.setInner(client.getHostNameBinding(parent().resourceGroupName(), parent().name(), name()));
-        }
+
         return this;
+    }
+
+    @Override
+    public Observable<HostNameBinding> refreshAsync() {
+        final HostNameBindingImpl<FluentT, FluentImplT> self = this;
+        Observable<HostNameBindingInner> observable = null;
+
+        if (parent instanceof DeploymentSlot) {
+            observable = this.parent().manager().inner().webApps().getHostNameBindingSlotAsync(
+                    parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name());
+        } else {
+            observable = this.parent().manager().inner().webApps().getHostNameBindingAsync(parent().resourceGroupName(),
+                    parent().name(), name());
+        }
+
+        return observable.map(new Func1<HostNameBindingInner, HostNameBinding>() {
+            @Override
+            public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
+                self.setInner(hostNameBindingInner);
+                return self;
+            }
+        });
     }
 
     @Override
@@ -171,12 +187,14 @@ class HostNameBindingImpl<
 
         Observable<HostNameBinding> hostNameBindingObservable;
         if (parent instanceof DeploymentSlot) {
-            hostNameBindingObservable = client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(),
+            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingSlotAsync(
+                    parent().resourceGroupName(),
                     ((DeploymentSlot) parent).parent().name(),
                     name,
                     parent().name(), inner()).map(mapper);
         } else {
-            hostNameBindingObservable = client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
+            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingAsync(
+                    parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
         }
 
         return hostNameBindingObservable.map(new Func1<HostNameBinding, Indexable>() {

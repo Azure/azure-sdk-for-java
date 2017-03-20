@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.MXRecordSet;
 import com.microsoft.azure.management.dns.MXRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of MXRecordSets.
@@ -49,5 +50,12 @@ class MXRecordSetsImpl
     @Override
     public DnsZoneImpl parent() {
         return this.dnsZone;
+    }
+
+    @Override
+    public Observable<MXRecordSet> listAsync() {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(), RecordType.MX));
     }
 }

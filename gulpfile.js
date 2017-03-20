@@ -150,6 +150,13 @@ var mappings = {
         'source': 'arm-dns/2016-04-01/swagger/dns.json',
         'package': 'com.microsoft.azure.management.dns',
         'args': '-FT 1'
+    },
+    'monitor': {
+        'dir': 'azure-mgmt-monitor',
+        'source': 'arm-monitor/compositeMonitorManagementClient.json',
+        'package': 'com.microsoft.azure.management.monitor',
+        'args': '-FT 1',
+        'modeler': 'CompositeSwagger'
     }
 };
 
@@ -161,13 +168,13 @@ gulp.task('default', function() {
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
     });
-    console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
+    console.log("--autorest\n\tThe version of AutoRest. E.g. 1.0.1-20170222-2300-nightly, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '1.0.0-Nightly20170209'; // default
+var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -175,21 +182,10 @@ var autoRestArgs = args['autorest-args'];
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
-    var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
-    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
-        autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        nugetExe = "tools\\nuget.exe";
-        if (process.platform !== 'win32') {
-            nugetExe = "mono tools/nuget.exe";
-            autoRestExe = autoRestExe.replace(/\\/g, "/");
-            exec('chmod +x ' + autoRestExe);
-            autoRestExe = "mono " + autoRestExe;
-        }
-        exec(nugetExe + ' install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
-            console.log(stdout);
-            console.error(stderr);
-            handleInput(projects, cb);
-        });
+    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
+        autoRestVersion == 'latest') {
+        autoRestExe = 'autorest ---version=' + autoRestVersion;
+        handleInput(projects, cb);
     } else {
         autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
         autoRestExe = "dotnet " + autoRestExe;
@@ -233,6 +229,7 @@ var codegen = function(project, cb) {
                         ' -Input ' + specRoot + '/' + mappings[project].source +
                         ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+                        ' -skipValidation true' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;

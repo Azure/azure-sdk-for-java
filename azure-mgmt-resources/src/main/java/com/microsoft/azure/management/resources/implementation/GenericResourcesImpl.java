@@ -14,6 +14,8 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -43,12 +45,12 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
-        return wrapList(this.manager().inner().resourceGroups().listResources(groupName));
+        return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(groupName));
     }
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        return wrapList(this.manager().inner().resourceGroups().listResources(
+        return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(
                 resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
@@ -137,15 +139,35 @@ final class GenericResourcesImpl
 
     @Override
     public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
+        this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources).await();
+    }
+
+    @Override
+    public Completable moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
         ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
         moveInfo.withTargetResourceGroup(targetResourceGroup.id());
         moveInfo.withResources(resources);
-        this.inner().moveResources(sourceResourceGroupName, moveInfo);
+        return this.inner().moveResourcesAsync(sourceResourceGroupName, moveInfo).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources).<Void>toObservable(), callback);
     }
 
     @Override
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         this.inner().delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
+    }
+
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        return null;
+    }
+
+    @Override
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, ServiceCallback<Void> callback) {
+        return null;
     }
 
     @Override
@@ -170,13 +192,13 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getByGroup(String groupName, String name) {
+    public Observable<GenericResourceInner> getInnerAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
     }
@@ -201,5 +223,15 @@ final class GenericResourcesImpl
                         return ResourceUtils.defaultApiVersion(id, provider);
                     }
                 });
+    }
+
+    @Override
+    public Observable<GenericResource> listAsync() {
+        return wrapPageAsync(this.inner().listAsync());
+    }
+
+    @Override
+    public Observable<GenericResource> listByGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(resourceGroupName));
     }
 }

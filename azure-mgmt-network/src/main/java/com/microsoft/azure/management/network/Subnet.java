@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -27,6 +28,7 @@ public interface Subnet extends
      * <p>
      * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
      */
+    @Method
     Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations();
 
     /**

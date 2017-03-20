@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.trafficmanager;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Class containing DNS settings in a Traffic Manager profile.
@@ -19,6 +20,7 @@ public class DnsConfig {
      * Traffic Manager to form the fully-qualified domain name (FQDN) of the
      * profile.
      */
+    @JsonProperty(value = "relativeName")
     private String relativeName;
 
     /**
@@ -26,6 +28,7 @@ public class DnsConfig {
      * Manager profile.  This is formed from the concatenation of the
      * RelativeName with the DNS domain used by Azure Traffic Manager.
      */
+    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /**
@@ -33,6 +36,7 @@ public class DnsConfig {
      * local DNS resolvers and DNS clients how long to cache DNS responses
      * provided by this Traffic Manager profile.
      */
+    @JsonProperty(value = "ttl")
     private Long ttl;
 
     /**

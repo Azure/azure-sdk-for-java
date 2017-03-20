@@ -11,8 +11,8 @@ package com.microsoft.azure.management.compute.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +30,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineSizes.
  */
-public final class VirtualMachineSizesInner {
+public class VirtualMachineSizesInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineSizesService service;
     /** The service client containing this operation class. */
@@ -62,6 +62,9 @@ public final class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
     public List<VirtualMachineSizeInner> list(String location) {
@@ -73,6 +76,7 @@ public final class VirtualMachineSizesInner {
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<VirtualMachineSizeInner>> listAsync(String location, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
@@ -83,6 +87,7 @@ public final class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
     public Observable<List<VirtualMachineSizeInner>> listAsync(String location) {
@@ -98,6 +103,7 @@ public final class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
     public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listWithServiceResponseAsync(String location) {

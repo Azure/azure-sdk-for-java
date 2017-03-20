@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.DayOfWeek;
@@ -14,8 +16,8 @@ import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.RedisKeyType;
-import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.Sku;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
@@ -204,11 +206,8 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl refresh() {
-        RedisResourceInner redisResourceInner =
-                this.manager().inner().redis().get(this.resourceGroupName(), this.name());
-        this.setInner(redisResourceInner);
-        return this;
+    protected Observable<RedisResourceInner> getInnerAsync() {
+        return this.manager().inner().redis().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -412,9 +411,9 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withPatchSchedule(List<ScheduleEntry> scheduleEntry) {
+    public RedisCacheImpl withPatchSchedule(List<ScheduleEntry> scheduleEntries) {
         this.scheduleEntries.clear();
-        for (ScheduleEntry entry : scheduleEntry) {
+        for (ScheduleEntry entry : scheduleEntries) {
             this.withPatchSchedule(entry);
         }
         return this;
@@ -430,7 +429,12 @@ class RedisCacheImpl
     public List<ScheduleEntry> listPatchSchedules() {
         RedisPatchScheduleInner patchSchedules =  this.manager().inner().patchSchedules().get(resourceGroupName(), name());
         if (patchSchedules != null) {
-            return patchSchedules.scheduleEntries();
+            return Lists.transform(patchSchedules.scheduleEntries(),
+                    new Function<ScheduleEntryInner, ScheduleEntry>() {
+                        public ScheduleEntry apply(ScheduleEntryInner entryInner) {
+                            return new ScheduleEntry(entryInner);
+                        }
+                    });
         }
         return null;
     }
@@ -443,9 +447,12 @@ class RedisCacheImpl
     private void updatePatchSchedules() {
         if (this.scheduleEntries != null && !this.scheduleEntries.isEmpty()) {
             RedisPatchScheduleInner parameters = new RedisPatchScheduleInner()
-                    .withScheduleEntries(new ArrayList<ScheduleEntry>());
+                    .withScheduleEntries(new ArrayList<ScheduleEntryInner>());
             for (ScheduleEntry entry : this.scheduleEntries.values()) {
-                parameters.scheduleEntries().add(entry);
+                parameters.scheduleEntries().add(new ScheduleEntryInner()
+                        .withDayOfWeek(entry.dayOfWeek())
+                        .withMaintenanceWindow(entry.maintenanceWindow())
+                        .withStartHourUtc(entry.startHourUtc()));
             }
             this.manager().inner().patchSchedules().createOrUpdate(resourceGroupName(), name(), parameters.scheduleEntries());
         }
@@ -469,7 +476,7 @@ class RedisCacheImpl
                         while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
                             SdkContext.sleep(30 * 1000);
 
-                            RedisResourceInner innerResource = self.manager().inner().redis().get(resourceGroupName(), name());
+                            RedisResourceInner innerResource = self.manager().inner().redis().getByResourceGroup(resourceGroupName(), name());
                             ((RedisCacheImpl) redisCache).setInner(innerResource);
                             self.setInner(innerResource);
                         }

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.childresource;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import rx.Completable;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -78,13 +79,12 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
             return Observable.error(new Exception("Deletion of " + this.name() + " failed"));
         }
 
-        return Observable
-                .just(null);
+        return Observable.just(null);
     }
 
     @Override
-    public PulletImpl refresh() {
-        return null;
+    protected Observable<Object> getInnerAsync() {
+        return Observable.just(null);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -38,20 +39,19 @@ class AvailabilitySetsImpl
         return new GroupPagedList<AvailabilitySet>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) {
-                return wrapList(self.inner().list(resourceGroupName));
+                return wrapList(self.inner().listByResourceGroup(resourceGroupName));
             }
         };
     }
 
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) {
-        return wrapList(this.inner().list(groupName));
+        return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
     @Override
-    public AvailabilitySetImpl getByGroup(String groupName, String name) {
-        AvailabilitySetInner response = this.inner().get(groupName, name);
-        return wrapModel(response);
+    protected Observable<AvailabilitySetInner> getInnerAsync(String resourceGroupName, String name) {
+        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
@@ -60,7 +60,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    protected Completable deleteInnerAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 

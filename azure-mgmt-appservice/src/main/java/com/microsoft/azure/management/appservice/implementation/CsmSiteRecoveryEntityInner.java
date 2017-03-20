@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Details about app recovery operation.
@@ -17,23 +18,20 @@ public class CsmSiteRecoveryEntityInner {
     /**
      * Point in time in which the app recovery should be attempted.
      */
+    @JsonProperty(value = "snapshotTime")
     private DateTime snapshotTime;
-
-    /**
-     * If &lt;code&gt;true&lt;/code&gt;, then the app's configuration will be
-     * reverted to its state at &lt;code&gt;SnapshotTime&lt;/code&gt;.
-     */
-    private Boolean recoverConfig;
 
     /**
      * [Optional] Destination app name into which app should be recovered. This
      * is case when new app should be created instead.
      */
+    @JsonProperty(value = "siteName")
     private String siteName;
 
     /**
      * [Optional] Destination app slot name into which app should be recovered.
      */
+    @JsonProperty(value = "slotName")
     private String slotName;
 
     /**
@@ -53,26 +51,6 @@ public class CsmSiteRecoveryEntityInner {
      */
     public CsmSiteRecoveryEntityInner withSnapshotTime(DateTime snapshotTime) {
         this.snapshotTime = snapshotTime;
-        return this;
-    }
-
-    /**
-     * Get the recoverConfig value.
-     *
-     * @return the recoverConfig value
-     */
-    public Boolean recoverConfig() {
-        return this.recoverConfig;
-    }
-
-    /**
-     * Set the recoverConfig value.
-     *
-     * @param recoverConfig the recoverConfig value to set
-     * @return the CsmSiteRecoveryEntityInner object itself.
-     */
-    public CsmSiteRecoveryEntityInner withRecoverConfig(Boolean recoverConfig) {
-        this.recoverConfig = recoverConfig;
         return this;
     }
 

@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for RouteTable.
@@ -58,11 +59,20 @@ class RouteTableImpl
     // Verbs
 
     @Override
-    public RouteTableImpl refresh() {
-        RouteTableInner inner = this.manager().inner().routeTables().get(this.resourceGroupName(), this.name());
-        this.setInner(inner);
-        initializeChildrenFromInner();
-        return this;
+    public Observable<RouteTable> refreshAsync() {
+        return super.refreshAsync().map(new Func1<RouteTable, RouteTable>() {
+            @Override
+            public RouteTable call(RouteTable routeTable) {
+                RouteTableImpl impl = (RouteTableImpl) routeTable;
+                impl.initializeChildrenFromInner();
+                return impl;
+            }
+        });
+    }
+
+    @Override
+    protected Observable<RouteTableInner> getInnerAsync() {
+        return this.manager().inner().routeTables().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

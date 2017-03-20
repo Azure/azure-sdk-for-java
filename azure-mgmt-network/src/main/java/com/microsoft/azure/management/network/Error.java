@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The Error model.
@@ -17,26 +18,31 @@ public class Error {
     /**
      * The code property.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * The message property.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /**
      * The target property.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /**
      * The details property.
      */
+    @JsonProperty(value = "details")
     private List<ErrorDetails> details;
 
     /**
      * The innerError property.
      */
+    @JsonProperty(value = "innerError")
     private String innerError;
 
     /**

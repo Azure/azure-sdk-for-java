@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Effective Route.
@@ -17,6 +18,7 @@ public class EffectiveRoute {
     /**
      * The name of the user defined route. This is optional.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -24,22 +26,26 @@ public class EffectiveRoute {
      * 'VirtualNetworkGateway', and 'Default'. Possible values include:
      * 'Unknown', 'User', 'VirtualNetworkGateway', 'Default'.
      */
+    @JsonProperty(value = "source")
     private EffectiveRouteSource source;
 
     /**
      * The value of effective route. Possible values are: 'Active' and
      * 'Invalid'. Possible values include: 'Active', 'Invalid'.
      */
+    @JsonProperty(value = "state")
     private EffectiveRouteState state;
 
     /**
      * The address prefixes of the effective routes in CIDR notation.
      */
+    @JsonProperty(value = "addressPrefix")
     private List<String> addressPrefix;
 
     /**
      * The IP address of the next hop of the effective route.
      */
+    @JsonProperty(value = "nextHopIpAddress")
     private List<String> nextHopIpAddress;
 
     /**
@@ -48,6 +54,7 @@ public class EffectiveRoute {
      * and 'None'. Possible values include: 'VirtualNetworkGateway',
      * 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      */
+    @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
 
     /**

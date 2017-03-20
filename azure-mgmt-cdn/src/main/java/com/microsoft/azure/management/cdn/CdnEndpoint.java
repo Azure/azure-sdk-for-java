@@ -14,6 +14,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -111,9 +115,40 @@ public interface CdnEndpoint extends
     void start();
 
     /**
+     * Starts current stopped CDN endpoint asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
+     * Starts current stopped CDN endpoint asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
+
+    /**
      * Stops current running CDN endpoint.
      */
     void stop();
+
+    /**
+     * Stops current running CDN endpoint asynchronously.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopAsync();
+
+
+    /**
+     * Stops current running CDN endpoint asynchronously.
+     *
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback);
 
     /**
      * Forcibly purges current CDN endpoint content.
@@ -123,11 +158,46 @@ public interface CdnEndpoint extends
     void purgeContent(List<String> contentPaths);
 
     /**
+     * Forcibly purges current CDN endpoint content asynchronously.
+     *
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable purgeContentAsync(List<String> contentPaths);
+
+    /**
+     * Forcibly purges current CDN endpoint content asynchronously.
+     *
+     *
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> purgeContentAsync(List<String> contentPaths, ServiceCallback<Void> callback);
+
+    /**
      * Forcibly pre-loads current CDN endpoint content. Available for Verizon Profiles.
      *
      * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
     void loadContent(List<String> contentPaths);
+
+    /**
+     * Forcibly pre-loads current CDN endpoint content asynchronously. Available for Verizon Profiles.
+     *
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable loadContentAsync(List<String> contentPaths);
+
+    /**
+     * Forcibly pre-loads current CDN endpoint content asynchronously. Available for Verizon Profiles.
+     *
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<Void> loadContentAsync(List<String> contentPaths, ServiceCallback<Void> callback);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint.
@@ -136,6 +206,23 @@ public interface CdnEndpoint extends
      * @return the CustomDomainValidationResult object if successful.
      */
     CustomDomainValidationResult validateCustomDomain(String hostName);
+
+    /**
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint asynchronously.
+     *
+     * @param hostName the host name of the custom domain. Must be a domain name.
+     * @return the observable to CustomDomainValidationResult object if successful.
+     */
+    Observable<CustomDomainValidationResult> validateCustomDomainAsync(String hostName);
+
+    /**
+     * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS for current endpoint asynchronously.
+     *
+     * @param hostName the host name of the custom domain. Must be a domain name.
+     * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
+     */
+    ServiceFuture<CustomDomainValidationResult> validateCustomDomainAsync(String hostName, ServiceCallback<CustomDomainValidationResult> callback);
 
     /**
      * Checks the quota and usage of geo filters and custom domains under the current endpoint.

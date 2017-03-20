@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;

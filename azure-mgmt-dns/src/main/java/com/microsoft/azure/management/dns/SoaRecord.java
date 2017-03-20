@@ -17,31 +17,37 @@ public class SoaRecord {
     /**
      * The domain name of the authoritative name server for this SOA record.
      */
+    @JsonProperty(value = "host")
     private String host;
 
     /**
      * The email contact for this SOA record.
      */
+    @JsonProperty(value = "email")
     private String email;
 
     /**
      * The serial number for this SOA record.
      */
+    @JsonProperty(value = "serialNumber")
     private Long serialNumber;
 
     /**
      * The refresh value for this SOA record.
      */
+    @JsonProperty(value = "refreshTime")
     private Long refreshTime;
 
     /**
      * The retry time for this SOA record.
      */
+    @JsonProperty(value = "retryTime")
     private Long retryTime;
 
     /**
      * The expire time for this SOA record.
      */
+    @JsonProperty(value = "expireTime")
     private Long expireTime;
 
     /**

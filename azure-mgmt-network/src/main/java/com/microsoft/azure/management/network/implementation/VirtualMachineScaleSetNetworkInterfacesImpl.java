@@ -36,7 +36,12 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     public NetworkInterfacesInner inner() {
-        return this.networkManager.inner().networkInterfaces();
+        return this.manager().inner().networkInterfaces();
+    }
+
+    @Override
+    public NetworkManager manager() {
+        return this.networkManager;
     }
 
     @Override
@@ -45,7 +50,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
                 this.scaleSetName,
                 this.resourceGroupName,
                 inner,
-                this.networkManager);
+                this.manager());
     }
 
     @Override

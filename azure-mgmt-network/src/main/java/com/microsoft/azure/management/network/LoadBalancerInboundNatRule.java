@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
@@ -21,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An immutable client-side representation of an inbound NAT rule.
  */
 @Fluent()
+@Beta
 public interface LoadBalancerInboundNatRule extends
     HasFrontend,
     HasBackendPort,

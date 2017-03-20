@@ -34,10 +34,10 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .create();
 
         // Verify NIC is properly referenced by subnet
-        Network network = nic.primaryIPConfiguration().getNetwork();
-        Assert.assertNotNull(network);
         NicIPConfiguration ipConfig = nic.primaryIPConfiguration();
         Assert.assertNotNull(ipConfig);
+        Network network = ipConfig.getNetwork();
+        Assert.assertNotNull(network);
         Subnet subnet = network.subnets().get(ipConfig.subnetName());
         Assert.assertNotNull(subnet);
         Assert.assertEquals(1, subnet.networkInterfaceIPConfigurationCount());

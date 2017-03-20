@@ -19,16 +19,19 @@ public class EndpointInner {
     /**
      * Gets or sets the ID of the Traffic Manager endpoint.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /**
      * Gets or sets the name of the Traffic Manager endpoint.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Gets or sets the endpoint type of the Traffic Manager endpoint.
      */
+    @JsonProperty(value = "type")
     private String type;
 
     /**

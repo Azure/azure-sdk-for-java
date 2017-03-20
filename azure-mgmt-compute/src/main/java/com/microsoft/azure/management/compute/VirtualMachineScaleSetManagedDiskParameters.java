@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes the parameters of a ScaleSet managed disk.
@@ -17,6 +18,7 @@ public class VirtualMachineScaleSetManagedDiskParameters {
      * The Storage Account type. Possible values include: 'Standard_LRS',
      * 'Premium_LRS'.
      */
+    @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /**

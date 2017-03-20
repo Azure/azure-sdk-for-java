@@ -5,9 +5,11 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancersInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -24,6 +26,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Entry point to load balancer management API in Azure.
  */
 @Fluent()
+@Beta
 public interface LoadBalancers extends
     SupportsCreating<LoadBalancer.DefinitionStages.Blank>,
     SupportsListing<LoadBalancer>,
@@ -33,6 +36,7 @@ public interface LoadBalancers extends
     SupportsDeletingById,
     SupportsDeletingByGroup,
     SupportsBatchCreation<LoadBalancer>,
+    SupportsBatchDeletion,
     HasManager<NetworkManager>,
     HasInner<LoadBalancersInner> {
 }

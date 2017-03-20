@@ -34,7 +34,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteServiceProviders.
  */
-public final class ExpressRouteServiceProvidersInner {
+public class ExpressRouteServiceProvidersInner {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteServiceProvidersService service;
     /** The service client containing this operation class. */
@@ -69,6 +69,9 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * Gets all the available express route service providers.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object if successful.
      */
     public PagedList<ExpressRouteServiceProviderInner> list() {
@@ -85,6 +88,7 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteServiceProviderInner>> listAsync(final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
@@ -102,6 +106,7 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * Gets all the available express route service providers.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteServiceProviderInner&gt; object
      */
     public Observable<Page<ExpressRouteServiceProviderInner>> listAsync() {
@@ -117,6 +122,7 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * Gets all the available express route service providers.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteServiceProviderInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listWithServiceResponseAsync() {
@@ -136,13 +142,14 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * Gets all the available express route service providers.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-01";
+        final String apiVersion = "2016-12-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
                 @Override
@@ -168,6 +175,9 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object if successful.
      */
     public PagedList<ExpressRouteServiceProviderInner> listNext(final String nextPageLink) {
@@ -184,8 +194,9 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ExpressRouteServiceProviderInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ExpressRouteServiceProviderInner>> serviceFuture, final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
@@ -204,6 +215,7 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteServiceProviderInner&gt; object
      */
     public Observable<Page<ExpressRouteServiceProviderInner>> listNextAsync(final String nextPageLink) {
@@ -220,6 +232,7 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ExpressRouteServiceProviderInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -240,6 +253,7 @@ public final class ExpressRouteServiceProvidersInner {
      * Gets all the available express route service providers.
      *
     ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {

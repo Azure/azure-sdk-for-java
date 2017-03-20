@@ -54,6 +54,7 @@ public class AvailabilitySetInner extends Resource {
     /**
      * Sku of the availability set.
      */
+    @JsonProperty(value = "sku")
     private Sku sku;
 
     /**

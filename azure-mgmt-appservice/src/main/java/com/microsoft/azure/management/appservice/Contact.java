@@ -20,50 +20,55 @@ public class Contact {
     /**
      * Mailing address.
      */
+    @JsonProperty(value = "addressMailing")
     private Address addressMailing;
 
     /**
      * Email address.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "email", required = true)
     private String email;
 
     /**
      * Fax number.
      */
+    @JsonProperty(value = "fax")
     private String fax;
 
     /**
      * Job title.
      */
+    @JsonProperty(value = "jobTitle")
     private String jobTitle;
 
     /**
      * First name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "nameFirst", required = true)
     private String nameFirst;
 
     /**
      * Last name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "nameLast", required = true)
     private String nameLast;
 
     /**
      * Middle name.
      */
+    @JsonProperty(value = "nameMiddle")
     private String nameMiddle;
 
     /**
      * Organization.
      */
+    @JsonProperty(value = "organization")
     private String organization;
 
     /**
      * Phone number.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /**

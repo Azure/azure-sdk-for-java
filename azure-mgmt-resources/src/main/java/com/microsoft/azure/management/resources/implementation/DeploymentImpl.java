@@ -22,8 +22,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,32 +36,26 @@ import java.util.List;
 /**
  * The implementation of {@link Deployment} and its nested interfaces.
  */
-final class DeploymentImpl extends
+public final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
         Deployment.Definition,
         Deployment.Update {
 
-    private final DeploymentsInner client;
-    private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceManager resourceManager;
     private String resourceGroupName;
     private Creatable<ResourceGroup> creatableResourceGroup;
     private ObjectMapper objectMapper;
 
-    DeploymentImpl(DeploymentExtendedInner innerModel,
-                          final DeploymentsInner client,
-                          final DeploymentOperationsInner deploymentOperationsClient,
-                          final ResourceManager resourceManager) {
+    DeploymentImpl(DeploymentExtendedInner innerModel, final ResourceManager resourceManager) {
         super(innerModel.name(), innerModel);
-        this.client = client;
-        this.deploymentOperationsClient = deploymentOperationsClient;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.resourceManager = resourceManager;
         this.objectMapper = new ObjectMapper();
     }
 
+    @Override
     public String resourceGroupName() {
         return this.resourceGroupName;
     }
@@ -161,18 +159,42 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(deploymentOperationsClient, this);
+        return new DeploymentOperationsImpl(this.manager().inner().deploymentOperations(), this);
     }
 
     @Override
     public void cancel() {
-        client.cancel(resourceGroupName, name());
+        this.cancelAsync().await();
+    }
+
+    @Override
+    public Completable cancelAsync() {
+        return this.manager().inner().deployments().cancelAsync(resourceGroupName, name()).toCompletable();
+    }
+
+    @Override
+    public ServiceFuture<Void> cancelAsync(ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(this.cancelAsync().<Void>toObservable(), callback);
     }
 
     @Override
     public DeploymentExportResult exportTemplate() {
-        DeploymentExportResultInner inner = client.exportTemplate(resourceGroupName(), name());
-        return new DeploymentExportResultImpl(inner);
+        return this.exportTemplateAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<DeploymentExportResult> exportTemplateAsync() {
+        return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name()).map(new Func1<DeploymentExportResultInner, DeploymentExportResult>() {
+            @Override
+            public DeploymentExportResult call(DeploymentExportResultInner deploymentExportResultInner) {
+                return new DeploymentExportResultImpl(deploymentExportResultInner);
+            }
+        });
+    }
+
+    @Override
+    public ServiceFuture<DeploymentExportResult> exportTemplateAsync(ServiceCallback<DeploymentExportResult> callback) {
+        return ServiceFuture.fromBody(this.exportTemplateAsync(), callback);
     }
 
     // Withers
@@ -278,7 +300,7 @@ final class DeploymentImpl extends
         inner.properties().withTemplateLink(templateLink());
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
-        client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
+        this.manager().inner().deployments().beginCreateOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
 
@@ -291,7 +313,7 @@ final class DeploymentImpl extends
         inner.properties().withTemplateLink(templateLink());
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner)
+        return this.manager().inner().deployments().createOrUpdateAsync(resourceGroupName(), name(), inner)
                 .map(innerToFluentMap(this));
     }
 
@@ -316,13 +338,17 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment refresh() {
-        setInner(client.get(resourceGroupName(), name()));
-        return this;
+    protected Observable<DeploymentExtendedInner> getInnerAsync() {
+        return this.manager().inner().deployments().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
     public boolean isInCreateMode() {
         return this.inner().id() == null;
+    }
+
+    @Override
+    public ResourceManager manager() {
+        return this.resourceManager;
     }
 }

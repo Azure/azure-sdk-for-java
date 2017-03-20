@@ -5,18 +5,16 @@
  */
 package com.microsoft.azure.management.dns.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * Implementation of DnsZones.
  */
 @LangDefinition
-class DnsZonesImpl extends GroupableResourcesImpl<
+class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
         DnsZone,
         DnsZoneImpl,
         ZoneInner,
@@ -26,26 +24,6 @@ class DnsZonesImpl extends GroupableResourcesImpl<
 
     DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
         super(dnsZoneManager.inner().zones(), dnsZoneManager);
-    }
-
-    @Override
-    public PagedList<DnsZone> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<DnsZone> listByGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
-    }
-
-    @Override
-    public DnsZone getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().get(groupName, name));
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
     @Override

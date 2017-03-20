@@ -6,26 +6,24 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AccessLevel;
 import com.microsoft.azure.management.compute.Snapshot;
 import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Snapshots.
  */
 @LangDefinition
 class SnapshotsImpl
-        extends GroupableResourcesImpl<
-            Snapshot,
-            SnapshotImpl,
-            SnapshotInner,
-            SnapshotsInner,
-            ComputeManager>
-        implements Snapshots {
+    extends TopLevelModifiableResourcesImpl<
+        Snapshot,
+        SnapshotImpl,
+        SnapshotInner,
+        SnapshotsInner,
+        ComputeManager>
+    implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {
         super(computeManager.inner().snapshots(), computeManager);
@@ -46,27 +44,6 @@ class SnapshotsImpl
     @Override
     public void revokeAccess(String resourceGroupName, String diskName) {
         this.inner().revokeAccess(resourceGroupName, diskName);
-    }
-
-    @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
-
-    @Override
-    public Snapshot getByGroup(String resourceGroupName, String name) {
-        SnapshotInner inner = this.inner().get(resourceGroupName, name);
-        return wrapModel(inner);
-    }
-
-    @Override
-    public PagedList<Snapshot> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
-    public PagedList<Snapshot> list() {
-        return wrapList(this.inner().list());
     }
 
     @Override

@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -15,8 +18,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -39,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ContainerServices.
  */
-public final class ContainerServicesInner {
+public class ContainerServicesInner implements InnerSupportsGet<ContainerServiceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ContainerServiceInner> {
     /** The Retrofit service to perform REST calls. */
     private ContainerServicesService service;
     /** The service client containing this operation class. */
@@ -73,9 +76,9 @@ public final class ContainerServicesInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("containerServiceName") String containerServiceName, @Path("subscriptionId") String subscriptionId, @Body ContainerServiceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.ContainerServices get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.ContainerServices getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("containerServiceName") String containerServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("containerServiceName") String containerServiceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.ContainerServices delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}", method = "DELETE", hasBody = true)
@@ -103,6 +106,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription.
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ContainerServiceInner&gt; object if successful.
      */
     public PagedList<ContainerServiceInner> list() {
@@ -120,6 +126,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ContainerServiceInner>> listAsync(final ListOperationCallback<ContainerServiceInner> serviceCallback) {
@@ -138,6 +145,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription.
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<Page<ContainerServiceInner>> listAsync() {
@@ -154,6 +162,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription.
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listWithServiceResponseAsync() {
@@ -174,13 +183,14 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription.
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ContainerServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override
@@ -209,6 +219,9 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ContainerServiceInner object if successful.
      */
     public ContainerServiceInner createOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -223,6 +236,7 @@ public final class ContainerServicesInner {
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
@@ -236,6 +250,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -254,6 +269,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ContainerServiceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -270,7 +286,7 @@ public final class ContainerServicesInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, containerServiceName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ContainerServiceInner>() { }.getType());
     }
@@ -282,6 +298,9 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ContainerServiceInner object if successful.
      */
     public ContainerServiceInner beginCreateOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -296,6 +315,7 @@ public final class ContainerServicesInner {
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, final ServiceCallback<ContainerServiceInner> serviceCallback) {
@@ -309,6 +329,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ContainerServiceInner object
      */
     public Observable<ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -327,6 +348,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ContainerServiceInner object
      */
     public Observable<ServiceResponse<ContainerServiceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
@@ -343,7 +365,7 @@ public final class ContainerServicesInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         return service.beginCreateOrUpdate(resourceGroupName, containerServiceName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerServiceInner>>>() {
                 @Override
@@ -373,10 +395,13 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ContainerServiceInner object if successful.
      */
-    public ContainerServiceInner get(String resourceGroupName, String containerServiceName) {
-        return getWithServiceResponseAsync(resourceGroupName, containerServiceName).toBlocking().single().body();
+    public ContainerServiceInner getByResourceGroup(String resourceGroupName, String containerServiceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, containerServiceName).toBlocking().single().body();
     }
 
     /**
@@ -386,10 +411,11 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ContainerServiceInner> getAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<ContainerServiceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
+    public ServiceFuture<ContainerServiceInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<ContainerServiceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, containerServiceName), serviceCallback);
     }
 
     /**
@@ -398,10 +424,11 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ContainerServiceInner object
      */
-    public Observable<ContainerServiceInner> getAsync(String resourceGroupName, String containerServiceName) {
-        return getWithServiceResponseAsync(resourceGroupName, containerServiceName).map(new Func1<ServiceResponse<ContainerServiceInner>, ContainerServiceInner>() {
+    public Observable<ContainerServiceInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, containerServiceName).map(new Func1<ServiceResponse<ContainerServiceInner>, ContainerServiceInner>() {
             @Override
             public ContainerServiceInner call(ServiceResponse<ContainerServiceInner> response) {
                 return response.body();
@@ -415,9 +442,10 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ContainerServiceInner object
      */
-    public Observable<ServiceResponse<ContainerServiceInner>> getWithServiceResponseAsync(String resourceGroupName, String containerServiceName) {
+    public Observable<ServiceResponse<ContainerServiceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String containerServiceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -427,13 +455,13 @@ public final class ContainerServicesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-30";
-        return service.get(resourceGroupName, containerServiceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2017-01-31";
+        return service.getByResourceGroup(resourceGroupName, containerServiceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ContainerServiceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ContainerServiceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ContainerServiceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<ContainerServiceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -442,7 +470,7 @@ public final class ContainerServicesInner {
             });
     }
 
-    private ServiceResponse<ContainerServiceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ContainerServiceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ContainerServiceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ContainerServiceInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -455,6 +483,9 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String containerServiceName) {
         deleteWithServiceResponseAsync(resourceGroupName, containerServiceName).toBlocking().last().body();
@@ -467,6 +498,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
@@ -479,6 +511,7 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
@@ -496,6 +529,7 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String containerServiceName) {
@@ -508,7 +542,7 @@ public final class ContainerServicesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, containerServiceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -519,6 +553,9 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String containerServiceName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, containerServiceName).toBlocking().single().body();
@@ -531,6 +568,7 @@ public final class ContainerServicesInner {
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String containerServiceName, final ServiceCallback<Void> serviceCallback) {
@@ -543,6 +581,7 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String containerServiceName) {
@@ -560,6 +599,7 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String containerServiceName) {
@@ -572,7 +612,7 @@ public final class ContainerServicesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         return service.beginDelete(resourceGroupName, containerServiceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -591,6 +631,7 @@ public final class ContainerServicesInner {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -599,6 +640,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ContainerServiceInner&gt; object if successful.
      */
     public PagedList<ContainerServiceInner> listByResourceGroup(final String resourceGroupName) {
@@ -617,6 +661,7 @@ public final class ContainerServicesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ContainerServiceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
@@ -636,6 +681,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<Page<ContainerServiceInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -653,6 +699,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -674,6 +721,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
     ServiceResponse<PageImpl1<ContainerServiceInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ContainerServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -683,7 +731,7 @@ public final class ContainerServicesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-09-30";
+        final String apiVersion = "2017-01-31";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ContainerServiceInner>>>>() {
                 @Override
@@ -710,6 +758,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ContainerServiceInner&gt; object if successful.
      */
     public PagedList<ContainerServiceInner> listNext(final String nextPageLink) {
@@ -727,8 +778,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ContainerServiceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ContainerServiceInner>> serviceFuture, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
@@ -748,6 +800,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<Page<ContainerServiceInner>> listNextAsync(final String nextPageLink) {
@@ -765,6 +818,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
@@ -786,6 +840,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
     ServiceResponse<PageImpl1<ContainerServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ContainerServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -819,6 +874,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ContainerServiceInner&gt; object if successful.
      */
     public PagedList<ContainerServiceInner> listByResourceGroupNext(final String nextPageLink) {
@@ -836,8 +894,9 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ContainerServiceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ContainerServiceInner>> serviceFuture, final ListOperationCallback<ContainerServiceInner> serviceCallback) {
@@ -857,6 +916,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<Page<ContainerServiceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
@@ -874,6 +934,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ContainerServiceInner&gt; object
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
@@ -895,6 +956,7 @@ public final class ContainerServicesInner {
      * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
      *
     ServiceResponse<PageImpl1<ContainerServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ContainerServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ContainerServiceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {

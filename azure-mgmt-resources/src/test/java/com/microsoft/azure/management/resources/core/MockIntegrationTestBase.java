@@ -44,7 +44,7 @@ public class MockIntegrationTestBase {
     protected static Boolean IS_RECORD = !IS_MOCKED;
     protected final static String MOCK_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     private final static String host = "localhost";
-    private final static String port = String.format("2%03d", (int) (Math.random() * Math.random() * 1000));
+    private final static String port = String.format("3%03d", (int) (Math.random() * Math.random() * 1000));
 
     private final static String RECORD_FOLDER = "session-records/";
     protected final String MOCK_URI = "http://" + host + ":" + port;
@@ -78,9 +78,19 @@ public class MockIntegrationTestBase {
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(this));
         SdkContext.setDelayProvider(new TestDelayProvider());
         SdkContext.setRxScheduler(Schedulers.trampoline());
-        wireMock = new WireMock(host, wireMockRule.port());
-        wireMock.resetMappings();
 
+        int retries = 10;
+        while (retries > 0) {
+            retries--;
+            try {
+                wireMock = new WireMock(host, wireMockRule.port());
+                wireMock.resetMappings();
+                break;
+            }
+            catch (Exception ex) {
+                Thread.sleep(3000);
+            }
+        }
         if (IS_MOCKED) {
             File recordFile = getRecordFile();
             ObjectMapper mapper = new ObjectMapper();

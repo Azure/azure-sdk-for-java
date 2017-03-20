@@ -11,6 +11,7 @@ import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachineOffers;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation for {@link VirtualMachineOffers}.
@@ -39,5 +40,10 @@ class VirtualMachineOffersImpl
     @Override
     public PagedList<VirtualMachineOffer> list() {
         return wrapList(innerCollection.listOffers(publisher.region().toString(), publisher.name()));
+    }
+
+    @Override
+    public Observable<VirtualMachineOffer> listAsync() {
+        return wrapListAsync(innerCollection.listOffersAsync(publisher.region().toString(), publisher.name()));
     }
 }

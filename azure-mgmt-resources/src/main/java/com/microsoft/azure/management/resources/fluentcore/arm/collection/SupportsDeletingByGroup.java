@@ -42,7 +42,7 @@ public interface SupportsDeletingByGroup {
      *
      * @param groupName The group the resource is part of
      * @param name The name of the resource
-     * @return a completable indicates completion or exception of the request
+     * @return a representation of the deferred computation of this call
      */
     Completable deleteByGroupAsync(String groupName, String name);
 }

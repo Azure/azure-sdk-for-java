@@ -35,6 +35,11 @@ public class UserUpdateParametersInner {
     private String mailNickname;
 
     /**
+     * The usageLocation for the User.
+     */
+    private String usageLocation;
+
+    /**
      * Get the accountEnabled value.
      *
      * @return the accountEnabled value
@@ -46,7 +51,8 @@ public class UserUpdateParametersInner {
     /**
      * Set the accountEnabled value.
      *
-     * @param accountEnabled the accountEnabled value to set
+     * @param accountEnabled
+     *            the accountEnabled value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withAccountEnabled(Boolean accountEnabled) {
@@ -66,7 +72,8 @@ public class UserUpdateParametersInner {
     /**
      * Set the displayName value.
      *
-     * @param displayName the displayName value to set
+     * @param displayName
+     *            the displayName value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withDisplayName(String displayName) {
@@ -86,7 +93,8 @@ public class UserUpdateParametersInner {
     /**
      * Set the passwordProfile value.
      *
-     * @param passwordProfile the passwordProfile value to set
+     * @param passwordProfile
+     *            the passwordProfile value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withPasswordProfile(PasswordProfile passwordProfile) {
@@ -106,11 +114,33 @@ public class UserUpdateParametersInner {
     /**
      * Set the mailNickname value.
      *
-     * @param mailNickname the mailNickname value to set
+     * @param mailNickname
+     *            the mailNickname value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
+        return this;
+    }
+
+    /**
+     * Get the usageLocation value.
+     *
+     * @return the usageLocation value
+     */
+    public String usageLocation() {
+        return this.usageLocation;
+    }
+
+    /**
+     * Set the usageLocation value.
+     *
+     * @param usageLocation
+     *            the usageLocation value to set
+     * @return the UserInner object itself.
+     */
+    public UserUpdateParametersInner withUsageLocation(String usageLocation) {
+        this.usageLocation = usageLocation;
         return this;
     }
 

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.appservice.DomainType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Domain availablility check result.
@@ -17,12 +18,14 @@ public class DomainAvailablilityCheckResultInner {
     /**
      * Name of the domain.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if domain can be purchased using
      * CreateDomain API; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
+    @JsonProperty(value = "available")
     private Boolean available;
 
     /**
@@ -31,6 +34,7 @@ public class DomainAvailablilityCheckResultInner {
      * restore it and this operation will not cost anything. Possible values
      * include: 'Regular', 'SoftDeleted'.
      */
+    @JsonProperty(value = "domainType")
     private DomainType domainType;
 
     /**
