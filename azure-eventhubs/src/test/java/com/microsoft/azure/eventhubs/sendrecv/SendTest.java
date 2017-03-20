@@ -65,10 +65,17 @@ public class SendTest extends ApiTestBase
 		this.receivers.add(receiver);
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
 		receiver.setReceiveHandler(new OrderValidator(validator, batchSize));
+                
+                // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
+                Iterable<EventData> clockSkewEvents;
+                do {
+                    clockSkewEvents = receiver.receiveSync(100);
+                } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
+                
 		sender = ehClient.createPartitionSenderSync(partitionId);
 		sender.sendSync(batchEvents);
 		
-		validator.get(10, TimeUnit.SECONDS);
+		validator.get(25, TimeUnit.SECONDS);
 	}
 	
 	@Test
@@ -82,7 +89,15 @@ public class SendTest extends ApiTestBase
 		{
 			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), Instant.now());
 			receivers.add(receiver);
-			receiver.setReceiveHandler(validator);
+                        
+                        // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
+                        receiver.setReceiveTimeout(Duration.ofSeconds(5));
+                        Iterable<EventData> clockSkewEvents;
+                        do {
+                            clockSkewEvents = receiver.receiveSync(100);
+                        } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
+
+                        receiver.setReceiveHandler(validator);
 		}
 		
 		ehClient.sendSync(new EventData("TestMessage".getBytes()), partitionKey);
@@ -101,7 +116,15 @@ public class SendTest extends ApiTestBase
 		{
 			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), Instant.now());
 			receivers.add(receiver);
-			receiver.setReceiveHandler(validator);
+			
+                        // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
+                        receiver.setReceiveTimeout(Duration.ofSeconds(5));
+                        Iterable<EventData> clockSkewEvents;
+                        do {
+                            clockSkewEvents = receiver.receiveSync(100);
+                        } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
+                        
+                        receiver.setReceiveHandler(validator);
 		}
 		
 		List<EventData> events = new LinkedList<>();
@@ -158,7 +181,7 @@ public class SendTest extends ApiTestBase
 			{
 				for(EventData event : events)
 				{
-					if (!event.getSystemProperties().getPartitionKey().equals(partitionKey))
+					if (!partitionKey.equals(event.getSystemProperties().getPartitionKey()))
 						this.validateSignal.completeExceptionally(
 								new AssertionFailedError(String.format("received partitionKey: %s, expected partitionKey: %s", event.getSystemProperties().getPartitionKey(), partitionKey)));					
 					

@@ -57,7 +57,7 @@ public class ReceiveByDateTime
 										receivedEvent.getSystemProperties().getOffset(), 
 										receivedEvent.getSystemProperties().getSequenceNumber(), 
 										receivedEvent.getSystemProperties().getEnqueuedTime()));
-								System.out.println(String.format("| Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
+								System.out.println(String.format("| Message Payload: %s", new String(receivedEvent.getBytes(), Charset.defaultCharset())));
 								batchSize++;
 							}
 						}

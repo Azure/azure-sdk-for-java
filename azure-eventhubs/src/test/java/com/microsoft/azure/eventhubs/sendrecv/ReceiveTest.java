@@ -116,7 +116,7 @@ public class ReceiveTest extends ApiTestBase
 			@Override
 			public void accept(EventData event)
 			{
-				Assert.assertTrue(new String(event.getBody(), event.getBodyOffset(), event.getBodyLength()).equals(payload));
+				Assert.assertTrue(new String(event.getBytes()).equals(payload));
 				Assert.assertTrue(event.getProperties().containsKey(property1) && event.getProperties().get(property1).equals(propertyValue1));
 				Assert.assertTrue(event.getProperties().containsKey(property2) && event.getProperties().get(property2).equals(propertyValue2));
 				Assert.assertTrue(event.getSystemProperties().getOffset() != null);
