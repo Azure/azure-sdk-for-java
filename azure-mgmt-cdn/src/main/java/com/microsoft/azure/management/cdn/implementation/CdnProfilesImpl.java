@@ -101,7 +101,7 @@ class CdnProfilesImpl
             public ResourceUsage typeConvert(ResourceUsageInner inner) {
                 return new ResourceUsage(inner);
             }
-        }).convert(this.manager().inner().checkResourceUsage());
+        }).convert(this.manager().inner().listResourceUsage());
     }
 
     @Override
