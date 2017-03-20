@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request parameters for updating an existing application.
@@ -17,36 +18,43 @@ public class ApplicationUpdateParametersInner {
     /**
      * Whether the application is available to other tenants.
      */
+    @JsonProperty(value = "availableToOtherTenants")
     private Boolean availableToOtherTenants;
 
     /**
      * The display name of the application.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The home page of the application.
      */
+    @JsonProperty(value = "homepage")
     private String homepage;
 
     /**
      * A collection of URIs for the application.
      */
+    @JsonProperty(value = "identifierUris")
     private List<String> identifierUris;
 
     /**
      * A collection of reply URLs for the application.
      */
+    @JsonProperty(value = "replyUrls")
     private List<String> replyUrls;
 
     /**
      * The list of KeyCredential objects.
      */
+    @JsonProperty(value = "keyCredentials")
     private List<KeyCredentialInner> keyCredentials;
 
     /**
      * The list of PasswordCredential objects.
      */
+    @JsonProperty(value = "passwordCredentials")
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**

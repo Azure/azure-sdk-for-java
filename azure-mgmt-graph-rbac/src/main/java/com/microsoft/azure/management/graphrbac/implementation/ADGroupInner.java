@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Active Directory group information.
@@ -16,26 +17,31 @@ public class ADGroupInner {
     /**
      * The object ID.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
      * The object type.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
      * The display name of the group.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * Whether the group is security-enable.
      */
+    @JsonProperty(value = "securityEnabled")
     private Boolean securityEnabled;
 
     /**
      * The primary email address of the group.
      */
+    @JsonProperty(value = "mail")
     private String mail;
 
     /**

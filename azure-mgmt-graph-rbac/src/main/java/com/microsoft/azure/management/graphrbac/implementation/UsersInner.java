@@ -16,8 +16,8 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Users.
  */
-public final class UsersInner {
+public class UsersInner {
     /** The Retrofit service to perform REST calls. */
     private UsersService service;
     /** The service client containing this operation class. */
@@ -97,6 +97,9 @@ public final class UsersInner {
      * Create a new user.
      *
      * @param parameters Parameters to create a user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner create(UserCreateParametersInner parameters) {
@@ -108,6 +111,7 @@ public final class UsersInner {
      *
      * @param parameters Parameters to create a user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
@@ -118,6 +122,7 @@ public final class UsersInner {
      * Create a new user.
      *
      * @param parameters Parameters to create a user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<UserInner> createAsync(UserCreateParametersInner parameters) {
@@ -133,6 +138,7 @@ public final class UsersInner {
      * Create a new user.
      *
      * @param parameters Parameters to create a user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> createWithServiceResponseAsync(UserCreateParametersInner parameters) {
@@ -170,6 +176,9 @@ public final class UsersInner {
     /**
      * Gets list of users for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> list() {
@@ -186,6 +195,7 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
@@ -203,6 +213,7 @@ public final class UsersInner {
     /**
      * Gets list of users for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<Page<UserInner>> listAsync() {
@@ -218,6 +229,7 @@ public final class UsersInner {
     /**
      * Gets list of users for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<ServiceResponse<Page<UserInner>>> listWithServiceResponseAsync() {
@@ -237,6 +249,7 @@ public final class UsersInner {
     /**
      * Gets list of users for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync() {
@@ -265,6 +278,9 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> list(final String filter) {
@@ -282,6 +298,7 @@ public final class UsersInner {
      *
      * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
@@ -300,6 +317,7 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<Page<UserInner>> listAsync(final String filter) {
@@ -316,6 +334,7 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<ServiceResponse<Page<UserInner>>> listWithServiceResponseAsync(final String filter) {
@@ -336,6 +355,7 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
     ServiceResponse<PageImpl<UserInner>> * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync(final String filter) {
@@ -370,6 +390,9 @@ public final class UsersInner {
      * Gets user information from the directory.
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UserInner object if successful.
      */
     public UserInner get(String upnOrObjectId) {
@@ -381,6 +404,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
@@ -391,6 +415,7 @@ public final class UsersInner {
      * Gets user information from the directory.
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<UserInner> getAsync(String upnOrObjectId) {
@@ -406,6 +431,7 @@ public final class UsersInner {
      * Gets user information from the directory.
      *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> getWithServiceResponseAsync(String upnOrObjectId) {
@@ -444,6 +470,9 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Parameters to update an existing user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void update(String upnOrObjectId, UserUpdateParametersInner parameters) {
         updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().body();
@@ -455,6 +484,7 @@ public final class UsersInner {
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Parameters to update an existing user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
@@ -466,6 +496,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Parameters to update an existing user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
@@ -482,6 +513,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param parameters Parameters to update an existing user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
@@ -523,6 +555,9 @@ public final class UsersInner {
      * Delete a user.
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String upnOrObjectId) {
         deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().body();
@@ -533,6 +568,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
@@ -543,6 +579,7 @@ public final class UsersInner {
      * Delete a user.
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String upnOrObjectId) {
@@ -558,6 +595,7 @@ public final class UsersInner {
      * Delete a user.
      *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String upnOrObjectId) {
@@ -596,6 +634,9 @@ public final class UsersInner {
      *
      * @param objectId The object ID of the user for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
@@ -608,6 +649,7 @@ public final class UsersInner {
      * @param objectId The object ID of the user for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
@@ -619,6 +661,7 @@ public final class UsersInner {
      *
      * @param objectId The object ID of the user for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
@@ -635,6 +678,7 @@ public final class UsersInner {
      *
      * @param objectId The object ID of the user for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
@@ -675,6 +719,9 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
     public PagedList<UserInner> listNext(final String nextLink) {
@@ -691,8 +738,9 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UserInner>> listNextAsync(final String nextLink, final ServiceFuture<List<UserInner>> serviceFuture, final ListOperationCallback<UserInner> serviceCallback) {
@@ -711,6 +759,7 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<Page<UserInner>> listNextAsync(final String nextLink) {
@@ -727,6 +776,7 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;UserInner&gt; object
      */
     public Observable<ServiceResponse<Page<UserInner>>> listNextWithServiceResponseAsync(final String nextLink) {
@@ -747,6 +797,7 @@ public final class UsersInner {
      * Gets a list of users for the current tenant.
      *
     ServiceResponse<PageImpl<UserInner>> * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listNextSinglePageAsync(final String nextLink) {

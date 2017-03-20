@@ -17,27 +17,27 @@ public class GroupCreateParametersInner {
     /**
      * Group display name.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /**
      * Whether the group is mail-enabled. Must be false. This is because only
      * pure security groups can be created using the Graph API.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "mailEnabled", required = true)
     private boolean mailEnabled;
 
     /**
      * Mail nickname.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "mailNickname", required = true)
     private String mailNickname;
 
     /**
      * Whether the group is a security group. Must be true. This is because
      * only pure security groups can be created using the Graph API.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "securityEnabled", required = true)
     private boolean securityEnabled;
 
     /**

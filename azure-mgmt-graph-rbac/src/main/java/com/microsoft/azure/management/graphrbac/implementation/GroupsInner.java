@@ -17,8 +17,8 @@ import com.microsoft.azure.management.graphrbac.GroupAddMemberParameters;
 import com.microsoft.azure.management.graphrbac.GroupGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Groups.
  */
-public final class GroupsInner {
+public class GroupsInner {
     /** The Retrofit service to perform REST calls. */
     private GroupsService service;
     /** The service client containing this operation class. */
@@ -113,6 +113,9 @@ public final class GroupsInner {
      * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
      * @param parameters The check group membership parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CheckGroupMembershipResultInner object if successful.
      */
     public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParametersInner parameters) {
@@ -124,6 +127,7 @@ public final class GroupsInner {
      *
      * @param parameters The check group membership parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters, final ServiceCallback<CheckGroupMembershipResultInner> serviceCallback) {
@@ -134,6 +138,7 @@ public final class GroupsInner {
      * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
      * @param parameters The check group membership parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckGroupMembershipResultInner object
      */
     public Observable<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParametersInner parameters) {
@@ -149,6 +154,7 @@ public final class GroupsInner {
      * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
      *
      * @param parameters The check group membership parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckGroupMembershipResultInner object
      */
     public Observable<ServiceResponse<CheckGroupMembershipResultInner>> isMemberOfWithServiceResponseAsync(CheckGroupMembershipParametersInner parameters) {
@@ -188,6 +194,9 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void removeMember(String groupObjectId, String memberObjectId) {
         removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().body();
@@ -199,6 +208,7 @@ public final class GroupsInner {
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> removeMemberAsync(String groupObjectId, String memberObjectId, final ServiceCallback<Void> serviceCallback) {
@@ -210,6 +220,7 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> removeMemberAsync(String groupObjectId, String memberObjectId) {
@@ -226,6 +237,7 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> removeMemberWithServiceResponseAsync(String groupObjectId, String memberObjectId) {
@@ -267,6 +279,9 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void addMember(String groupObjectId, String url) {
         addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().body();
@@ -278,6 +293,7 @@ public final class GroupsInner {
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> addMemberAsync(String groupObjectId, String url, final ServiceCallback<Void> serviceCallback) {
@@ -289,6 +305,7 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> addMemberAsync(String groupObjectId, String url) {
@@ -305,6 +322,7 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> addMemberWithServiceResponseAsync(String groupObjectId, String url) {
@@ -347,6 +365,9 @@ public final class GroupsInner {
      * Delete a group from the directory.
      *
      * @param groupObjectId The object ID of the group to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String groupObjectId) {
         deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().body();
@@ -357,6 +378,7 @@ public final class GroupsInner {
      *
      * @param groupObjectId The object ID of the group to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String groupObjectId, final ServiceCallback<Void> serviceCallback) {
@@ -367,6 +389,7 @@ public final class GroupsInner {
      * Delete a group from the directory.
      *
      * @param groupObjectId The object ID of the group to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String groupObjectId) {
@@ -382,6 +405,7 @@ public final class GroupsInner {
      * Delete a group from the directory.
      *
      * @param groupObjectId The object ID of the group to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String groupObjectId) {
@@ -419,6 +443,9 @@ public final class GroupsInner {
      * Create a group in the directory.
      *
      * @param parameters The parameters for the group to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner create(GroupCreateParametersInner parameters) {
@@ -430,6 +457,7 @@ public final class GroupsInner {
      *
      * @param parameters The parameters for the group to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ADGroupInner> createAsync(GroupCreateParametersInner parameters, final ServiceCallback<ADGroupInner> serviceCallback) {
@@ -440,6 +468,7 @@ public final class GroupsInner {
      * Create a group in the directory.
      *
      * @param parameters The parameters for the group to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ADGroupInner object
      */
     public Observable<ADGroupInner> createAsync(GroupCreateParametersInner parameters) {
@@ -455,6 +484,7 @@ public final class GroupsInner {
      * Create a group in the directory.
      *
      * @param parameters The parameters for the group to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ADGroupInner object
      */
     public Observable<ServiceResponse<ADGroupInner>> createWithServiceResponseAsync(GroupCreateParametersInner parameters) {
@@ -492,6 +522,9 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
     public PagedList<ADGroupInner> list() {
@@ -508,6 +541,7 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ADGroupInner>> listAsync(final ListOperationCallback<ADGroupInner> serviceCallback) {
@@ -525,6 +559,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<Page<ADGroupInner>> listAsync() {
@@ -540,6 +575,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listWithServiceResponseAsync() {
@@ -559,6 +595,7 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ADGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listSinglePageAsync() {
@@ -587,6 +624,9 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
     public PagedList<ADGroupInner> list(final String filter) {
@@ -604,6 +644,7 @@ public final class GroupsInner {
      *
      * @param filter The filter to apply to the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ADGroupInner>> listAsync(final String filter, final ListOperationCallback<ADGroupInner> serviceCallback) {
@@ -622,6 +663,7 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<Page<ADGroupInner>> listAsync(final String filter) {
@@ -638,6 +680,7 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listWithServiceResponseAsync(final String filter) {
@@ -658,6 +701,7 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
     ServiceResponse<PageImpl<ADGroupInner>> * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ADGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listSinglePageAsync(final String filter) {
@@ -692,6 +736,9 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
     public PagedList<AADObjectInner> getGroupMembers(final String objectId) {
@@ -709,6 +756,7 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<AADObjectInner>> getGroupMembersAsync(final String objectId, final ListOperationCallback<AADObjectInner> serviceCallback) {
@@ -727,6 +775,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<Page<AADObjectInner>> getGroupMembersAsync(final String objectId) {
@@ -743,6 +792,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersWithServiceResponseAsync(final String objectId) {
@@ -763,6 +813,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
     ServiceResponse<PageImpl<AADObjectInner>> * @param objectId The object ID of the group whose members should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersSinglePageAsync(final String objectId) {
@@ -800,6 +851,9 @@ public final class GroupsInner {
      * Gets group information from the directory.
      *
      * @param objectId The object ID of the user for which to get group information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ADGroupInner object if successful.
      */
     public ADGroupInner get(String objectId) {
@@ -811,6 +865,7 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the user for which to get group information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ADGroupInner> getAsync(String objectId, final ServiceCallback<ADGroupInner> serviceCallback) {
@@ -821,6 +876,7 @@ public final class GroupsInner {
      * Gets group information from the directory.
      *
      * @param objectId The object ID of the user for which to get group information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ADGroupInner object
      */
     public Observable<ADGroupInner> getAsync(String objectId) {
@@ -836,6 +892,7 @@ public final class GroupsInner {
      * Gets group information from the directory.
      *
      * @param objectId The object ID of the user for which to get group information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ADGroupInner object
      */
     public Observable<ServiceResponse<ADGroupInner>> getWithServiceResponseAsync(String objectId) {
@@ -874,6 +931,9 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the group for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;String&gt; object if successful.
      */
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
@@ -886,6 +946,7 @@ public final class GroupsInner {
      * @param objectId The object ID of the group for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
@@ -897,6 +958,7 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the group for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
@@ -913,6 +975,7 @@ public final class GroupsInner {
      *
      * @param objectId The object ID of the group for which to get group membership.
      * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
@@ -953,6 +1016,9 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
     public PagedList<ADGroupInner> listNext(final String nextLink) {
@@ -969,8 +1035,9 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<ADGroupInner>> listNextAsync(final String nextLink, final ServiceFuture<List<ADGroupInner>> serviceFuture, final ListOperationCallback<ADGroupInner> serviceCallback) {
@@ -989,6 +1056,7 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<Page<ADGroupInner>> listNextAsync(final String nextLink) {
@@ -1005,6 +1073,7 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ADGroupInner&gt; object
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listNextWithServiceResponseAsync(final String nextLink) {
@@ -1025,6 +1094,7 @@ public final class GroupsInner {
      * Gets a list of groups for the current tenant.
      *
     ServiceResponse<PageImpl<ADGroupInner>> * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ADGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ADGroupInner>>> listNextSinglePageAsync(final String nextLink) {
@@ -1063,6 +1133,9 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
     public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) {
@@ -1079,8 +1152,9 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for the list operation.
-     * @param serviceFuture the ServiceCall object tracking the Retrofit calls
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<AADObjectInner>> getGroupMembersNextAsync(final String nextLink, final ServiceFuture<List<AADObjectInner>> serviceFuture, final ListOperationCallback<AADObjectInner> serviceCallback) {
@@ -1099,6 +1173,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<Page<AADObjectInner>> getGroupMembersNextAsync(final String nextLink) {
@@ -1115,6 +1190,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;AADObjectInner&gt; object
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextWithServiceResponseAsync(final String nextLink) {
@@ -1135,6 +1211,7 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
     ServiceResponse<PageImpl<AADObjectInner>> * @param nextLink Next link for the list operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;AADObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AADObjectInner>>> getGroupMembersNextSinglePageAsync(final String nextLink) {

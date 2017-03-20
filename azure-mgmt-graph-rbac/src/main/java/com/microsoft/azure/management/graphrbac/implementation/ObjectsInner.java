@@ -11,8 +11,8 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
-import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
@@ -29,7 +29,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Objects.
  */
-public final class ObjectsInner {
+public class ObjectsInner {
     /** The Retrofit service to perform REST calls. */
     private ObjectsService service;
     /** The service client containing this operation class. */
@@ -60,6 +60,9 @@ public final class ObjectsInner {
     /**
      * Gets the details for the currently logged-in user.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AADObjectInner object if successful.
      */
     public AADObjectInner getCurrentUser() {
@@ -70,6 +73,7 @@ public final class ObjectsInner {
      * Gets the details for the currently logged-in user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
@@ -79,6 +83,7 @@ public final class ObjectsInner {
     /**
      * Gets the details for the currently logged-in user.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AADObjectInner object
      */
     public Observable<AADObjectInner> getCurrentUserAsync() {
@@ -93,6 +98,7 @@ public final class ObjectsInner {
     /**
      * Gets the details for the currently logged-in user.
      *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AADObjectInner object
      */
     public Observable<ServiceResponse<AADObjectInner>> getCurrentUserWithServiceResponseAsync() {
