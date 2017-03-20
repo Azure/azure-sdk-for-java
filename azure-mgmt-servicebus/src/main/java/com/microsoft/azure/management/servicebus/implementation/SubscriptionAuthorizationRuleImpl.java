@@ -8,19 +8,16 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.*;
+import com.microsoft.azure.management.servicebus.Policykey;
+import com.microsoft.azure.management.servicebus.Subscription;
+import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRule;
 import rx.Observable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Implementation for SubscriptionAuthorizationRule.
  */
 @LangDefinition
-class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<SubscriptionAuthorizationRule,
+class SubscriptionAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<SubscriptionAuthorizationRule,
         SubscriptionImpl,
         SharedAccessAuthorizationRuleInner,
         SubscriptionAuthorizationRuleImpl,
@@ -72,35 +69,12 @@ class SubscriptionAuthorizationRuleImpl extends IndependentChildResourceImpl<Sub
     }
 
     @Override
-    public List<AccessRights> rights() {
-         if (this.inner().rights() == null) {
-             return Collections.unmodifiableList(new ArrayList<AccessRights>());
-         }
-        return Collections.unmodifiableList(this.inner().rights());
-    }
-
-    @Override
-    public AuthorizationKeys getKeys() {
+    protected Observable<ResourceListKeysInner> getKeysInnerAsync() {
         return null;
     }
 
     @Override
-    public AuthorizationKeys regenerateKey(Policykey policykey) {
-        return null;
-    }
-
-    @Override
-    public SubscriptionAuthorizationRuleImpl withAccessRight(AccessRights rights) {
-        return null;
-    }
-
-    @Override
-    public SubscriptionAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
-        return null;
-    }
-
-    @Override
-    public SubscriptionAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
+    protected Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
         return null;
     }
 

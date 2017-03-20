@@ -8,12 +8,8 @@ package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.TopicResourceInner;
 import org.joda.time.DateTime;
@@ -290,6 +286,7 @@ public interface Topic extends
      * The template for a topic update operation, containing all the settings that can be modified.
      */
     interface Update extends
+            Appliable<Topic>,
             Topic.UpdateStages.WithSize,
             Topic.UpdateStages.WithDeleteOnIdle,
             Topic.UpdateStages.WithDefaultMessageTTL,

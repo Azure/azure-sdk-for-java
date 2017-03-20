@@ -8,20 +8,17 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.*;
+import com.microsoft.azure.management.servicebus.Policykey;
+import com.microsoft.azure.management.servicebus.Topic;
+import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import rx.Observable;
 import rx.functions.Func1;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Implementation for TopicAuthorizationRule.
  */
 @LangDefinition
-class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAuthorizationRule,
+class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthorizationRule,
         TopicImpl,
         SharedAccessAuthorizationRuleInner,
         TopicAuthorizationRuleImpl,
@@ -65,74 +62,6 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
     }
 
     @Override
-    public List<AccessRights> rights() {
-        if (this.inner().rights() == null) {
-            return Collections.unmodifiableList(new ArrayList<AccessRights>());
-        }
-        return Collections.unmodifiableList(this.inner().rights());
-    }
-
-    @Override
-    public AuthorizationKeys getKeys() {
-        return this.manager().inner().topics()
-                .listKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.topicName(),
-                        this.name())
-                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
-                    @Override
-                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
-                        return new AuthorizationKeysImpl(inner);
-                    }
-                }).toBlocking().last();
-    }
-
-    @Override
-    public AuthorizationKeys regenerateKey(Policykey policykey) {
-        return this.manager().inner().topics().regenerateKeysAsync(this.resourceGroupName(),
-                this.namespaceName(),
-                this.topicName(),
-                this.name())
-            .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
-                @Override
-                public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
-                    return new AuthorizationKeysImpl(inner);
-                }
-            }).toBlocking().last();
-    }
-
-    @Override
-    public TopicAuthorizationRuleImpl withAccessRight(AccessRights rights) {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
-        }
-        if (!this.inner().rights().contains(rights)) {
-            this.inner().rights().add(rights);
-        }
-        return this;
-    }
-
-    @Override
-    public TopicAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
-        if (rights == null) {
-            return this;
-        }
-        for (AccessRights r : rights) {
-            withAccessRight(r);
-        }
-        return this;
-    }
-
-    @Override
-    public TopicAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
-        if (this.inner().rights() != null
-                && this.inner().rights().contains(rights)) {
-            this.inner().rights().remove(rights);
-        }
-        return this;
-    }
-
-    @Override
     protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
         return this.manager().inner().topics()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
@@ -155,5 +84,22 @@ class TopicAuthorizationRuleImpl extends IndependentChildResourceImpl<TopicAutho
                 return self;
             }
         });
+    }
+
+    @Override
+    protected Observable<ResourceListKeysInner> getKeysInnerAsync() {
+        return this.manager().inner().topics()
+                .listKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.topicName(),
+                        this.name());
+    }
+
+    @Override
+    protected Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+        return this.manager().inner().topics().regenerateKeysAsync(this.resourceGroupName(),
+                this.namespaceName(),
+                this.topicName(),
+                this.name());
     }
 }

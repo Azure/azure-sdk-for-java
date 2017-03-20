@@ -7,19 +7,15 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.servicebus.*;
+import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
+import com.microsoft.azure.management.servicebus.Policykey;
 import rx.Observable;
 import rx.functions.Func1;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Implementation for NamespaceAuthorizationRule.
  */
-class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<NamespaceAuthorizationRule,
+class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<NamespaceAuthorizationRule,
         NamespaceImpl,
         SharedAccessAuthorizationRuleInner,
         NamespaceAuthorizationRuleImpl,
@@ -50,73 +46,6 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
     }
 
     @Override
-    public List<AccessRights> rights() {
-        if (this.inner().rights() == null) {
-            return Collections.unmodifiableList(new ArrayList<AccessRights>());
-        }
-        return Collections.unmodifiableList(this.inner().rights());
-    }
-
-    @Override
-    public AuthorizationKeys getKeys() {
-        return this.manager().inner().namespaces()
-                .listKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name())
-                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
-                    @Override
-                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
-                        return new AuthorizationKeysImpl(inner);
-                    }
-                }).toBlocking().last();
-    }
-
-    @Override
-    public AuthorizationKeys regenerateKey(Policykey policykey) {
-        return this.manager().inner().namespaces()
-                .regenerateKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name())
-                .map(new Func1<ResourceListKeysInner, AuthorizationKeysImpl>() {
-                    @Override
-                    public AuthorizationKeysImpl call(ResourceListKeysInner inner) {
-                        return new AuthorizationKeysImpl(inner);
-                    }
-                }).toBlocking().last();
-    }
-
-    @Override
-    public NamespaceAuthorizationRuleImpl withAccessRight(AccessRights rights) {
-        if (this.inner().rights() == null) {
-            this.inner().withRights(new ArrayList<AccessRights>());
-        }
-        if (!this.inner().rights().contains(rights)) {
-            this.inner().rights().add(rights);
-        }
-        return this;
-    }
-
-    @Override
-    public NamespaceAuthorizationRuleImpl withAccessRights(AccessRights... rights) {
-        if (rights == null) {
-            return this;
-        }
-        for (AccessRights r : rights) {
-            withAccessRight(r);
-        }
-        return this;
-    }
-
-    @Override
-    public NamespaceAuthorizationRuleImpl withoutAccessRight(AccessRights rights) {
-        if (this.inner().rights() != null
-                && this.inner().rights().contains(rights)) {
-            this.inner().rights().remove(rights);
-        }
-        return this;
-    }
-
-    @Override
     protected Observable<SharedAccessAuthorizationRuleInner> getInnerAsync() {
         return this.manager().inner().namespaces()
                 .getAuthorizationRuleAsync(this.resourceGroupName(),
@@ -137,5 +66,21 @@ class NamespaceAuthorizationRuleImpl extends IndependentChildResourceImpl<Namesp
                 return self;
             }
         });
+    }
+
+    @Override
+    protected Observable<ResourceListKeysInner> getKeysInnerAsync() {
+        return this.manager().inner().namespaces()
+                .listKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.name());
+    }
+
+    @Override
+    protected Observable<ResourceListKeysInner> regenerateKeysInnerAsync(Policykey policykey) {
+        return this.manager().inner().namespaces()
+                .regenerateKeysAsync(this.resourceGroupName(),
+                        this.namespaceName(),
+                        this.name());
     }
 }

@@ -279,7 +279,13 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     public TopicImpl withDuplicateMessageDetectionHistoryDuration(Period duration) {
-       return withDuplicateMessageDetection(duration);
+        this.inner().withDuplicateDetectionHistoryTimeWindow(TimeSpan
+                .fromPeriod(duration)
+                .toString());
+       // Below shortcut cannot be used as 'withRequiresDuplicateDetection' cannot be changed
+       // once the topic is created.
+       // return withDuplicateMessageDetection(duration);
+        return this;
     }
 
     @Override
@@ -290,6 +296,9 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     public TopicImpl withNewAuthorizationRule(String name, AccessRights... rights) {
+        if (rights == null) {
+            return this;
+        }
         this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
         return this;
     }

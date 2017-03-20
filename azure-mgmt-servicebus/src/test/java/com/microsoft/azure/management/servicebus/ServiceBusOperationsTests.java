@@ -12,8 +12,6 @@ import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.servicebus.implementation.NamespaceResourceInner;
-import com.microsoft.azure.management.servicebus.implementation.QueueResourceInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.rest.RestClient;
 import org.joda.time.Period;
@@ -236,108 +234,174 @@ public class ServiceBusOperationsTests extends TestBase {
     }
 
     @Test
-    public void canOperateOnNamespace() {
-        String rgName = "javasbrga4878671a3";
-        String sbName = "javasbrg08d63135a0-1";
+    public void canCreateNamespaceThenCRUDOnTopic() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
 
-        resourceManager.resourceGroups().define(rgName)
-        .withRegion(Region.US_EAST2)
-        .create();
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.STANDARD)
+                .create();
+        Assert.assertNotNull(namespace);
+        Assert.assertNotNull(namespace.inner());
 
-//        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
-//        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
+        String topicName = generateRandomResourceName("topic1-", 15);
+        Topic topic = namespace.topics()
+                .define(topicName)
+                .create();
 
-        NamespaceResourceInner namespaceResourceInner = serviceBusManager.inner().namespaces().getByResourceGroup(rgName, sbName);
-        namespaceResourceInner.withSku(new Sku())
-        .sku()
-        .withName(SkuName.PREMIUM)
-        .withTier(SkuTier.PREMIUM)
-        .withCapacity(6);
+        Assert.assertNotNull(topic);
+        Assert.assertNotNull(topic.inner());
+        Assert.assertNotNull(topic.name());
+        Assert.assertTrue(topic.name().equalsIgnoreCase(topicName));
 
-        // namespaceResourceInner.sku().withCapacity(null);
-        namespaceResourceInner = serviceBusManager.inner().namespaces().createOrUpdate(rgName,
-                sbName, namespaceResourceInner);
+        Period dupDetectionDuration = topic.duplicateMessageDetectionHistoryDuration();
+        Assert.assertNotNull(dupDetectionDuration);
+        Assert.assertEquals(10, dupDetectionDuration.getMinutes());
+        // Default message TTL is TimeSpan.Max, assert parsing
+        //
+        Assert.assertEquals("10675199.02:48:05.4775807", topic.inner().defaultMessageTimeToLive());
+        Period msgTtlDuration = topic.defaultMessageTtlDuration();
+        Assert.assertNotNull(msgTtlDuration);
+        // Assert the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
+        //
+        Assert.assertEquals(10675199, msgTtlDuration.getDays());
+        Assert.assertEquals(2, msgTtlDuration.getHours());
+        Assert.assertEquals(48, msgTtlDuration.getMinutes());
+        // Assert the default max size In MB
+        //
+        Assert.assertEquals(1024, topic.maxSizeInMB());
 
-        System.out.println(namespaceResourceInner);
+        PagedList<Topic> topicsInNamespace = namespace.topics().list();
+        Assert.assertNotNull(topicsInNamespace);
+        Assert.assertTrue(topicsInNamespace.size() > 0);
+        Topic foundTopic = null;
+        for (Topic t : topicsInNamespace) {
+            if (t.name().equalsIgnoreCase(topic.name())) {
+                foundTopic = t;
+                break;
+            }
+        }
+        Assert.assertNotNull(foundTopic);
+        foundTopic = foundTopic.update()
+                .withDefaultMessageTTL(new Period().withMinutes(20))
+                .withDuplicateMessageDetectionHistoryDuration(new Period().withMinutes(15))
+                .withDeleteOnIdleDurationInMinutes(25)
+                .apply();
+        Period ttlDuration = foundTopic.defaultMessageTtlDuration();
+        Assert.assertNotNull(ttlDuration);
+        Assert.assertEquals(20, ttlDuration.getMinutes());
+        Period duplicateDetectDuration = foundTopic.duplicateMessageDetectionHistoryDuration();
+        Assert.assertNotNull(duplicateDetectDuration);
+        Assert.assertEquals(15, duplicateDetectDuration.getMinutes());
+        Assert.assertEquals(25, foundTopic.deleteOnIdleDurationInMinutes());
+        // Delete
+        namespace.topics().deleteByName(foundTopic.name());
     }
 
     @Test
-    public void canOperateOnQueue() {
-        String RG_NAME = "javasbrga4878671a3-3";
-        String basicSBName = "basic-sb-08d63135a0";
-        String standardSBName = "standard-sb-08d63135a0";
-        String premiumSBName = "premium-sb-08d63135a0";
+    public void canCreateDeleteTopicWithNamespace() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
 
-        String qName = "myqueue-5";
-
-        resourceManager.resourceGroups().define(RG_NAME)
-                .withRegion(Region.US_EAST2)
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String topicName = generateRandomResourceName("topic1-", 15);
+        // Create NS with Topic
+        //
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .withNewTopic(topicName, 1024)
                 .create();
-
-//        createBasicSB(RG_NAME, basicSBName);
-//        createStandardSB(RG_NAME, standardSBName);
-//        createPremiumSB(RG_NAME, premiumSBName);
-
-        QueueResourceInner queueResourceInner = serviceBusManager.inner().queues().get(RG_NAME,
-                premiumSBName,
-                qName);
-
-//        QueueResourceInner queueResourceInner = new QueueResourceInner();
-//        queueResourceInner.withLocation(Region.US_EAST2.toString());
-//        queueResourceInner.withEnablePartitioning(false);
-        queueResourceInner.withLockDuration("00:02:05");
-        queueResourceInner = serviceBusManager.inner().queues().createOrUpdate(RG_NAME,
-                premiumSBName,
-                qName,
-                queueResourceInner);
-
-//        queueResourceInner.withRequiresSession(false);
-//        queueResourceInner.withSupportOrdering(true);
-//        queueResourceInner = serviceBusManager.inner().queues().get(RG_NAME, sbName, qName + "4");
-//        queueResourceInner.withEnableExpress(false);
-//        queueResourceInner.withEnableBatchedOperations(true);
-//        queueResourceInner.withSupportOrdering(true);
-
-//        queueResourceInner.withRequiresDuplicateDetection(false);
-//        queueResourceInner.withDuplicateDetectionHistoryTimeWindow("00:20:00");
-//        queueResourceInner.withDeadLetteringOnMessageExpiration(true);
-
+        Assert.assertNotNull(namespace);
+        Assert.assertNotNull(namespace.inner());
+        // Lookup topic
+        //
+        PagedList<Topic> topicsInNamespace = namespace.topics().list();
+        Assert.assertNotNull(topicsInNamespace);
+        Assert.assertEquals(1, topicsInNamespace.size());
+        Topic foundTopic = null;
+        for (Topic t : topicsInNamespace) {
+            if (t.name().equalsIgnoreCase(topicName)) {
+                foundTopic = t;
+                break;
+            }
+        }
+        Assert.assertNotNull(foundTopic);
+        // Remove Topic
+        //
+        namespace.update()
+                .withoutTopic(topicName)
+                .apply();
+        topicsInNamespace = namespace.topics().list();
+        Assert.assertNotNull(topicsInNamespace);
+        Assert.assertEquals(0, topicsInNamespace.size());
     }
 
+    @Test
+    public void CanOperateOnAuthorizationRules() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
 
-    private void createBasicSB(String rgName, String sbName) {
-        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
-        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
-        namespaceResourceInner
-                .withSku(new Sku())
-                .sku()
-                .withName(SkuName.BASIC)
-                .withTier(SkuTier.BASIC);
-        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
-                sbName, namespaceResourceInner);
-    }
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String queueName = generateRandomResourceName("queue1-", 15);
+        String topicName = generateRandomResourceName("topic1-", 15);
+        String nsRuleName = generateRandomResourceName("nsrule1-", 15);
+        // Create NS with Queue, Topic and authorization rule
+        //
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .withNewQueue(queueName, 1024)
+                .withNewTopic(topicName, 1024)
+                .withNewAuthorizationRule(nsRuleName, AccessRights.MANAGE)
+                .create();
+        // Lookup ns authorization rule
+        //
+        PagedList<NamespaceAuthorizationRule> rulesInNamespace = namespace.authorizationRules().list();
+        Assert.assertNotNull(rulesInNamespace);
+        Assert.assertEquals(2, rulesInNamespace.size());    // Default + one explicit
 
-    private void createStandardSB(String rgName, String sbName) {
-        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
-        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
-        namespaceResourceInner
-                .withSku(new Sku())
-                .sku()
-                .withName(SkuName.STANDARD)
-                .withTier(SkuTier.STANDARD);
-        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
-                sbName, namespaceResourceInner);
-    }
-
-    private void createPremiumSB(String rgName, String sbName) {
-        NamespaceResourceInner namespaceResourceInner = new NamespaceResourceInner();
-        namespaceResourceInner.withLocation(Region.US_EAST2.toString());
-        namespaceResourceInner
-                .withSku(new Sku())
-                .sku()
-                .withName(SkuName.PREMIUM)
-                .withTier(SkuTier.PREMIUM);
-        serviceBusManager.inner().namespaces().createOrUpdate(rgName,
-                sbName, namespaceResourceInner);
+        NamespaceAuthorizationRule foundNsRule = null;
+        for (NamespaceAuthorizationRule rule : rulesInNamespace) {
+            if (rule.name().equalsIgnoreCase(nsRuleName)) {
+                foundNsRule = rule;
+                break;
+            }
+        }
+        Assert.assertNotNull(foundNsRule);
+        AuthorizationKeys nsRuleKeys = foundNsRule.getKeys();
+        Assert.assertNotNull(nsRuleKeys);
+        Assert.assertNotNull(nsRuleKeys.inner());
+        String primaryKey = nsRuleKeys.primaryKey();
+        Assert.assertNotNull(primaryKey);
+        Assert.assertNotNull(nsRuleKeys.secondaryKey());
+        Assert.assertNotNull(nsRuleKeys.primaryConnectionString());
+        Assert.assertNotNull(nsRuleKeys.secondaryConnectionString());
+        nsRuleKeys = foundNsRule.regenerateKey(Policykey.PRIMARY_KEY);
+        Assert.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
+        // Lookup queue
+        //
+        PagedList<Queue> queuesInNamespace = namespace.queues().list();
+        Assert.assertNotNull(queuesInNamespace);
+        Assert.assertEquals(1, queuesInNamespace.size());
+        // Lookup topic
+        //
+        PagedList<Topic> topicsInNamespace = namespace.topics().list();
+        Assert.assertNotNull(topicsInNamespace);
+        Assert.assertEquals(1, topicsInNamespace.size());
     }
 }

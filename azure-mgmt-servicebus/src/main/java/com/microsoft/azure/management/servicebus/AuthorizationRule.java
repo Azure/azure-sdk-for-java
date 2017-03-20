@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.SharedAccessAuthorizationRuleInner;
+import rx.Observable;
 
 import java.util.List;
 
@@ -30,12 +31,28 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
     List<AccessRights> rights();
 
     /**
+     * @return stream that emits primary, secondary keys and connection strings.
+     */
+    Observable<AuthorizationKeys> getKeysAsync();
+
+    /**
      * @return the primary, secondary keys and connection strings.
      */
     AuthorizationKeys getKeys();
 
     /**
      * Regenerates primary or secondary keys.
+     *
+     * @param policykey the key to regenerate
+     * @return stream that emits primary, secondary keys and connection strings.
+     */
+    Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
+
+    /**
+     * Regenerates primary or secondary keys.
+     *
+     * @param policykey the key to regenerate
+     * @return primary, secondary keys and connection strings.
      */
     AuthorizationKeys regenerateKey(Policykey policykey);
 

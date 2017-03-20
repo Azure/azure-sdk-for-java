@@ -128,6 +128,9 @@ class NamespaceImpl extends GroupableResourceImpl<
 
     @Override
     public NamespaceImpl withNewAuthorizationRule(String name, AccessRights... rights) {
+        if (rights == null) {
+            return this;
+        }
         this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
         return this;
     }
@@ -193,7 +196,7 @@ class NamespaceImpl extends GroupableResourceImpl<
         }
         Observable<?> queuesDeleteStream = Observable.empty();
         if (this.queuesToDelete.size() > 0) {
-            queuesCreateStream = this.queues().deleteByNameAsync(this.queuesToDelete);
+            queuesDeleteStream = this.queues().deleteByNameAsync(this.queuesToDelete);
         }
         Observable<?> topicsDeleteStream = Observable.empty();
         if (this.topicsToDelete.size() > 0) {
