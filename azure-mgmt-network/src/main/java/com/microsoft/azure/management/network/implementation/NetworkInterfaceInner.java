@@ -30,7 +30,7 @@ public class NetworkInterfaceInner extends Resource {
      * The reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
-    private SubResource networkSecurityGroup;
+    private NetworkSecurityGroupInner networkSecurityGroup;
 
     /**
      * A list of IPConfigurations of the network interface.
@@ -112,7 +112,7 @@ public class NetworkInterfaceInner extends Resource {
      *
      * @return the networkSecurityGroup value
      */
-    public SubResource networkSecurityGroup() {
+    public NetworkSecurityGroupInner networkSecurityGroup() {
         return this.networkSecurityGroup;
     }
 
@@ -122,7 +122,7 @@ public class NetworkInterfaceInner extends Resource {
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withNetworkSecurityGroup(SubResource networkSecurityGroup) {
+    public NetworkInterfaceInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }

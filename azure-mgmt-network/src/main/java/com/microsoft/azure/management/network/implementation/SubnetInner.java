@@ -28,13 +28,13 @@ public class SubnetInner extends SubResource {
      * The reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
-    private SubResource networkSecurityGroup;
+    private NetworkSecurityGroupInner networkSecurityGroup;
 
     /**
      * The reference of the RouteTable resource.
      */
     @JsonProperty(value = "properties.routeTable")
-    private SubResource routeTable;
+    private RouteTableInner routeTable;
 
     /**
      * Gets an array of references to the network interface IP configurations
@@ -93,7 +93,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the networkSecurityGroup value
      */
-    public SubResource networkSecurityGroup() {
+    public NetworkSecurityGroupInner networkSecurityGroup() {
         return this.networkSecurityGroup;
     }
 
@@ -103,7 +103,7 @@ public class SubnetInner extends SubResource {
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withNetworkSecurityGroup(SubResource networkSecurityGroup) {
+    public SubnetInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
@@ -113,7 +113,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the routeTable value
      */
-    public SubResource routeTable() {
+    public RouteTableInner routeTable() {
         return this.routeTable;
     }
 
@@ -123,7 +123,7 @@ public class SubnetInner extends SubResource {
      * @param routeTable the routeTable value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withRouteTable(SubResource routeTable) {
+    public SubnetInner withRouteTable(RouteTableInner routeTable) {
         this.routeTable = routeTable;
         return this;
     }

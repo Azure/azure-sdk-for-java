@@ -77,7 +77,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * The publicIPAddress property.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIPAddress;
+    private PublicIPAddressInner publicIPAddress;
 
     /**
      * The provisioningState property.
@@ -263,7 +263,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      *
      * @return the publicIPAddress value
      */
-    public SubResource publicIPAddress() {
+    public PublicIPAddressInner publicIPAddress() {
         return this.publicIPAddress;
     }
 
@@ -273,7 +273,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPublicIPAddress(SubResource publicIPAddress) {
+    public NetworkInterfaceIPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
