@@ -18,7 +18,7 @@ public class DeploymentInner {
     /**
      * The deployment properties.
      */
-    @JsonProperty(value = "properties")
+    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /**
