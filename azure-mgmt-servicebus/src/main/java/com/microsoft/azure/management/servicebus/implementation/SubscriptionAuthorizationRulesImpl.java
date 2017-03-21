@@ -16,7 +16,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for SubscriptionAuthorizationRules.
@@ -110,7 +109,7 @@ class SubscriptionAuthorizationRulesImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -118,7 +117,7 @@ class SubscriptionAuthorizationRulesImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -126,6 +125,6 @@ class SubscriptionAuthorizationRulesImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

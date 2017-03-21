@@ -23,6 +23,12 @@ import java.util.List;
 
 /**
  * Base type for various entity specific authorization rules.
+ *
+ * @param <FluentModelT> the rule fluent interface
+ * @param <FluentParentModelT> the rule parent fluent interface
+ * @param <InnerModelT> the rule inner model
+ * @param <FluentModelImplT> the parent fluent implementation
+ * @param <ManagerT> the manager
  */
 @LangDefinition
 abstract class AuthorizationRuleBaseImpl<

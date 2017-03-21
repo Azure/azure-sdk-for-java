@@ -15,6 +15,8 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
 
 /**
  * Entry point to authorization rules management API.
+ *
+ * @param <RuleT> the specific rule type
  */
 @Fluent
 public interface AuthorizationRules<RuleT> extends

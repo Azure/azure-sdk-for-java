@@ -26,23 +26,23 @@ public interface Namespace extends
         Refreshable<Namespace>,
         Updatable<Namespace.Update> {
     /**
-     * @return the relative DNS name of the service bus namespace.
+     * @return the relative DNS name of the service bus namespace
      */
     String dnsLabel();
     /**
-     * @return fully qualified domain name (FQDN) of the service bus namespace.
+     * @return fully qualified domain name (FQDN) of the service bus namespace
      */
     String fqdn();
     /**
-     * The sku property.
+     * @return sku value
      */
     NamespaceSku sku();
     /**
-     * The time the namespace was created.
+     * @return time the namespace was created
      */
     DateTime createdAt();
     /**
-     * The time the namespace was updated.
+     * @return time the namespace was updated
      */
     DateTime updatedAt();
 

@@ -17,7 +17,6 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import rx.Completable;
 import rx.Observable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation for Topics.
@@ -108,7 +107,7 @@ class TopicsImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -116,7 +115,7 @@ class TopicsImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -124,6 +123,6 @@ class TopicsImpl
         // 'IndependentChildResourcesImpl' will be refactoring to remove all 'ByParent' methods
         // This method is not exposed to end user from any of the derived types of IndependentChildResourcesImpl
         //
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

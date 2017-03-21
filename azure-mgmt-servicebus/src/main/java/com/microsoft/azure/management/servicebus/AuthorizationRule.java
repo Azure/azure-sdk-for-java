@@ -26,7 +26,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
         Refreshable<RuleT> {
 
     /**
-     * The rights associated with the rule.
+     * @return rights associated with the rule.
      */
     List<AccessRights> rights();
 

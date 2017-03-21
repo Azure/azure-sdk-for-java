@@ -9,7 +9,11 @@ package com.microsoft.azure.management.servicebus;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.TopicInner;
 import org.joda.time.DateTime;
@@ -59,7 +63,7 @@ public interface Topic extends
      */
     boolean isPartitioningEnabled();
     /**
-     * indicates if this topic requires duplicate detection.
+     * @return indicates if this topic requires duplicate detection.
      */
     boolean isDuplicateDetectionEnabled();
     /**

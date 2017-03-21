@@ -27,6 +27,13 @@ import java.util.List;
  * Base class for service bus child entities.
  * Note: When we refactor 'IndependentChildResourcesImpl', move features of this type
  * to 'IndependentChildResourcesImpl' and remove this type.
+ *
+ * @param <T> the model interface type
+ * @param <ImplT> the model interface implementation
+ * @param <InnerT> the inner model
+ * @param <InnerCollectionT> the inner collection
+ * @param <ManagerT> the manager
+ * @param <ParentT> the parent model interface type
  */
 abstract class ServiceBusChildResourcesImpl<
         T extends IndependentChildResource<ManagerT, InnerT>,
