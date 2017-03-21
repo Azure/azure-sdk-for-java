@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -65,6 +66,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "properties.singlePlacementGroup")
     private Boolean singlePlacementGroup;
+
+    /**
+     * The identity of the virtual machine scale set, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineScaleSetIdentity identity;
 
     /**
      * Get the sku value.
@@ -192,6 +199,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withSinglePlacementGroup(Boolean singlePlacementGroup) {
         this.singlePlacementGroup = singlePlacementGroup;
+        return this;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public VirtualMachineScaleSetIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withIdentity(VirtualMachineScaleSetIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
