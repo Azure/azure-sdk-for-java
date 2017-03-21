@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.AppServicePlansInner;
@@ -24,6 +25,7 @@ import rx.Observable;
  * Entry point for app service plan management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeletingById,

@@ -15,6 +15,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
@@ -166,6 +167,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to appplication gateway management
      */
+    @Beta
     public ApplicationGateways applicationGateways() {
         if (this.applicationGateways == null) {
             this.applicationGateways = new ApplicationGatewaysImpl(this);
@@ -176,6 +178,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to load balancer management
      */
+    @Beta
     public LoadBalancers loadBalancers() {
         if (this.loadBalancers == null) {
             this.loadBalancers = new LoadBalancersImpl(this);
@@ -193,7 +196,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         return this.networkUsages;
     }
 
-    // Internal utility funtion
+    // Internal utility function
     Subnet getAssociatedSubnet(SubResource subnetRef) {
         if (subnetRef == null) {
             return null;

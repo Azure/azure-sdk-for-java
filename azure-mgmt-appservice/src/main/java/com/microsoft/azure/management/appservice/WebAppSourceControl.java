@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.appservice.implementation.SiteSourceContro
  * A web app source control in a web app.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface WebAppSourceControl extends
     HasInner<SiteSourceControlInner>,
     ChildResource<WebAppBase> {

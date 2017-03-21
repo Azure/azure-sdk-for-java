@@ -183,7 +183,7 @@ class VirtualMachineEncryptionHelper {
      * @return an observable that emits the encryption extension installed in the virtual machine
      */
     private Observable<VirtualMachineExtension> getEncryptionExtensionInstalledInVMAsync() {
-        return virtualMachine.getExtensionsAsync()
+        return virtualMachine.listExtensionsAsync()
                 // firstOrDefault() is used intentionally here instead of first() to ensure
                 // this method return empty observable if matching extension is not found.
                 //
