@@ -66,7 +66,7 @@ public interface Queue extends
      */
     boolean isSessionEnabled();
     /**
-     * @retuen indicates if this queue requires duplicate detection
+     * @return indicates if this queue requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
     /**
