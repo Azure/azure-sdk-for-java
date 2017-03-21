@@ -97,6 +97,13 @@ public class RedisResourceInner extends Resource {
     private Integer sslPort;
 
     /**
+     * The keys of the Redis cache - not set if this object is not the response
+     * to Create or Update redis cache.
+     */
+    @JsonProperty(value = "properties.accessKeys", access = JsonProperty.Access.WRITE_ONLY)
+    private RedisAccessKeysInner accessKeys;
+
+    /**
      * Get the redisConfiguration value.
      *
      * @return the redisConfiguration value
@@ -279,6 +286,15 @@ public class RedisResourceInner extends Resource {
      */
     public Integer sslPort() {
         return this.sslPort;
+    }
+
+    /**
+     * Get the accessKeys value.
+     *
+     * @return the accessKeys value
+     */
+    public RedisAccessKeysInner accessKeys() {
+        return this.accessKeys;
     }
 
 }
