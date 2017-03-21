@@ -131,13 +131,26 @@ public interface Namespace extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the service bus namespace.
+             * Creates a send authorization rule for the service bus namespace.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the service bus namespace definition
              */
-            WithCreate withNewAuthorizationRule(String name, AccessRights... rights);
+            WithCreate withNewSendRule(String name);
+            /**
+             * Creates a listen authorization rule for the service bus namespace.
+             *
+             * @param name rule name
+             * @return next stage of the service bus namespace definition
+             */
+            WithCreate withNewListenRule(String name);
+            /**
+             * Creates a manage authorization rule for the service bus namespace.
+             *
+             * @param name rule name
+             * @return next stage of the service bus namespace definition
+             */
+            WithCreate withNewManageRule(String name);
         }
 
         /**
@@ -234,14 +247,26 @@ public interface Namespace extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the service bus namespace.
+             * Creates a send authorization rule for the service bus namespace.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the service bus namespace update
              */
-            Update withNewAuthorizationRule(String name, AccessRights... rights);
-
+            Update withNewSendRule(String name);
+            /**
+             * Creates a listen authorization rule for the service bus namespace.
+             *
+             * @param name rule name
+             * @return next stage of the service bus namespace update
+             */
+            Update withNewListenRule(String name);
+            /**
+             * Creates a manage authorization rule for the service bus namespace.
+             *
+             * @param name rule name
+             * @return next stage of the service bus namespace update
+             */
+            Update withNewManageRule(String name);
             /**
              * Removes an authorization rule from the service bus namespace.
              *

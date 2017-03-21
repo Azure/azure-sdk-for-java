@@ -9,7 +9,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceSku;
@@ -133,11 +132,20 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public NamespaceImpl withNewAuthorizationRule(String name, AccessRights... rights) {
-        if (rights == null) {
-            return this;
-        }
-        this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
+    public NamespaceImpl withNewSendRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+        return this;
+    }
+
+    @Override
+    public NamespaceImpl withNewListenRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+        return this;
+    }
+
+    @Override
+    public NamespaceImpl withNewManageRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
         return this;
     }
 

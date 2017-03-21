@@ -48,11 +48,6 @@ class SubscriptionsImpl
     }
 
     @Override
-    public Topic parent() {
-        return null;
-    }
-
-    @Override
     public SubscriptionImpl define(String name) {
         return wrapModel(name);
     }

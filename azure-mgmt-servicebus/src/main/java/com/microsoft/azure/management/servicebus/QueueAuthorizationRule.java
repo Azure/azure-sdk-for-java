@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -16,8 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 public interface QueueAuthorizationRule extends
         AuthorizationRule<QueueAuthorizationRule>,
-        Updatable<QueueAuthorizationRule.Update>,
-        HasParent<Queue> {
+        Updatable<QueueAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent queue belongs to
      */
@@ -35,7 +33,7 @@ public interface QueueAuthorizationRule extends
         /**
          * The first stage of queue authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithAccessRight<QueueAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<QueueAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -60,7 +58,7 @@ public interface QueueAuthorizationRule extends
      */
     interface Update extends
             Appliable<QueueAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithAccessRight<QueueAuthorizationRule.Update> {
+            AuthorizationRule.UpdateStages.WithListenOrSendOrManage<QueueAuthorizationRule.Update> {
     }
 
     /**

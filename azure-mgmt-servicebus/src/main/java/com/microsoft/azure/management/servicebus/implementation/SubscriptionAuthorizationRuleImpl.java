@@ -9,7 +9,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Policykey;
-import com.microsoft.azure.management.servicebus.Subscription;
 import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRule;
 import rx.Observable;
 
@@ -46,11 +45,6 @@ class SubscriptionAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Subscr
         if (inner.location() == null) {
             inner.withLocation(this.region.toString());
         }
-    }
-
-    @Override
-    public Subscription parent() {
-        return null;
     }
 
     @Override

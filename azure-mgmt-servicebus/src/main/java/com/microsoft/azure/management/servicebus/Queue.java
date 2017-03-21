@@ -7,9 +7,11 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.servicebus.implementation.QueueInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import org.joda.time.DateTime;
@@ -22,8 +24,7 @@ import org.joda.time.Period;
 public interface Queue extends
         IndependentChildResource<ServiceBusManager, QueueInner>,
         Refreshable<Queue>,
-        Updatable<Queue.Update>,
-        HasParent<Namespace> {
+        Updatable<Queue.Update> {
     /**
      * @return the exact time the queue was created
      */
@@ -306,13 +307,26 @@ public interface Queue extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the queue.
+             * Creates a send authorization rule for the queue.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the queue definition
              */
-            WithCreate withNewAuthorizationRule(String name, AccessRights... rights);
+            WithCreate withNewSendRule(String name);
+            /**
+             * Creates a listen authorization rule for the queue.
+             *
+             * @param name rule name
+             * @return next stage of the queue definition
+             */
+            WithCreate withNewListenRule(String name);
+            /**
+             * Creates a manage authorization rule for the queue.
+             *
+             * @param name rule name
+             * @return next stage of the queue definition
+             */
+            WithCreate withNewManageRule(String name);
         }
 
         /**
@@ -534,13 +548,26 @@ public interface Queue extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the queue.
+             * Creates a send authorization rule for the queue.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the queue update
              */
-            Update withNewAuthorizationRule(String name, AccessRights... rights);
+            Update withNewSendRule(String name);
+            /**
+             * Creates a listen authorization rule for the queue.
+             *
+             * @param name rule name
+             * @return next stage of the queue update
+             */
+            Update withNewListenRule(String name);
+            /**
+             * Creates a manage authorization rule for the queue.
+             *
+             * @param name rule name
+             * @return next stage of the queue update
+             */
+            Update withNewManageRule(String name);
 
             /**
              * Removes an authorization rule for the queue.

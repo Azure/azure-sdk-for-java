@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -16,8 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 public interface SubscriptionAuthorizationRule extends
         AuthorizationRule<SubscriptionAuthorizationRule>,
-        Updatable<SubscriptionAuthorizationRule.Update>,
-        HasParent<Subscription> {
+        Updatable<SubscriptionAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the grand-parent topic belongs to
      */
@@ -40,7 +38,7 @@ public interface SubscriptionAuthorizationRule extends
         /**
          * The first stage of subscription authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithAccessRight<SubscriptionAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends AuthorizationRule.DefinitionStages.WithListen<SubscriptionAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -65,7 +63,7 @@ public interface SubscriptionAuthorizationRule extends
      */
     interface Update extends
             Appliable<SubscriptionAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithAccessRight<SubscriptionAuthorizationRule.Update> {
+            AuthorizationRule.UpdateStages.WithListen<SubscriptionAuthorizationRule.Update> {
     }
 
     /**

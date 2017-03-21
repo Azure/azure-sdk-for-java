@@ -50,11 +50,6 @@ class SubscriptionAuthorizationRulesImpl
     }
 
     @Override
-    public Subscription parent() {
-        return null;
-    }
-
-    @Override
     public SubscriptionAuthorizationRule.DefinitionStages.Blank define(String name) {
         return null;
     }

@@ -98,46 +98,35 @@ abstract class AuthorizationRuleBaseImpl<
         return Collections.unmodifiableList(this.inner().rights());
     }
 
+
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withAccessRight(AccessRights rights) {
-        if (rights == null) {
-            return (FluentModelImplT) this;
-        }
+    public FluentModelImplT withListen() {
         if (this.inner().rights() == null) {
             this.inner().withRights(new ArrayList<AccessRights>());
         }
-        if (!this.inner().rights().contains(rights)) {
-            if (rights.equals(AccessRights.MANAGE)) {
-                // Manage permission should also include Send and Listen.
-                //
-                if (!this.inner().rights().contains(AccessRights.LISTEN)) {
-                    this.inner().rights().add(AccessRights.LISTEN);
-                }
-                if (!this.inner().rights().contains(AccessRights.SEND)) {
-                    this.inner().rights().add(AccessRights.SEND);
-                }
-            }
-            this.inner().rights().add(rights);
+        if (!this.inner().rights().contains(AccessRights.LISTEN)) {
+            this.inner().rights().add(AccessRights.LISTEN);
         }
         return (FluentModelImplT) this;
     }
 
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withAccessRights(AccessRights... rights) {
-        if (rights == null) {
-            return (FluentModelImplT) this;
+    public FluentModelImplT withSend() {
+        if (this.inner().rights() == null) {
+            this.inner().withRights(new ArrayList<AccessRights>());
         }
-        for (AccessRights r : rights) {
-            withAccessRight(r);
+        if (!this.inner().rights().contains(AccessRights.SEND)) {
+            this.inner().rights().add(AccessRights.SEND);
         }
         return (FluentModelImplT) this;
     }
 
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withoutAccessRight(AccessRights rights) {
-        if (this.inner().rights() != null
-                && this.inner().rights().contains(rights)) {
-            this.inner().rights().remove(rights);
+    public FluentModelImplT withManage() {
+        withListen();
+        withSend();
+        if (!this.inner().rights().contains(AccessRights.MANAGE)) {
+            this.inner().rights().add(AccessRights.MANAGE);
         }
         return (FluentModelImplT) this;
     }

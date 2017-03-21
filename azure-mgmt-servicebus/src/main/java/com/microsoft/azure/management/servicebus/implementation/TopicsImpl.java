@@ -42,11 +42,6 @@ class TopicsImpl
     }
 
     @Override
-    public Namespace parent() {
-        return null;
-    }
-
-    @Override
     public TopicImpl define(String name) {
         return wrapModel(name);
     }

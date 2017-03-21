@@ -11,9 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.EntityStatus;
-import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Subscription;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
@@ -53,11 +51,6 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
         if (inner.location() == null) {
             inner.withLocation(region.toString());
         }
-    }
-
-    @Override
-    public Namespace parent() {
-        return null;
     }
 
     @Override
@@ -300,11 +293,14 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     }
 
     @Override
-    public TopicImpl withNewAuthorizationRule(String name, AccessRights... rights) {
-        if (rights == null) {
-            return this;
-        }
-        this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
+    public TopicImpl withNewSendRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+        return this;
+    }
+
+    @Override
+    public TopicImpl withNewManageRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
         return this;
     }
 

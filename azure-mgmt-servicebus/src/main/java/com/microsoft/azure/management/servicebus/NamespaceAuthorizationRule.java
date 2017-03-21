@@ -28,7 +28,7 @@ public interface NamespaceAuthorizationRule extends
         /**
          * The first stage of namespace authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithAccessRight<WithCreate> {
+        interface Blank extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<WithCreate> {
         }
 
         /**
@@ -53,7 +53,7 @@ public interface NamespaceAuthorizationRule extends
      */
     interface Update extends
             Appliable<NamespaceAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithAccessRight<Update> {
+            AuthorizationRule.UpdateStages.WithListenOrSendOrManage<Update> {
     }
 
     /**

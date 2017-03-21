@@ -8,8 +8,9 @@ package com.microsoft.azure.management.servicebus;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
-import com.microsoft.azure.management.resources.fluentcore.collection.*;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.servicebus.implementation.SubscriptionsInner;
@@ -24,6 +25,5 @@ public interface Subscriptions extends
         SupportsGettingByNameAsync<Subscription>,
         SupportsDeletingByName,
         HasManager<ServiceBusManager>,
-        HasParent<Topic>,
         HasInner<SubscriptionsInner> {
 }

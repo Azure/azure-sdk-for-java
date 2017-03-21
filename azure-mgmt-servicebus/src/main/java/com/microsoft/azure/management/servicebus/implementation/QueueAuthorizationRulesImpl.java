@@ -48,11 +48,6 @@ class QueueAuthorizationRulesImpl
     }
 
     @Override
-    public Queue parent() {
-        return null;
-    }
-
-    @Override
     public QueueAuthorizationRuleImpl define(String name) {
         return wrapModel(name);
     }

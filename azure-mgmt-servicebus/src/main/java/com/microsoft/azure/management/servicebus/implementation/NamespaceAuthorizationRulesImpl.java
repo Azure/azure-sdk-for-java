@@ -45,11 +45,6 @@ class NamespaceAuthorizationRulesImpl
     }
 
     @Override
-    public Namespace parent() {
-        return null;
-    }
-
-    @Override
     public NamespaceAuthorizationRuleImpl define(String name) {
         return wrapModel(name);
     }

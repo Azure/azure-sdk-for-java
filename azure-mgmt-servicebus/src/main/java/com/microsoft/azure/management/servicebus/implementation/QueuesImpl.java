@@ -42,12 +42,6 @@ class QueuesImpl
     }
 
     @Override
-    public Namespace parent() {
-        // TODO: Remove the parent getter
-        return null;
-    }
-
-    @Override
     public QueueImpl define(String name) {
         return wrapModel(name);
     }

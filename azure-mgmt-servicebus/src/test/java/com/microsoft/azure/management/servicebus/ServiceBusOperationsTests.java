@@ -46,7 +46,9 @@ public class ServiceBusOperationsTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        if (RG_NAME != null) {
+            resourceManager.resourceGroups().deleteByName(RG_NAME);
+        }
     }
 
     @Test
@@ -347,7 +349,7 @@ public class ServiceBusOperationsTests extends TestBase {
     }
 
     @Test
-    public void CanOperateOnAuthorizationRules() {
+    public void canOperateOnAuthorizationRules() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
                 .define(RG_NAME)
@@ -366,7 +368,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withSku(NamespaceSku.PREMIUM_CAPACITY1)
                 .withNewQueue(queueName, 1024)
                 .withNewTopic(topicName, 1024)
-                .withNewAuthorizationRule(nsRuleName, AccessRights.MANAGE)
+                .withNewManageRule(nsRuleName)
                 .create();
         // Lookup ns authorization rule
         //
@@ -400,57 +402,70 @@ public class ServiceBusOperationsTests extends TestBase {
         Queue queue = queuesInNamespace.get(0);
         Assert.assertNotNull(queue);
         Assert.assertNotNull(queue.inner());
-        // TODO: Unable to create rules for topic reported to RP.
+
+        QueueAuthorizationRule qRule = queue.authorizationRules()
+                .define("rule1")
+                .withListen()
+                .create();
+        Assert.assertNotNull(qRule);
+        Assert.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
+        qRule = qRule.update()
+                .withManage()
+                .apply();
+        Assert.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
+        PagedList<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
+        Assert.assertTrue(rulesInQueue.size() > 0);
+        boolean foundQRule = false;
+        for (QueueAuthorizationRule r : rulesInQueue) {
+            if (r.name().equalsIgnoreCase(qRule.name())) {
+                foundQRule = true;
+                break;
+            }
+        }
+        Assert.assertTrue(foundQRule);
+        queue.authorizationRules().deleteByName(qRule.name());
+        // Lookup topic & operate on auth rules
         //
-//        QueueAuthorizationRule qRule = queue.authorizationRules()
-//                .define("rule1")
-//                .withAccessRight(AccessRights.LISTEN)
-//                .create();
-//        Assert.assertNotNull(qRule);
-//        Assert.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
-//        qRule = qRule.update()
-//                .withAccessRight(AccessRights.MANAGE)
-//                .apply();
-//        Assert.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
-//        PagedList<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
-//        Assert.assertTrue(rulesInQueue.size() > 0);
-//        boolean foundQRule = false;
-//        for (QueueAuthorizationRule r : rulesInQueue) {
-//            if (r.name().equalsIgnoreCase(qRule.name())) {
-//                foundQRule = true;
-//                break;
-//            }
-//        }
-//        Assert.assertTrue(foundQRule);
-//        queue.authorizationRules().deleteByName(qRule.name());
-//        // Lookup topic & operate on auth rules
-//        //
-//        PagedList<Topic> topicsInNamespace = namespace.topics().list();
-//        Assert.assertNotNull(topicsInNamespace);
-//        Assert.assertEquals(1, topicsInNamespace.size());
-//        Topic topic = topicsInNamespace.get(0);
-//        Assert.assertNotNull(topic);
-//        Assert.assertNotNull(topic.inner());
-//        TopicAuthorizationRule tRule = topic.authorizationRules()
-//                .define("rule2")
-//                .withAccessRight(AccessRights.SEND)
-//                .create();
-//        Assert.assertNotNull(tRule);
-//        Assert.assertNotNull(tRule.rights().contains(AccessRights.SEND));
-//        tRule = tRule.update()
-//                .withAccessRight(AccessRights.MANAGE)
-//                .apply();
-//        Assert.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
-//        PagedList<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
-//        Assert.assertTrue(rulesInTopic.size() > 0);
-//        boolean foundTRule = false;
-//        for (TopicAuthorizationRule r : rulesInTopic) {
-//            if (r.name().equalsIgnoreCase(tRule.name())) {
-//                foundTRule = true;
-//                break;
-//            }
-//        }
-//        Assert.assertTrue(foundTRule);
-//        topic.authorizationRules().deleteByName(tRule.name());
+        PagedList<Topic> topicsInNamespace = namespace.topics().list();
+        Assert.assertNotNull(topicsInNamespace);
+        Assert.assertEquals(1, topicsInNamespace.size());
+        Topic topic = topicsInNamespace.get(0);
+        Assert.assertNotNull(topic);
+        Assert.assertNotNull(topic.inner());
+        TopicAuthorizationRule tRule = topic.authorizationRules()
+                .define("rule2")
+                .withSend()
+                .create();
+        Assert.assertNotNull(tRule);
+        Assert.assertNotNull(tRule.rights().contains(AccessRights.SEND));
+        tRule = tRule.update()
+                .withManage()
+                .apply();
+        Assert.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
+        PagedList<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
+        Assert.assertTrue(rulesInTopic.size() > 0);
+        boolean foundTRule = false;
+        for (TopicAuthorizationRule r : rulesInTopic) {
+            if (r.name().equalsIgnoreCase(tRule.name())) {
+                foundTRule = true;
+                break;
+            }
+        }
+        Assert.assertTrue(foundTRule);
+        topic.authorizationRules().deleteByName(tRule.name());
+    }
+
+    @Test
+    public void canPerformOnNamespaceActions() {
+        RG_NAME = null;
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        CheckNameAvailabilityResult availabilityResult = serviceBusManager
+                .namespaces()
+                .checkNameAvailability(namespaceDNSLabel);
+        Assert.assertNotNull(availabilityResult);
+        if (!availabilityResult.isAvailable()) {
+            Assert.assertNotNull(availabilityResult.reason());
+            Assert.assertNotNull(availabilityResult.message());
+        }
     }
 }

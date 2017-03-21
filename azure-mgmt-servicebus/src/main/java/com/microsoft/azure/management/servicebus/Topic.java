@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.servicebus;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -27,7 +26,6 @@ public interface Topic extends
         IndependentChildResource<ServiceBusManager, TopicInner>,
         Refreshable<Topic>,
         Updatable<Topic.Update>,
-        HasParent<Namespace>,
         HasInner<TopicInner> {
 
     /**
@@ -258,13 +256,19 @@ public interface Topic extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the topic.
+             * Creates a send authorization rule for the topic.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the topic definition
              */
-            WithCreate withNewAuthorizationRule(String name, AccessRights... rights);
+            WithCreate withNewSendRule(String name);
+            /**
+             * Creates a manage authorization rule for the topic.
+             *
+             * @param name rule name
+             * @return next stage of the topic definition
+             */
+            WithCreate withNewManageRule(String name);
         }
 
         /**
@@ -434,13 +438,19 @@ public interface Topic extends
          */
         interface WithAuthorizationRule {
             /**
-             * Creates an authorization rule for the topic.
+             * Creates a send authorization rule for the topic.
              *
              * @param name rule name
-             * @param rights rule rights
              * @return next stage of the topic update
              */
-            Update withNewAuthorizationRule(String name, AccessRights... rights);
+            Update withNewSendRule(String name);
+            /**
+             * Creates a manage authorization rule for the topic.
+             *
+             * @param name rule name
+             * @return next stage of the topic update
+             */
+            Update withNewManageRule(String name);
 
             /**
              * Removes an authorization rule for the topic.

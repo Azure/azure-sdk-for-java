@@ -48,11 +48,6 @@ class TopicAuthorizationRulesImpl
     }
 
     @Override
-    public Topic parent() {
-        return null;
-    }
-
-    @Override
     public TopicAuthorizationRuleImpl define(String name) {
         return wrapModel(name);
     }

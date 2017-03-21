@@ -9,7 +9,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Policykey;
-import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.TopicAuthorizationRule;
 import rx.Observable;
 import rx.functions.Func1;
@@ -44,11 +43,6 @@ class TopicAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<TopicAuthoriz
         if (inner.location() == null) {
             inner.withLocation(this.region.toString());
         }
-    }
-
-    @Override
-    public Topic parent() {
-        return null;
     }
 
     @Override

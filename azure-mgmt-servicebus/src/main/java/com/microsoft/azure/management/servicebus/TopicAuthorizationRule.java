@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -16,8 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 public interface TopicAuthorizationRule extends
         AuthorizationRule<TopicAuthorizationRule>,
-        Updatable<TopicAuthorizationRule.Update>,
-        HasParent<Topic> {
+        Updatable<TopicAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent topic belongs to
      */
@@ -35,7 +33,9 @@ public interface TopicAuthorizationRule extends
         /**
          * The first stage of topic authorization rule definition.
          */
-        interface Blank extends AuthorizationRule.DefinitionStages.WithAccessRight<TopicAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends AuthorizationRule
+                .DefinitionStages
+                .WithSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -60,7 +60,7 @@ public interface TopicAuthorizationRule extends
      */
     interface Update extends
             Appliable<TopicAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithAccessRight<TopicAuthorizationRule.Update> {
+            AuthorizationRule.UpdateStages.WithSendOrManage<TopicAuthorizationRule.Update> {
     }
 
     /**

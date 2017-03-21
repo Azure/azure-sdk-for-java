@@ -46,11 +46,6 @@ class SubscriptionImpl extends
     }
 
     @Override
-    public Topic parent() {
-        return null;
-    }
-
-    @Override
     public DateTime createdAt() {
         return this.inner().createdAt();
     }

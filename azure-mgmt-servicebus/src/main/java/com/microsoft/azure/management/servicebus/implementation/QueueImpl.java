@@ -11,9 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.servicebus.AccessRights;
 import com.microsoft.azure.management.servicebus.EntityStatus;
-import com.microsoft.azure.management.servicebus.Namespace;
 import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import org.joda.time.DateTime;
@@ -50,11 +48,6 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
         if (inner.location() == null) {
             inner.withLocation(region.toString());
         }
-    }
-
-    @Override
-    public Namespace parent() {
-        return null;
     }
 
     @Override
@@ -340,8 +333,20 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
     }
 
     @Override
-    public QueueImpl withNewAuthorizationRule(String name, AccessRights... rights) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withAccessRights(rights));
+    public QueueImpl withNewSendRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+        return this;
+    }
+
+    @Override
+    public QueueImpl withNewListenRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+        return this;
+    }
+
+    @Override
+    public QueueImpl withNewManageRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
         return this;
     }
 

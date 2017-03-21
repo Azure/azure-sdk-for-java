@@ -9,7 +9,6 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.Policykey;
-import com.microsoft.azure.management.servicebus.Queue;
 import com.microsoft.azure.management.servicebus.QueueAuthorizationRule;
 import rx.Observable;
 import rx.functions.Func1;
@@ -47,11 +46,6 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     }
 
     @Override
-    public Queue parent() {
-        return null;
-    }
-
-    @Override
     public String namespaceName() {
         return this.namespaceName;
     }
@@ -73,7 +67,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
     @Override
     protected Observable<QueueAuthorizationRule> createChildResourceAsync() {
         final QueueAuthorizationRule self = this;
-        return this.manager().inner().topics().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
+        return this.manager().inner().queues().createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(),
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),

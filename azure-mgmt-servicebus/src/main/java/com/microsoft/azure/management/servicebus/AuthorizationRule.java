@@ -62,33 +62,55 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
      */
     interface DefinitionStages {
         /**
-         * The stage of the rule definition allowing to specify an access rights.
+         * The stage of the rule definition allowing to enable listen policy.
          *
          * @param <T> the next stage
          */
-        interface WithAccessRight<T> {
+        interface WithListen<T> {
             /**
-             * Specifies the access rights.
-             *
-             * @param rights the access rights
              * @return the next stage
              */
-            T withAccessRight(AccessRights rights);
+            T withListen();
         }
 
         /**
-         * The stage of the rule definition allowing to specify multiple access rights.
+         * The stage of the rule definition allowing to enable send policy.
          *
          * @param <T> the next stage
          */
-        interface WithAccessRights<T> {
+        interface WithSend<T> {
             /**
-             * Specifies the access rights.
-             *
-             * @param rights the access rights
              * @return the next stage
              */
-            T withAccessRights(AccessRights... rights);
+            T withSend();
+        }
+
+        /**
+         * The stage of the rule definition allowing to enable manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithManage<T> {
+            /**
+             * @return the next stage
+             */
+            T withManage();
+        }
+
+        /**
+         * The stage of the rule definition allowing to enable send or manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithSendOrManage<T> extends WithSend<T>, WithManage<T> {
+        }
+
+        /**
+         * The stage of the rule definition allowing to enable listen, send or manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithListenOrSendOrManage<T> extends WithListen<T>, WithSendOrManage<T> {
         }
     }
 
@@ -98,32 +120,55 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
      */
     interface UpdateStages {
         /**
-         * The stage of the rule definition allowing to add or remove access rights.
+         * The stage of the rule definition allowing to enable listen policy.
          *
          * @param <T> the next stage
          */
-        interface WithAccessRight<T> {
+        interface WithListen<T> {
             /**
-             * Specifies the access rights.
-             *
-             * @param rights the access rights
              * @return the next stage
              */
-            T withAccessRight(AccessRights rights);
+            T withListen();
+        }
+
+        /**
+         * The stage of the rule definition allowing to enable send policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithSend<T> {
             /**
-             * Specifies the access rights.
-             *
-             * @param rights the access rights
              * @return the next stage
              */
-            T withAccessRights(AccessRights... rights);
+            T withSend();
+        }
+
+        /**
+         * The stage of the rule update allowing to enable manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithManage<T> {
             /**
-             * Removes the access rights.
-             *
-             * @param rights the access rights
              * @return the next stage
              */
-            T withoutAccessRight(AccessRights rights);
+            T withManage();
+        }
+
+        /**
+         * The stage of the rule update allowing to enable send or manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithSendOrManage<T> extends WithSend<T>, WithManage<T> {
+        }
+
+        /**
+         * The stage of the rule update allowing to enable listen, send or manage policy.
+         *
+         * @param <T> the next stage
+         */
+        interface WithListenOrSendOrManage<T> extends WithListen<T>, WithSendOrManage<T> {
         }
     }
 }
