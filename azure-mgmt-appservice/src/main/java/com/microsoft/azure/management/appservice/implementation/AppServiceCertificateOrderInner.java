@@ -9,11 +9,13 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.Map;
+import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.CertificateProductType;
 import com.microsoft.azure.management.appservice.ProvisioningState;
 import com.microsoft.azure.management.appservice.CertificateOrderStatus;
 import com.microsoft.azure.management.appservice.CertificateDetails;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -27,7 +29,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * State of the Key Vault secret.
      */
     @JsonProperty(value = "properties.certificates")
-    private Map<String, AppServiceCertificateInner> certificates;
+    private Map<String, AppServiceCertificate> certificates;
 
     /**
      * Certificate distinguished name.
@@ -132,11 +134,18 @@ public class AppServiceCertificateOrderInner extends Resource {
     private Boolean isPrivateKeyExternal;
 
     /**
+     * Reasons why App Service Certificate is not renewable at the current
+     * moment.
+     */
+    @JsonProperty(value = "properties.appServiceCertificateNotRenewableReasons")
+    private List<String> appServiceCertificateNotRenewableReasons;
+
+    /**
      * Get the certificates value.
      *
      * @return the certificates value
      */
-    public Map<String, AppServiceCertificateInner> certificates() {
+    public Map<String, AppServiceCertificate> certificates() {
         return this.certificates;
     }
 
@@ -146,7 +155,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * @param certificates the certificates value to set
      * @return the AppServiceCertificateOrderInner object itself.
      */
-    public AppServiceCertificateOrderInner withCertificates(Map<String, AppServiceCertificateInner> certificates) {
+    public AppServiceCertificateOrderInner withCertificates(Map<String, AppServiceCertificate> certificates) {
         this.certificates = certificates;
         return this;
     }
@@ -369,6 +378,26 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     public AppServiceCertificateOrderInner withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
         this.isPrivateKeyExternal = isPrivateKeyExternal;
+        return this;
+    }
+
+    /**
+     * Get the appServiceCertificateNotRenewableReasons value.
+     *
+     * @return the appServiceCertificateNotRenewableReasons value
+     */
+    public List<String> appServiceCertificateNotRenewableReasons() {
+        return this.appServiceCertificateNotRenewableReasons;
+    }
+
+    /**
+     * Set the appServiceCertificateNotRenewableReasons value.
+     *
+     * @param appServiceCertificateNotRenewableReasons the appServiceCertificateNotRenewableReasons value to set
+     * @return the AppServiceCertificateOrderInner object itself.
+     */
+    public AppServiceCertificateOrderInner withAppServiceCertificateNotRenewableReasons(List<String> appServiceCertificateNotRenewableReasons) {
+        this.appServiceCertificateNotRenewableReasons = appServiceCertificateNotRenewableReasons;
         return this;
     }
 

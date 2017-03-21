@@ -36,8 +36,7 @@ class WebAppsImpl
         converter = new PagedListConverter<SiteInner, WebApp>() {
             @Override
             public WebApp typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                WebAppImpl impl = wrapModel(siteInner);
+                WebAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
             }
         };
@@ -57,12 +56,10 @@ class WebAppsImpl
                 if (siteInner == null) {
                     return null;
                 }
-                return self.inner().getConfigurationAsync(groupName, name).flatMap(new Func1<SiteConfigInner, Observable<WebApp>>() {
+                return self.inner().getConfigurationAsync(groupName, name).flatMap(new Func1<SiteConfigResourceInner, Observable<WebApp>>() {
                     @Override
-                    public Observable<WebApp> call(SiteConfigInner siteConfigInner) {
-                        siteInner.withSiteConfig(siteConfigInner);
-
-                        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings();
+                    public Observable<WebApp> call(SiteConfigResourceInner siteConfigInner) {
+                        return wrapModel(siteInner, siteConfigInner).cacheAppSettingsAndConnectionStrings();
                     }
                 });
             }
@@ -86,13 +83,16 @@ class WebAppsImpl
         return new WebAppImpl(name, new SiteInner(), null, this.manager());
     }
 
-    @Override
-    protected WebAppImpl wrapModel(SiteInner inner) {
+    protected WebAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {
         if (inner == null) {
             return null;
         }
-        SiteConfigInner configInner = inner.siteConfig();
-        return new WebAppImpl(inner.name(), inner, configInner, this.manager());
+        return new WebAppImpl(inner.name(), inner, configResourceInner, this.manager());
+    }
+
+    @Override
+    protected WebAppImpl wrapModel(SiteInner inner) {
+        return wrapModel(inner, null);
     }
 
     protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {

@@ -15,6 +15,7 @@ import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
+import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
@@ -41,7 +42,7 @@ class DeploymentSlotImpl
     private final WebAppImpl parent;
     private final String name;
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent) {
+    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, final WebAppImpl parent) {
         super(name.replaceAll(".*/", ""), innerObject, configObject, parent.manager());
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
@@ -121,7 +122,7 @@ class DeploymentSlotImpl
         return this;
     }
 
-    private void copyConfigurations(SiteConfigInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
+    private void copyConfigurations(SiteConfig configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
         inner().withSiteConfig(configInner);
         // app settings
         for (AppSetting appSetting : appSettings) {
@@ -157,12 +158,12 @@ class DeploymentSlotImpl
     }
 
     @Override
-    Observable<SiteConfigInner> getConfigInner() {
+    Observable<SiteConfigResourceInner> getConfigInner() {
         return manager().inner().webApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return manager().inner().webApps().createOrUpdateConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), siteConfig);
     }
 

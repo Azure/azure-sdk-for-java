@@ -10,24 +10,21 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
  * Virtual Network information contract.
  */
-@JsonFlatten
-public class VnetInfoInner extends Resource {
+public class VnetInfoInner {
     /**
      * The Virtual Network's resource ID.
      */
-    @JsonProperty(value = "properties.vnetResourceId")
+    @JsonProperty(value = "vnetResourceId")
     private String vnetResourceId;
 
     /**
      * The client certificate thumbprint.
      */
-    @JsonProperty(value = "properties.certThumbprint", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "certThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String certThumbprint;
 
     /**
@@ -35,27 +32,27 @@ public class VnetInfoInner extends Resource {
      * key used to authenticate a
      * Point-To-Site VPN connection.
      */
-    @JsonProperty(value = "properties.certBlob")
+    @JsonProperty(value = "certBlob")
     private String certBlob;
 
     /**
      * The routes that this Virtual Network connection uses.
      */
-    @JsonProperty(value = "properties.routes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "routes", access = JsonProperty.Access.WRITE_ONLY)
     private List<VnetRouteInner> routes;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if a resync is required; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean resyncRequired;
 
     /**
      * DNS servers to be used by this Virtual Network. This should be a
      * comma-separated list of IP addresses.
      */
-    @JsonProperty(value = "properties.dnsServers")
+    @JsonProperty(value = "dnsServers")
     private String dnsServers;
 
     /**

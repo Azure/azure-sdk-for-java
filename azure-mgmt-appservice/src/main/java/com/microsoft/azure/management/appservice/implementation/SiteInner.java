@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.HostNameSslState;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.CloningInfo;
 import com.microsoft.azure.management.appservice.SlotSwapStatus;
@@ -104,7 +105,7 @@ public class SiteInner extends Resource {
      * Configuration of the app.
      */
     @JsonProperty(value = "properties.siteConfig")
-    private SiteConfigInner siteConfig;
+    private SiteConfig siteConfig;
 
     /**
      * Azure Traffic Manager hostnames associated with the app. Read-only.
@@ -389,7 +390,7 @@ public class SiteInner extends Resource {
      *
      * @return the siteConfig value
      */
-    public SiteConfigInner siteConfig() {
+    public SiteConfig siteConfig() {
         return this.siteConfig;
     }
 
@@ -399,7 +400,7 @@ public class SiteInner extends Resource {
      * @param siteConfig the siteConfig value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner withSiteConfig(SiteConfigInner siteConfig) {
+    public SiteInner withSiteConfig(SiteConfig siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }
