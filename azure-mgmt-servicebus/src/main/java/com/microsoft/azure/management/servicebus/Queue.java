@@ -66,7 +66,7 @@ public interface Queue extends
      */
     boolean isSessionEnabled();
     /**
-     * indicates if this queue requires duplicate detection.
+     * @retuen indicates if this queue requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
     /**
@@ -74,11 +74,11 @@ public interface Queue extends
      */
     long lockDurationInSeconds();
     /**
-     * @return the idle duration after which the queue is automatically deleted.
+     * @return the idle duration after which the queue is automatically deleted
      */
     long deleteOnIdleDurationInMinutes();
     /**
-     * @return the duration after which the message expires, starting from when the message is sent to queue.
+     * @return the duration after which the message expires, starting from when the message is sent to queue
      */
     Period defaultMessageTtlDuration();
     /**
