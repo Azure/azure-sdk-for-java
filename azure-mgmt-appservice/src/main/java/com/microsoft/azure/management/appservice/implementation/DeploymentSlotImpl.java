@@ -15,7 +15,6 @@ import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
-import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
@@ -101,7 +100,7 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentSlotImpl withBrandNewConfiguration() {
-        inner().withSiteConfig(null);
+        this.siteConfig = null;
         return this;
     }
 
@@ -112,18 +111,18 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentSlotImpl withConfigurationFromWebApp(WebApp webApp) {
-        copyConfigurations(webApp.inner().siteConfig(), webApp.appSettings().values(), webApp.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) webApp).siteConfig, webApp.appSettings().values(), webApp.connectionStrings().values());
         return this;
     }
 
     @Override
     public DeploymentSlotImpl withConfigurationFromDeploymentSlot(DeploymentSlot slot) {
-        copyConfigurations(slot.inner().siteConfig(), slot.appSettings().values(), slot.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) slot).siteConfig, slot.appSettings().values(), slot.connectionStrings().values());
         return this;
     }
 
-    private void copyConfigurations(SiteConfig configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
-        inner().withSiteConfig(configInner);
+    private void copyConfigurations(SiteConfigResourceInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
+        this.siteConfig = configInner;
         // app settings
         for (AppSetting appSetting : appSettings) {
             if (appSetting.sticky()) {

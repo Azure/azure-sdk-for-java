@@ -71,7 +71,7 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
-    private SiteConfigResourceInner siteConfig;
+    SiteConfigResourceInner siteConfig;
     private Map<String, AppSetting> cachedAppSettings;
     private Map<String, ConnectionString> cachedConnectionStrings;
 
@@ -455,7 +455,7 @@ abstract class WebAppBaseImpl<
             @Override
             public SiteInner call(SiteInner siteInner) {
                 if (emptyConfig) {
-                    inner().withSiteConfig(null);
+                    siteConfig = null;
                 }
                 return siteInner;
             }
