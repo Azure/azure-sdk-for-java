@@ -18,15 +18,16 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
     public ContainerService createResource(ContainerServices containerServices) throws Exception {
         final String newName = "as" + this.testId;
         final String dnsPrefix = "dns" + newName;
+        final String sshKeyData = "";
         ContainerService containerService = containerServices.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withMasterProfile(1, dnsPrefix)
-                .withLinuxProfile("testUserName", "needSSHKey")
+                .withMasterProfile(1, "mp1" + dnsPrefix)
+                .withLinuxProfile("testUserName", sshKeyData)
                 .defineContainerServiceAgentPoolProfile("agentPool" + newName)
                 .withCount(1)
                 .withVmSize(ContainerServiceVMSizeTypes.STANDARD_A1)
-                .withDnsPrefix(dnsPrefix)
+                .withDnsPrefix("ap1" + dnsPrefix)
                 .attach()
                 .create();
         return containerService;
@@ -42,7 +43,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
-        return null;
+        return resource;
     }
 
     @Override

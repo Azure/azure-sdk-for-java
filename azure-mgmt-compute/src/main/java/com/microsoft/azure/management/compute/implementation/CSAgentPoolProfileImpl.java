@@ -75,6 +75,6 @@ class CSAgentPoolProfileImpl
     @Override
     public ContainerService.Definition attach() {
         this.parent().attachAgentPoolProfile(this);
-        return null;
+        return this.parent();
     }
 }

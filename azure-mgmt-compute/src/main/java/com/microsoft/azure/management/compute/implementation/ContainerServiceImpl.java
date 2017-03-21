@@ -32,10 +32,15 @@ public class ContainerServiceImpl
             new HashMap<String, ContainerServiceAgentPoolProfile>();
     protected ContainerServiceImpl(String name, ContainerServiceInner innerObject, ComputeManager manager) {
         super(name, innerObject, manager);
-        for(ContainerServiceAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
+        if (this.inner().agentPoolProfiles() == null) {
+            this.inner().withAgentPoolProfiles(new ArrayList<ContainerServiceAgentPoolProfile>());
+        }
+
+        for (ContainerServiceAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
             this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile);
         }
     }
+
     /**
      * Properties of the orchestrator.
      */
@@ -126,6 +131,7 @@ public class ContainerServiceImpl
                 new ContainerServiceServicePrincipalProfile();
         servicePrincipalProfile.withClientId(clientId);
         servicePrincipalProfile.withSecret(secret);
+        this.inner().withServicePrincipalProfile(servicePrincipalProfile);
         return this;
     }
     /**
@@ -137,6 +143,7 @@ public class ContainerServiceImpl
         ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile();
         masterProfile.withCount(count);
         masterProfile.withDnsPrefix(dnsPrefix);
+        this.inner().withMasterProfile(masterProfile);
         return this;
     }
     /**
@@ -176,8 +183,10 @@ public class ContainerServiceImpl
         ContainerServiceSshConfiguration ssh = new ContainerServiceSshConfiguration();
         ssh.withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>());
         ContainerServiceSshPublicKey sshPublicKey = new ContainerServiceSshPublicKey();
+        sshPublicKey.withKeyData(sshKeyData);
         ssh.publicKeys().add(sshPublicKey);
         linuxProfile.withSsh(ssh);
+        this.inner().withLinuxProfile(linuxProfile);
         return this;
     }
     /**

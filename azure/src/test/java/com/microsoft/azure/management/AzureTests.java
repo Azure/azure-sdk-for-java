@@ -521,4 +521,10 @@ public class AzureTests extends TestBase {
     public void testResourceStreaming() throws Exception {
         new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
+
+    @Test
+    public void testContainerService() throws Exception {
+        new TestContainerService()
+                .runTest(azure.containerServices(), azure.resourceGroups());
+    }
 }

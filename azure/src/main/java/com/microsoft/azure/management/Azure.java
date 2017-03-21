@@ -9,9 +9,7 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
+import com.microsoft.azure.management.compute.*;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -19,11 +17,6 @@ import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
-import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.compute.ComputeUsages;
-import com.microsoft.azure.management.compute.VirtualMachineImages;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -562,4 +555,9 @@ public final class Azure {
     public SqlServers sqlServers() {
         return sqlServerManager.sqlServers();
     }
+
+    /**
+     * @return entry point to container services.
+     */
+    public ContainerServices containerServices() { return computeManager.containerServices(); }
 }
