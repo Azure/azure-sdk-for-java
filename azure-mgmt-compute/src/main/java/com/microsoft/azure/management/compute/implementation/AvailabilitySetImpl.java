@@ -79,7 +79,7 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public PagedList<VirtualMachineSize> getVirtualMachineSizes() {
+    public PagedList<VirtualMachineSize> listVirtualMachineSizes() {
         return Utils.toPagedList(this.manager()
                         .inner()
                         .availabilitySets()

@@ -25,7 +25,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
                 .withUpdateDomainCount(4)
                 .withTag("tag1", "value1")
                 .create();
-        PagedList<VirtualMachineSize> vmSizes = aset.getVirtualMachineSizes();
+        PagedList<VirtualMachineSize> vmSizes = aset.listVirtualMachineSizes();
         Assert.assertTrue(vmSizes.size() > 0);
         for (VirtualMachineSize vmSize : vmSizes) {
             Assert.assertNotNull(vmSize.name());

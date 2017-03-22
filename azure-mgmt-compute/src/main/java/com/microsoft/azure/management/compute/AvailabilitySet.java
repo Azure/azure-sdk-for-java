@@ -55,7 +55,7 @@ public interface AvailabilitySet extends
     /**
      * @return the virtual machine sizes supported in the availability set
      */
-    PagedList<VirtualMachineSize> getVirtualMachineSizes();
+    PagedList<VirtualMachineSize> listVirtualMachineSizes();
 
 
     // Fluent interfaces
