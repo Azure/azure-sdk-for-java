@@ -170,7 +170,13 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceImpl withSshKey(String sshKeyData) {
-        return null;
+        ContainerServiceSshConfiguration ssh = new ContainerServiceSshConfiguration();
+        ssh.withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>());
+        ContainerServiceSshPublicKey sshPublicKey = new ContainerServiceSshPublicKey();
+        sshPublicKey.withKeyData(sshKeyData);
+        ssh.publicKeys().add(sshPublicKey);
+        this.inner().linuxProfile().withSsh(ssh);
+        return this;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
     @Override
     public ContainerService updateResource(ContainerService resource) throws Exception {
         // Modify existing container service
-        resource =  resource.update()
+        resource =  /resource.update()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
