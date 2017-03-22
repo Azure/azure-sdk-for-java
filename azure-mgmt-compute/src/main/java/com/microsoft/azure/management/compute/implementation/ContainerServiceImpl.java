@@ -41,91 +41,47 @@ public class ContainerServiceImpl
         }
     }
 
-    /**
-     * Properties of the orchestrator.
-     */
+    @Override
     public ContainerServiceOrchestratorProfile orchestratorProfile() {
         return this.inner().orchestratorProfile();
     }
 
-    /**
-     * Properties for custom clusters.
-     */
+    @Override
     public ContainerServiceCustomProfile customProfile() {
         return this.inner().customProfile();
     }
 
-    /**
-     * Properties for cluster service principals.
-     */
+    @Override
     public ContainerServiceServicePrincipalProfile servicePrincipalProfile() {
         return this.inner().servicePrincipalProfile();
     }
 
-    /**
-     * Properties of master agents.
-     */
+    @Override
     public ContainerServiceMasterProfile masterProfile() {
         return this.inner().masterProfile();
     }
 
-    /**
-     * Properties of the agent pool.
-     */
+    @Override
     public Map<String, ContainerServiceAgentPoolProfile> agentPoolProfiles() {
         return this.agentPoolProfilesMap;
     }
 
-    /**
-     * Properties of Windows VMs.
-     */
+    @Override
     public ContainerServiceWindowsProfile windowsProfile() {
         return this.inner().windowsProfile();
     }
 
-    /**
-     * Properties of Linux VMs.
-     */
+    @Override
     public ContainerServiceLinuxProfile linuxProfile() {
         return this.inner().linuxProfile();
     }
 
-    /**
-     * Properties of the diagnostic agent.
-     */
+    @Override
     public ContainerServiceDiagnosticsProfile diagnosticsProfile() {
         return this.inner().diagnosticsProfile();
     }
 
-    /**
-     * Properties of the orchestrator.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType) {
-        ContainerServiceOrchestratorProfile orchestratorProfile = new ContainerServiceOrchestratorProfile();
-        orchestratorProfile.withOrchestratorType(orchestratorType);
-        this.inner().withOrchestratorProfile(orchestratorProfile);
-        return this;
-    }
-
-    /**
-     * Properties for custom clusters.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withCustomProfile(String orchestrator) {
-        ContainerServiceCustomProfile customProfile = new ContainerServiceCustomProfile();
-        customProfile.withOrchestrator(orchestrator);
-        this.inner().withCustomProfile(customProfile);
-        return this;
-    }
-
-    /**
-     * Properties for cluster service principals.
-     *
-     * @return the next stage
-     */
+    @Override
     public ContainerServiceImpl withServicePrincipalProfile(String clientId,String secret) {
         ContainerServiceServicePrincipalProfile servicePrincipalProfile =
                 new ContainerServiceServicePrincipalProfile();
@@ -134,25 +90,18 @@ public class ContainerServiceImpl
         this.inner().withServicePrincipalProfile(servicePrincipalProfile);
         return this;
     }
-    /**
-     * Properties of master agents.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withMasterProfile(int count,String dnsPrefix) {
+
+    @Override
+    public ContainerServiceImpl withMasterProfile(ContainerServiceMasterProfileCount profileCount,String dnsPrefix) {
         ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile();
-        masterProfile.withCount(count);
+        masterProfile.withCount(profileCount.count());
         masterProfile.withDnsPrefix(dnsPrefix);
         this.inner().withMasterProfile(masterProfile);
         return this;
     }
-    /**
-     * Properties of the agent pool.
-     *
-     * @param name
-     * @return the next stage
-     */
-    public CSAgentPoolProfile.DefinitionStages.Blank<ContainerService.DefinitionStages.WithCreate> defineContainerServiceAgentPoolProfile(String name) {
+
+    @Override
+    public CSAgentPoolProfileImpl defineContainerServiceAgentPoolProfile(String name) {
         if(this.agentPoolProfilesMap.containsKey(name)) {
             throw new RuntimeException("Agent pool profile Name already exists.");
         }
@@ -161,50 +110,8 @@ public class ContainerServiceImpl
         innerPoolProfile.withName(name);
         return new CSAgentPoolProfileImpl(innerPoolProfile, this);
     }
-    /**
-     * Properties of Windows VMs.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withWindowsProfile(String adminUsername,String adminPassword) {
-        ContainerServiceWindowsProfile windowsProfile = new ContainerServiceWindowsProfile();
-        windowsProfile.withAdminPassword(adminPassword);
-        windowsProfile.withAdminUsername(adminUsername);
-        return this;
-    }
-    /**
-     * Properties of Linux VMs.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withLinuxProfile(String adminUsername, String sshKeyData) {
-        ContainerServiceLinuxProfile linuxProfile = new ContainerServiceLinuxProfile();
-        linuxProfile.withAdminUsername(adminUsername);
-        ContainerServiceSshConfiguration ssh = new ContainerServiceSshConfiguration();
-        ssh.withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>());
-        ContainerServiceSshPublicKey sshPublicKey = new ContainerServiceSshPublicKey();
-        sshPublicKey.withKeyData(sshKeyData);
-        ssh.publicKeys().add(sshPublicKey);
-        linuxProfile.withSsh(ssh);
-        this.inner().withLinuxProfile(linuxProfile);
-        return this;
-    }
-    /**
-     * Properties of the diagnostic agent.
-     *
-     * @return the next stage
-     */
-    public ContainerServiceImpl withDiagnosticsProfile(ContainerServiceDiagnosticsProfile vmDiagnostics) {
-        this.inner().withDiagnosticsProfile(vmDiagnostics);
-        return this;
-    }
 
-    /**
-     * Properties of the agent pool.
-     *
-     * @param name
-     * @return the next stage
-     */
+    @Override
     public CSAgentPoolProfile.Update<Update> updateContainerServiceAgentPoolProfile(String name) {
         if(!this.agentPoolProfilesMap.containsKey(name)) {
             throw new RuntimeException("Agent pool profile with name does not exists.");
@@ -212,14 +119,6 @@ public class ContainerServiceImpl
 
         ContainerServiceAgentPoolProfile innerPoolProfile = this.agentPoolProfilesMap.get(name);
         return new CSAgentPoolProfileImpl(innerPoolProfile, this);
-    }
-
-    void attachAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
-        if(!this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
-            this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile.inner());
-            this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
-        }
-
     }
 
     @Override
@@ -238,5 +137,130 @@ public class ContainerServiceImpl
                         return self;
                     }
                 });
+    }
+
+    @Override
+    public ContainerServiceImpl done() {
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withDiagnostics() {
+        this.withDiagnosticsProfile(true);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withoutDiagnostics() {
+        this.withDiagnosticsProfile(false);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withLinuxProfile() {
+        this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withRootUsername(String rootUserName) {
+        this.inner().linuxProfile().withAdminUsername(rootUserName);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withSshKey(String sshKeyData) {
+        return null;
+    }
+
+    @Override
+    public ContainerServiceImpl withSwarmOrchestration() {
+        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.SWARM);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withDCOSOrchestration() {
+        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.DCOS);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withKubernetesOrchestration() {
+        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.KUBERNETES);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withWindowsProfile() {
+        this.inner().withWindowsProfile(new ContainerServiceWindowsProfile());
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withAdminPassword(String adminPassword) {
+        this.windowsProfile().withAdminPassword(adminPassword);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl withAdminUserName(String adminUsername) {
+        this.windowsProfile().withAdminUsername(adminUsername);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
+        if(this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
+            this.inner().agentPoolProfiles().remove(
+                    this.agentPoolProfilesMap.remove(agentPoolProfile.name()));
+        }
+
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl removeWindowsProfile() {
+        this.inner().withWindowsProfile(null);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl removeOrchestration() {
+        this.inner().withOrchestratorProfile(null);
+        this.inner().withCustomProfile(null);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceImpl removeServicePrincipalProfile() {
+        this.inner().withServicePrincipalProfile(null);
+        return this;
+    }
+
+    void attachAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
+        if(!this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
+            this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile.inner());
+            this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
+        }
+
+    }
+
+    private ContainerServiceImpl withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType) {
+        ContainerServiceOrchestratorProfile orchestratorProfile = new ContainerServiceOrchestratorProfile();
+        orchestratorProfile.withOrchestratorType(orchestratorType);
+        this.inner().withOrchestratorProfile(orchestratorProfile);
+        return this;
+    }
+
+    private ContainerServiceImpl withDiagnosticsProfile(boolean enabled) {
+        if(this.inner().diagnosticsProfile() == null) {
+            this.inner().withDiagnosticsProfile(new ContainerServiceDiagnosticsProfile());
+            this.inner().diagnosticsProfile().withVmDiagnostics(new ContainerServiceVMDiagnostics());
+
+        }
+
+        this.inner().diagnosticsProfile().vmDiagnostics().withEnabled(enabled);
+        return this;
     }
 }

@@ -43,7 +43,7 @@ public interface CSAgentPoolProfile extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithVmSize<ParentT>,
-        DefinitionStages.WithDnsPrefix<ParentT> {
+        DefinitionStages.WithDnsLabel<ParentT> {
     }
 
     interface DefinitionStages {
@@ -57,11 +57,11 @@ public interface CSAgentPoolProfile extends
         }
 
         interface WithVmSize<ParentT> {
-            WithDnsPrefix<ParentT> withVmSize(ContainerServiceVMSizeTypes param0);
+            WithDnsLabel<ParentT> withVmSize(ContainerServiceVMSizeTypes param0);
         }
 
-        interface WithDnsPrefix<ParentT> {
-            WithAttach<ParentT> withDnsPrefix(String param0);
+        interface WithDnsLabel<ParentT> {
+            WithAttach<ParentT> withDnsLabel(String param0);
         }
     }
 
@@ -69,7 +69,7 @@ public interface CSAgentPoolProfile extends
         UpdateStages.WithAttach<ParentT>,
         UpdateStages.WithCount<ParentT>,
         UpdateStages.WithVmSize<ParentT>,
-        UpdateStages.WithDnsPrefix<ParentT> {
+        UpdateStages.WithDnsLabel<ParentT> {
     }
 
     interface UpdateStages {
@@ -86,8 +86,8 @@ public interface CSAgentPoolProfile extends
             Update<ParentT> withVmSize(ContainerServiceVMSizeTypes param0);
         }
 
-        interface WithDnsPrefix<ParentT> {
-            WithAttach<ParentT> withDnsPrefix(String param0);
+        interface WithDnsLabel<ParentT> {
+            WithAttach<ParentT> withDnsLabel(String param0);
         }
     }
 

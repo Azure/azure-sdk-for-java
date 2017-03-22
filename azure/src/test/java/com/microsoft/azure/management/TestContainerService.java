@@ -14,10 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestContainerService extends TestTemplate<ContainerService, ContainerServices> {
 
@@ -30,13 +27,16 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         ContainerService containerService = containerServices.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withMasterProfile(1, "mp1" + dnsPrefix)
-                .withLinuxProfile("testUserName", sshKeyData)
+                .withMasterProfile(ContainerServiceMasterProfileCount.MIN, "mp1" + dnsPrefix)
+                .withLinuxProfile()
+                    .withRootUsername("testUserName")
+                    .withSshKey(sshKeyData)
+                    .done()
                 .defineContainerServiceAgentPoolProfile("agentPool" + newName)
-                .withCount(1)
-                .withVmSize(ContainerServiceVMSizeTypes.STANDARD_A1)
-                .withDnsPrefix("ap1" + dnsPrefix)
-                .attach()
+                    .withCount(1)
+                    .withVmSize(ContainerServiceVMSizeTypes.STANDARD_A1) //Vm to VM
+                    .withDnsLabel("ap1" + dnsPrefix) // dnsprefix to dnslabel
+                    .attach()
                 .create();
         return containerService;
     }

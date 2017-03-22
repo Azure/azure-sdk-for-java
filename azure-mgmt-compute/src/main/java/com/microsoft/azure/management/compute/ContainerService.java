@@ -60,33 +60,36 @@ public interface ContainerService extends
     ContainerServiceDiagnosticsProfile diagnosticsProfile();
 
 
+    interface DoneWith<T> {
+        /**
+         * Properties of Windows VMs.
+         *
+         * @return the next stage
+         */
+        T done();
+    }
+
     interface Definition extends
             ContainerService.DefinitionStages.Blank,
             ContainerService.DefinitionStages.WithGroup,
             ContainerService.DefinitionStages.WithMasterProfile /*required*/ ,
             ContainerService.DefinitionStages.WithLinuxProfile /*required*/ ,
+            ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
+            ContainerService.DefinitionStages.WithLinuxProfileSshKey,
+            ContainerService.DoneWith,
             ContainerService.DefinitionStages.DefineAgentPoolProfiles /*required*/ ,
+            ContainerService.DefinitionStages.WithWindowsProfile,
+            ContainerService.DefinitionStages.WithWindowsAdminUsername,
+            ContainerService.DefinitionStages.WithWindowsAdminPassword,
             ContainerService.DefinitionStages.WithCreate {
     }
 
     interface DefinitionStages {
 
         interface WithOrchestratorProfile {
-            /**
-             * Properties of the orchestrator.
-             *
-             * @return the next stage
-             */
-            Definition withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType);
-        }
-
-        interface WithCustomProfile {
-            /**
-             * Properties for custom clusters.
-             *
-             * @return the next stage
-             */
-            Definition withCustomProfile(String orchestrator);
+            WithCreate withSwarmOrchestration();
+            WithCreate withDCOSOrchestration();
+            WithCreate withKubernetesOrchestration();
         }
 
         interface WithServicePrincipalProfile {
@@ -95,7 +98,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Definition withServicePrincipalProfile(String clientId,String secret);
+            WithCreate withServicePrincipalProfile(String clientId, String secret);
         }
 
         interface WithMasterProfile {
@@ -104,7 +107,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            WithLinuxProfile withMasterProfile(int count,String dnsPrefix);
+            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count,String dnsPrefix);
         }
 
         interface DefineAgentPoolProfiles {
@@ -123,7 +126,25 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Definition withWindowsProfile(String adminUsername,String adminPassword);
+            WithWindowsAdminUsername withWindowsProfile();
+        }
+
+        interface WithWindowsAdminUsername {
+            /**
+             * Properties of Windows VMs.
+             *
+             * @return the next stage
+             */
+            WithWindowsAdminPassword withAdminUserName(String adminUsername);
+        }
+
+        interface WithWindowsAdminPassword {
+            /**
+             * Properties of Windows VMs.
+             *
+             * @return the next stage
+             */
+            DoneWith<WithCreate> withAdminPassword(String adminPassword);
         }
 
         interface WithLinuxProfile {
@@ -132,7 +153,15 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            DefineAgentPoolProfiles withLinuxProfile(String adminUsername, String sshKeyData);
+            WithLinuxProfileRootUsername withLinuxProfile();
+        }
+
+        interface WithLinuxProfileRootUsername {
+            WithLinuxProfileSshKey withRootUsername(String rootUserName);
+        }
+
+        interface WithLinuxProfileSshKey {
+            DoneWith<DefineAgentPoolProfiles> withSshKey(String sshKeyData);
         }
 
         interface WithDiagnosticsProfile {
@@ -141,15 +170,16 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Definition withDiagnosticsProfile(ContainerServiceDiagnosticsProfile vmDiagnostics);
+            WithCreate withDiagnostics();
+            WithCreate withoutDiagnostics();
         }
 
         interface WithCreate extends
                 Creatable<ContainerService>,
                 ContainerService.DefinitionStages.WithOrchestratorProfile,
-                ContainerService.DefinitionStages.WithCustomProfile,
                 ContainerService.DefinitionStages.WithServicePrincipalProfile,
                 ContainerService.DefinitionStages.WithWindowsProfile,
+                ContainerService.DefinitionStages.DefineAgentPoolProfiles,
                 ContainerService.DefinitionStages.WithDiagnosticsProfile {
         }
 
@@ -166,33 +196,25 @@ public interface ContainerService extends
             Resource.UpdateWithTags<Update>,
             Appliable<ContainerService>,
             ContainerService.UpdateStages.WithOrchestratorProfile,
-            ContainerService.UpdateStages.WithCustomProfile,
             ContainerService.UpdateStages.WithServicePrincipalProfile,
             ContainerService.UpdateStages.WithMasterProfile,
             ContainerService.UpdateStages.DefineAgentPoolProfiles,
             ContainerService.UpdateStages.WithWindowsProfile,
+            ContainerService.UpdateStages.WithWindowsAdminUsername,
+            ContainerService.UpdateStages.WithWindowsAdminPassword,
             ContainerService.UpdateStages.WithLinuxProfile,
-            ContainerService.UpdateStages.WithDiagnosticsProfile {
+            ContainerService.UpdateStages.WithLinuxProfileRootUsername,
+            ContainerService.UpdateStages.WithLinuxProfileSshKey,
+            ContainerService.UpdateStages.WithDiagnosticsProfile,
+            ContainerService.UpdateStages.RemoveProfiles {
     }
 
     interface UpdateStages {
 
         interface WithOrchestratorProfile {
-            /**
-             * Properties of the orchestrator.
-             *
-             * @return the next stage
-             */
-            Update withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType);
-        }
-
-        interface WithCustomProfile {
-            /**
-             * Properties for custom clusters.
-             *
-             * @return the next stage
-             */
-            Update withCustomProfile(String orchestrator);
+            Update withSwarmOrchestration();
+            Update withDCOSOrchestration();
+            Update withKubernetesOrchestration();
         }
 
         interface WithServicePrincipalProfile {
@@ -201,7 +223,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Update withServicePrincipalProfile(String clientId,String secret);
+            Update withServicePrincipalProfile(String clientId, String secret);
         }
 
         interface WithMasterProfile {
@@ -210,7 +232,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Update withMasterProfile(int count,String dnsPrefix);
+            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsPrefix);
         }
 
         interface DefineAgentPoolProfiles {
@@ -220,7 +242,8 @@ public interface ContainerService extends
              * @param name
              * @return the next stage
              */
-            CSAgentPoolProfile.Update<Update> updateContainerServiceAgentPoolProfile(String name);
+            CSAgentPoolProfile.DefinitionStages.Blank<Update> defineContainerServiceAgentPoolProfile(String name);
+            CSAgentPoolProfile.Update updateContainerServiceAgentPoolProfile(String name);
         }
 
         interface WithWindowsProfile {
@@ -229,7 +252,25 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Update withWindowsProfile(String adminUsername,String adminPassword);
+            WithWindowsAdminUsername withWindowsProfile();
+        }
+
+        interface WithWindowsAdminUsername {
+            /**
+             * Properties of Windows VMs.
+             *
+             * @return the next stage
+             */
+            WithWindowsAdminPassword withAdminUserName(String adminUsername);
+        }
+
+        interface WithWindowsAdminPassword {
+            /**
+             * Properties of Windows VMs.
+             *
+             * @return the next stage
+             */
+            DoneWith<Update> withAdminPassword(String adminPassword);
         }
 
         interface WithLinuxProfile {
@@ -238,7 +279,15 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Update withLinuxProfile(String adminUsername, String sshKeyData);
+            WithLinuxProfileRootUsername withLinuxProfile();
+        }
+
+        interface WithLinuxProfileRootUsername {
+            WithLinuxProfileSshKey withRootUsername(String rootUserName);
+        }
+
+        interface WithLinuxProfileSshKey {
+            DoneWith<Update> withSshKey(String sshKeyData);
         }
 
         interface WithDiagnosticsProfile {
@@ -247,8 +296,15 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            Update withDiagnosticsProfile(ContainerServiceDiagnosticsProfile vmDiagnostics);
+            Update withDiagnostics();
+            Update withoutDiagnostics();
+        }
+
+        interface RemoveProfiles {
+            Update removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile);
+            Update removeWindowsProfile();
+            Update removeOrchestration();
+            Update removeServicePrincipalProfile();
         }
     }
-
 }

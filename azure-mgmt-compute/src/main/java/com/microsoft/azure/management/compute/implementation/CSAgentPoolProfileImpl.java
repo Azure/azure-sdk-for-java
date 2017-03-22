@@ -16,7 +16,7 @@ class CSAgentPoolProfileImpl
         ContainerService>
     implements
         CSAgentPoolProfile,
-        CSAgentPoolProfile.Definition<ContainerService.DefinitionStages.WithCreate>,
+        CSAgentPoolProfile.Definition,
         CSAgentPoolProfile.Update {
 
     CSAgentPoolProfileImpl(ContainerServiceAgentPoolProfile inner, ContainerServiceImpl parent) {
@@ -66,7 +66,7 @@ class CSAgentPoolProfileImpl
         return this;        
     }
 
-    public CSAgentPoolProfileImpl withDnsPrefix(String param0) {
+    public CSAgentPoolProfileImpl withDnsLabel(String param0) {
         this.inner().withDnsPrefix(param0);
         return this;        
     }
