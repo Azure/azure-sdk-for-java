@@ -299,6 +299,12 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
     }
 
     @Override
+    public TopicImpl withNewListenRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+        return this;
+    }
+
+    @Override
     public TopicImpl withNewManageRule(String name) {
         this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
         return this;

@@ -263,6 +263,13 @@ public interface Topic extends
              */
             WithCreate withNewSendRule(String name);
             /**
+             * Creates a listen authorization rule for the topic.
+             *
+             * @param name rule name
+             * @return next stage of the topic definition
+             */
+            WithCreate withNewListenRule(String name);
+            /**
              * Creates a manage authorization rule for the topic.
              *
              * @param name rule name
@@ -444,6 +451,13 @@ public interface Topic extends
              * @return next stage of the topic update
              */
             Update withNewSendRule(String name);
+            /**
+             * Creates a listen authorization rule for the topic.
+             *
+             * @param name rule name
+             * @return next stage of the topic update
+             */
+            Update withNewListenRule(String name);
             /**
              * Creates a manage authorization rule for the topic.
              *

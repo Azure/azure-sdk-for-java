@@ -98,10 +98,6 @@ public interface Subscription extends
      * @return  indicates whether subscription has dead letter support on filter evaluation exceptions
      */
     boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages();
-    /**
-     * @return entry point to manage authorization rules for the service bus topic subscription
-     */
-    SubscriptionAuthorizationRules authorizationRules();
 
     /**
      * The entirety of the subscription definition.

@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.servicebus.EntityStatus;
 import com.microsoft.azure.management.servicebus.Subscription;
-import com.microsoft.azure.management.servicebus.SubscriptionAuthorizationRules;
 import com.microsoft.azure.management.servicebus.Topic;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -173,16 +172,6 @@ class SubscriptionImpl extends
     @Override
     public boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages() {
         return Utils.toPrimitiveBoolean(this.inner().deadLetteringOnFilterEvaluationExceptions());
-    }
-
-    @Override
-    public SubscriptionAuthorizationRules authorizationRules() {
-        return new SubscriptionAuthorizationRulesImpl(this.resourceGroupName(),
-                this.namespaceName,
-                this.parentName,
-                this.name(),
-                this.region,
-                manager());
     }
 
     @Override

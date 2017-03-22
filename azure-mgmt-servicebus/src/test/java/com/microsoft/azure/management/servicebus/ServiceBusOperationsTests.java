@@ -468,4 +468,50 @@ public class ServiceBusOperationsTests extends TestBase {
             Assert.assertNotNull(availabilityResult.message());
         }
     }
+
+    @Test
+    public void CanPerformCRUDOnSubscriptions() {
+        Region region = Region.US_EAST;
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
+                .define(RG_NAME)
+                .withRegion(region);
+
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String topicName = generateRandomResourceName("topic1-", 15);
+        String subscriptionName = generateRandomResourceName("sub1-", 15);
+        // Create NS with Topic
+        //
+        Namespace namespace = serviceBusManager.namespaces()
+                .define(namespaceDNSLabel)
+                .withRegion(region)
+                .withNewResourceGroup(rgCreatable)
+                .withSku(NamespaceSku.PREMIUM_CAPACITY1)
+                .withNewTopic(topicName, 1024)
+                .create();
+        // Create Topic subscriptions and list it
+        //
+        Topic topic = namespace.topics().getByName(topicName);
+        Subscription subscription = topic.subscriptions().define(subscriptionName)
+                .withDefaultMessageTTL(new Period().withMinutes(20))
+                .create();
+        Assert.assertNotNull(subscription);
+        Assert.assertNotNull(subscription.inner());
+        Assert.assertEquals(20, subscription.defaultMessageTtlDuration().getMinutes());
+        subscription = topic.subscriptions().getByName(subscriptionName);
+        Assert.assertNotNull(subscription);
+        Assert.assertNotNull(subscription.inner());
+        PagedList<Subscription> subscriptionsInTopic = topic.subscriptions().list();
+        Assert.assertTrue(subscriptionsInTopic.size() > 0);
+        boolean foundSubscription = false;
+        for (Subscription s : subscriptionsInTopic) {
+            if (s.name().equalsIgnoreCase(subscription.name())) {
+                foundSubscription = true;
+                break;
+            }
+        }
+        Assert.assertTrue(foundSubscription);
+        topic.subscriptions().deleteByName(subscriptionName);
+        subscriptionsInTopic = topic.subscriptions().list();
+        Assert.assertTrue(subscriptionsInTopic.size() == 0);
+    }
 }
