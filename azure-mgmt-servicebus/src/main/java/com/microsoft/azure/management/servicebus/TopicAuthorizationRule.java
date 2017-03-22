@@ -35,7 +35,7 @@ public interface TopicAuthorizationRule extends
          */
         interface Blank extends AuthorizationRule
                 .DefinitionStages
-                .WithSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
+                .WithListenOrSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -60,7 +60,7 @@ public interface TopicAuthorizationRule extends
      */
     interface Update extends
             Appliable<TopicAuthorizationRule>,
-            AuthorizationRule.UpdateStages.WithSendOrManage<TopicAuthorizationRule.Update> {
+            AuthorizationRule.UpdateStages.WithListenOrSendOrManage<TopicAuthorizationRule.Update> {
     }
 
     /**
