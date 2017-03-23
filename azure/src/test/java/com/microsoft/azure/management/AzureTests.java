@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.Subscription;
+import com.microsoft.azure.management.resources.core.MockIntegrationTestBase;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -524,7 +525,9 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testContainerService() throws Exception {
-        new TestContainerService()
-                .runTest(azure.containerServices(), azure.resourceGroups());
+        if(!MockIntegrationTestBase.IS_MOCKED) {
+            new TestContainerService()
+                    .runTest(azure.containerServices(), azure.resourceGroups());
+        }
     }
 }
