@@ -140,11 +140,6 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl done() {
-        return this;
-    }
-
-    @Override
     public ContainerServiceImpl withDiagnostics() {
         this.withDiagnosticsProfile(true);
         return this;

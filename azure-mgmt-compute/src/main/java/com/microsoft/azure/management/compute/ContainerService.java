@@ -60,15 +60,6 @@ public interface ContainerService extends
     ContainerServiceDiagnosticsProfile diagnosticsProfile();
 
 
-    interface DoneWith<T> {
-        /**
-         * Properties of Windows VMs.
-         *
-         * @return the next stage
-         */
-        T done();
-    }
-
     interface Definition extends
             ContainerService.DefinitionStages.Blank,
             ContainerService.DefinitionStages.WithGroup,
@@ -76,7 +67,6 @@ public interface ContainerService extends
             ContainerService.DefinitionStages.WithLinuxProfile /*required*/ ,
             ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
             ContainerService.DefinitionStages.WithLinuxProfileSshKey,
-            ContainerService.DoneWith,
             ContainerService.DefinitionStages.DefineAgentPoolProfiles /*required*/ ,
             ContainerService.DefinitionStages.WithWindowsProfile,
             ContainerService.DefinitionStages.WithWindowsAdminUsername,
@@ -144,7 +134,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            DoneWith<WithCreate> withAdminPassword(String adminPassword);
+            WithCreate withAdminPassword(String adminPassword);
         }
 
         interface WithLinuxProfile {
@@ -161,7 +151,7 @@ public interface ContainerService extends
         }
 
         interface WithLinuxProfileSshKey {
-            DoneWith<DefineAgentPoolProfiles> withSshKey(String sshKeyData);
+            DefineAgentPoolProfiles withSshKey(String sshKeyData);
         }
 
         interface WithDiagnosticsProfile {
@@ -270,7 +260,7 @@ public interface ContainerService extends
              *
              * @return the next stage
              */
-            DoneWith<Update> withAdminPassword(String adminPassword);
+            Update withAdminPassword(String adminPassword);
         }
 
         interface WithLinuxProfile {
@@ -287,7 +277,7 @@ public interface ContainerService extends
         }
 
         interface WithLinuxProfileSshKey {
-            DoneWith<Update> withSshKey(String sshKeyData);
+            Update withSshKey(String sshKeyData);
         }
 
         interface WithDiagnosticsProfile {
