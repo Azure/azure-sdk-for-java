@@ -8,10 +8,13 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -35,7 +38,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AlertRules.
  */
-public class AlertRulesInner {
+public class AlertRulesInner implements InnerSupportsGet<AlertRuleResourceInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private AlertRulesService service;
     /** The service client containing this operation class. */
@@ -65,9 +68,9 @@ public class AlertRulesInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("ruleName") String ruleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AlertRules get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AlertRules getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("ruleName") String ruleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("ruleName") String ruleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AlertRules listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules")
@@ -270,8 +273,8 @@ public class AlertRulesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AlertRuleResourceInner object if successful.
      */
-    public AlertRuleResourceInner get(String resourceGroupName, String ruleName) {
-        return getWithServiceResponseAsync(resourceGroupName, ruleName).toBlocking().single().body();
+    public AlertRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, ruleName).toBlocking().single().body();
     }
 
     /**
@@ -283,8 +286,8 @@ public class AlertRulesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AlertRuleResourceInner> getAsync(String resourceGroupName, String ruleName, final ServiceCallback<AlertRuleResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, ruleName), serviceCallback);
+    public ServiceFuture<AlertRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName, final ServiceCallback<AlertRuleResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, ruleName), serviceCallback);
     }
 
     /**
@@ -295,8 +298,8 @@ public class AlertRulesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AlertRuleResourceInner object
      */
-    public Observable<AlertRuleResourceInner> getAsync(String resourceGroupName, String ruleName) {
-        return getWithServiceResponseAsync(resourceGroupName, ruleName).map(new Func1<ServiceResponse<AlertRuleResourceInner>, AlertRuleResourceInner>() {
+    public Observable<AlertRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, ruleName).map(new Func1<ServiceResponse<AlertRuleResourceInner>, AlertRuleResourceInner>() {
             @Override
             public AlertRuleResourceInner call(ServiceResponse<AlertRuleResourceInner> response) {
                 return response.body();
@@ -312,7 +315,7 @@ public class AlertRulesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AlertRuleResourceInner object
      */
-    public Observable<ServiceResponse<AlertRuleResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String ruleName) {
+    public Observable<ServiceResponse<AlertRuleResourceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String ruleName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -323,12 +326,12 @@ public class AlertRulesInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.get(resourceGroupName, ruleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, ruleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AlertRuleResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AlertRuleResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AlertRuleResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<AlertRuleResourceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -337,7 +340,7 @@ public class AlertRulesInner {
             });
     }
 
-    private ServiceResponse<AlertRuleResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AlertRuleResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AlertRuleResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AlertRuleResourceInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -348,10 +351,29 @@ public class AlertRulesInner {
      * List the alert rules within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;AlertRuleResourceInner&gt; object if successful.
+     * @return the PagedList<AlertRuleResourceInner> object if successful.
      */
-    public List<AlertRuleResourceInner> listByResourceGroup(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body();
+    public PagedList<AlertRuleResourceInner> listByResourceGroup(String resourceGroupName) {
+        PageImpl1<AlertRuleResourceInner> page = new PageImpl1<>();
+        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<AlertRuleResourceInner>(page) {
+            @Override
+            public Page<AlertRuleResourceInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * List the alert rules within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AlertRuleResourceInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<AlertRuleResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -382,17 +404,6 @@ public class AlertRulesInner {
                     }
                 }
             });
-    }
-
-    /**
-     * List the alert rules within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param filter The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx
-     * @return the List&lt;AlertRuleResourceInner&gt; object if successful.
-     */
-    public List<AlertRuleResourceInner> listByResourceGroup(String resourceGroupName, String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter).toBlocking().single().body();
     }
 
     /**
