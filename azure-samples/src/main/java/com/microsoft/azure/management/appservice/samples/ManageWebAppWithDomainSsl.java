@@ -9,7 +9,7 @@ package com.microsoft.azure.management.appservice.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
@@ -63,7 +63,7 @@ public final class ManageWebAppWithDomainSsl {
             WebApp app1 = azure.webApps().define(app1Name)
                     .withNewResourceGroup(rgName, Region.US_WEST)
                     .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withPricingTier(PricingTier.STANDARD_S1)
                     .create();
 
             System.out.println("Created web app " + app1.name());

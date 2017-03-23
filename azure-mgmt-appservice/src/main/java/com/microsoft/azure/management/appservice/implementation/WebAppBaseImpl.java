@@ -12,7 +12,7 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CloningInfo;
@@ -387,11 +387,11 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public AppServiceOperatingSystem operatingSystem() {
+    public OperatingSystem operatingSystem() {
         if (inner().reserved() != null && inner().reserved()) {
-            return AppServiceOperatingSystem.LINUX;
+            return OperatingSystem.LINUX;
         } else {
-            return AppServiceOperatingSystem.WINDOWS;
+            return OperatingSystem.WINDOWS;
         }
     }
 

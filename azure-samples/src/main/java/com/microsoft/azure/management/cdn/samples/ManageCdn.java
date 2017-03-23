@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.cdn.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
@@ -170,7 +170,7 @@ public final class ManageCdn {
                 .define(appName)
                 .withExistingResourceGroup(resourceGroupName)
                 .withNewAppServicePlan(planName, region)
-                .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                .withPricingTier(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .defineSourceControl()

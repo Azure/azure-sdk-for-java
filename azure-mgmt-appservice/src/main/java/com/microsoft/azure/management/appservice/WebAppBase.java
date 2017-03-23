@@ -244,7 +244,7 @@ public interface WebAppBase extends
     /**
      * @return the operating system the web app is running on
      */
-    AppServiceOperatingSystem operatingSystem();
+    OperatingSystem operatingSystem();
 
     /**
      * @return the URL and credentials for publishing through FTP or Git

@@ -7,12 +7,11 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.FunctionApp;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.SkuDescription;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.SkuName;
@@ -33,8 +32,8 @@ class FunctionAppImpl
     implements
         FunctionApp,
         FunctionApp.Definition,
-        FunctionApp.Update,
-        FunctionApp.UpdateStages.WithNewAppServicePlan {
+        FunctionApp.DefinitionStages.NewAppServicePlanWithGroup,
+        FunctionApp.Update {
 
     private Creatable<StorageAccount> storageAccountCreatable;
     private StorageAccount storageAccountToSet;
@@ -46,29 +45,8 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl withNewConsumptionPlan(String regionName) {
-        return withNewAppServicePlan(regionName, AppServiceOperatingSystem.WINDOWS)
-            .withPricingTier(new AppServicePricingTier("Dynamic", "Y1"));
-    }
-
-    @Override
-    public FunctionApp.DefinitionStages.WithNewAppServicePlan withNewAppServicePlan(Region region) {
-        return withNewAppServicePlan(region.name());
-    }
-
-    @Override
-    public FunctionApp.DefinitionStages.WithNewAppServicePlan withNewAppServicePlan(String regionName) {
-        return withNewAppServicePlan(regionName, AppServiceOperatingSystem.WINDOWS);
-    }
-
-    @Override
-    public FunctionAppImpl withNewConsumptionPlan(Region region) {
-        return withNewConsumptionPlan(region.name());
-    }
-
-    @Override
     public FunctionAppImpl withNewConsumptionPlan() {
-        return withNewConsumptionPlan(regionName());
+        return withNewAppServicePlan(OperatingSystem.WINDOWS, new PricingTier("Dynamic", "Y1"));
     }
 
     @Override
@@ -119,10 +97,8 @@ class FunctionAppImpl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public FunctionAppImpl withPricingTier(AppServicePricingTier pricingTier) {
-        super.withPricingTier(pricingTier);
-        return autoSetAlwaysOn(pricingTier);
+    public FunctionAppImpl withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
+        return super.withNewAppServicePlan(operatingSystem, pricingTier).autoSetAlwaysOn(pricingTier);
     }
 
     @Override
@@ -132,7 +108,7 @@ class FunctionAppImpl
         return autoSetAlwaysOn(appServicePlan.pricingTier());
     }
 
-    private FunctionAppImpl autoSetAlwaysOn(AppServicePricingTier pricingTier) {
+    private FunctionAppImpl autoSetAlwaysOn(PricingTier pricingTier) {
         SkuDescription description = pricingTier.toSkuDescription();
         if (description.tier().equalsIgnoreCase("Basic")
                 || description.tier().equalsIgnoreCase("Standard")

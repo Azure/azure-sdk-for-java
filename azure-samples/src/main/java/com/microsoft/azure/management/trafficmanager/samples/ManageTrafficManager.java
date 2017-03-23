@@ -8,9 +8,9 @@ package com.microsoft.azure.management.trafficmanager.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -113,8 +113,8 @@ public final class ManageTrafficManager {
                 AppServicePlan appServicePlan = azure.appServices().appServicePlans().define(planName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
-                        .withPricingTier(AppServicePricingTier.BASIC_B1)
-                        .withOperatingSystem(AppServiceOperatingSystem.WINDOWS)
+                        .withPricingTier(PricingTier.BASIC_B1)
+                        .withOperatingSystem(OperatingSystem.WINDOWS)
                         .create();
                 System.out.println("Created app service plan " + planName);
                 Utils.print(appServicePlan);

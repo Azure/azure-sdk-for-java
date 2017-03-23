@@ -7,10 +7,10 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
@@ -66,21 +66,21 @@ class AppServicePlanImpl
     }
 
     @Override
-    public AppServicePricingTier pricingTier() {
-        return AppServicePricingTier.fromSkuDescription(inner().sku());
+    public PricingTier pricingTier() {
+        return PricingTier.fromSkuDescription(inner().sku());
     }
 
     @Override
-    public AppServiceOperatingSystem operatingSystem() {
+    public OperatingSystem operatingSystem() {
         if (inner().reserved() != null && inner().reserved()) {
-            return AppServiceOperatingSystem.LINUX;
+            return OperatingSystem.LINUX;
         } else {
-            return AppServiceOperatingSystem.WINDOWS;
+            return OperatingSystem.WINDOWS;
         }
     }
 
     @Override
-    public AppServicePlanImpl withPricingTier(AppServicePricingTier pricingTier) {
+    public AppServicePlanImpl withPricingTier(PricingTier pricingTier) {
         if (pricingTier == null) {
             throw new IllegalArgumentException("pricingTier == null");
         }
@@ -104,8 +104,8 @@ class AppServicePlanImpl
     }
 
     @Override
-    public AppServicePlan.DefinitionStages.WithCreate withOperatingSystem(AppServiceOperatingSystem operatingSystem) {
-        if (AppServiceOperatingSystem.LINUX.equals(operatingSystem)) {
+    public AppServicePlanImpl withOperatingSystem(OperatingSystem operatingSystem) {
+        if (OperatingSystem.LINUX.equals(operatingSystem)) {
             inner().withReserved(true);
         }
         return this;

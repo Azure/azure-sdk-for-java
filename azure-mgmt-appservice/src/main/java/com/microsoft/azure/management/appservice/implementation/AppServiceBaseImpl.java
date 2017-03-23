@@ -10,18 +10,15 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.appservice.AppServiceOperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.HostNameBinding;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -228,20 +225,6 @@ abstract class AppServiceBaseImpl<
                 .define(planName))
                 .withRegion(regionName());
         appServicePlan.withOperatingSystem(operatingSystem());
-        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", planName, "");
-        inner().withServerFarmId(id);
-        return (FluentImplT) this;
-    }
-
-    public FluentImplT withFreePricingTier() {
-        return withPricingTier(AppServicePricingTier.FREE_F1);
-    }
-
-    @SuppressWarnings("unchecked")
-    public FluentImplT withPricingTier(AppServicePricingTier pricingTier) {
-        appServicePlan = appServicePlan
-                .withPricingTier(pricingTier);
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
         } else {
@@ -252,27 +235,34 @@ abstract class AppServiceBaseImpl<
         } else {
             addAppliableDependency(appServicePlan);
         }
+        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
+                resourceGroupName(), "Microsoft.Web", "serverFarms", planName, "");
+        inner().withServerFarmId(id);
         return (FluentImplT) this;
     }
 
-    @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(Region region, AppServiceOperatingSystem operatingSystem) {
-        return withNewAppServicePlan(region.name(), operatingSystem);
+    public FluentImplT withNewFreeAppServicePlan() {
+        return withNewAppServicePlan(OperatingSystem.WINDOWS, new PricingTier("Free", "F1"));
+    }
+
+    public FluentImplT withNewSharedAppServicePlan() {
+        return withNewAppServicePlan(OperatingSystem.WINDOWS, new PricingTier("Shared", "D1"));
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(String regionName, AppServiceOperatingSystem operatingSystem) {
-        withNewAppServicePlan().withRegion(regionName);
-        appServicePlan.withRegion(regionName).withOperatingSystem(operatingSystem);
+    public FluentImplT withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
+        withNewAppServicePlan();
+        appServicePlan.withOperatingSystem(operatingSystem).withPricingTier(pricingTier);
         return (FluentImplT) this;
+    }
+
+    public FluentImplT withNewAppServicePlan(PricingTier pricingTier) {
+        return withNewAppServicePlan(operatingSystem(), pricingTier);
     }
 
     @SuppressWarnings("unchecked")
     public FluentImplT withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
-        }
         this.withRegion(appServicePlan.regionName());
         return (FluentImplT) this;
     }

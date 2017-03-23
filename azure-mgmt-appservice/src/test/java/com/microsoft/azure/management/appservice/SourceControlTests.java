@@ -34,9 +34,9 @@ public class SourceControlTests extends AppServiceTest {
     public void canDeploySourceControl() throws Exception {
         // Create web app
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
-                .withNewResourceGroup(RG_NAME, Region.US_WEST)
-                .withNewAppServicePlan(Region.US_WEST, AppServiceOperatingSystem.WINDOWS)
-                .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(RG_NAME)
+                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.STANDARD_S1)
                 .defineSourceControl()
                     .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                     .withBranch("master")

@@ -48,8 +48,9 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDFunctionApp() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
-                .withNewResourceGroup(RG_NAME_1, Region.US_WEST)
-                .withNewConsumptionPlan(Region.US_WEST)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup()
+                .withNewConsumptionPlan()
                 .withNewStorageAccount()
                 .create();
         Assert.assertNotNull(functionApp1);
@@ -57,12 +58,12 @@ public class FunctionAppsTests extends AppServiceTest {
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assert.assertNotNull(plan1);
         Assert.assertEquals(Region.US_WEST, plan1.region());
-        Assert.assertEquals(new AppServicePricingTier("Dynamic", "Y1"), plan1.pricingTier());
+        Assert.assertEquals(new PricingTier("Dynamic", "Y1"), plan1.pricingTier());
 
         // Create with the same consumption plan
         FunctionApp functionApp2 = appServiceManager.functionApps().define(WEBAPP_NAME_2)
-                .withNewResourceGroup(RG_NAME_2, Region.US_WEST)
                 .withExistingAppServicePlan(plan1)
+                .withNewResourceGroup(RG_NAME_2)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assert.assertNotNull(functionApp2);
@@ -70,9 +71,9 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // Create with app service plan
         FunctionApp functionApp3 = appServiceManager.functionApps().define(WEBAPP_NAME_3)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME_2)
-                .withNewAppServicePlan(Region.US_WEST)
-                .withPricingTier(AppServicePricingTier.BASIC_B1)
+                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assert.assertNotNull(functionApp2);
@@ -98,8 +99,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // Scale
         functionApp3.update()
-                .withNewAppServicePlan()
-                .withPricingTier(AppServicePricingTier.STANDARD_S2)
+                .withNewAppServicePlan(PricingTier.STANDARD_S2)
                 .apply();
         Assert.assertNotEquals(functionApp3.appServicePlanId(), functionApp1.appServicePlanId());
     }

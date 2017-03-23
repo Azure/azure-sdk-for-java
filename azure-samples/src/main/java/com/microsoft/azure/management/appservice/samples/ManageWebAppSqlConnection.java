@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.PhpVersion;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -84,7 +84,7 @@ public final class ManageWebAppSqlConnection {
             WebApp app = azure.webApps().define(appName)
                     .withExistingResourceGroup(rgName)
                     .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withPricingTier(PricingTier.STANDARD_S1)
                     .withPhpVersion(PhpVersion.PHP5_6)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/ProjectNami/projectnami")

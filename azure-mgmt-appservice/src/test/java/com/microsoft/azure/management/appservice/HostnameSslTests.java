@@ -40,9 +40,9 @@ public class HostnameSslTests extends AppServiceTest {
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
         appServiceManager.webApps().define(WEBAPP_NAME)
-                .withNewResourceGroup(RG_NAME, Region.US_WEST)
-                .withNewAppServicePlan(Region.US_WEST, AppServiceOperatingSystem.WINDOWS)
-                .withPricingTier(AppServicePricingTier.BASIC_B1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(RG_NAME)
+                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.BASIC_B1)
                 .defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(WEBAPP_NAME)

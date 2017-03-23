@@ -19,8 +19,8 @@ class WebAppImpl
         implements
             WebApp,
             WebApp.Definition,
-            WebApp.Update,
-            WebApp.UpdateStages.WithNewAppServicePlan {
+            WebApp.DefinitionStages.NewAppServicePlanWithGroup,
+            WebApp.Update {
 
     private DeploymentSlots deploymentSlots;
 

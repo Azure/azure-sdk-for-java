@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for AppServiceOperatingSystem.
  */
-public enum AppServiceOperatingSystem {
+public enum OperatingSystem {
     /** Enum value Windows. */
     WINDOWS("windows"),
 
@@ -22,7 +22,7 @@ public enum AppServiceOperatingSystem {
     /** The actual serialized value for a AppServiceOperatingSystem instance. */
     private String value;
 
-    AppServiceOperatingSystem(String value) {
+    OperatingSystem(String value) {
         this.value = value;
     }
 
@@ -33,9 +33,9 @@ public enum AppServiceOperatingSystem {
      * @return the parsed AppServiceOperatingSystem object, or null if unable to parse.
      */
     @JsonCreator
-    public static AppServiceOperatingSystem fromString(String value) {
-        AppServiceOperatingSystem[] items = AppServiceOperatingSystem.values();
-        for (AppServiceOperatingSystem item : items) {
+    public static OperatingSystem fromString(String value) {
+        OperatingSystem[] items = OperatingSystem.values();
+        for (OperatingSystem item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

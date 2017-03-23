@@ -8,7 +8,7 @@ package com.microsoft.azure.management.dns.samples;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -88,7 +88,7 @@ public class ManageDns {
             WebApp webApp = azure.webApps().define(webAppName)
                     .withExistingResourceGroup(rgName)
                     .withNewAppServicePlan(appServicePlanName, Region.US_EAST2)
-                    .withPricingTier(AppServicePricingTier.BASIC_B1)
+                    .withPricingTier(PricingTier.BASIC_B1)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                         .withBranch("master")

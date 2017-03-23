@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -36,7 +36,7 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithAppServicePlan,
+            DefinitionStages.ExistingAppServicePlanWithGroup,
             DefinitionStages.WithNewAppServicePlan,
             DefinitionStages.WithCreate {
     }
@@ -48,52 +48,86 @@ public interface WebApp extends
         /**
          * The first stage of the web app definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithAppServicePlan> {
-        }
-
-        /**
-         * A web app definition allowing app service plan to be set.
-         */
-        interface WithAppServicePlan {
-            /**
-             * Creates a new app service plan to use.
-             * @return the next stage of the web app definition
-             * @param name the name of the app service plan
-             * @param region the region of the app service plan
-             */
-            WithNewAppServicePlan withNewAppServicePlan(Region region, AppServiceOperatingSystem operatingSystem);
-            /**
-             * Creates a new app service plan to use.
-             * @return the next stage of the web app definition
-             * @param name the name of the app service plan
-             * @param regionName the region of the app service plan
-             */
-            WithNewAppServicePlan withNewAppServicePlan(String regionName, AppServiceOperatingSystem operatingSystem);
-
+        interface Blank extends DefinitionWithRegion<NewAppServicePlanWithGroup> {
             /**
              * Uses an existing app service plan for the web app.
              * @param appServicePlan the existing app service plan
              * @return the next stage of the web app definition
              */
-            WithCreate withExistingAppServicePlan(AppServicePlan appServicePlan);
+            ExistingAppServicePlanWithGroup withExistingAppServicePlan(AppServicePlan appServicePlan);
+        }
+
+        interface ExistingAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        interface NewAppServicePlanWithGroup {
+            /**
+             * Associates the resource with an existing resource group.
+             * @param groupName the name of an existing resource group to put this resource in.
+             * @return the next stage of the resource definition
+             */
+            WithNewAppServicePlan withExistingResourceGroup(String groupName);
+
+            /**
+             * Associates the resource with an existing resource group.
+             * @param group an existing resource group to put the resource in
+             * @return the next stage of the resource definition
+             */
+            WithNewAppServicePlan withExistingResourceGroup(ResourceGroup group);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * @param name the name of the new group
+             * @return the next stage of the resource definition
+             */
+            WithNewAppServicePlan withNewResourceGroup(String name);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * The group's name is automatically derived from the resource's name.
+             * @return the next stage of the resource definition
+             */
+            WithNewAppServicePlan withNewResourceGroup();
+
+            /**
+             * Creates a new resource group to put the resource in, based on the definition specified.
+             * @param groupDefinition a creatable definition for a new resource group
+             * @return the next stage of the resource definition
+             */
+            WithNewAppServicePlan withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
-         * As web app definition allowing more information of a new app service plan to be set.
+         * A web app definition allowing app service plan to be set.
          */
         interface WithNewAppServicePlan {
             /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * Creates a new free app service plan. This will fail if there are 10 or more
+             * free plans in the current subscription.
+             *
              * @return the next stage of the web app definition
              */
-            WithCreate withFreePricingTier();
+            WithCreate withNewFreeAppServicePlan();
+
+            /**
+             * Creates a new shared app service plan.
+             *
+             * @return the next stage of the web app definition
+             */
+            WithCreate withNewSharedAppServicePlan();
 
             /**
              * Creates a new app service plan to use.
-             * @param pricingTier the pricing tier to use
+             *
+             * @param operatingSystem the operating system of the VM running the web app
+             * @param pricingTier the sku of the app service plan
              * @return the next stage of the web app definition
              */
-            WithCreate withPricingTier(AppServicePricingTier pricingTier);
+            WithCreate withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier);
         }
 
         /**
@@ -116,11 +150,28 @@ public interface WebApp extends
          */
         interface WithAppServicePlan {
             /**
-             * Creates a new app service plan to use.
-             * @return the next stage of the web app definition
-             * @param name the name of the app service plan
+             * Creates a new free app service plan. This will fail if there are 10 or more
+             * free plans in the current subscription.
+             *
+             * @return the next stage of the web app update
              */
-            WithNewAppServicePlan withNewAppServicePlan();
+            Update withNewFreeAppServicePlan();
+
+            /**
+             * Creates a new shared app service plan.
+             *
+             * @return the next stage of the web app update
+             */
+            Update withNewSharedAppServicePlan();
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param operatingSystem the operating system of the VM running the web app
+             * @param pricingTier the sku of the app service plan
+             * @return the next stage of the web app update
+             */
+            Update withNewAppServicePlan(PricingTier pricingTier);
 
             /**
              * Uses an existing app service plan for the web app.
@@ -128,24 +179,6 @@ public interface WebApp extends
              * @return the next stage of the web app update
              */
             Update withExistingAppServicePlan(AppServicePlan appServicePlan);
-        }
-
-        /**
-         * As web app update allowing more information of a new app service plan to be set.
-         */
-        interface WithNewAppServicePlan {
-            /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
-             * @return the next stage of the web app update
-             */
-            Update withFreePricingTier();
-
-            /**
-             * Creates a new app service plan to use.
-             * @param pricingTier the pricing tier to use
-             * @return the next stage of the web app update
-             */
-            Update withPricingTier(AppServicePricingTier pricingTier);
         }
     }
 

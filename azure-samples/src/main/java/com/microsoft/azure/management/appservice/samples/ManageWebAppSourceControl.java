@@ -8,7 +8,7 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
@@ -73,7 +73,7 @@ public final class ManageWebAppSourceControl {
             WebApp app1 = azure.webApps().define(app1Name)
                     .withNewResourceGroup(rgName, Region.US_WEST)
                     .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withPricingTier(PricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
