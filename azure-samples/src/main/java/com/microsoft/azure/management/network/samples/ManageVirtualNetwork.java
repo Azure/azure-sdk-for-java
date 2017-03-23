@@ -45,9 +45,9 @@ public final class ManageVirtualNetwork {
         final String vnet1BackEndSubnetName = "backend";
         final String vnet1FrontEndSubnetNsgName = "frontendnsg";
         final String vnet1BackEndSubnetNsgName = "backendnsg";
-        final String frontEndVmName = SdkContext.randomResourceName("fevm", 24);
-        final String backEndVmName = SdkContext.randomResourceName("bevm", 24);
-        final String publicIPAddressLeafDnsForFrontEndVm = SdkContext.randomResourceName("pip1", 24);
+        final String frontEndVMName = SdkContext.randomResourceName("fevm", 24);
+        final String backEndVMName = SdkContext.randomResourceName("bevm", 24);
+        final String publicIPAddressLeafDnsForFrontEndVM = SdkContext.randomResourceName("pip1", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         final String rgName = SdkContext.randomResourceName("rgNEMV", 24);
@@ -162,13 +162,13 @@ public final class ManageVirtualNetwork {
 
             Date t1 = new Date();
 
-            VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVmName)
+            VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(virtualNetwork1)
                     .withSubnet(vnet1FrontEndSubnetName)
                     .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDnsForFrontEndVm)
+                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDnsForFrontEndVM)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
@@ -188,7 +188,7 @@ public final class ManageVirtualNetwork {
 
             Date t3 = new Date();
 
-            VirtualMachine backEndVM = azure.virtualMachines().define(backEndVmName)
+            VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(virtualNetwork1)

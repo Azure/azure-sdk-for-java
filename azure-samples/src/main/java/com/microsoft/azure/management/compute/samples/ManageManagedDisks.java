@@ -194,14 +194,14 @@ public final class ManageManagedDisks {
 
             // Create a VM from a VHD (Create Virtual Machine Using Specialized VHD)
 
-            final String linuxVmName4 = SdkContext.randomResourceName("vm" + "-", 10);
+            final String linuxVMName4 = SdkContext.randomResourceName("vm" + "-", 10);
             final String specializedVhd = linuxVM.osUnmanagedDiskVhdUri();
 
             azure.virtualMachines().deleteById(linuxVM.id());
 
             System.out.println("Creating VM [by attaching un-managed disk]");
 
-            VirtualMachine linuxVM4 = azure.virtualMachines().define(linuxVmName4)
+            VirtualMachine linuxVM4 = azure.virtualMachines().define(linuxVMName4)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -284,8 +284,8 @@ public final class ManageManagedDisks {
 
             System.out.println("Creating VM [with specialized OS managed disk]");
 
-            final String linuxVm6Name = SdkContext.randomResourceName("vm" + "-", 10);
-            VirtualMachine linuxVM6 = azure.virtualMachines().define(linuxVm6Name)
+            final String linuxVM6Name = SdkContext.randomResourceName("vm" + "-", 10);
+            VirtualMachine linuxVM6 = azure.virtualMachines().define(linuxVM6Name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -383,10 +383,10 @@ public final class ManageManagedDisks {
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
-        final String linuxVmName1 = SdkContext.randomResourceName("vm" + "-", 10);
+        final String linuxVMName1 = SdkContext.randomResourceName("vm" + "-", 10);
         final String publicIpDnsLabel = SdkContext.randomResourceName("pip" + "-", 20);
 
-        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -421,15 +421,15 @@ public final class ManageManagedDisks {
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
-        final String linuxVmName1 = SdkContext.randomResourceName("vm" + "-", 10);
-        final String publicIpDnsLabel = SdkContext.randomResourceName("pip" + "-", 20);
+        final String linuxVMName1 = SdkContext.randomResourceName("vm" + "-", 10);
+        final String publicIPDnsLabel = SdkContext.randomResourceName("pip" + "-", 20);
 
-        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+        VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+                .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword(password)

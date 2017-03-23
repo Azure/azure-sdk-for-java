@@ -8,17 +8,17 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.servicebus.Sku;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
  * Description of a namespace resource.
  */
 @JsonFlatten
-public class NamespaceResourceInner extends Resource {
+public class NamespaceInner extends Resource {
     /**
      * The sku property.
      */
@@ -50,6 +50,12 @@ public class NamespaceResourceInner extends Resource {
     private String serviceBusEndpoint;
 
     /**
+     * Identifier for Azure Insights metrics.
+     */
+    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
+    private String metricId;
+
+    /**
      * Get the sku value.
      *
      * @return the sku value
@@ -62,9 +68,9 @@ public class NamespaceResourceInner extends Resource {
      * Set the sku value.
      *
      * @param sku the sku value to set
-     * @return the NamespaceResourceInner object itself.
+     * @return the NamespaceInner object itself.
      */
-    public NamespaceResourceInner withSku(Sku sku) {
+    public NamespaceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -103,6 +109,15 @@ public class NamespaceResourceInner extends Resource {
      */
     public String serviceBusEndpoint() {
         return this.serviceBusEndpoint;
+    }
+
+    /**
+     * Get the metricId value.
+     *
+     * @return the metricId value
+     */
+    public String metricId() {
+        return this.metricId;
     }
 
 }

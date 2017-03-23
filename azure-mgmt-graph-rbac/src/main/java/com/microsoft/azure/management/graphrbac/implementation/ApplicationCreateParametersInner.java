@@ -18,39 +18,43 @@ public class ApplicationCreateParametersInner {
     /**
      * Whether the application is available to other tenants.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "availableToOtherTenants", required = true)
     private boolean availableToOtherTenants;
 
     /**
      * The display name of the application.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /**
      * The home page of the application.
      */
+    @JsonProperty(value = "homepage")
     private String homepage;
 
     /**
      * A collection of URIs for the application.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "identifierUris", required = true)
     private List<String> identifierUris;
 
     /**
      * A collection of reply URLs for the application.
      */
+    @JsonProperty(value = "replyUrls")
     private List<String> replyUrls;
 
     /**
      * The list of KeyCredential objects.
      */
+    @JsonProperty(value = "keyCredentials")
     private List<KeyCredentialInner> keyCredentials;
 
     /**
      * The list of PasswordCredential objects.
      */
+    @JsonProperty(value = "passwordCredentials")
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**

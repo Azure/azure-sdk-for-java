@@ -35,8 +35,7 @@ class FunctionAppsImpl
         converter = new PagedListConverter<SiteInner, FunctionApp>() {
             @Override
             public FunctionApp typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                FunctionAppImpl impl = wrapModel(siteInner);
+                FunctionAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 return impl.cacheSiteProperties().toBlocking().single();
             }
         };
@@ -53,8 +52,7 @@ class FunctionAppsImpl
         if (siteInner == null) {
             return null;
         }
-        siteInner.withSiteConfig(this.inner().getConfiguration(groupName, name));
-        return wrapModel(siteInner).cacheSiteProperties().toBlocking().single();
+        return wrapModel(siteInner, this.inner().getConfiguration(groupName, name)).cacheSiteProperties().toBlocking().single();
     }
 
     @Override
@@ -74,11 +72,14 @@ class FunctionAppsImpl
 
     @Override
     protected FunctionAppImpl wrapModel(SiteInner inner) {
+        return wrapModel(inner, null);
+    }
+
+    private FunctionAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {
         if (inner == null) {
             return null;
         }
-        SiteConfigInner configInner = inner.siteConfig();
-        return new FunctionAppImpl(inner.name(), inner, configInner, this.manager());
+        return new FunctionAppImpl(inner.name(), inner, configResourceInner, this.manager());
     }
 
     protected PagedList<FunctionApp> wrapList(PagedList<SiteInner> pagedList) {

@@ -47,7 +47,7 @@ abstract class AppServiceBaseImpl<
     FluentUpdateT>
         extends WebAppBaseImpl<FluentT, FluentImplT> {
 
-    AppServiceBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
+    AppServiceBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
     }
 
@@ -62,12 +62,12 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
-    Observable<SiteConfigInner> getConfigInner() {
+    Observable<SiteConfigResourceInner> getConfigInner() {
         return this.manager().inner().webApps().getConfigurationAsync(resourceGroupName(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return this.manager().inner().webApps().createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
 

@@ -40,7 +40,7 @@ class FunctionAppImpl
     private StorageAccount storageAccountToSet;
     private StorageAccount currentStorageAccount;
 
-    FunctionAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
+    FunctionAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
         innerObject.withKind("functionapp");
     }

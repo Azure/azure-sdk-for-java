@@ -8,12 +8,16 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.servicebus.AccessRights;
+import com.microsoft.azure.management.servicebus.CheckNameAvailability;
 import com.microsoft.azure.management.servicebus.Policykey;
 import com.microsoft.azure.management.servicebus.RegenerateKeysParameters;
 import com.microsoft.azure.Page;
@@ -30,6 +34,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -43,7 +48,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Namespaces.
  */
-public class NamespacesInner implements InnerSupportsListing<NamespaceResourceInner> {
+public class NamespacesInner implements InnerSupportsGet<NamespaceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<NamespaceInner> {
     /** The Retrofit service to perform REST calls. */
     private NamespacesService service;
     /** The service client containing this operation class. */
@@ -65,6 +70,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * used by Retrofit to perform actually REST calls.
      */
     interface NamespacesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces checkNameAvailabilityMethod" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/CheckNameAvailability")
+        Observable<Response<ResponseBody>> checkNameAvailabilityMethod(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckNameAvailability parameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -75,11 +84,11 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Body NamespaceResourceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Body NamespaceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Body NamespaceResourceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Body NamespaceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}", method = "DELETE", hasBody = true)
@@ -89,9 +98,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Body NamespaceUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces listAuthorizationRules" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules")
@@ -99,7 +112,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces createOrUpdateAuthorizationRule" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}")
-        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Body SharedAccessAuthorizationRuleInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateAuthorizationRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("authorizationRuleName") String authorizationRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SharedAccessAuthorizationRuleInner parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.servicebus.Namespaces deleteAuthorizationRule" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}", method = "DELETE", hasBody = true)
@@ -132,15 +145,99 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     }
 
     /**
+     * Check the give namespace name availability.
+     *
+     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckNameAvailabilityResultInner object if successful.
+     */
+    public CheckNameAvailabilityResultInner checkNameAvailabilityMethod(String name) {
+        return checkNameAvailabilityMethodWithServiceResponseAsync(name).toBlocking().single().body();
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckNameAvailabilityResultInner> checkNameAvailabilityMethodAsync(String name, final ServiceCallback<CheckNameAvailabilityResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityMethodWithServiceResponseAsync(name), serviceCallback);
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityResultInner object
+     */
+    public Observable<CheckNameAvailabilityResultInner> checkNameAvailabilityMethodAsync(String name) {
+        return checkNameAvailabilityMethodWithServiceResponseAsync(name).map(new Func1<ServiceResponse<CheckNameAvailabilityResultInner>, CheckNameAvailabilityResultInner>() {
+            @Override
+            public CheckNameAvailabilityResultInner call(ServiceResponse<CheckNameAvailabilityResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Check the give namespace name availability.
+     *
+     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckNameAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityMethodWithServiceResponseAsync(String name) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        CheckNameAvailability parameters = new CheckNameAvailability();
+        parameters.withName(name);
+        return service.checkNameAvailabilityMethod(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckNameAvailabilityResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckNameAvailabilityResultInner> clientResponse = checkNameAvailabilityMethodDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailabilityMethodDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<CheckNameAvailabilityResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<CheckNameAvailabilityResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NamespaceInner&gt; object if successful.
      */
-    public PagedList<NamespaceResourceInner> list() {
-        ServiceResponse<Page<NamespaceResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<NamespaceResourceInner>(response.body()) {
+    public PagedList<NamespaceInner> list() {
+        ServiceResponse<Page<NamespaceInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<NamespaceInner>(response.body()) {
             @Override
-            public Page<NamespaceResourceInner> nextPage(String nextPageLink) {
+            public Page<NamespaceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -150,14 +247,15 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NamespaceResourceInner>> listAsync(final ListOperationCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<List<NamespaceInner>> listAsync(final ListOperationCallback<NamespaceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -167,13 +265,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<Page<NamespaceResourceInner>> listAsync() {
+    public Observable<Page<NamespaceInner>> listAsync() {
         return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Page<NamespaceResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<NamespaceInner>>, Page<NamespaceInner>>() {
                 @Override
-                public Page<NamespaceResourceInner> call(ServiceResponse<Page<NamespaceResourceInner>> response) {
+                public Page<NamespaceInner> call(ServiceResponse<Page<NamespaceInner>> response) {
                     return response.body();
                 }
             });
@@ -182,13 +281,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<NamespaceInner>>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(ServiceResponse<Page<NamespaceResourceInner>> page) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(ServiceResponse<Page<NamespaceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -201,9 +301,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NamespaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -211,12 +312,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NamespaceResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NamespaceResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<NamespaceInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NamespaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -224,9 +325,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<PageImpl<NamespaceResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<NamespaceResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<NamespaceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NamespaceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -235,13 +336,16 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NamespaceInner&gt; object if successful.
      */
-    public PagedList<NamespaceResourceInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<NamespaceResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<NamespaceResourceInner>(response.body()) {
+    public PagedList<NamespaceInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<NamespaceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<NamespaceInner>(response.body()) {
             @Override
-            public Page<NamespaceResourceInner> nextPage(String nextPageLink) {
+            public Page<NamespaceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -252,14 +356,15 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NamespaceResourceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<List<NamespaceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<NamespaceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
-            new Func1<String, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(String nextPageLink) {
                     return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -270,13 +375,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<Page<NamespaceResourceInner>> listByResourceGroupAsync(final String resourceGroupName) {
+    public Observable<Page<NamespaceInner>> listByResourceGroupAsync(final String resourceGroupName) {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Page<NamespaceResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<NamespaceInner>>, Page<NamespaceInner>>() {
                 @Override
-                public Page<NamespaceResourceInner> call(ServiceResponse<Page<NamespaceResourceInner>> response) {
+                public Page<NamespaceInner> call(ServiceResponse<Page<NamespaceInner>> response) {
                     return response.body();
                 }
             });
@@ -286,13 +392,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
         return listByResourceGroupSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<NamespaceInner>>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(ServiceResponse<Page<NamespaceResourceInner>> page) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(ServiceResponse<Page<NamespaceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -305,10 +412,11 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets the available namespaces within a resource group.
      *
-    ServiceResponse<PageImpl<NamespaceResourceInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<NamespaceInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NamespaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -319,12 +427,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NamespaceResourceInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NamespaceResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<NamespaceInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NamespaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -332,9 +440,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<PageImpl<NamespaceResourceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<NamespaceResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<NamespaceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NamespaceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -345,9 +453,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
-     * @return the NamespaceResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NamespaceInner object if successful.
      */
-    public NamespaceResourceInner createOrUpdate(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
+    public NamespaceInner createOrUpdate(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).toBlocking().last().body();
     }
 
@@ -358,9 +469,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NamespaceResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters, final ServiceCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<NamespaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters, final ServiceCallback<NamespaceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters), serviceCallback);
     }
 
@@ -370,12 +482,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<NamespaceResourceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NamespaceResourceInner>, NamespaceResourceInner>() {
+    public Observable<NamespaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NamespaceInner>, NamespaceInner>() {
             @Override
-            public NamespaceResourceInner call(ServiceResponse<NamespaceResourceInner> response) {
+            public NamespaceInner call(ServiceResponse<NamespaceInner> response) {
                 return response.body();
             }
         });
@@ -387,9 +500,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<NamespaceResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
+    public Observable<ServiceResponse<NamespaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -407,7 +521,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, namespaceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NamespaceResourceInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NamespaceInner>() { }.getType());
     }
 
     /**
@@ -416,9 +530,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
-     * @return the NamespaceResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NamespaceInner object if successful.
      */
-    public NamespaceResourceInner beginCreateOrUpdate(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
+    public NamespaceInner beginCreateOrUpdate(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).toBlocking().single().body();
     }
 
@@ -429,9 +546,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NamespaceResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters, final ServiceCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<NamespaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters, final ServiceCallback<NamespaceInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters), serviceCallback);
     }
 
@@ -441,12 +559,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
-     * @return the observable to the NamespaceResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
      */
-    public Observable<NamespaceResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NamespaceResourceInner>, NamespaceResourceInner>() {
+    public Observable<NamespaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NamespaceInner>, NamespaceInner>() {
             @Override
-            public NamespaceResourceInner call(ServiceResponse<NamespaceResourceInner> response) {
+            public NamespaceInner call(ServiceResponse<NamespaceInner> response) {
                 return response.body();
             }
         });
@@ -458,9 +577,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param parameters Parameters supplied to create a namespace resource.
-     * @return the observable to the NamespaceResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
      */
-    public Observable<ServiceResponse<NamespaceResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, NamespaceResourceInner parameters) {
+    public Observable<ServiceResponse<NamespaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String namespaceName, NamespaceInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -478,11 +598,11 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         }
         Validator.validate(parameters);
         return service.beginCreateOrUpdate(resourceGroupName, namespaceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceResourceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<NamespaceResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<NamespaceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NamespaceResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        ServiceResponse<NamespaceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -491,10 +611,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<NamespaceResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NamespaceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<NamespaceResourceInner>() { }.getType())
-                .register(200, new TypeToken<NamespaceResourceInner>() { }.getType())
+    private ServiceResponse<NamespaceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NamespaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<NamespaceInner>() { }.getType())
+                .register(200, new TypeToken<NamespaceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -505,6 +625,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String namespaceName) {
         deleteWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().last().body();
@@ -516,6 +639,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String namespaceName, final ServiceCallback<Void> serviceCallback) {
@@ -527,6 +651,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String namespaceName) {
@@ -543,6 +668,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
@@ -567,6 +693,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String namespaceName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
@@ -578,6 +707,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String namespaceName, final ServiceCallback<Void> serviceCallback) {
@@ -589,6 +719,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String namespaceName) {
@@ -605,6 +736,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
@@ -648,10 +780,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the NamespaceResourceInner object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NamespaceInner object if successful.
      */
-    public NamespaceResourceInner get(String resourceGroupName, String namespaceName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
+    public NamespaceInner getByResourceGroup(String resourceGroupName, String namespaceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
     }
 
     /**
@@ -660,10 +795,11 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NamespaceResourceInner> getAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NamespaceResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, namespaceName), serviceCallback);
+    public ServiceFuture<NamespaceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NamespaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName), serviceCallback);
     }
 
     /**
@@ -671,12 +807,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the NamespaceResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
      */
-    public Observable<NamespaceResourceInner> getAsync(String resourceGroupName, String namespaceName) {
-        return getWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NamespaceResourceInner>, NamespaceResourceInner>() {
+    public Observable<NamespaceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NamespaceInner>, NamespaceInner>() {
             @Override
-            public NamespaceResourceInner call(ServiceResponse<NamespaceResourceInner> response) {
+            public NamespaceInner call(ServiceResponse<NamespaceInner> response) {
                 return response.body();
             }
         });
@@ -687,9 +824,10 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @return the observable to the NamespaceResourceInner object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
      */
-    public Observable<ServiceResponse<NamespaceResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
+    public Observable<ServiceResponse<NamespaceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -702,12 +840,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceResourceInner>>>() {
+        return service.getByResourceGroup(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<NamespaceResourceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<NamespaceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NamespaceResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<NamespaceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -716,9 +854,105 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<NamespaceResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NamespaceResourceInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<NamespaceResourceInner>() { }.getType())
+    private ServiceResponse<NamespaceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NamespaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NamespaceInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param parameters Parameters supplied to update a namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NamespaceInner object if successful.
+     */
+    public NamespaceInner update(String resourceGroupName, String namespaceName, NamespaceUpdateParametersInner parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param parameters Parameters supplied to update a namespace resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<NamespaceInner> updateAsync(String resourceGroupName, String namespaceName, NamespaceUpdateParametersInner parameters, final ServiceCallback<NamespaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters), serviceCallback);
+    }
+
+    /**
+     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param parameters Parameters supplied to update a namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
+     */
+    public Observable<NamespaceInner> updateAsync(String resourceGroupName, String namespaceName, NamespaceUpdateParametersInner parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NamespaceInner>, NamespaceInner>() {
+            @Override
+            public NamespaceInner call(ServiceResponse<NamespaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name
+     * @param parameters Parameters supplied to update a namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NamespaceInner object
+     */
+    public Observable<ServiceResponse<NamespaceInner>> updateWithServiceResponseAsync(String resourceGroupName, String namespaceName, NamespaceUpdateParametersInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (namespaceName == null) {
+            throw new IllegalArgumentException("Parameter namespaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.update(resourceGroupName, namespaceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NamespaceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<NamespaceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<NamespaceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<NamespaceInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NamespaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<NamespaceInner>() { }.getType())
+                .register(200, new TypeToken<NamespaceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -728,6 +962,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRules(final String resourceGroupName, final String namespaceName) {
@@ -746,6 +983,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -765,6 +1003,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName) {
@@ -782,6 +1021,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesWithServiceResponseAsync(final String resourceGroupName, final String namespaceName) {
@@ -803,6 +1043,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      *
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param resourceGroupName Name of the Resource group within the Azure subscription.
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param namespaceName The namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesSinglePageAsync(final String resourceGroupName, final String namespaceName) {
@@ -845,11 +1086,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
-    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, parameters).toBlocking().single().body();
+    public SharedAccessAuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, rights).toBlocking().single().body();
     }
 
     /**
@@ -858,12 +1102,13 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, parameters), serviceCallback);
+    public ServiceFuture<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, rights), serviceCallback);
     }
 
     /**
@@ -872,11 +1117,12 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
-        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, parameters).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
+    public Observable<SharedAccessAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights) {
+        return createOrUpdateAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, rights).map(new Func1<ServiceResponse<SharedAccessAuthorizationRuleInner>, SharedAccessAuthorizationRuleInner>() {
             @Override
             public SharedAccessAuthorizationRuleInner call(ServiceResponse<SharedAccessAuthorizationRuleInner> response) {
                 return response.body();
@@ -890,10 +1136,11 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
-     * @param parameters The shared access authorization rule.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
-    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, SharedAccessAuthorizationRuleInner parameters) {
+    public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -906,14 +1153,16 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, authorizationRuleName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        if (rights == null) {
+            throw new IllegalArgumentException("Parameter rights is required and cannot be null.");
+        }
+        Validator.validate(rights);
+        SharedAccessAuthorizationRuleInner parameters = new SharedAccessAuthorizationRuleInner();
+        parameters.withRights(rights);
+        return service.createOrUpdateAuthorizationRule(resourceGroupName, namespaceName, authorizationRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> call(Response<ResponseBody> response) {
@@ -940,6 +1189,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         deleteAuthorizationRuleWithServiceResponseAsync(resourceGroupName, namespaceName, authorizationRuleName).toBlocking().single().body();
@@ -952,6 +1204,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, final ServiceCallback<Void> serviceCallback) {
@@ -964,6 +1217,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -981,6 +1235,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1027,6 +1282,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SharedAccessAuthorizationRuleInner object if successful.
      */
     public SharedAccessAuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1040,6 +1298,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, final ServiceCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -1052,6 +1311,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<SharedAccessAuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1069,6 +1329,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleInner object
      */
     public Observable<ServiceResponse<SharedAccessAuthorizationRuleInner>> getAuthorizationRuleWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1114,6 +1375,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1127,6 +1391,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1139,6 +1404,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1156,6 +1422,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1201,6 +1468,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1214,6 +1484,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1226,6 +1497,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1243,6 +1515,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
@@ -1285,6 +1558,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceListKeysInner object if successful.
      */
     public ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey) {
@@ -1299,6 +1575,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey, final ServiceCallback<ResourceListKeysInner> serviceCallback) {
@@ -1312,6 +1589,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ResourceListKeysInner> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey) {
@@ -1330,6 +1608,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param namespaceName The namespace name
      * @param authorizationRuleName The authorizationrule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
     public Observable<ServiceResponse<ResourceListKeysInner>> regenerateKeysWithServiceResponseAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey) {
@@ -1375,13 +1654,16 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NamespaceInner&gt; object if successful.
      */
-    public PagedList<NamespaceResourceInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<NamespaceResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NamespaceResourceInner>(response.body()) {
+    public PagedList<NamespaceInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<NamespaceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<NamespaceInner>(response.body()) {
             @Override
-            public Page<NamespaceResourceInner> nextPage(String nextPageLink) {
+            public Page<NamespaceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1393,14 +1675,15 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NamespaceResourceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<NamespaceResourceInner>> serviceFuture, final ListOperationCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<List<NamespaceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<NamespaceInner>> serviceFuture, final ListOperationCallback<NamespaceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1411,13 +1694,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<Page<NamespaceResourceInner>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<NamespaceInner>> listNextAsync(final String nextPageLink) {
         return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Page<NamespaceResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<NamespaceInner>>, Page<NamespaceInner>>() {
                 @Override
-                public Page<NamespaceResourceInner> call(ServiceResponse<Page<NamespaceResourceInner>> response) {
+                public Page<NamespaceInner> call(ServiceResponse<Page<NamespaceInner>> response) {
                     return response.body();
                 }
             });
@@ -1427,13 +1711,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<NamespaceInner>>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(ServiceResponse<Page<NamespaceResourceInner>> page) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(ServiceResponse<Page<NamespaceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1446,21 +1731,22 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
      *
-    ServiceResponse<PageImpl<NamespaceResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<NamespaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NamespaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NamespaceResourceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NamespaceResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<NamespaceInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NamespaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1468,9 +1754,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<PageImpl<NamespaceResourceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<NamespaceResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<NamespaceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NamespaceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1479,13 +1765,16 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;NamespaceInner&gt; object if successful.
      */
-    public PagedList<NamespaceResourceInner> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<NamespaceResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NamespaceResourceInner>(response.body()) {
+    public PagedList<NamespaceInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<NamespaceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<NamespaceInner>(response.body()) {
             @Override
-            public Page<NamespaceResourceInner> nextPage(String nextPageLink) {
+            public Page<NamespaceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1497,14 +1786,15 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NamespaceResourceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<NamespaceResourceInner>> serviceFuture, final ListOperationCallback<NamespaceResourceInner> serviceCallback) {
+    public ServiceFuture<List<NamespaceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<NamespaceInner>> serviceFuture, final ListOperationCallback<NamespaceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(String nextPageLink) {
                     return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1515,13 +1805,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<Page<NamespaceResourceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+    public Observable<Page<NamespaceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
         return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Page<NamespaceResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<NamespaceInner>>, Page<NamespaceInner>>() {
                 @Override
-                public Page<NamespaceResourceInner> call(ServiceResponse<Page<NamespaceResourceInner>> response) {
+                public Page<NamespaceInner> call(ServiceResponse<Page<NamespaceInner>> response) {
                     return response.body();
                 }
             });
@@ -1531,13 +1822,14 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the available namespaces within a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NamespaceResourceInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;NamespaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
         return listByResourceGroupNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<NamespaceResourceInner>>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<NamespaceInner>>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(ServiceResponse<Page<NamespaceResourceInner>> page) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(ServiceResponse<Page<NamespaceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1550,21 +1842,22 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
     /**
      * Gets the available namespaces within a resource group.
      *
-    ServiceResponse<PageImpl<NamespaceResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NamespaceResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<NamespaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;NamespaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<NamespaceResourceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<NamespaceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NamespaceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NamespaceResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<NamespaceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NamespaceResourceInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NamespaceResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<NamespaceInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NamespaceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1572,9 +1865,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
             });
     }
 
-    private ServiceResponse<PageImpl<NamespaceResourceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<NamespaceResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<NamespaceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<NamespaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<NamespaceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1583,6 +1876,9 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the authorization rules for a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object if successful.
      */
     public PagedList<SharedAccessAuthorizationRuleInner> listAuthorizationRulesNext(final String nextPageLink) {
@@ -1601,6 +1897,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink, final ServiceFuture<List<SharedAccessAuthorizationRuleInner>> serviceFuture, final ListOperationCallback<SharedAccessAuthorizationRuleInner> serviceCallback) {
@@ -1619,6 +1916,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the authorization rules for a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<Page<SharedAccessAuthorizationRuleInner>> listAuthorizationRulesNextAsync(final String nextPageLink) {
@@ -1635,6 +1933,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the authorization rules for a namespace.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextWithServiceResponseAsync(final String nextPageLink) {
@@ -1655,6 +1954,7 @@ public class NamespacesInner implements InnerSupportsListing<NamespaceResourceIn
      * Gets the authorization rules for a namespace.
      *
     ServiceResponse<PageImpl<SharedAccessAuthorizationRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SharedAccessAuthorizationRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SharedAccessAuthorizationRuleInner>>> listAuthorizationRulesNextSinglePageAsync(final String nextPageLink) {

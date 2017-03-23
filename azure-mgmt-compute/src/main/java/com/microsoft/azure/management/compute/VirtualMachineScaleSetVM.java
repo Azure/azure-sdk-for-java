@@ -145,7 +145,7 @@ public interface VirtualMachineScaleSetVM extends
     boolean isLinuxPasswordAuthenticationEnabled();
 
     /**
-     * @return true if this is a Windows virtual machine and Vm agent is provisioned, false otherwise
+     * @return true if this is a Windows virtual machine and VM agent is provisioned, false otherwise
      */
     boolean isWindowsVMAgentProvisioned();
 

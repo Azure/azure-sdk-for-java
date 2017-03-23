@@ -17,12 +17,13 @@ public class PasswordProfile {
     /**
      * Password.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "password", required = true)
     private String password;
 
     /**
      * Whether to force a password change on next login.
      */
+    @JsonProperty(value = "forceChangePasswordNextLogin")
     private Boolean forceChangePasswordNextLogin;
 
     /**

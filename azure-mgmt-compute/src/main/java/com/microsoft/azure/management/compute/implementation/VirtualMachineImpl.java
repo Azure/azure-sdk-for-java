@@ -602,7 +602,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withoutVmAgent() {
+    public VirtualMachineImpl withoutVMAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
@@ -620,7 +620,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWinRm(WinRMListener listener) {
+    public VirtualMachineImpl withWinRM(WinRMListener listener) {
         if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
@@ -1350,12 +1350,12 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Observable<VirtualMachineExtension> getExtensionsAsync() {
+    public Observable<VirtualMachineExtension> listExtensionsAsync() {
         return this.virtualMachineExtensions.listAsync();
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> getExtensions() {
+    public Map<String, VirtualMachineExtension> listExtensions() {
         return this.virtualMachineExtensions.asMap();
     }
 

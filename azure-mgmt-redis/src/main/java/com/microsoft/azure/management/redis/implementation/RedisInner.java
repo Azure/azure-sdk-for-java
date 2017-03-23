@@ -1056,9 +1056,10 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RedisForceRebootResponseInner object if successful.
      */
-    public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
-        forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
+    public RedisForceRebootResponseInner forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
+        return forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().body();
     }
 
     /**
@@ -1071,7 +1072,7 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<RedisForceRebootResponseInner> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters, final ServiceCallback<RedisForceRebootResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
@@ -1082,12 +1083,12 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the RedisForceRebootResponseInner object
      */
-    public Observable<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
-        return forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<RedisForceRebootResponseInner> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
+        return forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisForceRebootResponseInner>, RedisForceRebootResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public RedisForceRebootResponseInner call(ServiceResponse<RedisForceRebootResponseInner> response) {
                 return response.body();
             }
         });
@@ -1100,9 +1101,9 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the RedisForceRebootResponseInner object
      */
-    public Observable<ServiceResponse<Void>> forceRebootWithServiceResponseAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
+    public Observable<ServiceResponse<RedisForceRebootResponseInner>> forceRebootWithServiceResponseAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1120,11 +1121,11 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
         }
         Validator.validate(parameters);
         return service.forceReboot(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisForceRebootResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RedisForceRebootResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = forceRebootDelegate(response);
+                        ServiceResponse<RedisForceRebootResponseInner> clientResponse = forceRebootDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1133,10 +1134,9 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
             });
     }
 
-    private ServiceResponse<Void> forceRebootDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<RedisForceRebootResponseInner> forceRebootDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RedisForceRebootResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RedisForceRebootResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1306,6 +1306,8 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     private ServiceResponse<Void> beginImportDataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1475,6 +1477,8 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     private ServiceResponse<Void> beginExportDataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

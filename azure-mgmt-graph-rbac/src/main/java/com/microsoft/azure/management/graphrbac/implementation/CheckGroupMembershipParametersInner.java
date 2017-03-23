@@ -17,14 +17,14 @@ public class CheckGroupMembershipParametersInner {
     /**
      * The object ID of the group to check.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "groupId", required = true)
     private String groupId;
 
     /**
      * The object ID of the contact, group, user, or service principal to check
      * for membership in the specified group.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "memberId", required = true)
     private String memberId;
 
     /**

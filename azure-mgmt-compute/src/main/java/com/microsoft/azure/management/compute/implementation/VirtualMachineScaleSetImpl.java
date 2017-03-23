@@ -788,7 +788,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withVmAgent() {
+    public VirtualMachineScaleSetImpl withVMAgent() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withProvisionVMAgent(true);
@@ -796,7 +796,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutVmAgent() {
+    public VirtualMachineScaleSetImpl withoutVMAgent() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withProvisionVMAgent(false);
@@ -828,7 +828,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withWinRm(WinRMListener listener) {
+    public VirtualMachineScaleSetImpl withWinRM(WinRMListener listener) {
         if (this.inner().virtualMachineProfile().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner()

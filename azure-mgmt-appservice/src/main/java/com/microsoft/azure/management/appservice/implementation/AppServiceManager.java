@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.AppServiceCertificates;
 import com.microsoft.azure.management.appservice.AppServiceDomains;
 import com.microsoft.azure.management.appservice.AppServicePlans;
 import com.microsoft.azure.management.appservice.FunctionApps;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.appservice.WebApps;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -24,6 +25,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Entry point to Azure storage resource management.
  */
+@Beta
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
     // Managers
     private KeyVaultManager keyVaultManager;

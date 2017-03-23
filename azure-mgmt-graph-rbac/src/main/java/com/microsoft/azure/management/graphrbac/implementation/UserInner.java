@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Active Directory user information.
  */
@@ -15,42 +17,44 @@ public class UserInner {
     /**
      * The object ID.
      */
+    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
      * The object type.
      */
+    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
      * The principal name of the user.
      */
+    @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
 
     /**
      * The display name of the user.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The sign-in name of the user.
      */
+    @JsonProperty(value = "signInName")
     private String signInName;
 
     /**
      * The primary email address of the user.
      */
+    @JsonProperty(value = "mail")
     private String mail;
 
     /**
      * The mail alias for the user.
      */
+    @JsonProperty(value = "mailNickname")
     private String mailNickname;
-
-    /**
-     * usageLocation for the user.
-     */
-    private String usageLocation;
 
     /**
      * Get the objectId value.
@@ -64,8 +68,7 @@ public class UserInner {
     /**
      * Set the objectId value.
      *
-     * @param objectId
-     *            the objectId value to set
+     * @param objectId the objectId value to set
      * @return the UserInner object itself.
      */
     public UserInner withObjectId(String objectId) {
@@ -85,8 +88,7 @@ public class UserInner {
     /**
      * Set the objectType value.
      *
-     * @param objectType
-     *            the objectType value to set
+     * @param objectType the objectType value to set
      * @return the UserInner object itself.
      */
     public UserInner withObjectType(String objectType) {
@@ -106,8 +108,7 @@ public class UserInner {
     /**
      * Set the userPrincipalName value.
      *
-     * @param userPrincipalName
-     *            the userPrincipalName value to set
+     * @param userPrincipalName the userPrincipalName value to set
      * @return the UserInner object itself.
      */
     public UserInner withUserPrincipalName(String userPrincipalName) {
@@ -127,8 +128,7 @@ public class UserInner {
     /**
      * Set the displayName value.
      *
-     * @param displayName
-     *            the displayName value to set
+     * @param displayName the displayName value to set
      * @return the UserInner object itself.
      */
     public UserInner withDisplayName(String displayName) {
@@ -148,8 +148,7 @@ public class UserInner {
     /**
      * Set the signInName value.
      *
-     * @param signInName
-     *            the signInName value to set
+     * @param signInName the signInName value to set
      * @return the UserInner object itself.
      */
     public UserInner withSignInName(String signInName) {
@@ -169,8 +168,7 @@ public class UserInner {
     /**
      * Set the mail value.
      *
-     * @param mail
-     *            the mail value to set
+     * @param mail the mail value to set
      * @return the UserInner object itself.
      */
     public UserInner withMail(String mail) {
@@ -190,33 +188,11 @@ public class UserInner {
     /**
      * Set the mailNickname value.
      *
-     * @param mailNickname
-     *            the mailNickname value to set
+     * @param mailNickname the mailNickname value to set
      * @return the UserInner object itself.
      */
     public UserInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
-        return this;
-    }
-
-    /**
-     * Get the usageLocation value.
-     *
-     * @return the usageLocation value
-     */
-    public String usageLocation() {
-        return this.mailNickname;
-    }
-
-    /**
-     * Set the usageLocation value.
-     *
-     * @param usageLocation
-     *            the usageLocation value to set
-     * @return the UserInner object itself.
-     */
-    public UserInner withUsageLocation(String usageLocation) {
-        this.usageLocation = usageLocation;
         return this;
     }
 

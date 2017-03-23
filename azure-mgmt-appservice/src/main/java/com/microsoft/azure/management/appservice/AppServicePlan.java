@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServicePlanIn
  * An immutable client-side representation of an Azure App Service Plan.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface AppServicePlan extends
         GroupableResource<AppServiceManager, AppServicePlanInner>,
         HasName,

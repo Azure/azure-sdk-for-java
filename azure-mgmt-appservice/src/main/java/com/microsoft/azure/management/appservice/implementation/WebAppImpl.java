@@ -24,7 +24,7 @@ class WebAppImpl
 
     private DeploymentSlots deploymentSlots;
 
-    WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
+    WebAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
     }
 

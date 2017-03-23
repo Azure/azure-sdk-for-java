@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An immutable client-side representation of a connection string on a web app.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface ConnectionString {
     /**
      * @return the key of the setting

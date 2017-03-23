@@ -151,6 +151,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.dns',
         'args': '-FT 1'
     },
+    'servicebus': {
+        'dir': 'azure-mgmt-servicebus',
+        'source': 'arm-servicebus/2015-08-01/swagger/servicebus.json',
+        'package': 'com.microsoft.azure.management.servicebus',
+        'args': '-FT 1'
+    },
     'monitor': {
         'dir': 'azure-mgmt-monitor',
         'source': 'arm-monitor/compositeMonitorManagementClient.json',

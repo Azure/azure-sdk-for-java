@@ -61,6 +61,7 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.appservice.WebApps;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
@@ -419,6 +420,7 @@ public final class Azure {
     /**
      * @return entry point to managing application gateways
      */
+    @Beta
     public ApplicationGateways applicationGateways() {
         return networkManager.applicationGateways();
     }
@@ -545,6 +547,7 @@ public final class Azure {
     /**
      * @return entry point to managing web apps.
      */
+    @Beta
     public WebApps webApps() {
         return appServiceManager.webApps();
     }
@@ -552,6 +555,7 @@ public final class Azure {
     /**
      * @return entry point to managing app services.
      */
+    @Beta
     public AppServiceManager appServices() {
         return appServiceManager;
     }

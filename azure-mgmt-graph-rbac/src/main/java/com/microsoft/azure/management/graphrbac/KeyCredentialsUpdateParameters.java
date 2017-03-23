@@ -19,7 +19,7 @@ public class KeyCredentialsUpdateParameters {
     /**
      * A collection of KeyCredentials.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "value", required = true)
     private List<KeyCredentialInner> value;
 
     /**
