@@ -1008,7 +1008,7 @@ public interface VirtualMachine extends
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreateManaged withoutVmAgent();
+            WithWindowsCreateManaged withoutVMAgent();
 
             /**
              * Specifies that automatic updates should be disabled.
@@ -1031,10 +1031,10 @@ public interface VirtualMachine extends
              * <p>
              * Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
-             * @param listener the WinRmListener
+             * @param listener the WinRMListener
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreateManaged withWinRm(WinRMListener listener);
+            WithWindowsCreateManaged withWinRM(WinRMListener listener);
         }
 
         /**
@@ -1049,7 +1049,7 @@ public interface VirtualMachine extends
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreateUnmanaged withoutVmAgent();
+            WithWindowsCreateUnmanaged withoutVMAgent();
 
             /**
              * Specifies that automatic updates should be disabled.
@@ -1072,10 +1072,10 @@ public interface VirtualMachine extends
              * <p>
              * Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
-             * @param listener the WinRmListener
+             * @param listener the WinRMListener
              * @return the stage representing creatable Windows VM definition
              */
-            WithWindowsCreateUnmanaged withWinRm(WinRMListener listener);
+            WithWindowsCreateUnmanaged withWinRM(WinRMListener listener);
         }
 
         /**

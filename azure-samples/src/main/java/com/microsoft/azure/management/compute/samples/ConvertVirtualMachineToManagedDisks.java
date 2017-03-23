@@ -30,7 +30,7 @@ public final class ConvertVirtualMachineToManagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVmName = Utils.createRandomName("VM1");
+        final String linuxVMName = Utils.createRandomName("VM1");
         final String rgName = Utils.createRandomName("rgCOMV");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -42,7 +42,7 @@ public final class ConvertVirtualMachineToManagedDisks {
 
             System.out.println("Creating an un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")

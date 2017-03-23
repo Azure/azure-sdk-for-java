@@ -46,12 +46,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVmName1 = SdkContext.randomResourceName("VM1", 10);
-        final String linuxVmName2 = SdkContext.randomResourceName("VM2", 10);
-        final String linuxVmName3 = SdkContext.randomResourceName("VM3", 10);
+        final String linuxVMName1 = SdkContext.randomResourceName("VM1", 10);
+        final String linuxVMName2 = SdkContext.randomResourceName("VM2", 10);
+        final String linuxVMName3 = SdkContext.randomResourceName("VM3", 10);
         final String customImageName = SdkContext.randomResourceName("img", 10);
         final String rgName = SdkContext.randomResourceName("rgCOMV", 15);
-        final String publicIpDnsLabel = SdkContext.randomResourceName("pip", 10);
+        final String publicIPDnsLabel = SdkContext.randomResourceName("pip", 10);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
         final Region region = Region.US_WEST_CENTRAL;
@@ -68,12 +68,12 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+                    .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
@@ -157,7 +157,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
 
             System.out.println("Creating a Linux VM using custom image: " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
+            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -176,7 +176,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
             // Create another Linux VM using custom image and configure the data disks from image and
             // add another data disk
 
-            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVmName3)
+            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVMName3)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
