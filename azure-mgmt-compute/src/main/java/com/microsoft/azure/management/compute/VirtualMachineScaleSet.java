@@ -958,14 +958,14 @@ public interface VirtualMachineScaleSet extends
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreateManaged withVmAgent();
+            WithWindowsCreateManaged withVMAgent();
 
             /**
              * Disables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreateManaged withoutVmAgent();
+            WithWindowsCreateManaged withoutVMAgent();
 
             /**
              * Enables automatic updates.
@@ -994,10 +994,10 @@ public interface VirtualMachineScaleSet extends
              * <p>
              * Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
-             * @param listener a WinRm listener
+             * @param listener a WinRM listener
              * @return the next stage of the definition
              */
-            WithWindowsCreateManaged withWinRm(WinRMListener listener);
+            WithWindowsCreateManaged withWinRM(WinRMListener listener);
         }
 
         /**
@@ -1012,14 +1012,14 @@ public interface VirtualMachineScaleSet extends
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreateUnmanaged withVmAgent();
+            WithWindowsCreateUnmanaged withVMAgent();
 
             /**
              * Disables the VM agent.
              *
              * @return the next stage of the definition
              */
-            WithWindowsCreateUnmanaged withoutVmAgent();
+            WithWindowsCreateUnmanaged withoutVMAgent();
 
             /**
              * Enables automatic updates.
@@ -1048,10 +1048,10 @@ public interface VirtualMachineScaleSet extends
              * <p>
              * Each call to this method adds the given listener to the list of VM's WinRM listeners.
              *
-             * @param listener a WinRm listener
+             * @param listener a WinRM listener
              * @return the next stage of the definition
              */
-            WithWindowsCreateUnmanaged withWinRm(WinRMListener listener);
+            WithWindowsCreateUnmanaged withWinRM(WinRMListener listener);
         }
 
         /**

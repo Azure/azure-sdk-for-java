@@ -43,9 +43,9 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVmName1 = Utils.createRandomName("VM1");
-        final String linuxVmName2 = Utils.createRandomName("VM2");
-        final String linuxVmName3 = Utils.createRandomName("VM3");
+        final String linuxVMName1 = Utils.createRandomName("VM1");
+        final String linuxVMName2 = Utils.createRandomName("VM2");
+        final String linuxVMName3 = Utils.createRandomName("VM3");
         final String customImageName = Utils.createRandomName("img");
         final String rgName = Utils.createRandomName("rgCOMV");
         final String publicIpDnsLabel = Utils.createRandomName("pip");
@@ -65,7 +65,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -137,7 +137,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating a Linux VM using custom image - " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
+            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -157,7 +157,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
 
             System.out.println("Creating another Linux VM with additional data disks using custom image - " + virtualMachineCustomImage.id());
 
-            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVmName3)
+            VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVMName3)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
