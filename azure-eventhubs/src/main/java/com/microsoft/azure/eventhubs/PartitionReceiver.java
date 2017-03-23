@@ -470,7 +470,18 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 			
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 			{
-				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], action[createReceiveLink], offset[%s], offsetInclusive[%s]", this.internalReceiver.getReceivePath(), lastReceivedOffset, offsetInclusiveFlag));
+				String logReceivePath = "";
+				if (this.internalReceiver == null)
+				{
+					// During startup, internalReceiver is still null. Need to handle this special case when logging during startup
+					// or the reactor thread crashes with NPE when calling internalReceiver.getReceivePath() and no receiving occurs.
+					logReceivePath = "receiverPath[RECEIVER IS NULL]";
+				}
+				else
+				{
+					logReceivePath = "receiverPath[" + this.internalReceiver.getReceivePath() + "]";
+				}
+				TRACE_LOGGER.log(Level.FINE, String.format("%s, action[createReceiveLink], offset[%s], offsetInclusive[%s]", logReceivePath, lastReceivedOffset, offsetInclusiveFlag));
 			}
 
 			filter =  new UnknownDescribedType(AmqpConstants.STRING_FILTER,
