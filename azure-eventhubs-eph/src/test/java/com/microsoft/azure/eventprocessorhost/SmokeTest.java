@@ -1,7 +1,6 @@
-/*
+ /*
  * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information. */
 
 package com.microsoft.azure.eventprocessorhost;
 
@@ -46,8 +45,8 @@ public class SmokeTest extends TestBase
                 // correctness of runtimeInfo is already tested in javaclient - this is only testing for presence of non-default value
 		Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation() != null);
                 Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation().getLastSequenceNumber() > 0);
-                
-		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+
+   testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
 	
 	@Test
@@ -90,19 +89,35 @@ public class SmokeTest extends TestBase
 	@Test
 	public void receiveFromCheckpoint() throws Exception
 	{
-		PerTestSettings firstSettings = receiveFromCheckpointIteration(1, SmokeTest.ANY_NONZERO_COUNT, null);
+		PerTestSettings firstSettings = receiveFromCheckpointIteration(1, SmokeTest.ANY_NONZERO_COUNT, null, PrefabEventProcessor.CheckpointChoices.CKP_EXPLICIT);
 		
-		receiveFromCheckpointIteration(2, firstSettings.outPartitionIds.size(), firstSettings.inoutEPHConstructorArgs.getStorageContainerName());
+		receiveFromCheckpointIteration(2, firstSettings.outPartitionIds.size(), firstSettings.inoutEPHConstructorArgs.getStorageContainerName(),
+				firstSettings.inDoCheckpoint);
 	}
 
-	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedMessages, String containerName) throws Exception
+	@Test
+	public void receiveFromCheckpointNoArgs() throws Exception
 	{
-		PerTestSettings settings = new PerTestSettings("receiveFromCkpt-iter-" + iteration);
+		PerTestSettings firstSettings = receiveFromCheckpointIteration(1, SmokeTest.ANY_NONZERO_COUNT, null, PrefabEventProcessor.CheckpointChoices.CKP_NOARGS);
+		
+		receiveFromCheckpointIteration(2, firstSettings.outPartitionIds.size(), firstSettings.inoutEPHConstructorArgs.getStorageContainerName(),
+				firstSettings.inDoCheckpoint);
+	}
+
+	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedMessages, String containerName,
+			PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception
+	{
+		String distinguisher = "e";
+		if (checkpointCallType == PrefabEventProcessor.CheckpointChoices.CKP_NOARGS)
+		{
+			distinguisher = "n";
+		}
+		PerTestSettings settings = new PerTestSettings("recvFromCkpt-" + iteration + "-" + distinguisher);
 		if (containerName != null)
 		{
 			settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
 		}
-		settings.inDoCheckpoint = true;
+		settings.inDoCheckpoint = checkpointCallType;
 		settings = testSetup(settings);
 
 		for (String id: settings.outPartitionIds)
