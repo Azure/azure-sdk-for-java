@@ -22,6 +22,11 @@ public class AppServicePlansTests extends AppServiceTest {
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
+
     @Test
     public void canCRUDAppServicePlan() throws Exception {
         // CREATE

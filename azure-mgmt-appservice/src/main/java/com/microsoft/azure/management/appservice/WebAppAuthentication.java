@@ -276,6 +276,9 @@ public interface WebAppAuthentication extends
         }
     }
 
+    /**
+     * Grouping of all the web app authentication update stages.
+     */
     interface UpdateStages {
         /**
          * A web app authentication update allowing the default authentication provider to be set.
@@ -371,6 +374,7 @@ public interface WebAppAuthentication extends
 
     /**
      * The entirety of a web app authentication update as part of a web app update.
+     * @param <ParentT> the return type of the final {@link Update#parent()}
      */
     interface Update<ParentT> extends
             Settable<ParentT>,

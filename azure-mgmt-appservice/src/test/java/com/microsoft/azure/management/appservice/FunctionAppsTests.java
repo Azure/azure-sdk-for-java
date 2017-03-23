@@ -50,7 +50,6 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
-                .withNewConsumptionPlan()
                 .create();
         Assert.assertNotNull(functionApp1);
         Assert.assertEquals(Region.US_WEST, functionApp1.region());

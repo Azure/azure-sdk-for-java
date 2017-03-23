@@ -121,11 +121,6 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl withNewStorageAccount() {
-        return withNewStorageAccount(SdkContext.randomResourceName(name(), 20), SkuName.STANDARD_GRS);
-    }
-
-    @Override
     public FunctionAppImpl withNewStorageAccount(String name, SkuName sku) {
         StorageAccount.DefinitionStages.WithGroup storageDefine = manager().storageManager().storageAccounts()
             .define(name)
@@ -156,7 +151,7 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl removeDailyUsageQuota() {
+    public FunctionAppImpl withoutDailyUsageQuota() {
         return withDailyUsageQuota(0);
     }
 
@@ -167,6 +162,9 @@ class FunctionAppImpl
 
     @Override
     public Observable<Indexable> createAsync() {
+        if (inner().serverFarmId() == null) {
+            withNewConsumptionPlan();
+        }
         if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
             withNewStorageAccount(SdkContext.randomResourceName(name(), 20), SkuName.STANDARD_GRS);
         }

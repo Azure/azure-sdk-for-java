@@ -57,9 +57,15 @@ public interface WebApp extends
             ExistingAppServicePlanWithGroup withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
+        /**
+         * A web app definition allowing resource group to be specified when an existing app service plan is used.
+         */
         interface ExistingAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
+        /**
+         * A web app definition allowing resource group to be specified when a new app service plan is to be created.
+         */
         interface NewAppServicePlanWithGroup {
             /**
              * Associates the resource with an existing resource group.
@@ -128,6 +134,14 @@ public interface WebApp extends
              * @return the next stage of the web app definition
              */
             WithCreate withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the web app definition
+             */
+            WithCreate withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
         /**
@@ -167,11 +181,18 @@ public interface WebApp extends
             /**
              * Creates a new app service plan to use.
              *
-             * @param operatingSystem the operating system of the VM running the web app
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the web app update
              */
             Update withNewAppServicePlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the web app update
+             */
+            Update withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
 
             /**
              * Uses an existing app service plan for the web app.

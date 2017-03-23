@@ -8,7 +8,6 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -52,30 +51,36 @@ public interface FunctionApp extends
          */
         interface Blank extends DefinitionWithRegion<NewAppServicePlanWithGroup> {
             /**
-             * Uses an existing app service plan for the web app.
+             * Uses an existing app service plan for the function app.
              * @param appServicePlan the existing app service plan
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app definition
              */
             ExistingAppServicePlanWithGroup withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
+        /**
+         * A function app definition allowing resource group to be specified when an existing app service plan is used.
+         */
         interface ExistingAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
+        /**
+         * A function app definition allowing resource group to be specified when a new app service plan is to be created.
+         */
         interface NewAppServicePlanWithGroup {
             /**
              * Associates the resource with an existing resource group.
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withExistingResourceGroup(String groupName);
+            WithCreate withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
              * @param group an existing resource group to put the resource in
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withExistingResourceGroup(ResourceGroup group);
+            WithCreate withExistingResourceGroup(ResourceGroup group);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -84,7 +89,7 @@ public interface FunctionApp extends
              * @param name the name of the new group
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup(String name);
+            WithCreate withNewResourceGroup(String name);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -93,14 +98,14 @@ public interface FunctionApp extends
              * The group's name is automatically derived from the resource's name.
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup();
+            WithCreate withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+            WithCreate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
@@ -110,7 +115,6 @@ public interface FunctionApp extends
             /**
              * Creates a new consumption plan to use.
              * @return the next stage of the function app definition
-             * @param region the region of the consumption plan
              */
             WithCreate withNewConsumptionPlan();
 
@@ -118,25 +122,33 @@ public interface FunctionApp extends
              * Creates a new free app service plan. This will fail if there are 10 or more
              * free plans in the current subscription.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app definition
              */
             WithCreate withNewFreeAppServicePlan();
 
             /**
              * Creates a new shared app service plan.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app definition
              */
             WithCreate withNewSharedAppServicePlan();
 
             /**
              * Creates a new app service plan to use.
              *
-             * @param operatingSystem the operating system of the VM running the web app
+             * @param operatingSystem the operating system of the VM running the function app
              * @param pricingTier the sku of the app service plan
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app definition
              */
             WithCreate withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the function app definition
+             */
+            WithCreate withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
         /**
@@ -145,12 +157,6 @@ public interface FunctionApp extends
          * triggers, and logs.
          */
         interface WithStorageAccount {
-            /**
-             * Creates a new storage account to use for the function app.
-             * @return the next stage of the function app definition
-             */
-            WithCreate withNewStorageAccount();
-
             /**
              * Creates a new storage account to use for the function app.
              * @param name the name of the storage account
@@ -200,7 +206,7 @@ public interface FunctionApp extends
              * Specifies the daily usage data cap.
              * @return the next stage of the function app definition
              */
-            WithCreate removeDailyUsageQuota();
+            WithCreate withoutDailyUsageQuota();
         }
 
         /**
@@ -228,8 +234,7 @@ public interface FunctionApp extends
         interface WithAppServicePlan {
             /**
              * Creates a new consumption plan to use.
-             * @return the next stage of the function app definition
-             * @param region the region of the consumption plan
+             * @return the next stage of the function app update
              */
             Update withNewConsumptionPlan();
 
@@ -237,14 +242,14 @@ public interface FunctionApp extends
              * Creates a new free app service plan. This will fail if there are 10 or more
              * free plans in the current subscription.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app update
              */
             Update withNewFreeAppServicePlan();
 
             /**
              * Creates a new shared app service plan.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app update
              */
             Update withNewSharedAppServicePlan();
 
@@ -252,9 +257,17 @@ public interface FunctionApp extends
              * Creates a new app service plan to use.
              *
              * @param pricingTier the sku of the app service plan
-             * @return the next stage of the web app definition
+             * @return the next stage of the function app update
              */
             Update withNewAppServicePlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the function app update
+             */
+            Update withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
 
             /**
              * Uses an existing app service plan for the function app.
@@ -290,12 +303,6 @@ public interface FunctionApp extends
         interface WithStorageAccount {
             /**
              * Creates a new storage account to use for the function app.
-             * @return the next stage of the function app update
-             */
-            Update withNewStorageAccount();
-
-            /**
-             * Creates a new storage account to use for the function app.
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the function app update
@@ -317,15 +324,15 @@ public interface FunctionApp extends
             /**
              * Specifies the daily usage data cap.
              * @param quota the daily usage quota
-             * @return the next stage of the function app definition
+             * @return the next stage of the function app update
              */
             Update withDailyUsageQuota(int quota);
 
             /**
              * Specifies the daily usage data cap.
-             * @return the next stage of the function app definition
+             * @return the next stage of the function app update
              */
-            Update removeDailyUsageQuota();
+            Update withoutDailyUsageQuota();
         }
     }
 

@@ -18,6 +18,7 @@ import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Func1;
@@ -45,8 +46,6 @@ abstract class AppServiceBaseImpl<
     FluentWithCreateT,
     FluentUpdateT>
         extends WebAppBaseImpl<FluentT, FluentImplT> {
-
-    private AppServicePlanImpl appServicePlan;
 
     AppServiceBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
@@ -219,9 +218,9 @@ abstract class AppServiceBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan() {
+    private AppServicePlanImpl newDefaultAppServicePlan() {
         String planName = SdkContext.randomResourceName(name() + "plan", 32);
-        appServicePlan = (AppServicePlanImpl) (this.manager().appServicePlans()
+        AppServicePlanImpl appServicePlan = (AppServicePlanImpl) (this.manager().appServicePlans()
                 .define(planName))
                 .withRegion(regionName());
         appServicePlan.withOperatingSystem(operatingSystem());
@@ -230,15 +229,7 @@ abstract class AppServiceBaseImpl<
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
-        if (isInCreateMode()) {
-            addCreatableDependency(appServicePlan);
-        } else {
-            addAppliableDependency(appServicePlan);
-        }
-        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", planName, "");
-        inner().withServerFarmId(id);
-        return (FluentImplT) this;
+        return appServicePlan;
     }
 
     public FluentImplT withNewFreeAppServicePlan() {
@@ -251,13 +242,20 @@ abstract class AppServiceBaseImpl<
 
     @SuppressWarnings("unchecked")
     public FluentImplT withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
-        withNewAppServicePlan();
-        appServicePlan.withOperatingSystem(operatingSystem).withPricingTier(pricingTier);
-        return (FluentImplT) this;
+        return withNewAppServicePlan(newDefaultAppServicePlan().withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
     }
 
     public FluentImplT withNewAppServicePlan(PricingTier pricingTier) {
         return withNewAppServicePlan(operatingSystem(), pricingTier);
+    }
+
+    @SuppressWarnings("unchecked")
+    public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
+        addCreatableDependency(appServicePlanCreatable);
+        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
+                resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanCreatable.name(), "");
+        inner().withServerFarmId(id);
+        return (FluentImplT) this;
     }
 
     @SuppressWarnings("unchecked")
