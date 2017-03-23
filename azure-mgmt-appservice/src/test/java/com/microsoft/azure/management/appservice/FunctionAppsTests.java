@@ -40,8 +40,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME_2);
-        resourceManager.resourceGroups().deleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_2);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
     }
 
     @Test
@@ -49,9 +49,8 @@ public class FunctionAppsTests extends AppServiceTest {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup()
+                .withNewResourceGroup(RG_NAME_1)
                 .withNewConsumptionPlan()
-                .withNewStorageAccount()
                 .create();
         Assert.assertNotNull(functionApp1);
         Assert.assertEquals(Region.US_WEST, functionApp1.region());

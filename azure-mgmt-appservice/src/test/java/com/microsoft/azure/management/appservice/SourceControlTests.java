@@ -19,13 +19,11 @@ import java.util.concurrent.TimeUnit;
 
 public class SourceControlTests extends AppServiceTest {
     private static String WEBAPP_NAME = "";
-    private static String APP_SERVICE_PLAN_NAME = "";
     private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
-        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }

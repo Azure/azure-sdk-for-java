@@ -19,7 +19,6 @@ public class DeploymentSlotsTests extends AppServiceTest {
     private static String SLOT_NAME_1 = "";
     private static String SLOT_NAME_2 = "";
     private static String SLOT_NAME_3 = "";
-    private static String APP_SERVICE_PLAN_NAME = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
@@ -27,7 +26,6 @@ public class DeploymentSlotsTests extends AppServiceTest {
         SLOT_NAME_1 = generateRandomResourceName("java-slot-", 20);
         SLOT_NAME_2 = generateRandomResourceName("java-slot-", 20);
         SLOT_NAME_3 = generateRandomResourceName("java-slot-", 20);
-        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }

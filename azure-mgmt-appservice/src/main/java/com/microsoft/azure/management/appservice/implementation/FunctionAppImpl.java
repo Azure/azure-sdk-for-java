@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.SkuDescription;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -162,5 +163,13 @@ class FunctionAppImpl
     @Override
     public StorageAccount storageAccount() {
         return currentStorageAccount;
+    }
+
+    @Override
+    public Observable<Indexable> createAsync() {
+        if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
+            withNewStorageAccount(SdkContext.randomResourceName(name(), 20), SkuName.STANDARD_GRS);
+        }
+        return super.createAsync();
     }
 }
