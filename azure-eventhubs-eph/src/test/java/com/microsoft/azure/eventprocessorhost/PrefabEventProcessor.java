@@ -11,16 +11,17 @@ import com.microsoft.azure.eventhubs.EventData;
 
 public class PrefabEventProcessor implements IEventProcessor
 {
+	public enum CheckpointChoices { CKP_NONE, CKP_EXPLICIT, CKP_NOARGS };
 	private PrefabProcessorFactory factory;
 	private byte[] telltaleBytes;
-	private boolean doCheckpoint;
+	private CheckpointChoices doCheckpoint;
 	private boolean doMarker;
 	private boolean logEveryMessage;
 	private boolean telltaleOnTimeout;
 	
 	private int eventCount = 0;
 	
-	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, boolean doCheckpoint, boolean doMarker, boolean logEveryMessage)
+	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, CheckpointChoices doCheckpoint, boolean doMarker, boolean logEveryMessage)
 	{
 		this.factory = factory;
 		this.telltaleBytes = telltale.getBytes();
@@ -80,10 +81,20 @@ public class PrefabEventProcessor implements IEventProcessor
 			}
 		}
 		this.factory.addBatch(batchSize);
-		if (doCheckpoint)
+		switch (doCheckpoint)
 		{
+		case CKP_NONE:
+			break;
+			
+		case CKP_EXPLICIT:
 			context.checkpoint(lastEvent);
 			TestUtilities.log("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset() + "\n");
+			break;
+			
+		case CKP_NOARGS:
+			context.checkpoint();
+			TestUtilities.log("P" + context.getPartitionId() + " checkpointed without arguments\n");
+			break;
 		}
 	}
 

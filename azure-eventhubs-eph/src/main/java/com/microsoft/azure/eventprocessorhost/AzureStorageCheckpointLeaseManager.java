@@ -173,20 +173,26 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	return checkpoint;
     }
 
+    @Deprecated
     @Override
     public Future<Void> updateCheckpoint(Checkpoint checkpoint)
     {
-    	return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(checkpoint));
+    	throw new RuntimeException("Use updateCheckpoint(checkpoint, lease) instead."); 
     }
     
-    private Void updateCheckpointSync(Checkpoint checkpoint) throws Exception
+    @Override
+    public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
-    	// Need to fetch the most current lease data so that we can update it correctly.
-    	AzureBlobLease lease = getLeaseSync(checkpoint.getPartitionId());
+    	return EventProcessorHost.getExecutorService().submit(() -> updateCheckpointSync(lease, checkpoint));
+    }
+    
+    private Void updateCheckpointSync(Lease lease, Checkpoint checkpoint) throws Exception
+    {
+    	AzureBlobLease updatedLease = new AzureBlobLease((AzureBlobLease) lease);
     	this.host.logWithHostAndPartition(Level.FINER, checkpoint.getPartitionId(), "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber());
-    	lease.setOffset(checkpoint.getOffset());
-    	lease.setSequenceNumber(checkpoint.getSequenceNumber());
-    	updateLeaseSync(lease);
+    	updatedLease.setOffset(checkpoint.getOffset());
+    	updatedLease.setSequenceNumber(checkpoint.getSequenceNumber());
+    	updateLeaseSync(updatedLease);
     	return null;
     }
 

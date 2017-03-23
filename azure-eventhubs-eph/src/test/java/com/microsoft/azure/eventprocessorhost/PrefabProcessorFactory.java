@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProcessor>
 {
 	private String telltale;
-	private boolean doCheckpoint;
+	private PrefabEventProcessor.CheckpointChoices doCheckpoint;
 	private boolean doMarker;
 	private boolean logEveryMessage;
 	
@@ -20,12 +20,12 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	private int eventsReceivedCount = 0;
         private PartitionContext partitionContextOnEvents;
 	
-	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker)
+	PrefabProcessorFactory(String telltale, PrefabEventProcessor.CheckpointChoices doCheckpoint, boolean doMarker)
 	{
 		this(telltale, doCheckpoint, doMarker, false);
 	}
 	
-	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker, boolean logEveryMessage)
+	PrefabProcessorFactory(String telltale, PrefabEventProcessor.CheckpointChoices doCheckpoint, boolean doMarker, boolean logEveryMessage)
 	{
 		this.telltale = telltale;
 		this.doCheckpoint = doCheckpoint;

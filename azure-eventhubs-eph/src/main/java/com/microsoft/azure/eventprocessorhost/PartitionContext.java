@@ -26,17 +26,14 @@ public class PartitionContext
     private long sequenceNumber = 0;
     private ReceiverRuntimeInformation runtimeInformation;
     
-    private Object offsetSynchronizer;
-    
     PartitionContext(EventProcessorHost host, String partitionId, String eventHubPath, String consumerGroupName)
     {
         this.host = host;
         this.partitionId = partitionId;
         this.eventHubPath = eventHubPath;
         this.consumerGroupName = consumerGroupName;
-        this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
-        
-        this.offsetSynchronizer = new Object();
+
+      this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
     }
 
     public String getConsumerGroupName()
@@ -75,27 +72,18 @@ public class PartitionContext
         this.lease = lease;
     }
 
-    @Deprecated
-    public void setOffsetAndSequenceNumber(EventData event) throws IllegalArgumentException
+    void setOffsetAndSequenceNumber(EventData event)
     {
-    	setOffsetAndSequenceNumber(event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber());
-    }
-    
-    @Deprecated
-    public void setOffsetAndSequenceNumber(String offset, long sequenceNumber) throws IllegalArgumentException
-    {
-    	synchronized (this.offsetSynchronizer)
-    	{
-    		if (sequenceNumber >= this.sequenceNumber)
-    		{
-    			this.offset = offset;
-    			this.sequenceNumber = sequenceNumber;
-    		}
-    		else
-    		{
-    			throw new IllegalArgumentException("new offset " + offset + "//" + sequenceNumber + " less than old " + this.offset + "//" + this.sequenceNumber);
-    		}
-    	}
+		if (sequenceNumber >= this.sequenceNumber)
+		{
+			this.offset = event.getSystemProperties().getOffset();
+			this.sequenceNumber = event.getSystemProperties().getSequenceNumber();
+		}
+		else
+		{
+			this.host.logWithHostAndPartition(Level.FINER, this.partitionId, "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
+					event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring");
+		}
     }
     
     public String getPartitionId()
@@ -157,11 +145,7 @@ public class PartitionContext
     	// of events, and no other thread should be updating this PartitionContext, unless perhaps the
     	// event processor is itself multithreaded... Whether it's required or not, the amount of work
     	// required is trivial, so we might as well do it to be sure.
-    	Checkpoint capturedCheckpoint = null;
-    	synchronized (this.offsetSynchronizer)
-    	{
-    		capturedCheckpoint = new Checkpoint(this.partitionId, this.offset, this.sequenceNumber);
-    	}
+    	Checkpoint capturedCheckpoint = new Checkpoint(this.partitionId, this.offset, this.sequenceNumber);
     	persistCheckpoint(capturedCheckpoint);
     }
 
@@ -176,7 +160,6 @@ public class PartitionContext
      */
     public void checkpoint(EventData event) throws IllegalArgumentException, InterruptedException, ExecutionException
     {
-    	setOffsetAndSequenceNumber(event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber());
     	persistCheckpoint(new Checkpoint(this.partitionId, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber()));
     }
     
@@ -185,24 +168,6 @@ public class PartitionContext
     	this.host.logWithHostAndPartition(Level.FINER, persistThis.getPartitionId(), "Saving checkpoint: " +
     			persistThis.getOffset() + "//" + persistThis.getSequenceNumber());
 		
-    	Checkpoint inStoreCheckpoint = this.host.getCheckpointManager().getCheckpoint(persistThis.getPartitionId()).get();
-    	if ((inStoreCheckpoint == null) || (persistThis.getSequenceNumber() >= inStoreCheckpoint.getSequenceNumber()))
-    	{
-        	if (inStoreCheckpoint == null)
-        	{
-        		inStoreCheckpoint = persistThis;
-        	}
-	    	inStoreCheckpoint.setOffset(persistThis.getOffset());
-	    	inStoreCheckpoint.setSequenceNumber(persistThis.getSequenceNumber());
-	        this.host.getCheckpointManager().updateCheckpoint(inStoreCheckpoint).get();
-    	}
-    	else
-    	{
-    		String msg = "Ignoring out of date checkpoint with offset " + persistThis.getOffset() + "/sequence number " + persistThis.getSequenceNumber() +
-        			" because current persisted checkpoint has higher offset " + inStoreCheckpoint.getOffset() +
-        			"/sequence number " + inStoreCheckpoint.getSequenceNumber(); 
-    		this.host.logWithHostAndPartition(Level.SEVERE, persistThis.getPartitionId(), msg);
-    		throw new IllegalArgumentException(msg);
-    	}
+        this.host.getCheckpointManager().updateCheckpoint(this.lease, persistThis).get();
     }
 }
