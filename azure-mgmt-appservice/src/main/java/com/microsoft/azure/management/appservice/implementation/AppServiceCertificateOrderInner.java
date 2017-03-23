@@ -8,15 +8,17 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.appservice.CertificateDetails;
+import com.microsoft.azure.management.appservice.CertificateOrderStatus;
 import com.microsoft.azure.management.appservice.CertificateProductType;
 import com.microsoft.azure.management.appservice.ProvisioningState;
-import com.microsoft.azure.management.appservice.CertificateOrderStatus;
-import com.microsoft.azure.management.appservice.CertificateDetails;
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * SSL certificate purchase order.
@@ -130,6 +132,13 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     @JsonProperty(value = "properties.isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
+
+    /**
+     * Reasons why App Service Certificate is not renewable at the current
+     * moment.
+     */
+    @JsonProperty(value = "properties.appServiceCertificateNotRenewableReasons")
+    private List<String> appServiceCertificateNotRenewableReasons;
 
     /**
      * Get the certificates value.
@@ -369,6 +378,26 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     public AppServiceCertificateOrderInner withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
         this.isPrivateKeyExternal = isPrivateKeyExternal;
+        return this;
+    }
+
+    /**
+     * Get the appServiceCertificateNotRenewableReasons value.
+     *
+     * @return the appServiceCertificateNotRenewableReasons value
+     */
+    public List<String> appServiceCertificateNotRenewableReasons() {
+        return this.appServiceCertificateNotRenewableReasons;
+    }
+
+    /**
+     * Set the appServiceCertificateNotRenewableReasons value.
+     *
+     * @param appServiceCertificateNotRenewableReasons the appServiceCertificateNotRenewableReasons value to set
+     * @return the AppServiceCertificateOrderInner object itself.
+     */
+    public AppServiceCertificateOrderInner withAppServiceCertificateNotRenewableReasons(List<String> appServiceCertificateNotRenewableReasons) {
+        this.appServiceCertificateNotRenewableReasons = appServiceCertificateNotRenewableReasons;
         return this;
     }
 

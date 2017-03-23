@@ -67,6 +67,6 @@ class AppServiceCertificateOrdersImpl
 
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.inner().deleteCertificateOrderAsync(resourceGroupName, name).toCompletable();
+        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 }

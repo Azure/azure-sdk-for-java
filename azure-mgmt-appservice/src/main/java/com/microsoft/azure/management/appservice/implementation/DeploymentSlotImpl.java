@@ -41,7 +41,7 @@ class DeploymentSlotImpl
     private final WebAppImpl parent;
     private final String name;
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent) {
+    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, final WebAppImpl parent) {
         super(name.replaceAll(".*/", ""), innerObject, configObject, parent.manager());
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
@@ -100,7 +100,7 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentSlotImpl withBrandNewConfiguration() {
-        inner().withSiteConfig(null);
+        this.siteConfig = null;
         return this;
     }
 
@@ -111,18 +111,18 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentSlotImpl withConfigurationFromWebApp(WebApp webApp) {
-        copyConfigurations(webApp.inner().siteConfig(), webApp.appSettings().values(), webApp.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) webApp).siteConfig, webApp.appSettings().values(), webApp.connectionStrings().values());
         return this;
     }
 
     @Override
     public DeploymentSlotImpl withConfigurationFromDeploymentSlot(DeploymentSlot slot) {
-        copyConfigurations(slot.inner().siteConfig(), slot.appSettings().values(), slot.connectionStrings().values());
+        copyConfigurations(((WebAppBaseImpl) slot).siteConfig, slot.appSettings().values(), slot.connectionStrings().values());
         return this;
     }
 
-    private void copyConfigurations(SiteConfigInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
-        inner().withSiteConfig(configInner);
+    private void copyConfigurations(SiteConfigResourceInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
+        this.siteConfig = configInner;
         // app settings
         for (AppSetting appSetting : appSettings) {
             if (appSetting.sticky()) {
@@ -157,12 +157,12 @@ class DeploymentSlotImpl
     }
 
     @Override
-    Observable<SiteConfigInner> getConfigInner() {
+    Observable<SiteConfigResourceInner> getConfigInner() {
         return manager().inner().webApps().getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return manager().inner().webApps().createOrUpdateConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), siteConfig);
     }
 

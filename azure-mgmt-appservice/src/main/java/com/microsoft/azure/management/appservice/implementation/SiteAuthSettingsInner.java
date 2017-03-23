@@ -12,18 +12,21 @@ import com.microsoft.azure.management.appservice.UnauthenticatedClientAction;
 import java.util.List;
 import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
  * Configuration settings for the Azure App Service Authentication /
  * Authorization feature.
  */
-public class SiteAuthSettingsInner {
+@JsonFlatten
+public class SiteAuthSettingsInner extends Resource {
     /**
      * &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization
      * feature is enabled for the current app; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "enabled")
+    @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /**
@@ -32,14 +35,14 @@ public class SiteAuthSettingsInner {
      * The setting in this value can control the behavior of certain features
      * in the Authentication / Authorization module.
      */
-    @JsonProperty(value = "runtimeVersion")
+    @JsonProperty(value = "properties.runtimeVersion")
     private String runtimeVersion;
 
     /**
      * The action to take when an unauthenticated client attempts to access the
      * app. Possible values include: 'RedirectToLoginPage', 'AllowAnonymous'.
      */
-    @JsonProperty(value = "unauthenticatedClientAction")
+    @JsonProperty(value = "properties.unauthenticatedClientAction")
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
     /**
@@ -48,7 +51,7 @@ public class SiteAuthSettingsInner {
      * &lt;code&gt;false&lt;/code&gt;.
      * The default is &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "tokenStoreEnabled")
+    @JsonProperty(value = "properties.tokenStoreEnabled")
     private Boolean tokenStoreEnabled;
 
     /**
@@ -58,7 +61,7 @@ public class SiteAuthSettingsInner {
      * application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
-    @JsonProperty(value = "allowedExternalRedirectUrls")
+    @JsonProperty(value = "properties.allowedExternalRedirectUrls")
     private List<String> allowedExternalRedirectUrls;
 
     /**
@@ -70,7 +73,7 @@ public class SiteAuthSettingsInner {
      * 'AzureActiveDirectory', 'Facebook', 'Google', 'MicrosoftAccount',
      * 'Twitter'.
      */
-    @JsonProperty(value = "defaultProvider")
+    @JsonProperty(value = "properties.defaultProvider")
     private BuiltInAuthenticationProvider defaultProvider;
 
     /**
@@ -78,7 +81,7 @@ public class SiteAuthSettingsInner {
      * can be used to
      * call the token refresh API. The default is 72 hours.
      */
-    @JsonProperty(value = "tokenRefreshExtensionHours")
+    @JsonProperty(value = "properties.tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /**
@@ -89,7 +92,7 @@ public class SiteAuthSettingsInner {
      * More information on OpenID Connect:
      * http://openid.net/specs/openid-connect-core-1_0.html.
      */
-    @JsonProperty(value = "clientId")
+    @JsonProperty(value = "properties.clientId")
     private String clientId;
 
     /**
@@ -102,7 +105,7 @@ public class SiteAuthSettingsInner {
      * More information on OpenID Connect:
      * http://openid.net/specs/openid-connect-core-1_0.html.
      */
-    @JsonProperty(value = "clientSecret")
+    @JsonProperty(value = "properties.clientSecret")
     private String clientSecret;
 
     /**
@@ -114,7 +117,7 @@ public class SiteAuthSettingsInner {
      * More information on OpenID Connect Discovery:
      * http://openid.net/specs/openid-connect-discovery-1_0.html.
      */
-    @JsonProperty(value = "issuer")
+    @JsonProperty(value = "properties.issuer")
     private String issuer;
 
     /**
@@ -123,7 +126,7 @@ public class SiteAuthSettingsInner {
      * value is always considered an
      * allowed audience, regardless of this setting.
      */
-    @JsonProperty(value = "allowedAudiences")
+    @JsonProperty(value = "properties.allowedAudiences")
     private List<String> allowedAudiences;
 
     /**
@@ -131,7 +134,7 @@ public class SiteAuthSettingsInner {
      * when
      * a user logs in. Each parameter must be in the form "key=value".
      */
-    @JsonProperty(value = "additionalLoginParams")
+    @JsonProperty(value = "properties.additionalLoginParams")
     private List<String> additionalLoginParams;
 
     /**
@@ -140,7 +143,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
-    @JsonProperty(value = "googleClientId")
+    @JsonProperty(value = "properties.googleClientId")
     private String googleClientId;
 
     /**
@@ -149,7 +152,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
-    @JsonProperty(value = "googleClientSecret")
+    @JsonProperty(value = "properties.googleClientSecret")
     private String googleClientSecret;
 
     /**
@@ -160,7 +163,7 @@ public class SiteAuthSettingsInner {
      * Google Sign-In documentation:
      * https://developers.google.com/identity/sign-in/web/.
      */
-    @JsonProperty(value = "googleOAuthScopes")
+    @JsonProperty(value = "properties.googleOAuthScopes")
     private List<String> googleOAuthScopes;
 
     /**
@@ -169,7 +172,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
-    @JsonProperty(value = "facebookAppId")
+    @JsonProperty(value = "properties.facebookAppId")
     private String facebookAppId;
 
     /**
@@ -178,7 +181,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
-    @JsonProperty(value = "facebookAppSecret")
+    @JsonProperty(value = "properties.facebookAppSecret")
     private String facebookAppSecret;
 
     /**
@@ -188,7 +191,7 @@ public class SiteAuthSettingsInner {
      * Facebook Login documentation:
      * https://developers.facebook.com/docs/facebook-login.
      */
-    @JsonProperty(value = "facebookOAuthScopes")
+    @JsonProperty(value = "properties.facebookOAuthScopes")
     private List<String> facebookOAuthScopes;
 
     /**
@@ -196,7 +199,7 @@ public class SiteAuthSettingsInner {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
      */
-    @JsonProperty(value = "twitterConsumerKey")
+    @JsonProperty(value = "properties.twitterConsumerKey")
     private String twitterConsumerKey;
 
     /**
@@ -205,7 +208,7 @@ public class SiteAuthSettingsInner {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in.
      */
-    @JsonProperty(value = "twitterConsumerSecret")
+    @JsonProperty(value = "properties.twitterConsumerSecret")
     private String twitterConsumerSecret;
 
     /**
@@ -215,7 +218,7 @@ public class SiteAuthSettingsInner {
      * Microsoft Account OAuth documentation:
      * https://dev.onedrive.com/auth/msa_oauth.htm.
      */
-    @JsonProperty(value = "microsoftAccountClientId")
+    @JsonProperty(value = "properties.microsoftAccountClientId")
     private String microsoftAccountClientId;
 
     /**
@@ -225,7 +228,7 @@ public class SiteAuthSettingsInner {
      * Microsoft Account OAuth documentation:
      * https://dev.onedrive.com/auth/msa_oauth.htm.
      */
-    @JsonProperty(value = "microsoftAccountClientSecret")
+    @JsonProperty(value = "properties.microsoftAccountClientSecret")
     private String microsoftAccountClientSecret;
 
     /**
@@ -236,7 +239,7 @@ public class SiteAuthSettingsInner {
      * Microsoft Account Scopes and permissions documentation:
      * https://msdn.microsoft.com/en-us/library/dn631845.aspx.
      */
-    @JsonProperty(value = "microsoftAccountOAuthScopes")
+    @JsonProperty(value = "properties.microsoftAccountOAuthScopes")
     private List<String> microsoftAccountOAuthScopes;
 
     /**

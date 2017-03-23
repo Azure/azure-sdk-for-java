@@ -68,9 +68,9 @@ class AppServiceCertificateOrderImpl
     public Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
         final AppServiceCertificateOrderImpl self = this;
         return this.manager().inner().appServiceCertificateOrders().listCertificatesAsync(resourceGroupName(), name())
-                .map(new Func1<Page<AppServiceCertificateInner>, AppServiceCertificateKeyVaultBinding>() {
+                .map(new Func1<Page<AppServiceCertificateResourceInner>, AppServiceCertificateKeyVaultBinding>() {
                     @Override
-                    public AppServiceCertificateKeyVaultBinding call(Page<AppServiceCertificateInner> appServiceCertificateInnerPage) {
+                    public AppServiceCertificateKeyVaultBinding call(Page<AppServiceCertificateResourceInner> appServiceCertificateInnerPage) {
                         // There can only be one binding associated with an order
                         if (appServiceCertificateInnerPage.items() == null || appServiceCertificateInnerPage.items().isEmpty()) {
                             return null;
@@ -168,16 +168,16 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public Observable<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault) {
-        AppServiceCertificateInner certInner = new AppServiceCertificateInner();
+        AppServiceCertificateResourceInner certInner = new AppServiceCertificateResourceInner();
         certInner.withLocation(vault.regionName());
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName);
         final AppServiceCertificateOrderImpl self = this;
         return this.manager().inner().appServiceCertificateOrders().createOrUpdateCertificateAsync(
                 resourceGroupName(), name(), certificateName, certInner)
-                .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
+                .map(new Func1<AppServiceCertificateResourceInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
-                    public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {
+                    public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateResourceInner appServiceCertificateInner) {
                         return new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInner, self);
                     }
                 });
