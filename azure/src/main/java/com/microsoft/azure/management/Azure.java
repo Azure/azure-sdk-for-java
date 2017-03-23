@@ -12,6 +12,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
+import com.microsoft.azure.management.monitor.AutoscaleSettings;
+import com.microsoft.azure.management.monitor.implementation.MonitorManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -84,6 +86,7 @@ public final class Azure {
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
+    private final MonitorManager monitorManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -301,6 +304,7 @@ public final class Azure {
         this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
+        this.monitorManager = MonitorManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -565,5 +569,12 @@ public final class Azure {
      */
     public SqlServers sqlServers() {
         return sqlServerManager.sqlServers();
+    }
+
+    /**
+     * @return entry point to managing autoscale settings.
+     */
+    public AutoscaleSettings autoscaleSettings() {
+        return monitorManager.autoscaleSettings();
     }
 }

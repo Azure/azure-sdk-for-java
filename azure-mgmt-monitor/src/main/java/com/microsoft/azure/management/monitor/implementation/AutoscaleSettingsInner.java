@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.monitor.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -39,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AutoscaleSettings.
  */
-public class AutoscaleSettingsInner {
+public class AutoscaleSettingsInner implements InnerSupportsGet<AutoscaleSettingResourceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AutoscaleSettingResourceInner> {
     /** The Retrofit service to perform REST calls. */
     private AutoscaleSettingsService service;
     /** The service client containing this operation class. */
@@ -73,9 +76,9 @@ public class AutoscaleSettingsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("autoscaleSettingName") String autoscaleSettingName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AutoscaleSettings get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AutoscaleSettings getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("autoscaleSettingName") String autoscaleSettingName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("autoscaleSettingName") String autoscaleSettingName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.monitor.AutoscaleSettings listByResourceGroupNext" })
         @GET
@@ -122,6 +125,11 @@ public class AutoscaleSettingsInner {
             serviceCallback);
     }
 
+    @Override
+    public Observable<Page<AutoscaleSettingResourceInner>> listAsync() {
+        return null;
+    }
+
     /**
      * Lists the autoscale settings for a resource group.
      *
@@ -137,6 +145,11 @@ public class AutoscaleSettingsInner {
                     return response.body();
                 }
             });
+    }
+
+    @Override
+    public PagedList<AutoscaleSettingResourceInner> list() {
+        return null;
     }
 
     /**
@@ -495,8 +508,8 @@ public class AutoscaleSettingsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AutoscaleSettingResourceInner object if successful.
      */
-    public AutoscaleSettingResourceInner get(String resourceGroupName, String autoscaleSettingName) {
-        return getWithServiceResponseAsync(resourceGroupName, autoscaleSettingName).toBlocking().single().body();
+    public AutoscaleSettingResourceInner getByResourceGroup(String resourceGroupName, String autoscaleSettingName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, autoscaleSettingName).toBlocking().single().body();
     }
 
     /**
@@ -508,8 +521,8 @@ public class AutoscaleSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AutoscaleSettingResourceInner> getAsync(String resourceGroupName, String autoscaleSettingName, final ServiceCallback<AutoscaleSettingResourceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, autoscaleSettingName), serviceCallback);
+    public ServiceFuture<AutoscaleSettingResourceInner> getByResourceGroupAsync(String resourceGroupName, String autoscaleSettingName, final ServiceCallback<AutoscaleSettingResourceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, autoscaleSettingName), serviceCallback);
     }
 
     /**
@@ -520,8 +533,8 @@ public class AutoscaleSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoscaleSettingResourceInner object
      */
-    public Observable<AutoscaleSettingResourceInner> getAsync(String resourceGroupName, String autoscaleSettingName) {
-        return getWithServiceResponseAsync(resourceGroupName, autoscaleSettingName).map(new Func1<ServiceResponse<AutoscaleSettingResourceInner>, AutoscaleSettingResourceInner>() {
+    public Observable<AutoscaleSettingResourceInner> getByResourceGroupAsync(String resourceGroupName, String autoscaleSettingName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, autoscaleSettingName).map(new Func1<ServiceResponse<AutoscaleSettingResourceInner>, AutoscaleSettingResourceInner>() {
             @Override
             public AutoscaleSettingResourceInner call(ServiceResponse<AutoscaleSettingResourceInner> response) {
                 return response.body();
@@ -537,7 +550,7 @@ public class AutoscaleSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoscaleSettingResourceInner object
      */
-    public Observable<ServiceResponse<AutoscaleSettingResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String autoscaleSettingName) {
+    public Observable<ServiceResponse<AutoscaleSettingResourceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String autoscaleSettingName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -548,12 +561,12 @@ public class AutoscaleSettingsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2015-04-01";
-        return service.get(resourceGroupName, autoscaleSettingName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(resourceGroupName, autoscaleSettingName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AutoscaleSettingResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AutoscaleSettingResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AutoscaleSettingResourceInner> clientResponse = getDelegate(response);
+                        ServiceResponse<AutoscaleSettingResourceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -562,7 +575,7 @@ public class AutoscaleSettingsInner {
             });
     }
 
-    private ServiceResponse<AutoscaleSettingResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AutoscaleSettingResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AutoscaleSettingResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AutoscaleSettingResourceInner>() { }.getType())
                 .registerError(CloudException.class)
