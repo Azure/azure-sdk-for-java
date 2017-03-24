@@ -35,18 +35,20 @@ class WebAppAuthenticationImpl<
     WebAppAuthenticationImpl(SiteAuthSettingsInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent) {
         super(inner);
         this.parent = parent;
+        inner.withLocation(parent.regionName());
         inner.withTokenStoreEnabled(true);
     }
 
     @Override
     public FluentImplT attach() {
-        parent().withAuthentication(this);
+        parent.withAuthentication(this);
         return parent();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT parent() {
+        parent.withAuthentication(this);
         return (FluentImplT) this.parent;
     }
 
