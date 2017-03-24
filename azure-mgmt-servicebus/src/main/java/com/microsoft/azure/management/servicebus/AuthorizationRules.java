@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByNameAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
  * @param <RuleT> the specific rule type
  */
 @Fluent
+@Beta
 public interface AuthorizationRules<RuleT> extends
         SupportsListingAsync<RuleT>,
         SupportsGettingByNameAsync<RuleT>,

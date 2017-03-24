@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -13,6 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 /**
  * Type representing authorization rule defined for queue.
  */
+@Fluent
+@Beta
 public interface QueueAuthorizationRule extends
         AuthorizationRule<QueueAuthorizationRule>,
         Updatable<QueueAuthorizationRule.Update> {

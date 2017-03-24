@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  * Defines values for NamespaceSku.
  */
+@LangDefinition
 public final class NamespaceSku {
     /** Static value NamespaceSku for BASIC. */
     public static final NamespaceSku BASIC = new NamespaceSku(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));

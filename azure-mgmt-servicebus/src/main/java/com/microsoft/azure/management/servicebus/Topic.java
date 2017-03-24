@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -22,6 +23,7 @@ import org.joda.time.Period;
  * Type representing Service Bus topic.
  */
 @Fluent
+@Beta
 public interface Topic extends
         IndependentChildResource<ServiceBusManager, TopicInner>,
         Refreshable<Topic>,

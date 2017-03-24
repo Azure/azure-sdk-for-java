@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -21,6 +22,7 @@ import java.util.List;
  * @param <RuleT> the specific rule type
  */
 @Fluent
+@Beta
 public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
         IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleInner>,
         Refreshable<RuleT> {
