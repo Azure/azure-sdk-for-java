@@ -18,7 +18,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 
 /**
- * Type representing service bus queue.
+ * Type representing Service Bus queue.
  */
 @Fluent
 public interface Queue extends
@@ -38,7 +38,7 @@ public interface Queue extends
      */
     DateTime updatedAt();
     /**
-     * @return the maximum size of memory allocated for the queue in megabytes.
+     * @return the maximum size of memory allocated for the queue in megabytes
      */
     long maxSizeInMB();
     /**
@@ -82,7 +82,7 @@ public interface Queue extends
      */
     Period defaultMessageTtlDuration();
     /**
-     * @return the duration of the duplicate detection history.
+     * @return the duration of the duplicate detection history
      */
     Period duplicateMessageDetectionHistoryDuration();
     /**
@@ -119,12 +119,12 @@ public interface Queue extends
      */
     EntityStatus status();
     /**
-     * @return entry point to manage authorization rules for the service bus queue
+     * @return entry point to manage authorization rules for the Service Bus queue
      */
     QueueAuthorizationRules authorizationRules();
 
     /**
-     * The entirety of the queue definition.
+     * The entirety of the Service Bus queue definition.
      */
     interface Definition extends
             Queue.DefinitionStages.Blank,
@@ -132,7 +132,7 @@ public interface Queue extends
     }
 
     /**
-     * Grouping of queue definition stages.
+     * Grouping of Service Bus queue definition stages.
      */
     interface DefinitionStages {
         /**
@@ -167,7 +167,7 @@ public interface Queue extends
 
             /**
              * Specifies that the default partitioning should be disabled on this queue.
-             * Note: if the parent service bus is Premium SKU then partition cannot be
+             * Note: if the parent Service Bus is Premium SKU then partition cannot be
              * disabled
              *
              * @return the next stage of queue definition
@@ -251,7 +251,7 @@ public interface Queue extends
         interface WithMessageBatching {
             /**
              * Specifies that the default batching should be disabled on this queue.
-             * With batching service bus can batch multiple message when it write or delete messages
+             * With batching Service Bus can batch multiple message when it write or delete messages
              * from it's internal store.
              *
              * @return the next stage of queue definition
@@ -352,7 +352,7 @@ public interface Queue extends
     }
 
     /**
-     * The template for a queue update operation, containing all the settings that can be modified.
+     * The template for Service Bus queue update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<Queue>,
@@ -370,7 +370,7 @@ public interface Queue extends
     }
 
     /**
-     * Grouping of queue update stages.
+     * Grouping of Service Bus queue update stages.
      */
     interface UpdateStages {
         /**
@@ -470,7 +470,7 @@ public interface Queue extends
          */
         interface WithMessageBatching {
             /**
-             * Specifies that service bus can batch multiple message when it write messages to or delete
+             * Specifies that Service Bus can batch multiple message when it write messages to or delete
              * messages from it's internal store. This increases the throughput.
              *
              * @return the next stage of queue update
@@ -478,7 +478,7 @@ public interface Queue extends
             Update withMessageBatching();
 
             /**
-             * Specifies that batching of messages should be disabled when service bus write messages to
+             * Specifies that batching of messages should be disabled when Service Bus write messages to
              * or delete messages from it's internal store.
              *
              * @return the next stage of queue update

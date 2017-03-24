@@ -28,7 +28,7 @@ import java.util.List;
  * Implementation for Queue.
  */
 @LangDefinition
-class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, QueueInner, QueueImpl, ServiceBusManager>
+class QueueImpl extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceImpl, QueueInner, QueueImpl, ServiceBusManager>
         implements
         Queue,
         Queue.Definition,
@@ -334,19 +334,19 @@ class QueueImpl extends IndependentChildResourceImpl<Queue, NamespaceImpl, Queue
 
     @Override
     public QueueImpl withNewSendRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSendingEnabled());
         return this;
     }
 
     @Override
     public QueueImpl withNewListenRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListeningEnabled());
         return this;
     }
 
     @Override
     public QueueImpl withNewManageRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManagementEnabled());
         return this;
     }
 

@@ -264,7 +264,7 @@ public class TimeSpan {
     }
 
     /**
-     * @return TimeSpan in [-][d.]hh:mm:ss[.fffffff] format.
+     * @return TimeSpan in [-][d.]hh:mm:ss[.fffffff] format
      */
     public String toString() {
         long totalTicks = totalTicks();

@@ -66,16 +66,16 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withSku(NamespaceSku.PREMIUM_CAPACITY1)
                 .create();
 
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .getByGroup(RG_NAME, namespaceDNSLabel);
         Assert.assertNotNull(namespace);
         Assert.assertNotNull(namespace.inner());
 
-        PagedList<Namespace> namespaces = serviceBusManager.namespaces().listByGroup(RG_NAME);
+        PagedList<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByGroup(RG_NAME);
         Assert.assertNotNull(namespaces);
         Assert.assertTrue(namespaces.size() > 0);
         boolean found = false;
-        for (Namespace n : namespaces) {
+        for (ServiceBusNamespace n : namespaces) {
             if (n.name().equalsIgnoreCase(namespace.name())) {
                 found = true;
                 break;
@@ -112,7 +112,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withSku(NamespaceSku.PREMIUM_CAPACITY2)
                 .apply();
         Assert.assertTrue(namespace.sku().equals(NamespaceSku.PREMIUM_CAPACITY2));
-        // TODO: There is a bug in LRO implementation of Namespace DELETE operation (Last poll returns 404, reported this to RP]
+        // TODO: There is a bug in LRO implementation of ServiceBusNamespace DELETE operation (Last poll returns 404, reported this to RP]
         //
         // serviceBusManager.namespaces().deleteByGroup(RG_NAME, namespace.name());
     }
@@ -125,7 +125,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
@@ -202,7 +202,7 @@ public class ServiceBusOperationsTests extends TestBase {
         String queueName = generateRandomResourceName("queue1-", 15);
         // Create NS with Queue
         //
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
@@ -242,7 +242,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
@@ -316,7 +316,7 @@ public class ServiceBusOperationsTests extends TestBase {
         String topicName = generateRandomResourceName("topic1-", 15);
         // Create NS with Topic
         //
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
@@ -361,7 +361,7 @@ public class ServiceBusOperationsTests extends TestBase {
         String nsRuleName = generateRandomResourceName("nsrule1-", 15);
         // Create NS with Queue, Topic and authorization rule
         //
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)
@@ -405,12 +405,12 @@ public class ServiceBusOperationsTests extends TestBase {
 
         QueueAuthorizationRule qRule = queue.authorizationRules()
                 .define("rule1")
-                .withListen()
+                .withListeningEnabled()
                 .create();
         Assert.assertNotNull(qRule);
         Assert.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
         qRule = qRule.update()
-                .withManage()
+                .withManagementEnabled()
                 .apply();
         Assert.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
         PagedList<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
@@ -434,12 +434,12 @@ public class ServiceBusOperationsTests extends TestBase {
         Assert.assertNotNull(topic.inner());
         TopicAuthorizationRule tRule = topic.authorizationRules()
                 .define("rule2")
-                .withSend()
+                .withSendingEnabled()
                 .create();
         Assert.assertNotNull(tRule);
         Assert.assertNotNull(tRule.rights().contains(AccessRights.SEND));
         tRule = tRule.update()
-                .withManage()
+                .withManagementEnabled()
                 .apply();
         Assert.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
         PagedList<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
@@ -464,8 +464,8 @@ public class ServiceBusOperationsTests extends TestBase {
                 .checkNameAvailability(namespaceDNSLabel);
         Assert.assertNotNull(availabilityResult);
         if (!availabilityResult.isAvailable()) {
-            Assert.assertNotNull(availabilityResult.reason());
-            Assert.assertNotNull(availabilityResult.message());
+            Assert.assertNotNull(availabilityResult.unavailabilityReason());
+            Assert.assertNotNull(availabilityResult.unavailabilityMessage());
         }
     }
 
@@ -481,7 +481,7 @@ public class ServiceBusOperationsTests extends TestBase {
         String subscriptionName = generateRandomResourceName("sub1-", 15);
         // Create NS with Topic
         //
-        Namespace namespace = serviceBusManager.namespaces()
+        ServiceBusNamespace namespace = serviceBusManager.namespaces()
                 .define(namespaceDNSLabel)
                 .withRegion(region)
                 .withNewResourceGroup(rgCreatable)

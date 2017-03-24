@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class for service bus child entities.
+ * Base class for Service Bus child entities.
  * Note: When we refactor 'IndependentChildResourcesImpl', move features of this type
  * to 'IndependentChildResourcesImpl' and remove this type.
  *

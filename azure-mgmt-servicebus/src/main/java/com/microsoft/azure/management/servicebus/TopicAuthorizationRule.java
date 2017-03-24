@@ -27,7 +27,7 @@ public interface TopicAuthorizationRule extends
     String topicName();
 
     /**
-     * Grouping of service bus topic authorization rule definition stages.
+     * Grouping of Service Bus topic authorization rule definition stages.
      */
     interface DefinitionStages {
         /**
@@ -61,11 +61,5 @@ public interface TopicAuthorizationRule extends
     interface Update extends
             Appliable<TopicAuthorizationRule>,
             AuthorizationRule.UpdateStages.WithListenOrSendOrManage<TopicAuthorizationRule.Update> {
-    }
-
-    /**
-     * Grouping of service bus topic rule update stages.
-     */
-    interface UpdateStages {
     }
 }

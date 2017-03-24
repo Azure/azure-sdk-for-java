@@ -22,7 +22,7 @@ public interface NamespaceAuthorizationRule extends
     String namespaceName();
 
     /**
-     * Grouping of service bus namespace authorization rule definition stages.
+     * Grouping of Service Bus namespace authorization rule definition stages.
      */
     interface DefinitionStages {
         /**
@@ -54,11 +54,5 @@ public interface NamespaceAuthorizationRule extends
     interface Update extends
             Appliable<NamespaceAuthorizationRule>,
             AuthorizationRule.UpdateStages.WithListenOrSendOrManage<Update> {
-    }
-
-    /**
-     * Grouping of service bus namespace authorization rule update stages.
-     */
-    interface UpdateStages {
     }
 }

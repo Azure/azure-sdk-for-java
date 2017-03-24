@@ -27,7 +27,7 @@ public interface QueueAuthorizationRule extends
     String queueName();
 
     /**
-     * Grouping of service bus queue authorization rule definition stages.
+     * Grouping of Service Bus queue authorization rule definition stages.
      */
     interface DefinitionStages {
         /**
@@ -59,11 +59,5 @@ public interface QueueAuthorizationRule extends
     interface Update extends
             Appliable<QueueAuthorizationRule>,
             AuthorizationRule.UpdateStages.WithListenOrSendOrManage<QueueAuthorizationRule.Update> {
-    }
-
-    /**
-     * Grouping of service bus queue rule update stages.
-     */
-    interface UpdateStages {
     }
 }

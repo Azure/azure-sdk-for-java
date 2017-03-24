@@ -8,30 +8,30 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.servicebus.CheckNameAvailabilityResult;
-import com.microsoft.azure.management.servicebus.Namespace;
-import com.microsoft.azure.management.servicebus.Namespaces;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation for Namespaces.
+ * Implementation for ServiceBusNamespaces.
  */
-class NamespacesImpl extends TopLevelModifiableResourcesImpl<
-        Namespace,
-        NamespaceImpl,
+class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
+        ServiceBusNamespace,
+        ServiceBusNamespaceImpl,
         NamespaceInner,
         NamespacesInner,
         ServiceBusManager>
-        implements Namespaces {
+        implements ServiceBusNamespaces {
 
-    NamespacesImpl(NamespacesInner innerCollection, ServiceBusManager manager) {
+    ServiceBusNamespacesImpl(NamespacesInner innerCollection, ServiceBusManager manager) {
         super(innerCollection, manager);
     }
 
     @Override
-    public Namespace.DefinitionStages.Blank define(String name) {
+    public ServiceBusNamespace.DefinitionStages.Blank define(String name) {
         return wrapModel(name);
     }
 
@@ -45,7 +45,7 @@ class NamespacesImpl extends TopLevelModifiableResourcesImpl<
         return this.inner().checkNameAvailabilityMethodAsync(name).map(new Func1<CheckNameAvailabilityResultInner, CheckNameAvailabilityResult>() {
             @Override
             public CheckNameAvailabilityResult call(CheckNameAvailabilityResultInner checkNameAvailabilityResultInner) {
-                return new CheckNameAvailabilityResult(checkNameAvailabilityResultInner);
+                return new CheckNameAvailabilityResultImpl(checkNameAvailabilityResultInner);
             }
         });
     }
@@ -56,15 +56,15 @@ class NamespacesImpl extends TopLevelModifiableResourcesImpl<
     }
 
     @Override
-    protected NamespaceImpl wrapModel(String name) {
-        return new NamespaceImpl(name,
+    protected ServiceBusNamespaceImpl wrapModel(String name) {
+        return new ServiceBusNamespaceImpl(name,
                 new NamespaceInner(),
                 this.manager());
     }
 
     @Override
-    protected NamespaceImpl wrapModel(NamespaceInner inner) {
-        return new NamespaceImpl(inner.name(),
+    protected ServiceBusNamespaceImpl wrapModel(NamespaceInner inner) {
+        return new ServiceBusNamespaceImpl(inner.name(),
                 inner,
                 this.manager());
     }

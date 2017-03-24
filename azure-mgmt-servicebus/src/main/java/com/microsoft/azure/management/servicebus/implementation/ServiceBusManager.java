@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.servicebus.Namespaces;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
  */
 public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClientImpl> {
     // Collections
-    private NamespacesImpl namespaces;
+    private ServiceBusNamespacesImpl namespaces;
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -88,11 +88,11 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
     }
 
     /**
-     * @return the service bus namespace management API entry point
+     * @return the Service Bus namespace management API entry point
      */
-    public Namespaces namespaces() {
+    public ServiceBusNamespaces namespaces() {
         if (namespaces == null) {
-            namespaces = new NamespacesImpl(this.inner().namespaces(), this);
+            namespaces = new ServiceBusNamespacesImpl(this.inner().namespaces(), this);
         }
         return namespaces;
     }

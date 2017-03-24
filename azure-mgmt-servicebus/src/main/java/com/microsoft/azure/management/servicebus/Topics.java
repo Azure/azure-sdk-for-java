@@ -17,7 +17,7 @@ import com.microsoft.azure.management.servicebus.implementation.TopicsInner;
 
 
 /**
- * Entry point to service bus topic management API in Azure.
+ * Entry point to Service Bus topic management API in Azure.
  */
 @Fluent
 public interface Topics extends

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.servicebus.Namespace;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRules;
 import com.microsoft.rest.ServiceCallback;
@@ -28,7 +28,7 @@ class NamespaceAuthorizationRulesImpl
         SharedAccessAuthorizationRuleInner,
         NamespacesInner,
         ServiceBusManager,
-        Namespace>
+        ServiceBusNamespace>
         implements NamespaceAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;

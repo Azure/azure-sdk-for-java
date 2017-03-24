@@ -9,7 +9,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.servicebus.Namespace;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.management.servicebus.Topics;
 import com.microsoft.rest.ServiceCallback;
@@ -28,7 +28,7 @@ class TopicsImpl
         TopicInner,
         TopicsInner,
         ServiceBusManager,
-        Namespace>
+        ServiceBusNamespace>
         implements Topics {
     private final String resourceGroupName;
     private final String namespaceName;

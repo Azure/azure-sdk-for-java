@@ -16,7 +16,7 @@ import rx.functions.Func1;
  * Implementation for NamespaceAuthorizationRule.
  */
 class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<NamespaceAuthorizationRule,
-        NamespaceImpl,
+        ServiceBusNamespaceImpl,
         SharedAccessAuthorizationRuleInner,
         NamespaceAuthorizationRuleImpl,
         ServiceBusManager>

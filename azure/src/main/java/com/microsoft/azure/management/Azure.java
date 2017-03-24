@@ -12,6 +12,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Disks;
 import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
+import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -83,6 +85,7 @@ public final class Azure {
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
+    private final ServiceBusManager serviceBusManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -300,6 +303,7 @@ public final class Azure {
         this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
+        this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -562,4 +566,9 @@ public final class Azure {
     public SqlServers sqlServers() {
         return sqlServerManager.sqlServers();
     }
+
+    /**
+     * @return entry point to managing Service Bus.
+     */
+    public ServiceBusNamespaces serviceBusNamespaces() { return serviceBusManager.namespaces(); }
 }

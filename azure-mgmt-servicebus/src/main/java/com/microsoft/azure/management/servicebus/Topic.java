@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 
 /**
- * Type representing service bus topic.
+ * Type representing Service Bus topic.
  */
 @Fluent
 public interface Topic extends
@@ -29,7 +29,7 @@ public interface Topic extends
         HasInner<TopicInner> {
 
     /**
-     * @return the exact time the topic was created.
+     * @return the exact time the topic was created
      */
     DateTime createdAt();
     /**
@@ -41,7 +41,7 @@ public interface Topic extends
      */
     DateTime updatedAt();
     /**
-     * @return the maximum size of memory allocated for the topic in megabytes.
+     * @return the maximum size of memory allocated for the topic in megabytes
      */
     long maxSizeInMB();
     /**
@@ -61,19 +61,19 @@ public interface Topic extends
      */
     boolean isPartitioningEnabled();
     /**
-     * @return indicates if this topic requires duplicate detection.
+     * @return indicates if this topic requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
     /**
-     * @return the idle duration after which the topic is automatically deleted.
+     * @return the idle duration after which the topic is automatically deleted
      */
     long deleteOnIdleDurationInMinutes();
     /**
-     * @return the duration after which the message expires, starting from when the message is sent to topic.
+     * @return the duration after which the message expires, starting from when the message is sent to topic
      */
     Period defaultMessageTtlDuration();
     /**
-     * @return the duration of the duplicate detection history.
+     * @return the duration of the duplicate detection history
      */
     Period duplicateMessageDetectionHistoryDuration();
     /**
@@ -110,12 +110,12 @@ public interface Topic extends
      */
     Subscriptions subscriptions();
     /**
-     * @return entry point to manage authorization rules for the service bus topic
+     * @return entry point to manage authorization rules for the Service Bus topic
      */
     TopicAuthorizationRules authorizationRules();
 
     /**
-     * The entirety of the topic definition.
+     * The entirety of the Service Bus topic definition.
      */
     interface Definition extends
             Topic.DefinitionStages.Blank,
@@ -123,7 +123,7 @@ public interface Topic extends
     }
 
     /**
-     * Grouping of topic definition stages.
+     * Grouping of Service Bus topic definition stages.
      */
     interface DefinitionStages {
         /**
@@ -158,7 +158,7 @@ public interface Topic extends
 
             /**
              * Specifies that the default partitioning should be disabled on this topic.
-             * Note: if the parent service bus is Premium SKU then partition cannot be
+             * Note: if the parent Service Bus is Premium SKU then partition cannot be
              * disabled
              *
              * @return the next stage of topic definition
@@ -215,7 +215,7 @@ public interface Topic extends
         interface WithMessageBatching {
             /**
              * Specifies that the default batching should be disabled on this topic.
-             * With batching service bus can batch multiple message when it write or delete messages
+             * With batching Service Bus can batch multiple message when it write or delete messages
              * from it's internal store.
              *
              * @return the next stage of topic definition
@@ -238,11 +238,11 @@ public interface Topic extends
         }
 
         /**
-         * The stage of the service bus namespace update allowing to manage subscriptions for the topic.
+         * The stage of the Service Bus namespace update allowing to manage subscriptions for the topic.
          */
         interface WithSubscription {
             /**
-             * Creates a subscription entity for the service bus topic.
+             * Creates a subscription entity for the Service Bus topic.
              *
              * @param name queue name
              * @return the next stage of topic definition
@@ -298,7 +298,7 @@ public interface Topic extends
     }
 
     /**
-     * The template for a topic update operation, containing all the settings that can be modified.
+     * The template for a Service Bus topic update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<Topic>,
@@ -313,7 +313,7 @@ public interface Topic extends
     }
 
     /**
-     * Grouping of topic update stages.
+     * Grouping of Service Bus topic update stages.
      */
     interface UpdateStages {
         /**
@@ -389,7 +389,7 @@ public interface Topic extends
             Update withMessageBatching();
 
             /**
-             * Specifies that batching of messages should be disabled when service bus write messages to
+             * Specifies that batching of messages should be disabled when Service Bus write messages to
              * or delete messages from it's internal store.
              *
              * @return the next stage of topic update
@@ -419,22 +419,22 @@ public interface Topic extends
         }
 
         /**
-         * The stage of the service bus namespace update allowing to manage subscriptions for the topic.
+         * The stage of the Service Bus namespace update allowing to manage subscriptions for the topic.
          */
         interface WithSubscription {
             /**
-             * Creates a subscription entity for the service bus topic.
+             * Creates a subscription entity for the Service Bus topic.
              *
              * @param name queue name
-             * @return next stage of the service bus topic update
+             * @return next stage of the Service Bus topic update
              */
             Update withNewSubscription(String name);
 
             /**
-             * Removes a subscription entity associated with the service bus topic.
+             * Removes a subscription entity associated with the Service Bus topic.
              *
              * @param name subscription name
-             * @return next stage of the service bus topic update
+             * @return next stage of the Service Bus topic update
              */
             Update withoutSubscription(String name);
         }

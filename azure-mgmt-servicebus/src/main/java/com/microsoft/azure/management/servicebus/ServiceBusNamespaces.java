@@ -23,22 +23,22 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
 
 /**
- * Entry point to service bus namespace API in Azure.
+ * Entry point to Service Bus namespace API in Azure.
  */
 @Fluent
-public interface Namespaces extends
-        SupportsCreating<Namespace.DefinitionStages.Blank>,
-        SupportsBatchCreation<Namespace>,
-        SupportsListing<Namespace>,
-        SupportsListingByGroup<Namespace>,
-        SupportsGettingByGroup<Namespace>,
-        SupportsGettingById<Namespace>,
+public interface ServiceBusNamespaces extends
+        SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>,
+        SupportsBatchCreation<ServiceBusNamespace>,
+        SupportsListing<ServiceBusNamespace>,
+        SupportsListingByGroup<ServiceBusNamespace>,
+        SupportsGettingByGroup<ServiceBusNamespace>,
+        SupportsGettingById<ServiceBusNamespace>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
         HasManager<ServiceBusManager>,
         HasInner<NamespacesInner> {
     /**
-     * Checks that namespace name is valid and is not in use.
+     * Checks if namespace name is valid and is not in use.
      *
      * @param name the account name to check
      * @return whether the name is available and other info if not
@@ -46,7 +46,7 @@ public interface Namespaces extends
     CheckNameAvailabilityResult checkNameAvailability(String name);
 
     /**
-     * Checks that namespace name is valid and is not in use asynchronously.
+     * Checks if namespace name is valid and is not in use asynchronously.
      *
      * @param name the namespace name to check
      * @return whether the name is available and other info if not
@@ -54,7 +54,7 @@ public interface Namespaces extends
     Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 
     /**
-     * Checks that namespace name is valid and is not in use asynchronously.
+     * Checks if namespace name is valid and is not in use asynchronously.
      *
      * @param name the namespace name to check
      * @param callback the callback to call on success or failure

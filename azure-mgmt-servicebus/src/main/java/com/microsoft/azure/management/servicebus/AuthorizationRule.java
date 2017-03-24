@@ -26,17 +26,17 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
         Refreshable<RuleT> {
 
     /**
-     * @return rights associated with the rule.
+     * @return rights associated with the rule
      */
     List<AccessRights> rights();
 
     /**
-     * @return stream that emits primary, secondary keys and connection strings.
+     * @return stream that emits primary, secondary keys and connection strings
      */
     Observable<AuthorizationKeys> getKeysAsync();
 
     /**
-     * @return the primary, secondary keys and connection strings.
+     * @return the primary, secondary keys and connection strings
      */
     AuthorizationKeys getKeys();
 
@@ -44,7 +44,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return stream that emits primary, secondary keys and connection strings.
+     * @return stream that emits primary, secondary keys and connection strings
      */
     Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey);
 
@@ -52,121 +52,121 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return primary, secondary keys and connection strings.
+     * @return primary, secondary keys and connection strings
      */
     AuthorizationKeys regenerateKey(Policykey policykey);
 
     /**
-     * Grouping of commons authorization rule definition stages shared between different service bus
+     * Grouping of commons authorization rule definition stages shared between different Service Bus
      * entities (namespace, queue, topic, subscription) access rules.
      */
     interface DefinitionStages {
         /**
-         * The stage of the rule definition allowing to enable listen policy.
+         * The stage of the Service Bus authorization rule definition allowing to enable listen policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the definition
          */
         interface WithListen<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the definition
              */
-            T withListen();
+            T withListeningEnabled();
         }
 
         /**
-         * The stage of the rule definition allowing to enable send policy.
+         * The stage of the Service Bus authorization rule definition allowing to enable send policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the definition
          */
         interface WithSend<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the definition
              */
-            T withSend();
+            T withSendingEnabled();
         }
 
         /**
-         * The stage of the rule definition allowing to enable manage policy.
+         * The stage of the Service Bus authorization rule definition allowing to enable manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the definition
          */
         interface WithManage<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the definition
              */
-            T withManage();
+            T withManagementEnabled();
         }
 
         /**
-         * The stage of the rule definition allowing to enable send or manage policy.
+         * The stage of the Service Bus authorization rule definition allowing to enable send or manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the definition
          */
         interface WithSendOrManage<T> extends WithSend<T>, WithManage<T> {
         }
 
         /**
-         * The stage of the rule definition allowing to enable listen, send or manage policy.
+         * The stage of the Service Bus authorization rule definition allowing to enable listen, send or manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the definition
          */
         interface WithListenOrSendOrManage<T> extends WithListen<T>, WithSendOrManage<T> {
         }
     }
 
     /**
-     * Grouping of commons authorization rule update stages shared between different service bus
+     * Grouping of commons authorization rule update stages shared between different Service Bus
      * entities (namespace, queue, topic, subscription) access rules.
      */
     interface UpdateStages {
         /**
-         * The stage of the rule definition allowing to enable listen policy.
+         * The stage of the Service Bus authorization rule update allowing to enable listen policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the update
          */
         interface WithListen<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the update
              */
-            T withListen();
+            T withListeningEnabled();
         }
 
         /**
-         * The stage of the rule definition allowing to enable send policy.
+         * The stage of the Service Bus authorization rule update allowing to enable send policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the update
          */
         interface WithSend<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the update
              */
-            T withSend();
+            T withSendingEnabled();
         }
 
         /**
-         * The stage of the rule update allowing to enable manage policy.
+         * The stage of Service Bus authorization rule update allowing to enable manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the update
          */
         interface WithManage<T> {
             /**
-             * @return the next stage
+             * @return the next stage of the update
              */
-            T withManage();
+            T withManagementEnabled();
         }
 
         /**
-         * The stage of the rule update allowing to enable send or manage policy.
+         * The stage of the Service Bus authorization rule update allowing to enable send or manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the update
          */
         interface WithSendOrManage<T> extends WithSend<T>, WithManage<T> {
         }
 
         /**
-         * The stage of the rule update allowing to enable listen, send or manage policy.
+         * The stage of the Service Bus authorization rule update allowing to enable listen, send or manage policy.
          *
-         * @param <T> the next stage
+         * @param <T> the next stage of the update
          */
         interface WithListenOrSendOrManage<T> extends WithListen<T>, WithSendOrManage<T> {
         }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.servicebus.Namespace;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.NamespaceSku;
 import com.microsoft.azure.management.servicebus.Queue;
@@ -25,18 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation for Namespace.
+ * Implementation for ServiceBusNamespace.
  */
 @LangDefinition
-class NamespaceImpl extends GroupableResourceImpl<
-        Namespace,
+class ServiceBusNamespaceImpl extends GroupableResourceImpl<
+        ServiceBusNamespace,
         NamespaceInner,
-        NamespaceImpl,
+        ServiceBusNamespaceImpl,
         ServiceBusManager>
         implements
-        Namespace,
-        Namespace.Definition,
-        Namespace.Update {
+        ServiceBusNamespace,
+        ServiceBusNamespace.Definition,
+        ServiceBusNamespace.Update {
     private List<Creatable<Queue>> queuesToCreate;
     private List<Creatable<Topic>> topicsToCreate;
     private List<Creatable<NamespaceAuthorizationRule>> rulesToCreate;
@@ -44,7 +44,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     private List<String> topicsToDelete;
     private List<String> rulesToDelete;
 
-    NamespaceImpl(String name, NamespaceInner inner, ServiceBusManager manager) {
+    ServiceBusNamespaceImpl(String name, NamespaceInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.initChildrenOperationsCache();
     }
@@ -99,7 +99,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public NamespaceImpl withSku(NamespaceSku namespaceSku) {
+    public ServiceBusNamespaceImpl withSku(NamespaceSku namespaceSku) {
         this.inner().withSku(new Sku()
                 .withName(namespaceSku.name())
                 .withTier(namespaceSku.tier())
@@ -108,49 +108,49 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public NamespaceImpl withNewQueue(String name, int maxSizeInMB) {
+    public ServiceBusNamespaceImpl withNewQueue(String name, int maxSizeInMB) {
         this.queuesToCreate.add(queues().define(name).withSizeInMB(maxSizeInMB));
         return this;
     }
 
     @Override
-    public NamespaceImpl withoutQueue(String name) {
+    public ServiceBusNamespaceImpl withoutQueue(String name) {
         this.queuesToDelete.add(name);
         return this;
     }
 
     @Override
-    public NamespaceImpl withNewTopic(String name, int maxSizeInMB) {
+    public ServiceBusNamespaceImpl withNewTopic(String name, int maxSizeInMB) {
         this.topicsToCreate.add(topics().define(name).withSizeInMB(maxSizeInMB));
         return this;
     }
 
     @Override
-    public NamespaceImpl withoutTopic(String name) {
+    public ServiceBusNamespaceImpl withoutTopic(String name) {
         this.topicsToDelete.add(name);
         return this;
     }
 
     @Override
-    public NamespaceImpl withNewSendRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+    public ServiceBusNamespaceImpl withNewSendRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSendingEnabled());
         return this;
     }
 
     @Override
-    public NamespaceImpl withNewListenRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+    public ServiceBusNamespaceImpl withNewListenRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListeningEnabled());
         return this;
     }
 
     @Override
-    public NamespaceImpl withNewManageRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
+    public ServiceBusNamespaceImpl withNewManageRule(String name) {
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManagementEnabled());
         return this;
     }
 
     @Override
-    public NamespaceImpl withoutAuthorizationRule(String name) {
+    public ServiceBusNamespaceImpl withoutAuthorizationRule(String name) {
         this.rulesToDelete.add(name);
         return this;
     }
@@ -162,7 +162,7 @@ class NamespaceImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public Observable<Namespace> createResourceAsync() {
+    public Observable<ServiceBusNamespace> createResourceAsync() {
         Completable createNamespaceCompletable = this.manager().inner().namespaces()
                 .createOrUpdateAsync(this.resourceGroupName(),
                         this.name(),
@@ -175,7 +175,7 @@ class NamespaceImpl extends GroupableResourceImpl<
                     }
                 }).toCompletable();
         Completable childrenOperationsCompletable = submitChildrenOperationsAsync();
-        final Namespace self = this;
+        final ServiceBusNamespace self = this;
         return Completable.concat(createNamespaceCompletable, childrenOperationsCompletable)
                 .doOnTerminate(new Action0() {
                     @Override

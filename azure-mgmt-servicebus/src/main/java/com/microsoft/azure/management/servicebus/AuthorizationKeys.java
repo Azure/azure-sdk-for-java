@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.ResourceListKeysInner;
 
 /**
- * Authorization key and connection string of authorization rule associated with service bus entities.
+ * Authorization key and connection string of authorization rule associated with Service Bus entities.
  */
 public interface AuthorizationKeys extends HasInner<ResourceListKeysInner> {
     /**

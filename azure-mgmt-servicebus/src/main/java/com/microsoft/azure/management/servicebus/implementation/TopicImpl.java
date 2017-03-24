@@ -29,7 +29,7 @@ import java.util.List;
  * Implementation for Topic.
  */
 @LangDefinition
-class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, TopicInner, TopicImpl, ServiceBusManager>
+class TopicImpl extends IndependentChildResourceImpl<Topic, ServiceBusNamespaceImpl, TopicInner, TopicImpl, ServiceBusManager>
         implements
         Topic,
         Topic.Definition,
@@ -294,19 +294,19 @@ class TopicImpl extends IndependentChildResourceImpl<Topic, NamespaceImpl, Topic
 
     @Override
     public TopicImpl withNewSendRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withSend());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withSendingEnabled());
         return this;
     }
 
     @Override
     public TopicImpl withNewListenRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withListen());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withListeningEnabled());
         return this;
     }
 
     @Override
     public TopicImpl withNewManageRule(String name) {
-        this.rulesToCreate.add(this.authorizationRules().define(name).withManage());
+        this.rulesToCreate.add(this.authorizationRules().define(name).withManagementEnabled());
         return this;
     }
 

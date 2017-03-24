@@ -69,7 +69,7 @@ abstract class AuthorizationRuleBaseImpl<
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return stream that emits primary, secondary keys and connection strings.
+     * @return stream that emits primary, secondary keys and connection strings
      */
     public Observable<AuthorizationKeys> regenerateKeyAsync(Policykey policykey) {
         return this.regenerateKeysInnerAsync(policykey)
@@ -85,7 +85,7 @@ abstract class AuthorizationRuleBaseImpl<
      * Regenerates primary or secondary keys.
      *
      * @param policykey the key to regenerate
-     * @return primary, secondary keys and connection strings.
+     * @return primary, secondary keys and connection strings
      */
     public AuthorizationKeys regenerateKey(Policykey policykey) {
         return regenerateKeyAsync(policykey).toBlocking().last();
@@ -100,7 +100,7 @@ abstract class AuthorizationRuleBaseImpl<
 
 
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withListen() {
+    public FluentModelImplT withListeningEnabled() {
         if (this.inner().rights() == null) {
             this.inner().withRights(new ArrayList<AccessRights>());
         }
@@ -111,7 +111,7 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withSend() {
+    public FluentModelImplT withSendingEnabled() {
         if (this.inner().rights() == null) {
             this.inner().withRights(new ArrayList<AccessRights>());
         }
@@ -122,9 +122,9 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentModelImplT withManage() {
-        withListen();
-        withSend();
+    public FluentModelImplT withManagementEnabled() {
+        withListeningEnabled();
+        withSendingEnabled();
         if (!this.inner().rights().contains(AccessRights.MANAGE)) {
             this.inner().rights().add(AccessRights.MANAGE);
         }

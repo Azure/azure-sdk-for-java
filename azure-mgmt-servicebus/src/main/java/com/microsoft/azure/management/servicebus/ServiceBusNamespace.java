@@ -18,19 +18,19 @@ import com.microsoft.azure.management.servicebus.implementation.ServiceBusManage
 import org.joda.time.DateTime;
 
 /**
- * An immutable client-side representation of an Azure service bus namespace.
+ * An immutable client-side representation of an Azure Service Bus namespace.
  */
 @Fluent
-public interface Namespace extends
+public interface ServiceBusNamespace extends
         GroupableResource<ServiceBusManager, NamespaceInner>,
-        Refreshable<Namespace>,
-        Updatable<Namespace.Update> {
+        Refreshable<ServiceBusNamespace>,
+        Updatable<ServiceBusNamespace.Update> {
     /**
-     * @return the relative DNS name of the service bus namespace
+     * @return the relative DNS name of the Service Bus namespace
      */
     String dnsLabel();
     /**
-     * @return fully qualified domain name (FQDN) of the service bus namespace
+     * @return fully qualified domain name (FQDN) of the Service Bus namespace
      */
     String fqdn();
     /**
@@ -47,108 +47,108 @@ public interface Namespace extends
     DateTime updatedAt();
 
     /**
-     * @return entry point to manage queue entities in the service bus namespace
+     * @return entry point to manage queue entities in the Service Bus namespace
      */
     Queues queues();
     /**
-     * @return entry point to manage topics entities in the service bus namespace
+     * @return entry point to manage topics entities in the Service Bus namespace
      */
     Topics topics();
     /**
-     * @return entry point to manage authorization rules for the service bus namespace
+     * @return entry point to manage authorization rules for the Service Bus namespace
      */
     NamespaceAuthorizationRules authorizationRules();
 
     /**
-     * The entirety of the service bus namespace definition.
+     * The entirety of the Service Bus namespace definition.
      */
     interface Definition extends
-            Namespace.DefinitionStages.Blank,
-            Namespace.DefinitionStages.WithGroup,
-            Namespace.DefinitionStages.WithCreate {
+            ServiceBusNamespace.DefinitionStages.Blank,
+            ServiceBusNamespace.DefinitionStages.WithGroup,
+            ServiceBusNamespace.DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of service bus namespace definition stages.
+     * Grouping of Service Bus namespace definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a service bus namespace definition.
+         * The first stage of a Service Bus namespace definition.
          */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the service bus namespace definition allowing to specify the resource group.
+         * The stage of the Service Bus namespace definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**
-         * The stage of the service bus namespace definition allowing to specify the sku.
+         * The stage of the Service Bus namespace definition allowing to specify the sku.
          */
         interface WithSku {
             /**
              * Specifies the namespace sku.
              *
              * @param namespaceSku the sku
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withSku(NamespaceSku namespaceSku);
         }
 
         /**
-         * The stage of the service bus namespace definition allowing to add a new queue in the namespace.
+         * The stage of the Service Bus namespace definition allowing to add a new queue in the namespace.
          */
         interface WithQueue {
             /**
-             * Creates a queue entity in the service bus namespace.
+             * Creates a queue entity in the Service Bus namespace.
              *
              * @param name queue name
              * @param maxSizeInMB maximum size of memory allocated for the queue entity
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewQueue(String name, int maxSizeInMB);
         }
 
         /**
-         * The stage of the service bus namespace definition allowing to add a new topic in the namespace.
+         * The stage of the Service Bus namespace definition allowing to add a new topic in the namespace.
          */
         interface WithTopic {
             /**
-             * Creates a topic entity in the service bus namespace.
+             * Creates a topic entity in the Service Bus namespace.
              *
              * @param name topic name
              * @param maxSizeInMB maximum size of memory allocated for the topic entity
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewTopic(String name, int maxSizeInMB);
         }
 
         /**
-         * The stage of the service bus namespace definition allowing to add an authorization rule for accessing
+         * The stage of the Service Bus namespace definition allowing to add an authorization rule for accessing
          * the namespace.
          */
         interface WithAuthorizationRule {
             /**
-             * Creates a send authorization rule for the service bus namespace.
+             * Creates a send authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewSendRule(String name);
             /**
-             * Creates a listen authorization rule for the service bus namespace.
+             * Creates a listen authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewListenRule(String name);
             /**
-             * Creates a manage authorization rule for the service bus namespace.
+             * Creates a manage authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace definition
+             * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewManageRule(String name);
         }
@@ -159,119 +159,119 @@ public interface Namespace extends
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Namespace>,
+                Creatable<ServiceBusNamespace>,
                 Resource.DefinitionWithTags<Update>,
-                Namespace.DefinitionStages.WithSku,
-                Namespace.DefinitionStages.WithQueue,
-                Namespace.DefinitionStages.WithTopic,
-                Namespace.DefinitionStages.WithAuthorizationRule {
+                ServiceBusNamespace.DefinitionStages.WithSku,
+                ServiceBusNamespace.DefinitionStages.WithQueue,
+                ServiceBusNamespace.DefinitionStages.WithTopic,
+                ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
         }
     }
 
     /**
-     * The template for a service bus namespace update operation, containing all the settings that can be modified.
+     * The template for a Service Bus namespace update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Namespace>,
+            Appliable<ServiceBusNamespace>,
             Resource.UpdateWithTags<Update>,
-            Namespace.UpdateStages.WithSku,
-            Namespace.UpdateStages.WithQueue,
-            Namespace.UpdateStages.WithTopic,
-            Namespace.UpdateStages.WithAuthorizationRule {
+            ServiceBusNamespace.UpdateStages.WithSku,
+            ServiceBusNamespace.UpdateStages.WithQueue,
+            ServiceBusNamespace.UpdateStages.WithTopic,
+            ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
     }
 
     /**
-     * Grouping of all the service bus namespace update stages.
+     * Grouping of all the Service Bus namespace update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the service bus namespace update allowing to change the sku.
+         * The stage of the Service Bus namespace update allowing to change the sku.
          */
         interface WithSku {
             /**
              * Specifies the namespace sku.
              *
              * @param namespaceSku the sku
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withSku(NamespaceSku namespaceSku);
         }
 
         /**
-         * The stage of the service bus namespace update allowing to manage queues in the namespace.
+         * The stage of the Service Bus namespace update allowing to manage queues in the namespace.
          */
         interface WithQueue {
             /**
-             * Creates a queue entity in the service bus namespace.
+             * Creates a queue entity in the Service Bus namespace.
              *
              * @param name queue name
              * @param maxSizeInMB maximum size of memory allocated for the queue entity
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withNewQueue(String name, int maxSizeInMB);
 
             /**
-             * Removes a queue entity from the service bus namespace.
+             * Removes a queue entity from the Service Bus namespace.
              *
              * @param name queue name
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withoutQueue(String name);
         }
 
         /**
-         * The stage of the service bus namespace update allowing to manage topics in the namespace.
+         * The stage of the Service Bus namespace update allowing to manage topics in the namespace.
          */
         interface WithTopic {
             /**
-             * Creates a topic entity in the service bus namespace.
+             * Creates a topic entity in the Service Bus namespace.
              *
              * @param name topic name
              * @param maxSizeInMB maximum size of memory allocated for the topic entity
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withNewTopic(String name, int maxSizeInMB);
 
             /**
-             * Removes a topic entity from the service bus namespace.
+             * Removes a topic entity from the Service Bus namespace.
              *
              * @param name topic name
-             * @return  next stage of the service bus namespace update
+             * @return  next stage of the Service Bus namespace update
              */
             Update withoutTopic(String name);
         }
 
         /**
-         * The stage of the service bus namespace update allowing manage authorization rules
+         * The stage of the Service Bus namespace update allowing manage authorization rules
          * for the namespace.
          */
         interface WithAuthorizationRule {
             /**
-             * Creates a send authorization rule for the service bus namespace.
+             * Creates a send authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withNewSendRule(String name);
             /**
-             * Creates a listen authorization rule for the service bus namespace.
+             * Creates a listen authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withNewListenRule(String name);
             /**
-             * Creates a manage authorization rule for the service bus namespace.
+             * Creates a manage authorization rule for the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withNewManageRule(String name);
             /**
-             * Removes an authorization rule from the service bus namespace.
+             * Removes an authorization rule from the Service Bus namespace.
              *
              * @param name rule name
-             * @return next stage of the service bus namespace update
+             * @return next stage of the Service Bus namespace update
              */
             Update withoutAuthorizationRule(String name);
         }

@@ -26,7 +26,7 @@ public final class NamespaceSku {
     private final Sku sku;
 
     /**
-     * Creates service bus namespace sku.
+     * Creates Service Bus namespace sku.
      *
      * @param name sku name
      * @param tier sku tier
@@ -39,11 +39,11 @@ public final class NamespaceSku {
     }
 
     /**
-     * Creates service bus namespace SKU.
+     * Creates Service Bus namespace SKU.
      *
      * @param name sku name
      * @param tier sku tier
-     * @param capacity factor of resources allocated to host service bus
+     * @param capacity factor of resources allocated to host Service Bus
      */
     public NamespaceSku(String name, String tier, int capacity) {
         this(new Sku()
@@ -53,7 +53,7 @@ public final class NamespaceSku {
     }
 
     /**
-     * Creates service bus namespace SKU.
+     * Creates Service Bus namespace SKU.
      *
      * @param sku inner sku model instance
      */

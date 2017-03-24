@@ -163,6 +163,11 @@
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-mgmt-servicebus</artifactId>
+          <version>1.0.0-beta6-SNAPSHOT</version>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
