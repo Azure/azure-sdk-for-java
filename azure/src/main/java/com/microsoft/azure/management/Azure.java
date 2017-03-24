@@ -570,5 +570,7 @@ public final class Azure {
     /**
      * @return entry point to managing Service Bus.
      */
-    public ServiceBusNamespaces serviceBusNamespaces() { return serviceBusManager.namespaces(); }
+    public ServiceBusNamespaces serviceBusNamespaces() {
+        return serviceBusManager.namespaces();
+    }
 }
