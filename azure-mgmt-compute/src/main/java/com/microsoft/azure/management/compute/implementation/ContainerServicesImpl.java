@@ -7,18 +7,17 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.compute.*;
+import com.microsoft.azure.management.compute.ContainerService;
+import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Completable;
 import rx.Observable;
-import rx.functions.Func1;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * The implementation for ContainerServices.
+ */
 @LangDefinition
 public class ContainerServicesImpl
         extends

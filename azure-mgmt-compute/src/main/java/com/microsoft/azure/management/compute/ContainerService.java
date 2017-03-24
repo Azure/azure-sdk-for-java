@@ -14,11 +14,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-
-import java.util.List;
 import java.util.Map;
 
 /**
+ * An client-side representation for a container service.
  */
 @Fluent
 public interface ContainerService extends
@@ -27,143 +26,236 @@ public interface ContainerService extends
         Updatable<ContainerService.Update> {
 
     /**
-     * Properties of the orchestrator.
+     * @return the properties of the orchestrator.
      */
     ContainerServiceOrchestratorProfile orchestratorProfile();
+
     /**
-     * Properties for custom clusters.
+     * @return the properties for custom clusters.
      */
     ContainerServiceCustomProfile customProfile();
+
     /**
-     * Properties for cluster service principals.
+     * @return the properties for cluster service principals.
      */
     ContainerServiceServicePrincipalProfile servicePrincipalProfile();
+
     /**
-     * Properties of master agents.
+     * @return the properties for the master agent.
      */
     ContainerServiceMasterProfile masterProfile();
+
     /**
-     * Properties of the agent pool.
+     * @return current set of agent pool profiles for this container service.
      */
     Map<String, ContainerServiceAgentPoolProfile> agentPoolProfiles();
+
     /**
-     * Properties of Windows VMs.
+     * @return the properties for the Windows VMs.
      */
     ContainerServiceWindowsProfile windowsProfile();
+
     /**
-     * Properties of Linux VMs.
+     * @return the properties for the Linux VMs.
      */
     ContainerServiceLinuxProfile linuxProfile();
+
     /**
-     * Properties of the diagnostic agent.
+     * @return the properties for the diagnostic agent.
      */
     ContainerServiceDiagnosticsProfile diagnosticsProfile();
 
+    // Fluent interfaces
 
+    /**
+     * Container interface for all the definitions related to a container service.
+     */
     interface Definition extends
             ContainerService.DefinitionStages.Blank,
             ContainerService.DefinitionStages.WithGroup,
-            ContainerService.DefinitionStages.WithMasterProfile /*required*/ ,
-            ContainerService.DefinitionStages.WithLinuxProfile /*required*/ ,
+            ContainerService.DefinitionStages.WithMasterProfile,
+            ContainerService.DefinitionStages.WithLinuxProfile,
             ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
             ContainerService.DefinitionStages.WithLinuxProfileSshKey,
-            ContainerService.DefinitionStages.DefineAgentPoolProfiles /*required*/ ,
+            ContainerService.DefinitionStages.DefineAgentPoolProfiles,
             ContainerService.DefinitionStages.WithWindowsProfile,
             ContainerService.DefinitionStages.WithWindowsAdminUsername,
             ContainerService.DefinitionStages.WithWindowsAdminPassword,
             ContainerService.DefinitionStages.WithCreate {
     }
 
+    /**
+     * Grouping of container service definition stages.
+     */
     interface DefinitionStages {
+        /**
+         * The first stage of a container service definition.
+         */
+        interface Blank extends
+                GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
 
+        /**
+         * The stage of the container service definition allowing to specify the resource group.
+         */
+        interface WithGroup extends
+                GroupableResource.DefinitionStages.WithGroup<WithMasterProfile> {
+        }
+
+        /**
+         * The stage of the container service definition allowing to specify orchestration type.
+         */
         interface WithOrchestratorProfile {
+            /**
+             * Specifies the Swarm orchestration type for the container service.
+             * @return the next stage of the definition
+             */
             WithCreate withSwarmOrchestration();
+
+            /**
+             * Specifies the DCOS orchestration type for the container service.
+             * @return the next stage of the definition
+             */
             WithCreate withDCOSOrchestration();
+
+            /**
+             * Specifies the Kubernetes orchestration type for the container service.
+             * @return the next stage of the definition
+             */
             WithCreate withKubernetesOrchestration();
         }
 
+        /**
+         * The stage of the container service definition allowing to specify the cluster service principal.
+         */
         interface WithServicePrincipalProfile {
             /**
-             * Properties for cluster service principals.
-             *
-             * @return the next stage
+             * The properties for the cluster service principal.
+             * @param clientId the service principal client id
+             * @param secret the secret for the service principal client id
+             * @return the next stage of the definition
              */
             WithCreate withServicePrincipalProfile(String clientId, String secret);
         }
 
+        /**
+         * The stage of the container service definition allowing to specify the master profile.
+         */
         interface WithMasterProfile {
             /**
-             * Properties of master agents.
-             *
-             * @return the next stage
+             * The properties for master agents.
+             * @param count master profile count (1, 3, 5)
+             * @param dnsLabel the dns prefix
+             * @return the next stage of the definition
              */
-            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count,String dnsPrefix);
+            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsLabel);
         }
 
+        /**
+         * The stage of the container service definition allowing to specify an agent pool profile.
+         */
         interface DefineAgentPoolProfiles {
             /**
-             * Properties of the agent pool.
+             * Begins the definition of a agent pool profile to be attached to the container service.
              *
-             * @param name
-             * @return the next stage
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
             CSAgentPoolProfile.DefinitionStages.Blank<WithCreate> defineContainerServiceAgentPoolProfile(String name);
         }
 
+        /**
+         * The stage of the container service definition allowing the start of defining Windows specific settings.
+         */
         interface WithWindowsProfile {
             /**
-             * Properties of Windows VMs.
-             *
-             * @return the next stage
+             * Begins the definition to specify Windows settings.
+             * @return the stage representing configuration of Windows specific settings.
              */
             WithWindowsAdminUsername withWindowsProfile();
         }
 
+        /**
+         * The stage of the container service definition allowing to specify the Windows admin username.
+         */
         interface WithWindowsAdminUsername {
             /**
-             * Properties of Windows VMs.
-             *
-             * @return the next stage
+             * Begins the definition to specify Windows admin username.
+             * @param adminUsername the admin username
+             * @return the next stage of the definition
              */
             WithWindowsAdminPassword withAdminUserName(String adminUsername);
         }
 
+        /**
+         * The stage of the container service definition allowing to specify the Windows admin password.
+         */
         interface WithWindowsAdminPassword {
             /**
-             * Properties of Windows VMs.
-             *
+             * Begins the definition to specify Windows admin username.
+             * @param adminPassword the admin password.
              * @return the next stage
              */
             WithCreate withAdminPassword(String adminPassword);
         }
 
+        /**
+         * The stage of the container service definition allowing the start of defining Linux specific settings.
+         */
         interface WithLinuxProfile {
             /**
-             * Properties of Linux VMs.
-             *
-             * @return the next stage
+             * Begins the definition to specify Linux settings.
+             * @return the stage representing configuration of Linux specific settings.
              */
             WithLinuxProfileRootUsername withLinuxProfile();
         }
 
+        /**
+         * The stage of the container service definition allowing to specific the Linux root username.
+         */
         interface WithLinuxProfileRootUsername {
+            /**
+             * Begins the definition to specify Linux root username.
+             * @param rootUserName the root username
+             * @return the next stage of the definition
+             */
             WithLinuxProfileSshKey withRootUsername(String rootUserName);
         }
 
+        /**
+         * The stage of the container service definition allowing to specific the Linux ssh key.
+         */
         interface WithLinuxProfileSshKey {
+            /**
+             * Begins the definition to specify Linux ssh key.
+             * @param sshKeyData the ssh key data.
+             * @return the next stage of the definition
+             */
             DefineAgentPoolProfiles withSshKey(String sshKeyData);
         }
 
+        /**
+         * The stage of the container service definition allowing to specific diagnostic settings.
+         */
         interface WithDiagnosticsProfile {
             /**
-             * Properties of the diagnostic agent.
-             *
-             * @return the next stage
+             * Enable diagnostics.
+             * @return the create stage of the definition
              */
             WithCreate withDiagnostics();
+
+            /**
+             * Disable diagnostics.
+             * @return the create stage of the definition
+             */
             WithCreate withoutDiagnostics();
         }
 
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
         interface WithCreate extends
                 Creatable<ContainerService>,
                 ContainerService.DefinitionStages.WithOrchestratorProfile,
@@ -172,16 +264,14 @@ public interface ContainerService extends
                 ContainerService.DefinitionStages.DefineAgentPoolProfiles,
                 ContainerService.DefinitionStages.WithDiagnosticsProfile {
         }
-
-        interface Blank extends
-                GroupableResource.DefinitionWithRegion<WithGroup> {
-        }
-
-        interface WithGroup extends
-                GroupableResource.DefinitionStages.WithGroup<WithMasterProfile> {
-        }
     }
 
+    /**
+     * The template for an update operation, containing all the settings that
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     */
     interface Update extends
             Resource.UpdateWithTags<Update>,
             Appliable<ContainerService>,
@@ -199,101 +289,192 @@ public interface ContainerService extends
             ContainerService.UpdateStages.RemoveProfiles {
     }
 
+    /**
+     * Grouping of container service update stages.
+     */
     interface UpdateStages {
-
+        /**
+         * The stage of the container service update allowing to specify orchestration type.
+         */
         interface WithOrchestratorProfile {
+            /**
+             * Specifies the Swarm orchestration type for the container service.
+             * @return the next stage of the update
+             */
             Update withSwarmOrchestration();
+
+            /**
+             * Specifies the DCOS orchestration type for the container service.
+             * @return the next stage of the update
+             */
             Update withDCOSOrchestration();
+
+            /**
+             * Specifies the Kubernetes orchestration type for the container service.
+             * @return the next stage of the update
+             */
             Update withKubernetesOrchestration();
         }
 
+        /**
+         * The stage of the container service update allowing to specify the cluster service principal.
+         */
         interface WithServicePrincipalProfile {
             /**
-             * Properties for cluster service principals.
-             *
-             * @return the next stage
+             * The properties for the cluster service principal.
+             * @param clientId the service principal client id
+             * @param secret the secret for the service principal client id
+             * @return the next stage of the update
              */
             Update withServicePrincipalProfile(String clientId, String secret);
         }
 
+        /**
+         * The stage of the container service update allowing to specify the master profile.
+         */
         interface WithMasterProfile {
             /**
-             * Properties of master agents.
-             *
-             * @return the next stage
+             * The properties for master agents.
+             * @param count master profile count (1, 3, 5)
+             * @param dnsLabel the dns prefix
+             * @return the next stage of the update
              */
-            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsPrefix);
+            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsLabel);
         }
 
+        /**
+         * The stage of the container service update allowing to specify an agent pool profile.
+         */
         interface DefineAgentPoolProfiles {
             /**
-             * Properties of the agent pool.
-             *
-             * @param name
-             * @return the next stage
+             * Begins the definition of a agent pool profile to be attached to the container service.
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
              */
             CSAgentPoolProfile.DefinitionStages.Blank<Update> defineContainerServiceAgentPoolProfile(String name);
+
+            /**
+             * Begins the update of a agent pool profile to be attached to the container service.
+             * @param name the name for the agent pool profile
+             * @return the stage representing configuration for the agent pool profile
+             */
             CSAgentPoolProfile.Update updateContainerServiceAgentPoolProfile(String name);
         }
 
+        /**
+         * The stage of the container service update allowing the start of defining Windows specific settings.
+         */
         interface WithWindowsProfile {
             /**
-             * Properties of Windows VMs.
-             *
-             * @return the next stage
+             * Begins the definition to specify Windows settings.
+             * @return the stage representing configuration of Windows specific settings.
              */
             WithWindowsAdminUsername withWindowsProfile();
         }
 
+        /**
+         * The stage of the container service update allowing to specify the Windows admin username.
+         */
         interface WithWindowsAdminUsername {
             /**
-             * Properties of Windows VMs.
-             *
-             * @return the next stage
+             * Begins the update to specify Windows admin username.
+             * @param adminUsername the admin username
+             * @return the next stage of the update
              */
             WithWindowsAdminPassword withAdminUserName(String adminUsername);
         }
 
+        /**
+         * The stage of the container service update allowing to specify the Windows admin password.
+         */
         interface WithWindowsAdminPassword {
             /**
-             * Properties of Windows VMs.
-             *
-             * @return the next stage
+             * Begins the definition to specify Windows admin username.
+             * @param adminPassword the admin password.
+             * @return the next stage of the update
              */
             Update withAdminPassword(String adminPassword);
         }
 
+        /**
+         * The stage of the container service update allowing the start of defining Linux specific settings.
+         */
         interface WithLinuxProfile {
             /**
-             * Properties of Linux VMs.
-             *
-             * @return the next stage
+             * Begins the update to specify Linux settings.
+             * @return the stage representing configuration of Linux specific settings.
              */
             WithLinuxProfileRootUsername withLinuxProfile();
         }
 
+        /**
+         * The stage of the container service update allowing to specific the Linux root username.
+         */
         interface WithLinuxProfileRootUsername {
+            /**
+             * Begins the update to specify Linux root username.
+             * @param rootUserName the root username
+             * @return the next stage of the update
+             */
             WithLinuxProfileSshKey withRootUsername(String rootUserName);
         }
 
+        /**
+         * The stage of the container service update allowing to specific the Linux ssh key.
+         */
         interface WithLinuxProfileSshKey {
+            /**
+             * Begins the update to specify Linux ssh key.
+             * @param sshKeyData the ssh key data.
+             * @return the next stage of the update
+             */
             Update withSshKey(String sshKeyData);
         }
 
+        /**
+         * The stage of the container service definition allowing to specific diagnostic settings.
+         */
         interface WithDiagnosticsProfile {
             /**
-             * Properties of the diagnostic agent.
-             *
-             * @return the next stage
+             * Enable diagnostics.
+             * @return the next stage of the update
              */
             Update withDiagnostics();
+
+            /**
+             * Disable diagnostics.
+             * @return the next stage of the update
+             */
             Update withoutDiagnostics();
         }
 
+        /**
+         * The stage of the container service definition allowing to remove profiles.
+         */
         interface RemoveProfiles {
+            /**
+             * Remove an agent pool profile.
+             * @param agentPoolProfile the agent pool profile to remove.
+             * @return the next stage of the update
+             */
             Update removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile);
+
+            /**
+             * Remove the windows profile.
+             * @return the next stage of the update
+             */
             Update removeWindowsProfile();
+
+            /**
+             * Remove the orchestration profile.
+             * @return the next stage of the update
+             */
             Update removeOrchestration();
+
+            /**
+             * Remove the service principal profile.
+             * @return the next stage of the update
+             */
             Update removeServicePrincipalProfile();
         }
     }

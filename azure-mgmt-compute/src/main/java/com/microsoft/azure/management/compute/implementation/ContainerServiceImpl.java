@@ -5,17 +5,33 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.*;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.compute.ContainerService;
+import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
+import com.microsoft.azure.management.compute.ContainerServiceOrchestratorProfile;
+import com.microsoft.azure.management.compute.ContainerServiceCustomProfile;
+import com.microsoft.azure.management.compute.ContainerServiceWindowsProfile;
+import com.microsoft.azure.management.compute.ContainerServiceLinuxProfile;
+import com.microsoft.azure.management.compute.ContainerServiceMasterProfile;
+import com.microsoft.azure.management.compute.ContainerServiceServicePrincipalProfile;
+import com.microsoft.azure.management.compute.ContainerServiceDiagnosticsProfile;
+import com.microsoft.azure.management.compute.CSAgentPoolProfile;
+import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
+import com.microsoft.azure.management.compute.ContainerServiceSshConfiguration;
+import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
+import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
+import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * The implementation for {@link ContainerService} and its create and update interfaces.
+ */
 @LangDefinition
 public class ContainerServiceImpl
         extends
@@ -82,7 +98,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withServicePrincipalProfile(String clientId,String secret) {
+    public ContainerServiceImpl withServicePrincipalProfile(String clientId, String secret) {
         ContainerServiceServicePrincipalProfile servicePrincipalProfile =
                 new ContainerServiceServicePrincipalProfile();
         servicePrincipalProfile.withClientId(clientId);
@@ -92,7 +108,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withMasterProfile(ContainerServiceMasterProfileCount profileCount,String dnsPrefix) {
+    public ContainerServiceImpl withMasterProfile(ContainerServiceMasterProfileCount profileCount, String dnsPrefix) {
         ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile();
         masterProfile.withCount(profileCount.count());
         masterProfile.withDnsPrefix(dnsPrefix);
@@ -102,7 +118,7 @@ public class ContainerServiceImpl
 
     @Override
     public CSAgentPoolProfileImpl defineContainerServiceAgentPoolProfile(String name) {
-        if(this.agentPoolProfilesMap.containsKey(name)) {
+        if (this.agentPoolProfilesMap.containsKey(name)) {
             throw new RuntimeException("Agent pool profile Name already exists.");
         }
 
@@ -113,7 +129,7 @@ public class ContainerServiceImpl
 
     @Override
     public CSAgentPoolProfile.Update<Update> updateContainerServiceAgentPoolProfile(String name) {
-        if(!this.agentPoolProfilesMap.containsKey(name)) {
+        if (!this.agentPoolProfilesMap.containsKey(name)) {
             throw new RuntimeException("Agent pool profile with name does not exists.");
         }
 
@@ -212,7 +228,7 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceImpl removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
-        if(this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
+        if (this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
             this.inner().agentPoolProfiles().remove(
                     this.agentPoolProfilesMap.remove(agentPoolProfile.name()));
         }
@@ -240,7 +256,7 @@ public class ContainerServiceImpl
     }
 
     void attachAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
-        if(!this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
+        if (!this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
             this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile.inner());
             this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
         }
@@ -255,7 +271,7 @@ public class ContainerServiceImpl
     }
 
     private ContainerServiceImpl withDiagnosticsProfile(boolean enabled) {
-        if(this.inner().diagnosticsProfile() == null) {
+        if (this.inner().diagnosticsProfile() == null) {
             this.inner().withDiagnosticsProfile(new ContainerServiceDiagnosticsProfile());
             this.inner().diagnosticsProfile().withVmDiagnostics(new ContainerServiceVMDiagnostics());
 

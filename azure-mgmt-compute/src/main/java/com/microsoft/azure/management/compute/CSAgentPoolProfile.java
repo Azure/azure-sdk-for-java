@@ -7,14 +7,11 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
-import java.util.List;
-import java.util.Map;
-
 /**
+ * An client-side representation for a container service agent pool.
  */
 @Fluent
 public interface CSAgentPoolProfile extends
@@ -22,23 +19,35 @@ public interface CSAgentPoolProfile extends
     HasInner<ContainerServiceAgentPoolProfile> {
 
     /**
-     * Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1. 
+     * @return the number of agents (VMs) to host docker containers.
+     * Allowed values must be in the range of 1 to 100 (inclusive).
+     * The default value is 1.
      */
     int count();
+
     /**
-     * Size of agent VMs.
+     * @return size of agent VMs.
      */
     ContainerServiceVMSizeTypes vmSize();
+
     /**
-     * DNS prefix to be used to create the FQDN for the agent pool.
+     * @return DNS prefix to be used to create the FQDN for the agent pool.
      */
-    String dnsPrefix();
+    String dnsLabel();
+
     /**
-     * FDQN for the agent pool.
+     * @return FDQN for the agent pool.
      */
     String fqdn();
 
 
+    // Fluent interfaces
+
+    /**
+     * The entirety of a container service agent pool definition as a part of a parent definition.
+     *
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     */
     interface Definition<ParentT> extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.Blank<ParentT>,
@@ -46,25 +55,71 @@ public interface CSAgentPoolProfile extends
         DefinitionStages.WithDnsLabel<ParentT> {
     }
 
+    /**
+     * Grouping of container service agent pool definition stages as a part of parent container service definition.
+     */
     interface DefinitionStages {
 
+        /** The final stage of a container service agent pool definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the container service agent pool definition
+         * can be attached to the parent definition using {@link CSAgentPoolProfile.DefinitionStages.WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link CSAgentPoolProfile.DefinitionStages.WithAttach#attach()}
+         */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
         }
 
+        /**
+         * The first stage of a container service agent pool definition.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface Blank<ParentT> {
-            WithVmSize<ParentT> withCount(int param0);
+            /**
+             * Specifies the number of agents (VMs) to host docker containers.
+             * Allowed values must be in the range of 1 to 100 (inclusive).
+             * The default value is 1.
+             * @param count the count
+             * @return the next stage of the definition
+             */
+            WithVmSize<ParentT> withCount(int count);
         }
 
+        /**
+         * The stage of a container service agent pool definition allowing to specify the agent VM size.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithVmSize<ParentT> {
-            WithDnsLabel<ParentT> withVmSize(ContainerServiceVMSizeTypes param0);
+            /**
+             * Specify the size of the agents VMs.
+             * @param vmSize the size of the VM.
+             * @return the next stage of the definition
+             */
+            WithDnsLabel<ParentT> withVmSize(ContainerServiceVMSizeTypes vmSize);
         }
 
+        /**
+         * The stage of a container service agent pool definition allowing to specify the DNS label.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithDnsLabel<ParentT> {
-            WithAttach<ParentT> withDnsLabel(String param0);
+            /**
+             * Specify the DNS prefix to be used to create the FQDN for the agent pool.
+             * @param dnsLabel the Dns label
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withDnsLabel(String dnsLabel);
         }
     }
 
+    /**
+     * The entirety of container service agent pool update as a part of parent container service agent pool update.
+     *
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     */
     interface Update<ParentT> extends
         UpdateStages.WithAttach<ParentT>,
         UpdateStages.WithCount<ParentT>,
@@ -72,22 +127,61 @@ public interface CSAgentPoolProfile extends
         UpdateStages.WithDnsLabel<ParentT> {
     }
 
+    /**
+     * Grouping of container service agent pool update stages.
+     */
     interface UpdateStages {
 
+        /** The final stage of the container service agent pool update.
+         * <p>
+         * @param <ParentT> the return type of {@link CSAgentPoolProfile.UpdateStages.WithAttach#attach()}
+         */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT> {
         }
 
+        /**
+         * The stage of a container service agent pool update allowing to specify the number of agents (VMs).
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithCount<ParentT> {
-            Update<ParentT> withCount(int param0);
+            /**
+             * Specifies the number of agents (VMs) to host docker containers.
+             * Allowed values must be in the range of 1 to 100 (inclusive).
+             * The default value is 1.
+             * @param count the count
+             * @return the next stage of the definition
+             */
+            Update<ParentT> withCount(int count);
         }
 
+        /**
+         * The stage of a container service agent pool update allowing to specify the agent VM size.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithVmSize<ParentT> {
-            Update<ParentT> withVmSize(ContainerServiceVMSizeTypes param0);
+            /**
+             * Specify the size of the agents VMs.
+             * @param vmSize the size of the VM.
+             * @return the next stage of the definition
+             */
+            Update<ParentT> withVmSize(ContainerServiceVMSizeTypes vmSize);
         }
 
+        /**
+         * The stage of a container service agent pool update allowing to specify the DNS label.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithDnsLabel<ParentT> {
-            WithAttach<ParentT> withDnsLabel(String param0);
+            /**
+             * Specify the DNS prefix to be used to create the FQDN for the agent pool.
+             * @param dnsLabel the Dns label
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withDnsLabel(String dnsLabel);
         }
     }
 
