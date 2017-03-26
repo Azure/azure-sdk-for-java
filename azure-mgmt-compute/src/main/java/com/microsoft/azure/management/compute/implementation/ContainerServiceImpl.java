@@ -107,7 +107,6 @@ public class ContainerServiceImpl
 
     @Override
     public CSAgentPoolProfileImpl defineContainerServiceAgentPoolProfile(String name) {
-        Assert.check(this.inner().agentPoolProfiles().size() == 0);
         ContainerServiceAgentPoolProfile innerPoolProfile = new ContainerServiceAgentPoolProfile();
         innerPoolProfile.withName(name);
         return new CSAgentPoolProfileImpl(innerPoolProfile, this);
