@@ -48,7 +48,7 @@ public interface ContainerService extends
     /**
      * @return current set of agent pool profiles for this container service.
      */
-    Map<String, ContainerServiceAgentPoolProfile> agentPoolProfiles();
+    ContainerServiceAgentPoolProfile agentPoolProfile();
 
     /**
      * @return the properties for the Windows VMs.
@@ -78,9 +78,6 @@ public interface ContainerService extends
             ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
             ContainerService.DefinitionStages.WithLinuxProfileSshKey,
             ContainerService.DefinitionStages.DefineAgentPoolProfiles,
-            ContainerService.DefinitionStages.WithWindowsProfile,
-            ContainerService.DefinitionStages.WithWindowsAdminUsername,
-            ContainerService.DefinitionStages.WithWindowsAdminPassword,
             ContainerService.DefinitionStages.WithCreate {
     }
 
@@ -126,19 +123,6 @@ public interface ContainerService extends
         }
 
         /**
-         * The stage of the container service definition allowing to specify the cluster service principal.
-         */
-        interface WithServicePrincipalProfile {
-            /**
-             * The properties for the cluster service principal.
-             * @param clientId the service principal client id
-             * @param secret the secret for the service principal client id
-             * @return the next stage of the definition
-             */
-            WithCreate withServicePrincipalProfile(String clientId, String secret);
-        }
-
-        /**
          * The stage of the container service definition allowing to specify the master profile.
          */
         interface WithMasterProfile {
@@ -162,41 +146,6 @@ public interface ContainerService extends
              * @return the stage representing configuration for the agent pool profile
              */
             CSAgentPoolProfile.DefinitionStages.Blank<WithCreate> defineContainerServiceAgentPoolProfile(String name);
-        }
-
-        /**
-         * The stage of the container service definition allowing the start of defining Windows specific settings.
-         */
-        interface WithWindowsProfile {
-            /**
-             * Begins the definition to specify Windows settings.
-             * @return the stage representing configuration of Windows specific settings.
-             */
-            WithWindowsAdminUsername withWindowsProfile();
-        }
-
-        /**
-         * The stage of the container service definition allowing to specify the Windows admin username.
-         */
-        interface WithWindowsAdminUsername {
-            /**
-             * Begins the definition to specify Windows admin username.
-             * @param adminUsername the admin username
-             * @return the next stage of the definition
-             */
-            WithWindowsAdminPassword withAdminUserName(String adminUsername);
-        }
-
-        /**
-         * The stage of the container service definition allowing to specify the Windows admin password.
-         */
-        interface WithWindowsAdminPassword {
-            /**
-             * Begins the definition to specify Windows admin username.
-             * @param adminPassword the admin password.
-             * @return the next stage
-             */
-            WithCreate withAdminPassword(String adminPassword);
         }
 
         /**
@@ -258,10 +207,8 @@ public interface ContainerService extends
          */
         interface WithCreate extends
                 Creatable<ContainerService>,
+                Resource.DefinitionWithTags<WithCreate>,
                 ContainerService.DefinitionStages.WithOrchestratorProfile,
-                ContainerService.DefinitionStages.WithServicePrincipalProfile,
-                ContainerService.DefinitionStages.WithWindowsProfile,
-                ContainerService.DefinitionStages.DefineAgentPoolProfiles,
                 ContainerService.DefinitionStages.WithDiagnosticsProfile {
         }
     }
@@ -275,162 +222,14 @@ public interface ContainerService extends
     interface Update extends
             Resource.UpdateWithTags<Update>,
             Appliable<ContainerService>,
-            ContainerService.UpdateStages.WithOrchestratorProfile,
-            ContainerService.UpdateStages.WithServicePrincipalProfile,
-            ContainerService.UpdateStages.WithMasterProfile,
-            ContainerService.UpdateStages.DefineAgentPoolProfiles,
-            ContainerService.UpdateStages.WithWindowsProfile,
-            ContainerService.UpdateStages.WithWindowsAdminUsername,
-            ContainerService.UpdateStages.WithWindowsAdminPassword,
-            ContainerService.UpdateStages.WithLinuxProfile,
-            ContainerService.UpdateStages.WithLinuxProfileRootUsername,
-            ContainerService.UpdateStages.WithLinuxProfileSshKey,
-            ContainerService.UpdateStages.WithDiagnosticsProfile,
-            ContainerService.UpdateStages.RemoveProfiles {
+            ContainerService.UpdateStages.WithUpdateAgentPoolCount,
+            ContainerService.UpdateStages.WithDiagnosticsProfile {
     }
 
     /**
      * Grouping of container service update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the container service update allowing to specify orchestration type.
-         */
-        interface WithOrchestratorProfile {
-            /**
-             * Specifies the Swarm orchestration type for the container service.
-             * @return the next stage of the update
-             */
-            Update withSwarmOrchestration();
-
-            /**
-             * Specifies the DCOS orchestration type for the container service.
-             * @return the next stage of the update
-             */
-            Update withDCOSOrchestration();
-
-            /**
-             * Specifies the Kubernetes orchestration type for the container service.
-             * @return the next stage of the update
-             */
-            Update withKubernetesOrchestration();
-        }
-
-        /**
-         * The stage of the container service update allowing to specify the cluster service principal.
-         */
-        interface WithServicePrincipalProfile {
-            /**
-             * The properties for the cluster service principal.
-             * @param clientId the service principal client id
-             * @param secret the secret for the service principal client id
-             * @return the next stage of the update
-             */
-            Update withServicePrincipalProfile(String clientId, String secret);
-        }
-
-        /**
-         * The stage of the container service update allowing to specify the master profile.
-         */
-        interface WithMasterProfile {
-            /**
-             * The properties for master agents.
-             * @param count master profile count (1, 3, 5)
-             * @param dnsLabel the dns prefix
-             * @return the next stage of the update
-             */
-            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsLabel);
-        }
-
-        /**
-         * The stage of the container service update allowing to specify an agent pool profile.
-         */
-        interface DefineAgentPoolProfiles {
-            /**
-             * Begins the definition of a agent pool profile to be attached to the container service.
-             * @param name the name for the agent pool profile
-             * @return the stage representing configuration for the agent pool profile
-             */
-            CSAgentPoolProfile.DefinitionStages.Blank<Update> defineContainerServiceAgentPoolProfile(String name);
-
-            /**
-             * Begins the update of a agent pool profile to be attached to the container service.
-             * @param name the name for the agent pool profile
-             * @return the stage representing configuration for the agent pool profile
-             */
-            CSAgentPoolProfile.Update updateContainerServiceAgentPoolProfile(String name);
-        }
-
-        /**
-         * The stage of the container service update allowing the start of defining Windows specific settings.
-         */
-        interface WithWindowsProfile {
-            /**
-             * Begins the definition to specify Windows settings.
-             * @return the stage representing configuration of Windows specific settings.
-             */
-            WithWindowsAdminUsername withWindowsProfile();
-        }
-
-        /**
-         * The stage of the container service update allowing to specify the Windows admin username.
-         */
-        interface WithWindowsAdminUsername {
-            /**
-             * Begins the update to specify Windows admin username.
-             * @param adminUsername the admin username
-             * @return the next stage of the update
-             */
-            WithWindowsAdminPassword withAdminUserName(String adminUsername);
-        }
-
-        /**
-         * The stage of the container service update allowing to specify the Windows admin password.
-         */
-        interface WithWindowsAdminPassword {
-            /**
-             * Begins the definition to specify Windows admin username.
-             * @param adminPassword the admin password.
-             * @return the next stage of the update
-             */
-            Update withAdminPassword(String adminPassword);
-        }
-
-        /**
-         * The stage of the container service update allowing the start of defining Linux specific settings.
-         */
-        interface WithLinuxProfile {
-            /**
-             * Begins the update to specify Linux settings.
-             * @return the stage representing configuration of Linux specific settings.
-             */
-            WithLinuxProfileRootUsername withLinuxProfile();
-        }
-
-        /**
-         * The stage of the container service update allowing to specific the Linux root username.
-         */
-        interface WithLinuxProfileRootUsername {
-            /**
-             * Begins the update to specify Linux root username.
-             * @param rootUserName the root username
-             * @return the next stage of the update
-             */
-            WithLinuxProfileSshKey withRootUsername(String rootUserName);
-        }
-
-        /**
-         * The stage of the container service update allowing to specific the Linux ssh key.
-         */
-        interface WithLinuxProfileSshKey {
-            /**
-             * Begins the update to specify Linux ssh key.
-             * @param sshKeyData the ssh key data.
-             * @return the next stage of the update
-             */
-            Update withSshKey(String sshKeyData);
-        }
-
         /**
          * The stage of the container service definition allowing to specific diagnostic settings.
          */
@@ -449,33 +248,17 @@ public interface ContainerService extends
         }
 
         /**
-         * The stage of the container service definition allowing to remove profiles.
+         * The stage of the container service definition allowing to specific diagnostic settings.
          */
-        interface RemoveProfiles {
+        interface WithUpdateAgentPoolCount {
             /**
-             * Remove an agent pool profile.
-             * @param agentPoolProfile the agent pool profile to remove.
+             * Enable diagnostics.
+             * @param agentPoolCount the number of agents (VMs) to host docker containers.
+             *                       Allowed values must be in the range of 1 to 100 (inclusive).
+             *                       The default value is 1.
              * @return the next stage of the update
              */
-            Update removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile);
-
-            /**
-             * Remove the windows profile.
-             * @return the next stage of the update
-             */
-            Update removeWindowsProfile();
-
-            /**
-             * Remove the orchestration profile.
-             * @return the next stage of the update
-             */
-            Update removeOrchestration();
-
-            /**
-             * Remove the service principal profile.
-             * @return the next stage of the update
-             */
-            Update removeServicePrincipalProfile();
+            Update withAgentPoolCount(int agentPoolCount);
         }
     }
 }

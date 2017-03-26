@@ -22,6 +22,7 @@ import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
 import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
 import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.sun.tools.javac.util.Assert;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -44,16 +45,10 @@ public class ContainerServiceImpl
         ContainerService.Definition,
         ContainerService.Update {
 
-    private Map<String, ContainerServiceAgentPoolProfile> agentPoolProfilesMap =
-            new HashMap<String, ContainerServiceAgentPoolProfile>();
     protected ContainerServiceImpl(String name, ContainerServiceInner innerObject, ComputeManager manager) {
         super(name, innerObject, manager);
         if (this.inner().agentPoolProfiles() == null) {
             this.inner().withAgentPoolProfiles(new ArrayList<ContainerServiceAgentPoolProfile>());
-        }
-
-        for (ContainerServiceAgentPoolProfile agentPoolProfile : this.inner().agentPoolProfiles()) {
-            this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile);
         }
     }
 
@@ -78,8 +73,12 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public Map<String, ContainerServiceAgentPoolProfile> agentPoolProfiles() {
-        return this.agentPoolProfilesMap;
+    public ContainerServiceAgentPoolProfile agentPoolProfile() {
+        if(this.inner().agentPoolProfiles().size() > 0) {
+            return this.inner().agentPoolProfiles().get(0);
+        }
+
+        return null;
     }
 
     @Override
@@ -98,16 +97,6 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withServicePrincipalProfile(String clientId, String secret) {
-        ContainerServiceServicePrincipalProfile servicePrincipalProfile =
-                new ContainerServiceServicePrincipalProfile();
-        servicePrincipalProfile.withClientId(clientId);
-        servicePrincipalProfile.withSecret(secret);
-        this.inner().withServicePrincipalProfile(servicePrincipalProfile);
-        return this;
-    }
-
-    @Override
     public ContainerServiceImpl withMasterProfile(ContainerServiceMasterProfileCount profileCount, String dnsPrefix) {
         ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile();
         masterProfile.withCount(profileCount.count());
@@ -118,22 +107,9 @@ public class ContainerServiceImpl
 
     @Override
     public CSAgentPoolProfileImpl defineContainerServiceAgentPoolProfile(String name) {
-        if (this.agentPoolProfilesMap.containsKey(name)) {
-            throw new RuntimeException("Agent pool profile Name already exists.");
-        }
-
+        Assert.check(this.inner().agentPoolProfiles().size() == 0);
         ContainerServiceAgentPoolProfile innerPoolProfile = new ContainerServiceAgentPoolProfile();
         innerPoolProfile.withName(name);
-        return new CSAgentPoolProfileImpl(innerPoolProfile, this);
-    }
-
-    @Override
-    public CSAgentPoolProfile.Update<Update> updateContainerServiceAgentPoolProfile(String name) {
-        if (!this.agentPoolProfilesMap.containsKey(name)) {
-            throw new RuntimeException("Agent pool profile with name does not exists.");
-        }
-
-        ContainerServiceAgentPoolProfile innerPoolProfile = this.agentPoolProfilesMap.get(name);
         return new CSAgentPoolProfileImpl(innerPoolProfile, this);
     }
 
@@ -169,7 +145,10 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceImpl withLinuxProfile() {
-        this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
+        if(this.inner().linuxProfile() == null) {
+            this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
+        }
+
         return this;
     }
 
@@ -208,59 +187,8 @@ public class ContainerServiceImpl
         return this;
     }
 
-    @Override
-    public ContainerServiceImpl withWindowsProfile() {
-        this.inner().withWindowsProfile(new ContainerServiceWindowsProfile());
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl withAdminPassword(String adminPassword) {
-        this.windowsProfile().withAdminPassword(adminPassword);
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl withAdminUserName(String adminUsername) {
-        this.windowsProfile().withAdminUsername(adminUsername);
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl removeAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
-        if (this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
-            this.inner().agentPoolProfiles().remove(
-                    this.agentPoolProfilesMap.remove(agentPoolProfile.name()));
-        }
-
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl removeWindowsProfile() {
-        this.inner().withWindowsProfile(null);
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl removeOrchestration() {
-        this.inner().withOrchestratorProfile(null);
-        this.inner().withCustomProfile(null);
-        return this;
-    }
-
-    @Override
-    public ContainerServiceImpl removeServicePrincipalProfile() {
-        this.inner().withServicePrincipalProfile(null);
-        return this;
-    }
-
     void attachAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
-        if (!this.agentPoolProfilesMap.containsKey(agentPoolProfile.name())) {
-            this.agentPoolProfilesMap.put(agentPoolProfile.name(), agentPoolProfile.inner());
-            this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
-        }
-
+        this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
     }
 
     private ContainerServiceImpl withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType) {
@@ -278,6 +206,16 @@ public class ContainerServiceImpl
         }
 
         this.inner().diagnosticsProfile().vmDiagnostics().withEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public Update withAgentPoolCount(int agentPoolCount) {
+        if(agentPoolCount < 0 || agentPoolCount > 100) {
+            throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
+        }
+
+        this.inner().agentPoolProfiles().get(0).withCount(agentPoolCount);
         return this;
     }
 }

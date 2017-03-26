@@ -31,11 +31,14 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                 .withLinuxProfile()
                 .withRootUsername("testUserName")
                 .withSshKey(sshKeyData)
-                .defineContainerServiceAgentPoolProfile("agentPool" + newName)
+                .defineContainerServiceAgentPoolProfile("agentPool0" + newName)
                     .withCount(1)
-                    .withVmSize(ContainerServiceVMSizeTypes.STANDARD_A1) //Vm to VM
-                    .withDnsLabel("ap1" + dnsPrefix) // dnsprefix to dnslabel
-                    .attach()
+                    .withVmSize(ContainerServiceVMSizeTypes.STANDARD_A1)
+                    .withDnsLabel("ap0" + dnsPrefix)
+                .attach()
+                .withDCOSOrchestration()
+                .withDiagnostics()
+                .withTag("tag1", "value1")
                 .create();
         return containerService;
     }
@@ -43,11 +46,15 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
     @Override
     public ContainerService updateResource(ContainerService resource) throws Exception {
         // Modify existing container service
+        final String newName = "as" + this.testId;
         resource =  resource.update()
+                .withAgentPoolCount(5)
+                .withoutDiagnostics()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
+        Assert.assertTrue("Agent pool count was not updated.", resource.agentPoolProfile().count() == 5);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
         return resource;
