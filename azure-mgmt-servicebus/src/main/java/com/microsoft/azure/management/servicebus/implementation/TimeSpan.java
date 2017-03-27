@@ -18,6 +18,9 @@ public class TimeSpan {
     private static long ticksPerMinute = ticksPerSecond * 60;
     private static long ticksPerHour = ticksPerMinute * 60;
     private static long ticksPerDay = ticksPerHour * 24;
+    private static double millisecondsPerTick = 1.0 / ticksPerMillisecond;
+    private static double secondsPerTick = 1.0 / ticksPerSecond;
+    private static double minutesPerTick = 1.0 / ticksPerMinute;
 
     private int days;
     private int hours;
@@ -122,6 +125,27 @@ public class TimeSpan {
     }
 
     /**
+     * @return total number of milliseconds represented by this instance
+     */
+    public double totalMilliseconds() {
+        return totalTicks() * millisecondsPerTick;
+    }
+
+    /**
+     * @return total number of seconds represented by this instance
+     */
+    public double totalSeconds() {
+        return totalTicks() * secondsPerTick;
+    }
+
+    /**
+     * @return total number of minutes represented by this instance
+     */
+    public double totalMinutes() {
+        return totalTicks() * minutesPerTick;
+    }
+
+    /**
      * Gets TimeSpan from given period.
      *
      * @param period duration in period format
@@ -130,13 +154,13 @@ public class TimeSpan {
     public static TimeSpan fromPeriod(Period period) {
         // Normalize (e.g. move weeks to hour part)
         //
-       Period p = new Period(period.toStandardDuration().getMillis());
-       return TimeSpan.parse((new TimeSpan()
-               .withDays(p.getDays())
-               .withHours(p.getHours())
-               .withMinutes(p.getMinutes())
-               .withSeconds(p.getSeconds())
-               .withMilliseconds(p.getMillis())).toString());
+        Period p = new Period(period.toStandardDuration().getMillis());
+        return TimeSpan.parse((new TimeSpan()
+                .withDays(p.getDays())
+                .withHours(p.getHours())
+                .withMinutes(p.getMinutes())
+                .withSeconds(p.getSeconds())
+                .withMilliseconds(p.getMillis())).toString());
     }
 
     /**
@@ -240,12 +264,10 @@ public class TimeSpan {
     }
 
     /**
-     * @return TimeSpan in [-][d.]hh:mm:ss[.fffffff] format.
+     * @return TimeSpan in [-][d.]hh:mm:ss[.fffffff] format
      */
     public String toString() {
-        long totalMilliSeconds = ((long) days * 3600 * 24 + (long) hours * 3600 + (long) minutes * 60 + seconds) * 1000
-                + milliseconds;
-        long totalTicks = totalMilliSeconds * ticksPerMillisecond;
+        long totalTicks = totalTicks();
         int days = (int) Math.abs(totalTicks / ticksPerDay);
         StringBuilder stringBuilder = new StringBuilder();
         // Sign part
@@ -272,6 +294,15 @@ public class TimeSpan {
             stringBuilder.append(String.format(".%07d", fraction));
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * @return total number of ticks represented by this instance
+     */
+    private long totalTicks() {
+        long totalMilliSeconds = ((long) days * 3600 * 24 + (long) hours * 3600 + (long) minutes * 60 + seconds) * 1000
+                + milliseconds;
+        return totalMilliSeconds * ticksPerMillisecond;
     }
 
     private static int toInt(String intStr) {
@@ -387,4 +418,3 @@ class Token {
         return this.rawValue == null && this.terminalChar == null;
     }
 }
-

@@ -35,7 +35,7 @@ public class CheckNameAvailability {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the CheckNameAvailability object itself.
+     * @return the CheckNameAvailability object itself
      */
     public CheckNameAvailability withName(String name) {
         this.name = name;

@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "http://localhost:3000/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceBus/CheckNameAvailability?api-version=2015-08-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null (ServiceBusManagementClient, 2015-08-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 21 Mar 2017 17:18:20 GMT",
+      "server" : "Service-Bus-Resource-Provider/SN1",
+      "content-length" : "53",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "server-sb" : "Service-Bus-Resource-Provider/SN1",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c08b37ea-7170-4210-9a4b-309dc5a404af",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-routing-request-id" : "CENTRALUS:20170321T171820Z:c08b37ea-7170-4210-9a4b-309dc5a404af",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b8fe7bec-e0b0-4494-986a-cb24a9353ea7_M3_M3",
+      "Body" : "{\"nameAvailable\":true,\"reason\":\"None\",\"message\":null}"
+    }
+  } ],
+  "variables" : [ "javasbdfb35154299", "jvsbns1fb16114" ]
+}
