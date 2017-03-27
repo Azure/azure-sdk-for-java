@@ -37,8 +37,8 @@ public final class ManageVirtualMachineExtension {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String linuxVmName = SdkContext.randomResourceName("lVM", 10);
-        final String windowsVmName = SdkContext.randomResourceName("wVM", 10);
+        final String linuxVMName = SdkContext.randomResourceName("lVM", 10);
+        final String windowsVMName = SdkContext.randomResourceName("wVM", 10);
         final String rgName = SdkContext.randomResourceName("rgCOVE", 15);
         final String pipDnsLabelLinuxVM = SdkContext.randomResourceName("rgPip1", 25);
         final String pipDnsLabelWindowsVM = SdkContext.randomResourceName("rgPip2", 25);
@@ -77,10 +77,10 @@ public final class ManageVirtualMachineExtension {
         final List<String> windowsScriptFileUris = new ArrayList<>();
         windowsScriptFileUris.add(mySqlWindowsInstallScript);
 
-        final String linuxVmAccessExtensionName = "VMAccessForLinux";
-        final String linuxVmAccessExtensionPublisherName = "Microsoft.OSTCExtensions";
-        final String linuxVmAccessExtensionTypeName = "VMAccessForLinux";
-        final String linuxVmAccessExtensionVersionName = "1.4";
+        final String linuxVMAccessExtensionName = "VMAccessForLinux";
+        final String linuxVMAccessExtensionPublisherName = "Microsoft.OSTCExtensions";
+        final String linuxVMAccessExtensionTypeName = "VMAccessForLinux";
+        final String linuxVMAccessExtensionVersionName = "1.4";
 
         // Windows configurations
         //
@@ -94,10 +94,10 @@ public final class ManageVirtualMachineExtension {
         final String thirdWindowsUserName = "thirduser";
         final String thirdWindowsUserPassword = "12xyz!B12a6@";
 
-        final String windowsVmAccessExtensionName = "VMAccessAgent";
-        final String windowsVmAccessExtensionPublisherName = "Microsoft.Compute";
-        final String windowsVmAccessExtensionTypeName = "VMAccessAgent";
-        final String windowsVmAccessExtensionVersionName = "2.3";
+        final String windowsVMAccessExtensionName = "VMAccessAgent";
+        final String windowsVMAccessExtensionPublisherName = "Microsoft.Compute";
+        final String windowsVMAccessExtensionTypeName = "VMAccessAgent";
+        final String windowsVMAccessExtensionVersionName = "2.3";
         try {
 
 
@@ -106,7 +106,7 @@ public final class ManageVirtualMachineExtension {
 
             System.out.println("Creating a Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -125,10 +125,10 @@ public final class ManageVirtualMachineExtension {
             // Add a second sudo user to Linux VM using VMAccess extension
 
             linuxVM.update()
-                    .defineNewExtension(linuxVmAccessExtensionName)
-                        .withPublisher(linuxVmAccessExtensionPublisherName)
-                        .withType(linuxVmAccessExtensionTypeName)
-                        .withVersion(linuxVmAccessExtensionVersionName)
+                    .defineNewExtension(linuxVMAccessExtensionName)
+                        .withPublisher(linuxVMAccessExtensionPublisherName)
+                        .withType(linuxVMAccessExtensionTypeName)
+                        .withVersion(linuxVMAccessExtensionVersionName)
                         .withProtectedSetting("username", secondLinuxUserName)
                         .withProtectedSetting("password", secondLinuxUserPassword)
                         .withProtectedSetting("expiration", secondLinuxUserExpiration)
@@ -141,7 +141,7 @@ public final class ManageVirtualMachineExtension {
             // Add a third sudo user to Linux VM by updating VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVmAccessExtensionName)
+                    .updateExtension(linuxVMAccessExtensionName)
                         .withProtectedSetting("username", thirdLinuxUserName)
                         .withProtectedSetting("password", thirdLinuxUserPassword)
                         .withProtectedSetting("expiration", thirdLinuxUserExpiration)
@@ -154,7 +154,7 @@ public final class ManageVirtualMachineExtension {
             // Reset ssh password of first user of Linux VM by updating VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVmAccessExtensionName)
+                    .updateExtension(linuxVMAccessExtensionName)
                         .withProtectedSetting("username", firstLinuxUserName)
                         .withProtectedSetting("password", firstLinuxUserNewPassword)
                         .withProtectedSetting("reset_ssh", "true")
@@ -167,7 +167,7 @@ public final class ManageVirtualMachineExtension {
             // Removes the second sudo user from Linux VM using VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVmAccessExtensionName)
+                    .updateExtension(linuxVMAccessExtensionName)
                         .withProtectedSetting("remove_user", secondLinuxUserName)
                         .parent()
                     .apply();
@@ -194,7 +194,7 @@ public final class ManageVirtualMachineExtension {
 
             linuxVM.update()
                     .withoutExtension(linuxCustomScriptExtensionName)
-                    .withoutExtension(linuxVmAccessExtensionName)
+                    .withoutExtension(linuxVMAccessExtensionName)
                     .apply();
             System.out.println("Removed the custom script and VM Access extensions from Linux VM");
             Utils.print(linuxVM);
@@ -204,7 +204,7 @@ public final class ManageVirtualMachineExtension {
 
             System.out.println("Creating a Windows VM");
 
-            VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
+            VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -231,10 +231,10 @@ public final class ManageVirtualMachineExtension {
             // Add a second admin user to Windows VM using VMAccess extension
 
             windowsVM.update()
-                    .defineNewExtension(windowsVmAccessExtensionName)
-                        .withPublisher(windowsVmAccessExtensionPublisherName)
-                        .withType(windowsVmAccessExtensionTypeName)
-                        .withVersion(windowsVmAccessExtensionVersionName)
+                    .defineNewExtension(windowsVMAccessExtensionName)
+                        .withPublisher(windowsVMAccessExtensionPublisherName)
+                        .withType(windowsVMAccessExtensionTypeName)
+                        .withVersion(windowsVMAccessExtensionVersionName)
                         .withProtectedSetting("username", secondWindowsUserName)
                         .withProtectedSetting("password", secondWindowsUserPassword)
                         .attach()
@@ -246,7 +246,7 @@ public final class ManageVirtualMachineExtension {
             // Add a third admin user to Windows VM by updating VMAccess extension
 
             windowsVM.update()
-                    .updateExtension(windowsVmAccessExtensionName)
+                    .updateExtension(windowsVMAccessExtensionName)
                         .withProtectedSetting("username", thirdWindowsUserName)
                         .withProtectedSetting("password", thirdWindowsUserPassword)
                         .parent()
@@ -258,7 +258,7 @@ public final class ManageVirtualMachineExtension {
             // Reset admin password of first user of Windows VM by updating VMAccess extension
 
             windowsVM.update()
-                    .updateExtension(windowsVmAccessExtensionName)
+                    .updateExtension(windowsVMAccessExtensionName)
                         .withProtectedSetting("username", firstWindowsUserName)
                         .withProtectedSetting("password", firstWindowsUserNewPassword)
                         .parent()
@@ -270,7 +270,7 @@ public final class ManageVirtualMachineExtension {
             // Removes the extensions from Windows VM
 
             windowsVM.update()
-                    .withoutExtension(windowsVmAccessExtensionName)
+                    .withoutExtension(windowsVMAccessExtensionName)
                     .apply();
             System.out.println("Removed the VM Access extensions from Windows VM");
             Utils.print(windowsVM);

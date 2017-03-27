@@ -24,7 +24,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         IndependentChildResourceImpl<
                 AppServiceCertificateKeyVaultBinding,
                 AppServiceCertificateOrder,
-                AppServiceCertificateInner,
+                AppServiceCertificateResourceInner,
                 AppServiceCertificateKeyVaultBindingImpl,
                 AppServiceManager>
         implements
@@ -32,7 +32,7 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     private final AppServiceCertificateOrderImpl parent;
 
-    AppServiceCertificateKeyVaultBindingImpl(AppServiceCertificateInner innerObject, AppServiceCertificateOrderImpl parent) {
+    AppServiceCertificateKeyVaultBindingImpl(AppServiceCertificateResourceInner innerObject, AppServiceCertificateOrderImpl parent) {
         super(innerObject.name(), innerObject, (parent != null) ? parent.manager() : null);
         this.parent = parent;
     }
@@ -47,9 +47,9 @@ class AppServiceCertificateKeyVaultBindingImpl
         final AppServiceCertificateKeyVaultBinding self = this;
         return parent.manager().inner().appServiceCertificateOrders().createOrUpdateCertificateAsync(
                 parent.resourceGroupName(), parent.name(), name(), inner())
-                .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
+                .map(new Func1<AppServiceCertificateResourceInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
-                    public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {
+                    public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateResourceInner appServiceCertificateInner) {
                         setInner(appServiceCertificateInner);
                         return self;
                     }
@@ -72,7 +72,7 @@ class AppServiceCertificateKeyVaultBindingImpl
     }
 
     @Override
-    protected Observable<AppServiceCertificateInner> getInnerAsync() {
+    protected Observable<AppServiceCertificateResourceInner> getInnerAsync() {
         return parent.manager().inner().appServiceCertificateOrders().getCertificateAsync(
                 parent.resourceGroupName(), parent.name(), name());
     }

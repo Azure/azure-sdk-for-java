@@ -8,13 +8,13 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.rest.ServiceFuture;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -50,8 +50,7 @@ class DeploymentSlotsImpl
     }
 
     private DeploymentSlot wrapModelWithConfigChange(SiteInner siteInner, WebAppsInner innerCollection, WebAppImpl parent) {
-        siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")));
-        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
+        return wrapModel(siteInner, innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", ""))).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override
@@ -63,10 +62,7 @@ class DeploymentSlotsImpl
 
     @Override
     protected DeploymentSlotImpl wrapModel(SiteInner inner) {
-        if (inner == null) {
-            return null;
-        }
-        return new DeploymentSlotImpl(inner.name(), inner, inner.siteConfig(), parent);
+        return wrapModel(inner, null);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {
@@ -87,11 +83,10 @@ class DeploymentSlotsImpl
                     return null;
                 }
                 return innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name)
-                        .flatMap(new Func1<SiteConfigInner, Observable<DeploymentSlot>>() {
+                        .flatMap(new Func1<SiteConfigResourceInner, Observable<DeploymentSlot>>() {
                     @Override
-                    public Observable<DeploymentSlot> call(SiteConfigInner siteConfigInner) {
-                        siteInner.withSiteConfig(siteConfigInner);
-                        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings();
+                    public Observable<DeploymentSlot> call(SiteConfigResourceInner siteConfigInner) {
+                        return wrapModel(siteInner, siteConfigInner).cacheAppSettingsAndConnectionStrings();
                     }
                 });
             }
@@ -146,5 +141,12 @@ class DeploymentSlotsImpl
                 return wrapModelWithConfigChange(siteInner, innerCollection, parent);
             }
         });
+    }
+
+    private DeploymentSlotImpl wrapModel(SiteInner inner, SiteConfigResourceInner configResourceInner) {
+        if (inner == null) {
+            return null;
+        }
+        return new DeploymentSlotImpl(inner.name(), inner, configResourceInner, parent);
     }
 }

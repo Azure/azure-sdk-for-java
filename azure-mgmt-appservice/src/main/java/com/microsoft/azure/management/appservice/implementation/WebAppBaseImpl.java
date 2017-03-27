@@ -71,6 +71,7 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
+    SiteConfigResourceInner siteConfig;
     private Map<String, AppSetting> cachedAppSettings;
     private Map<String, ConnectionString> cachedConnectionStrings;
 
@@ -92,9 +93,9 @@ abstract class WebAppBaseImpl<
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
 
-    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
+    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        this.inner().withSiteConfig(configObject);
+        this.siteConfig = configObject;
         normalizeProperties();
     }
 
@@ -261,114 +262,114 @@ abstract class WebAppBaseImpl<
 
     @Override
     public List<String> defaultDocuments() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().siteConfig().defaultDocuments());
+        return Collections.unmodifiableList(siteConfig.defaultDocuments());
     }
 
     @Override
     public NetFrameworkVersion netFrameworkVersion() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return new NetFrameworkVersion(inner().siteConfig().netFrameworkVersion());
+        return new NetFrameworkVersion(siteConfig.netFrameworkVersion());
     }
 
     @Override
     public PhpVersion phpVersion() {
-        if (inner().siteConfig() == null || inner().siteConfig().phpVersion() == null) {
+        if (siteConfig == null || siteConfig.phpVersion() == null) {
             return PhpVersion.OFF;
         }
-        return new PhpVersion(inner().siteConfig().phpVersion());
+        return new PhpVersion(siteConfig.phpVersion());
     }
 
     @Override
     public PythonVersion pythonVersion() {
-        if (inner().siteConfig() == null || inner().siteConfig().pythonVersion() == null) {
+        if (siteConfig == null || siteConfig.pythonVersion() == null) {
             return PythonVersion.OFF;
         }
-        return new PythonVersion(inner().siteConfig().pythonVersion());
+        return new PythonVersion(siteConfig.pythonVersion());
     }
 
     @Override
     public String nodeVersion() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return inner().siteConfig().nodeVersion();
+        return siteConfig.nodeVersion();
     }
 
     @Override
     public boolean remoteDebuggingEnabled() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().siteConfig().remoteDebuggingEnabled());
+        return Utils.toPrimitiveBoolean(siteConfig.remoteDebuggingEnabled());
     }
 
     @Override
     public RemoteVisualStudioVersion remoteDebuggingVersion() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return new RemoteVisualStudioVersion(inner().siteConfig().remoteDebuggingVersion());
+        return new RemoteVisualStudioVersion(siteConfig.remoteDebuggingVersion());
     }
 
     @Override
     public boolean webSocketsEnabled() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().siteConfig().webSocketsEnabled());
+        return Utils.toPrimitiveBoolean(siteConfig.webSocketsEnabled());
     }
 
     @Override
     public boolean alwaysOn() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return false;
         }
-        return Utils.toPrimitiveBoolean(inner().siteConfig().alwaysOn());
+        return Utils.toPrimitiveBoolean(siteConfig.alwaysOn());
     }
 
     @Override
     public JavaVersion javaVersion() {
-        if (inner().siteConfig() == null || inner().siteConfig().javaVersion() == null) {
+        if (siteConfig == null || siteConfig.javaVersion() == null) {
             return JavaVersion.OFF;
         }
-        return new JavaVersion(inner().siteConfig().javaVersion());
+        return new JavaVersion(siteConfig.javaVersion());
     }
 
     @Override
     public String javaContainer() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return inner().siteConfig().javaContainer();
+        return siteConfig.javaContainer();
     }
 
     @Override
     public String javaContainerVersion() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return inner().siteConfig().javaContainerVersion();
+        return siteConfig.javaContainerVersion();
     }
 
     @Override
     public ManagedPipelineMode managedPipelineMode() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return inner().siteConfig().managedPipelineMode();
+        return siteConfig.managedPipelineMode();
     }
 
     @Override
     public String autoSwapSlotName() {
-        if (inner().siteConfig() == null) {
+        if (siteConfig == null) {
             return null;
         }
-        return inner().siteConfig().autoSwapSlotName();
+        return siteConfig.autoSwapSlotName();
     }
 
     @Override
@@ -416,9 +417,9 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SiteInner> getInner();
 
-    abstract Observable<SiteConfigInner> getConfigInner();
+    abstract Observable<SiteConfigResourceInner> getConfigInner();
 
-    abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig);
+    abstract Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig);
 
     abstract Observable<Void> deleteHostNameBinding(String hostname);
 
@@ -443,18 +444,18 @@ abstract class WebAppBaseImpl<
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
-        final boolean emptyConfig = inner().siteConfig() == null;
+        final boolean emptyConfig = siteConfig == null;
         if (emptyConfig) {
-            inner().withSiteConfig(new SiteConfigInner());
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withLocation(inner().location());
+        siteConfig.withLocation(inner().location());
         // Construct web app observable
         return createOrUpdateInner(inner())
         .map(new Func1<SiteInner, SiteInner>() {
             @Override
             public SiteInner call(SiteInner siteInner) {
                 if (emptyConfig) {
-                    inner().withSiteConfig(null);
+                    siteConfig = null;
                 }
                 return siteInner;
             }
@@ -525,14 +526,14 @@ abstract class WebAppBaseImpl<
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner siteInner) {
-                if (inner().siteConfig() == null) {
+                if (siteConfig == null) {
                     return Observable.just(siteInner);
                 }
-                return createOrUpdateSiteConfig(inner().siteConfig())
-                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                return createOrUpdateSiteConfig(siteConfig)
+                        .flatMap(new Func1<SiteConfigResourceInner, Observable<SiteInner>>() {
                             @Override
-                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                siteInner.withSiteConfig(siteConfigInner);
+                            public Observable<SiteInner> call(SiteConfigResourceInner returnedSiteConfig) {
+                                siteConfig = returnedSiteConfig;
                                 return Observable.just(siteInner);
                             }
                         });
@@ -820,20 +821,20 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNetFrameworkVersion(NetFrameworkVersion version) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withNetFrameworkVersion(version.toString());
+        siteConfig.withNetFrameworkVersion(version.toString());
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPhpVersion(PhpVersion version) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withPhpVersion(version.toString());
+        siteConfig.withPhpVersion(version.toString());
         return (FluentImplT) this;
     }
 
@@ -845,10 +846,10 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withJavaVersion(JavaVersion version) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withJavaVersion(version.toString());
+        siteConfig.withJavaVersion(version.toString());
         return (FluentImplT) this;
     }
 
@@ -860,16 +861,16 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebContainer(WebContainer webContainer) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
         if (webContainer == null) {
-            inner().siteConfig().withJavaContainer(null);
-            inner().siteConfig().withJavaContainerVersion(null);
+            siteConfig.withJavaContainer(null);
+            siteConfig.withJavaContainerVersion(null);
         } else {
             String[] containerInfo = webContainer.toString().split(" ");
-            inner().siteConfig().withJavaContainer(containerInfo[0]);
-            inner().siteConfig().withJavaContainerVersion(containerInfo[1]);
+            siteConfig.withJavaContainer(containerInfo[0]);
+            siteConfig.withJavaContainerVersion(containerInfo[1]);
         }
         return (FluentImplT) this;
     }
@@ -877,10 +878,10 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPythonVersion(PythonVersion version) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withPythonVersion(version.toString());
+        siteConfig.withPythonVersion(version.toString());
         return (FluentImplT) this;
     }
 
@@ -892,108 +893,108 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPlatformArchitecture(PlatformArchitecture platform) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withUse32BitWorkerProcess(platform.equals(PlatformArchitecture.X86));
+        siteConfig.withUse32BitWorkerProcess(platform.equals(PlatformArchitecture.X86));
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebSocketsEnabled(boolean enabled) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withWebSocketsEnabled(enabled);
+        siteConfig.withWebSocketsEnabled(enabled);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebAppAlwaysOn(boolean alwaysOn) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withAlwaysOn(alwaysOn);
+        siteConfig.withAlwaysOn(alwaysOn);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedPipelineMode(ManagedPipelineMode managedPipelineMode) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withManagedPipelineMode(managedPipelineMode);
+        siteConfig.withManagedPipelineMode(managedPipelineMode);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAutoSwapSlotName(String slotName) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withAutoSwapSlotName(slotName);
+        siteConfig.withAutoSwapSlotName(slotName);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withRemoteDebuggingEnabled(true);
-        inner().siteConfig().withRemoteDebuggingVersion(remoteVisualStudioVersion.toString());
+        siteConfig.withRemoteDebuggingEnabled(true);
+        siteConfig.withRemoteDebuggingVersion(remoteVisualStudioVersion.toString());
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingDisabled() {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withRemoteDebuggingEnabled(false);
+        siteConfig.withRemoteDebuggingEnabled(false);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocument(String document) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        if (inner().siteConfig().defaultDocuments() == null) {
-            inner().siteConfig().withDefaultDocuments(new ArrayList<String>());
+        if (siteConfig.defaultDocuments() == null) {
+            siteConfig.withDefaultDocuments(new ArrayList<String>());
         }
-        inner().siteConfig().defaultDocuments().add(document);
+        siteConfig.defaultDocuments().add(document);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocuments(List<String> documents) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        if (inner().siteConfig().defaultDocuments() == null) {
-            inner().siteConfig().withDefaultDocuments(new ArrayList<String>());
+        if (siteConfig.defaultDocuments() == null) {
+            siteConfig.withDefaultDocuments(new ArrayList<String>());
         }
-        inner().siteConfig().defaultDocuments().addAll(documents);
+        siteConfig.defaultDocuments().addAll(documents);
         return (FluentImplT) this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutDefaultDocument(String document) {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        if (inner().siteConfig().defaultDocuments() != null) {
-            inner().siteConfig().defaultDocuments().remove(document);
+        if (siteConfig.defaultDocuments() != null) {
+            siteConfig.defaultDocuments().remove(document);
         }
         return (FluentImplT) this;
     }
@@ -1092,10 +1093,10 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withLocalGitSourceControl() {
-        if (inner().siteConfig() == null) {
-            inner().withSiteConfig(new SiteConfigInner());
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        inner().siteConfig().withScmType(ScmType.LOCAL_GIT);
+        siteConfig.withScmType(ScmType.LOCAL_GIT);
         return (FluentImplT) this;
     }
 
@@ -1107,14 +1108,15 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Observable<FluentT> refreshAsync() {
         return super.refreshAsync().flatMap(new Func1<FluentT, Observable<FluentT>>() {
             @Override
             public Observable<FluentT> call(final FluentT fluentT) {
-                return getConfigInner().flatMap(new Func1<SiteConfigInner, Observable<FluentT>>() {
+                return getConfigInner().flatMap(new Func1<SiteConfigResourceInner, Observable<FluentT>>() {
                     @Override
-                    public Observable<FluentT> call(SiteConfigInner siteConfigInner) {
-                        fluentT.inner().withSiteConfig(siteConfigInner);
+                    public Observable<FluentT> call(SiteConfigResourceInner returnedSiteConfig) {
+                        siteConfig = returnedSiteConfig;
                         final WebAppBaseImpl<FluentT, FluentImplT> impl = (WebAppBaseImpl<FluentT, FluentImplT>) fluentT;
 
                         return impl.cacheAppSettingsAndConnectionStrings();

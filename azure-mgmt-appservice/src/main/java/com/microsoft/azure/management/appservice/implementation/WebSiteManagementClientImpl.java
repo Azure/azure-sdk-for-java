@@ -1028,7 +1028,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
-     * @param linuxWorkersEnabled Specify true if you want to filter to only regions that support Linux workers.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1049,7 +1049,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
-     * @param linuxWorkersEnabled Specify true if you want to filter to only regions that support Linux workers.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1071,7 +1071,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
-     * @param linuxWorkersEnabled Specify true if you want to filter to only regions that support Linux workers.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
@@ -1090,7 +1090,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
-     * @param linuxWorkersEnabled Specify true if you want to filter to only regions that support Linux workers.
+     * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
@@ -1113,7 +1113,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      * Get a list of available geographical regions.
      *
     ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'Dynamic'
-    ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxWorkersEnabled Specify true if you want to filter to only regions that support Linux workers.
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that support Linux workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

@@ -46,7 +46,7 @@ class WebAppImpl
     private DeploymentSlots deploymentSlots;
     private AppServicePlanImpl appServicePlan;
 
-    WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, AppServiceManager manager) {
+    WebAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
     }
 
@@ -61,12 +61,12 @@ class WebAppImpl
     }
 
     @Override
-    Observable<SiteConfigInner> getConfigInner() {
+    Observable<SiteConfigResourceInner> getConfigInner() {
         return this.manager().inner().webApps().getConfigurationAsync(resourceGroupName(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
         return this.manager().inner().webApps().createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
 

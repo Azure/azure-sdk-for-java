@@ -5,12 +5,14 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
@@ -74,6 +76,20 @@ class AvailabilitySetImpl
     @Override
     public List<InstanceViewStatus> statuses() {
         return Collections.unmodifiableList(this.inner().statuses());
+    }
+
+    @Override
+    public PagedList<VirtualMachineSize> listVirtualMachineSizes() {
+        return Utils.toPagedList(this.manager()
+                        .inner()
+                        .availabilitySets()
+                        .listAvailableSizes(this.resourceGroupName(), this.name()),
+                new Func1<VirtualMachineSizeInner, VirtualMachineSize>() {
+                    @Override
+                    public VirtualMachineSize call(VirtualMachineSizeInner inner) {
+                        return new VirtualMachineSizeImpl(inner);
+                    }
+                });
     }
 
     @Override

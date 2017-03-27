@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -50,6 +51,12 @@ public interface AvailabilitySet extends
      * @return the statuses of the existing virtual machines in the availability set
      */
     List<InstanceViewStatus> statuses();
+
+    /**
+     * @return the virtual machine sizes supported in the availability set
+     */
+    PagedList<VirtualMachineSize> listVirtualMachineSizes();
+
 
     // Fluent interfaces
 

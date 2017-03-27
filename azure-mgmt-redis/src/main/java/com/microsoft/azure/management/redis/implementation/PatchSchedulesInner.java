@@ -163,6 +163,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     private ServiceResponse<RedisPatchScheduleInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RedisPatchScheduleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
+                .register(201, new TypeToken<RedisPatchScheduleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -335,7 +336,6 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     private ServiceResponse<RedisPatchScheduleInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RedisPatchScheduleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

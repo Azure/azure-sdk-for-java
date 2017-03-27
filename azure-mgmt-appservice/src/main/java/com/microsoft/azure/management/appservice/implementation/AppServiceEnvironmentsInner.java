@@ -43,7 +43,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in AppServiceEnvironments.
  */
-public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceEnvironmentInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppServiceEnvironmentInner> {
+public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceEnvironmentResourceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<AppServiceEnvironmentInner> {
     /** The Retrofit service to perform REST calls. */
     private AppServiceEnvironmentsService service;
     /** The service client containing this operation class. */
@@ -79,11 +79,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", method = "DELETE", hasBody = true)
@@ -127,11 +127,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdateMultiRolePool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Observable<Response<ResponseBody>> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdateMultiRolePool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listMultiRolePoolInstanceMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
@@ -203,11 +203,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments createOrUpdateWorkerPool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Observable<Response<ResponseBody>> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments beginCreateOrUpdateWorkerPool" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolResourceInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.AppServiceEnvironments listWorkerPoolInstanceMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
@@ -572,9 +572,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner getByResourceGroup(String resourceGroupName, String name) {
+    public AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
@@ -588,7 +588,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppServiceEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+    public ServiceFuture<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -599,12 +599,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<AppServiceEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
                 return response.body();
             }
         });
@@ -617,9 +617,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -631,11 +631,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         }
         final String apiVersion = "2016-09-01";
         return service.getByResourceGroup(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceEnvironmentInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceEnvironmentInner> clientResponse = getByResourceGroupDelegate(response);
+                        ServiceResponse<AppServiceEnvironmentResourceInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -644,9 +644,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<AppServiceEnvironmentInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
+    private ServiceResponse<AppServiceEnvironmentResourceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -661,9 +661,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner createOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public AppServiceEnvironmentResourceInner createOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last().body();
     }
 
@@ -678,7 +678,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+    public ServiceFuture<AppServiceEnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
@@ -692,10 +692,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<AppServiceEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
                 return response.body();
             }
         });
@@ -711,7 +711,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -727,7 +727,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(hostingEnvironmentEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceEnvironmentInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType());
     }
 
     /**
@@ -740,9 +740,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AppServiceEnvironmentInner object if successful.
+     * @return the AppServiceEnvironmentResourceInner object if successful.
      */
-    public AppServiceEnvironmentInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public AppServiceEnvironmentResourceInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single().body();
     }
 
@@ -757,7 +757,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentInner> serviceCallback) {
+    public ServiceFuture<AppServiceEnvironmentResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope, final ServiceCallback<AppServiceEnvironmentResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
@@ -769,12 +769,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<AppServiceEnvironmentInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentInner>, AppServiceEnvironmentInner>() {
+    public Observable<AppServiceEnvironmentResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>() {
             @Override
-            public AppServiceEnvironmentInner call(ServiceResponse<AppServiceEnvironmentInner> response) {
+            public AppServiceEnvironmentResourceInner call(ServiceResponse<AppServiceEnvironmentResourceInner> response) {
                 return response.body();
             }
         });
@@ -788,9 +788,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AppServiceEnvironmentInner object
+     * @return the observable to the AppServiceEnvironmentResourceInner object
      */
-    public Observable<ServiceResponse<AppServiceEnvironmentInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -806,11 +806,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(hostingEnvironmentEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceEnvironmentResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<AppServiceEnvironmentInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AppServiceEnvironmentResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AppServiceEnvironmentInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        ServiceResponse<AppServiceEnvironmentResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -819,10 +819,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<AppServiceEnvironmentInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
-                .register(202, new TypeToken<AppServiceEnvironmentInner>() { }.getType())
+    private ServiceResponse<AppServiceEnvironmentResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppServiceEnvironmentResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
+                .register(202, new TypeToken<AppServiceEnvironmentResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -1901,13 +1901,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listMultiRolePools(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.body()) {
+    public PagedList<WorkerPoolResourceInner> listMultiRolePools(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
                 return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1923,12 +1923,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<List<WorkerPoolResourceInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listMultiRolePoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1942,13 +1942,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolResourceInner>> listMultiRolePoolsAsync(final String resourceGroupName, final String name) {
         return listMultiRolePoolsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
                     return response.body();
                 }
             });
@@ -1961,13 +1961,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listMultiRolePoolsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1981,12 +1981,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * Get all multi-role pools.
      * Get all multi-role pools.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of the App Service Environment.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1998,12 +1998,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         }
         final String apiVersion = "2016-09-01";
         return service.listMultiRolePools(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listMultiRolePoolsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listMultiRolePoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2011,9 +2011,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2027,9 +2027,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner getMultiRolePool(String resourceGroupName, String name) {
+    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name) {
         return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
@@ -2043,7 +2043,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -2054,12 +2054,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
-        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
+        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -2072,9 +2072,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> getMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2086,11 +2086,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         }
         final String apiVersion = "2016-09-01";
         return service.getMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = getMultiRolePoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = getMultiRolePoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2099,9 +2099,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkerPoolInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2116,9 +2116,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public WorkerPoolResourceInner createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last().body();
     }
 
@@ -2133,7 +2133,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
@@ -2147,10 +2147,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -2166,7 +2166,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> createOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2182,7 +2182,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(multiRolePoolEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolResourceInner>() { }.getType());
     }
 
     /**
@@ -2195,9 +2195,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public WorkerPoolResourceInner beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single().body();
     }
 
@@ -2212,7 +2212,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
@@ -2224,12 +2224,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -2243,9 +2243,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2261,11 +2261,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(multiRolePoolEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2274,10 +2274,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkerPoolInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
-                .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
+                .register(202, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -4662,13 +4662,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listWorkerPools(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.body()) {
+    public PagedList<WorkerPoolResourceInner> listWorkerPools(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
                 return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -4684,12 +4684,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<List<WorkerPoolResourceInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listWorkerPoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -4703,13 +4703,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolResourceInner>> listWorkerPoolsAsync(final String resourceGroupName, final String name) {
         return listWorkerPoolsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
                     return response.body();
                 }
             });
@@ -4722,13 +4722,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listWorkerPoolsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -4742,12 +4742,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * Get all worker pools of an App Service Environment.
      * Get all worker pools of an App Service Environment.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of the App Service Environment.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4759,12 +4759,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         }
         final String apiVersion = "2016-09-01";
         return service.listWorkerPools(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listWorkerPoolsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listWorkerPoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4772,9 +4772,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4789,9 +4789,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
+    public WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
         return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).toBlocking().single().body();
     }
 
@@ -4806,7 +4806,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
     }
 
@@ -4818,12 +4818,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
+        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -4837,9 +4837,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> getWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4854,11 +4854,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         }
         final String apiVersion = "2016-09-01";
         return service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = getWorkerPoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = getWorkerPoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4867,9 +4867,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkerPoolInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4885,9 +4885,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public WorkerPoolResourceInner createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last().body();
     }
 
@@ -4903,7 +4903,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
@@ -4918,10 +4918,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -4938,7 +4938,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> createOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4957,7 +4957,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(workerPoolEnvelope);
         final String apiVersion = "2016-09-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolResourceInner>() { }.getType());
     }
 
     /**
@@ -4971,9 +4971,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the WorkerPoolInner object if successful.
+     * @return the WorkerPoolResourceInner object if successful.
      */
-    public WorkerPoolInner beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public WorkerPoolResourceInner beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single().body();
     }
 
@@ -4989,7 +4989,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, final ServiceCallback<WorkerPoolResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
@@ -5002,12 +5002,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+    public Observable<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolResourceInner>, WorkerPoolResourceInner>() {
             @Override
-            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+            public WorkerPoolResourceInner call(ServiceResponse<WorkerPoolResourceInner> response) {
                 return response.body();
             }
         });
@@ -5022,9 +5022,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @param workerPoolName Name of the worker pool.
      * @param workerPoolEnvelope Properties of the worker pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the WorkerPoolInner object
+     * @return the observable to the WorkerPoolResourceInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<ServiceResponse<WorkerPoolResourceInner>> beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5043,11 +5043,11 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Validator.validate(workerPoolEnvelope);
         final String apiVersion = "2016-09-01";
         return service.beginCreateOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<WorkerPoolResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
+                        ServiceResponse<WorkerPoolResourceInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5056,10 +5056,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkerPoolInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
-                .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
+    private ServiceResponse<WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkerPoolResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkerPoolResourceInner>() { }.getType())
+                .register(202, new TypeToken<WorkerPoolResourceInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
@@ -6645,13 +6645,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listMultiRolePoolsNext(final String nextPageLink) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.body()) {
+    public PagedList<WorkerPoolResourceInner> listMultiRolePoolsNext(final String nextPageLink) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
                 return listMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -6667,12 +6667,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolInner>> serviceFuture, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<List<WorkerPoolResourceInner>> listMultiRolePoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolResourceInner>> serviceFuture, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listMultiRolePoolsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listMultiRolePoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -6685,13 +6685,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listMultiRolePoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolResourceInner>> listMultiRolePoolsNextAsync(final String nextPageLink) {
         return listMultiRolePoolsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
                     return response.body();
                 }
             });
@@ -6703,13 +6703,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return listMultiRolePoolsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -6723,22 +6723,22 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * Get all multi-role pools.
      * Get all multi-role pools.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listMultiRolePoolsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listMultiRolePoolsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listMultiRolePoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -6746,9 +6746,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listMultiRolePoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listMultiRolePoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -8273,13 +8273,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object if successful.
      */
-    public PagedList<WorkerPoolInner> listWorkerPoolsNext(final String nextPageLink) {
-        ServiceResponse<Page<WorkerPoolInner>> response = listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<WorkerPoolInner>(response.body()) {
+    public PagedList<WorkerPoolResourceInner> listWorkerPoolsNext(final String nextPageLink) {
+        ServiceResponse<Page<WorkerPoolResourceInner>> response = listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<WorkerPoolResourceInner>(response.body()) {
             @Override
-            public Page<WorkerPoolInner> nextPage(String nextPageLink) {
+            public Page<WorkerPoolResourceInner> nextPage(String nextPageLink) {
                 return listWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -8295,12 +8295,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolInner>> serviceFuture, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceFuture<List<WorkerPoolResourceInner>> listWorkerPoolsNextAsync(final String nextPageLink, final ServiceFuture<List<WorkerPoolResourceInner>> serviceFuture, final ListOperationCallback<WorkerPoolResourceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listWorkerPoolsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(String nextPageLink) {
                     return listWorkerPoolsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -8313,13 +8313,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<Page<WorkerPoolInner>> listWorkerPoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolResourceInner>> listWorkerPoolsNextAsync(final String nextPageLink) {
         return listWorkerPoolsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+            .map(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Page<WorkerPoolResourceInner>>() {
                 @Override
-                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                public Page<WorkerPoolResourceInner> call(ServiceResponse<Page<WorkerPoolResourceInner>> response) {
                     return response.body();
                 }
             });
@@ -8331,13 +8331,13 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return listWorkerPoolsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolResourceInner>>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(ServiceResponse<Page<WorkerPoolResourceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -8351,22 +8351,22 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * Get all worker pools of an App Service Environment.
      * Get all worker pools of an App Service Environment.
      *
-    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<WorkerPoolResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> listWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> listWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listWorkerPoolsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolResourceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<WorkerPoolResourceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<WorkerPoolInner>> result = listWorkerPoolsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<WorkerPoolResourceInner>> result = listWorkerPoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolResourceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -8374,9 +8374,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<WorkerPoolInner>> listWorkerPoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolResourceInner>> listWorkerPoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkerPoolResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

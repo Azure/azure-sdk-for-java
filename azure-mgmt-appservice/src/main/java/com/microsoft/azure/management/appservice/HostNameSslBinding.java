@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -17,6 +18,7 @@ import java.io.File;
  * A Host name - SSL certificate binding definition.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface HostNameSslBinding extends
     HasInner<HostNameSslState>,
     ChildResource<WebAppBase> {

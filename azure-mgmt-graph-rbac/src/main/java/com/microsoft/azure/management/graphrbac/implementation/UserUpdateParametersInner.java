@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.graphrbac.PasswordProfile;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request parameters for updating an existing work or school account user.
@@ -17,27 +18,26 @@ public class UserUpdateParametersInner {
     /**
      * Whether the account is enabled.
      */
+    @JsonProperty(value = "accountEnabled")
     private Boolean accountEnabled;
 
     /**
      * The display name of the user.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
      * The password profile of the user.
      */
+    @JsonProperty(value = "passwordProfile")
     private PasswordProfile passwordProfile;
 
     /**
      * The mail alias for the user.
      */
+    @JsonProperty(value = "mailNickname")
     private String mailNickname;
-
-    /**
-     * The usageLocation for the User.
-     */
-    private String usageLocation;
 
     /**
      * Get the accountEnabled value.
@@ -51,8 +51,7 @@ public class UserUpdateParametersInner {
     /**
      * Set the accountEnabled value.
      *
-     * @param accountEnabled
-     *            the accountEnabled value to set
+     * @param accountEnabled the accountEnabled value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withAccountEnabled(Boolean accountEnabled) {
@@ -72,8 +71,7 @@ public class UserUpdateParametersInner {
     /**
      * Set the displayName value.
      *
-     * @param displayName
-     *            the displayName value to set
+     * @param displayName the displayName value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withDisplayName(String displayName) {
@@ -93,8 +91,7 @@ public class UserUpdateParametersInner {
     /**
      * Set the passwordProfile value.
      *
-     * @param passwordProfile
-     *            the passwordProfile value to set
+     * @param passwordProfile the passwordProfile value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withPasswordProfile(PasswordProfile passwordProfile) {
@@ -114,33 +111,11 @@ public class UserUpdateParametersInner {
     /**
      * Set the mailNickname value.
      *
-     * @param mailNickname
-     *            the mailNickname value to set
+     * @param mailNickname the mailNickname value to set
      * @return the UserUpdateParametersInner object itself.
      */
     public UserUpdateParametersInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
-        return this;
-    }
-
-    /**
-     * Get the usageLocation value.
-     *
-     * @return the usageLocation value
-     */
-    public String usageLocation() {
-        return this.usageLocation;
-    }
-
-    /**
-     * Set the usageLocation value.
-     *
-     * @param usageLocation
-     *            the usageLocation value to set
-     * @return the UserInner object itself.
-     */
-    public UserUpdateParametersInner withUsageLocation(String usageLocation) {
-        this.usageLocation = usageLocation;
         return this;
     }
 

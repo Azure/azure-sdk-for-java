@@ -216,11 +216,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateConfiguration" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
-        Observable<Response<ResponseBody>> createOrUpdateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigResourceInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConfiguration" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
-        Observable<Response<ResponseBody>> updateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigResourceInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConfigurationSnapshotInfo" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots")
@@ -378,13 +378,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql")
         Observable<Response<ResponseBody>> beginMigrateMySql(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body MigrateMySqlRequestInner migrationRequestEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMigrateMySqlStatus" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status")
+        Observable<Response<ResponseBody>> getMigrateMySqlStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listNetworkFeatures" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps startWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start")
-        Observable<Response<ResponseBody>> startWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> startWebSiteNetworkTrace(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stopWebSiteNetworkTrace" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop")
@@ -573,11 +577,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps createOrUpdateConfigurationSlot" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
-        Observable<Response<ResponseBody>> createOrUpdateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigResourceInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps updateConfigurationSlot" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
-        Observable<Response<ResponseBody>> updateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigResourceInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listConfigurationSnapshotInfoSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots")
@@ -719,13 +723,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics")
         Observable<Response<ResponseBody>> listMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getMigrateMySqlStatusSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/migratemysql/status")
+        Observable<Response<ResponseBody>> getMigrateMySqlStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listNetworkFeaturesSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps startWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/start")
-        Observable<Response<ResponseBody>> startWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> startWebSiteNetworkTraceSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("durationInSeconds") Integer durationInSeconds, @Query("maxFrameLength") Integer maxFrameLength, @Query("sasUrl") String sasUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps stopWebSiteNetworkTraceSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/stop")
@@ -780,9 +788,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restart")
         Observable<Response<ResponseBody>> restartSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesSlot" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotDifferencesSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs")
-        Observable<Response<ResponseBody>> getSlotsDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSlotDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps swapSlotSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
@@ -860,9 +868,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         Observable<Response<ResponseBody>> updateVnetConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesFromProduction" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotDifferencesFromProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs")
-        Observable<Response<ResponseBody>> getSlotsDifferencesFromProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSlotDifferencesFromProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps swapSlotWithProduction" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
@@ -1024,9 +1032,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listPerfMonCountersSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesSlotNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotDifferencesSlotNext" })
         @GET
-        Observable<Response<ResponseBody>> getSlotsDifferencesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSlotDifferencesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshotsSlotNext" })
         @GET
@@ -1036,9 +1044,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listUsagesSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getSlotsDifferencesFromProductionNext" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSlotDifferencesFromProductionNext" })
         @GET
-        Observable<Response<ResponseBody>> getSlotsDifferencesFromProductionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSlotDifferencesFromProductionNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listSnapshotsNext" })
         @GET
@@ -4853,9 +4861,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner getConfiguration(String resourceGroupName, String name) {
+    public SiteConfigResourceInner getConfiguration(String resourceGroupName, String name) {
         return getConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
@@ -4869,7 +4877,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> getConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -4880,12 +4888,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> getConfigurationAsync(String resourceGroupName, String name) {
-        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> getConfigurationAsync(String resourceGroupName, String name) {
+        return getConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -4898,9 +4906,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> getConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4912,11 +4920,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         return service.getConfiguration(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = getConfigurationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -4925,9 +4933,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> getConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> getConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4942,9 +4950,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner createOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public SiteConfigResourceInner createOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
         return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
@@ -4959,7 +4967,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
@@ -4971,12 +4979,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> createOrUpdateConfigurationAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
+        return createOrUpdateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -4990,9 +4998,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> createOrUpdateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5008,11 +5016,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Validator.validate(siteConfig);
         final String apiVersion = "2016-08-01";
         return service.createOrUpdateConfiguration(resourceGroupName, name, this.client.subscriptionId(), siteConfig, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = createOrUpdateConfigurationDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = createOrUpdateConfigurationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5021,9 +5029,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> createOrUpdateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> createOrUpdateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -5038,9 +5046,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner updateConfiguration(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public SiteConfigResourceInner updateConfiguration(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
         return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().body();
     }
 
@@ -5055,7 +5063,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
@@ -5067,12 +5075,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> updateConfigurationAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
+        return updateConfigurationWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -5086,9 +5094,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> updateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> updateConfigurationWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigResourceInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5104,11 +5112,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Validator.validate(siteConfig);
         final String apiVersion = "2016-08-01";
         return service.updateConfiguration(resourceGroupName, name, this.client.subscriptionId(), siteConfig, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = updateConfigurationDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = updateConfigurationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5117,9 +5125,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> updateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> updateConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -5222,9 +5230,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner getConfigurationSnapshot(String resourceGroupName, String name, String snapshotId) {
+    public SiteConfigResourceInner getConfigurationSnapshot(String resourceGroupName, String name, String snapshotId) {
         return getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).toBlocking().single().body();
     }
 
@@ -5239,7 +5247,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId), serviceCallback);
     }
 
@@ -5251,12 +5259,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId) {
-        return getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> getConfigurationSnapshotAsync(String resourceGroupName, String name, String snapshotId) {
+        return getConfigurationSnapshotWithServiceResponseAsync(resourceGroupName, name, snapshotId).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -5270,9 +5278,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSnapshotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> getConfigurationSnapshotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5287,11 +5295,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         return service.getConfigurationSnapshot(resourceGroupName, name, snapshotId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationSnapshotDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = getConfigurationSnapshotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5300,9 +5308,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> getConfigurationSnapshotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> getConfigurationSnapshotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -9269,6 +9277,94 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MigrateMySqlStatusInner object if successful.
+     */
+    public MigrateMySqlStatusInner getMigrateMySqlStatus(String resourceGroupName, String name) {
+        return getMigrateMySqlStatusWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MigrateMySqlStatusInner> getMigrateMySqlStatusAsync(String resourceGroupName, String name, final ServiceCallback<MigrateMySqlStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMigrateMySqlStatusWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrateMySqlStatusInner object
+     */
+    public Observable<MigrateMySqlStatusInner> getMigrateMySqlStatusAsync(String resourceGroupName, String name) {
+        return getMigrateMySqlStatusWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<MigrateMySqlStatusInner>, MigrateMySqlStatusInner>() {
+            @Override
+            public MigrateMySqlStatusInner call(ServiceResponse<MigrateMySqlStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrateMySqlStatusInner object
+     */
+    public Observable<ServiceResponse<MigrateMySqlStatusInner>> getMigrateMySqlStatusWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMigrateMySqlStatus(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MigrateMySqlStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MigrateMySqlStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MigrateMySqlStatusInner> clientResponse = getMigrateMySqlStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MigrateMySqlStatusInner> getMigrateMySqlStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MigrateMySqlStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MigrateMySqlStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all network features used by the app (or deployment slot, if specified).
      * Gets all network features used by the app (or deployment slot, if specified).
      *
@@ -9369,7 +9465,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -9384,7 +9480,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -9398,7 +9494,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
@@ -9416,7 +9512,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
@@ -9432,7 +9528,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         final Integer durationInSeconds = null;
-        return service.startWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        return service.startWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -9451,15 +9549,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    public String startWebSiteNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).toBlocking().single().body();
+    public String startWebSiteNetworkTrace(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
     }
 
     /**
@@ -9467,14 +9567,16 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
     /**
@@ -9482,13 +9584,15 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    public Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceWithServiceResponseAsync(resourceGroupName, name, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
                 return response.body();
@@ -9501,12 +9605,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param name The name of the web app.
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    public Observable<ServiceResponse<String>> startWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds) {
+    public Observable<ServiceResponse<String>> startWebSiteNetworkTraceWithServiceResponseAsync(String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9517,7 +9623,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        return service.startWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.startWebSiteNetworkTrace(resourceGroupName, name, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -9543,7 +9649,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -9558,7 +9664,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -9572,7 +9678,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
@@ -9590,7 +9696,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
@@ -14708,9 +14814,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner getConfigurationSlot(String resourceGroupName, String name, String slot) {
+    public SiteConfigResourceInner getConfigurationSlot(String resourceGroupName, String name, String slot) {
         return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
     }
 
@@ -14725,7 +14831,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
@@ -14737,12 +14843,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
-        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> getConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
+        return getConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -14756,9 +14862,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> getConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14773,11 +14879,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         return service.getConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationSlotDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = getConfigurationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14786,9 +14892,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> getConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> getConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -14804,9 +14910,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner createOrUpdateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public SiteConfigResourceInner createOrUpdateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
         return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
@@ -14822,7 +14928,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
@@ -14835,12 +14941,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> createOrUpdateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
+        return createOrUpdateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -14855,9 +14961,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> createOrUpdateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14876,11 +14982,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Validator.validate(siteConfig);
         final String apiVersion = "2016-08-01";
         return service.createOrUpdateConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = createOrUpdateConfigurationSlotDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = createOrUpdateConfigurationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14889,9 +14995,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> createOrUpdateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> createOrUpdateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -14907,9 +15013,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner updateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public SiteConfigResourceInner updateConfigurationSlot(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
         return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().body();
     }
 
@@ -14925,7 +15031,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
@@ -14938,12 +15044,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
-        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> updateConfigurationSlotAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
+        return updateConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -14958,9 +15064,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> updateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> updateConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigResourceInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14979,11 +15085,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Validator.validate(siteConfig);
         final String apiVersion = "2016-08-01";
         return service.updateConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = updateConfigurationSlotDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = updateConfigurationSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -14992,9 +15098,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> updateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> updateConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -15105,9 +15211,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SiteConfigInner object if successful.
+     * @return the SiteConfigResourceInner object if successful.
      */
-    public SiteConfigInner getConfigurationSnapshotSlot(String resourceGroupName, String name, String snapshotId, String slot) {
+    public SiteConfigResourceInner getConfigurationSnapshotSlot(String resourceGroupName, String name, String snapshotId, String slot) {
         return getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).toBlocking().single().body();
     }
 
@@ -15123,7 +15229,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SiteConfigInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
+    public ServiceFuture<SiteConfigResourceInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot, final ServiceCallback<SiteConfigResourceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot), serviceCallback);
     }
 
@@ -15136,12 +15242,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param snapshotId The ID of the snapshot to read.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<SiteConfigInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot) {
-        return getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+    public Observable<SiteConfigResourceInner> getConfigurationSnapshotSlotAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+        return getConfigurationSnapshotSlotWithServiceResponseAsync(resourceGroupName, name, snapshotId, slot).map(new Func1<ServiceResponse<SiteConfigResourceInner>, SiteConfigResourceInner>() {
             @Override
-            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+            public SiteConfigResourceInner call(ServiceResponse<SiteConfigResourceInner> response) {
                 return response.body();
             }
         });
@@ -15156,9 +15262,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param snapshotId The ID of the snapshot to read.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SiteConfigInner object
+     * @return the observable to the SiteConfigResourceInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getConfigurationSnapshotSlotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId, String slot) {
+    public Observable<ServiceResponse<SiteConfigResourceInner>> getConfigurationSnapshotSlotWithServiceResponseAsync(String resourceGroupName, String name, String snapshotId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15176,11 +15282,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         return service.getConfigurationSnapshotSlot(resourceGroupName, name, snapshotId, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SiteConfigResourceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<SiteConfigInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SiteConfigResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SiteConfigInner> clientResponse = getConfigurationSnapshotSlotDelegate(response);
+                        ServiceResponse<SiteConfigResourceInner> clientResponse = getConfigurationSnapshotSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -15189,9 +15295,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<SiteConfigInner> getConfigurationSnapshotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SiteConfigInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SiteConfigInner>() { }.getType())
+    private ServiceResponse<SiteConfigResourceInner> getConfigurationSnapshotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SiteConfigResourceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SiteConfigResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -19040,6 +19146,101 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of the deployment slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the MigrateMySqlStatusInner object if successful.
+     */
+    public MigrateMySqlStatusInner getMigrateMySqlStatusSlot(String resourceGroupName, String name, String slot) {
+        return getMigrateMySqlStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of the deployment slot
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<MigrateMySqlStatusInner> getMigrateMySqlStatusSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<MigrateMySqlStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getMigrateMySqlStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of the deployment slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrateMySqlStatusInner object
+     */
+    public Observable<MigrateMySqlStatusInner> getMigrateMySqlStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        return getMigrateMySqlStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<MigrateMySqlStatusInner>, MigrateMySqlStatusInner>() {
+            @Override
+            public MigrateMySqlStatusInner call(ServiceResponse<MigrateMySqlStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app
+     * @param slot Name of the deployment slot
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the MigrateMySqlStatusInner object
+     */
+    public Observable<ServiceResponse<MigrateMySqlStatusInner>> getMigrateMySqlStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-08-01";
+        return service.getMigrateMySqlStatusSlot(resourceGroupName, name, slot, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MigrateMySqlStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MigrateMySqlStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MigrateMySqlStatusInner> clientResponse = getMigrateMySqlStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<MigrateMySqlStatusInner> getMigrateMySqlStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MigrateMySqlStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<MigrateMySqlStatusInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all network features used by the app (or deployment slot, if specified).
      * Gets all network features used by the app (or deployment slot, if specified).
      *
@@ -19147,7 +19348,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -19163,7 +19364,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -19178,7 +19379,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
@@ -19197,7 +19398,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
@@ -19217,7 +19418,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         final String apiVersion = "2016-08-01";
         final Integer durationInSeconds = null;
-        return service.startWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final Integer maxFrameLength = null;
+        final String sasUrl = null;
+        return service.startWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -19236,16 +19439,18 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).toBlocking().single().body();
+    public String startWebSiteNetworkTraceSlot(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).toBlocking().single().body();
     }
 
     /**
@@ -19253,15 +19458,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, final ServiceCallback<String> serviceCallback) {
-        return ServiceFuture.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds), serviceCallback);
+    public ServiceFuture<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl, final ServiceCallback<String> serviceCallback) {
+        return ServiceFuture.fromResponse(startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl), serviceCallback);
     }
 
     /**
@@ -19269,14 +19476,16 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    public Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
-        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds).map(new Func1<ServiceResponse<String>, String>() {
+    public Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
+        return startWebSiteNetworkTraceSlotWithServiceResponseAsync(resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasUrl).map(new Func1<ServiceResponse<String>, String>() {
             @Override
             public String call(ServiceResponse<String> response) {
                 return response.body();
@@ -19289,13 +19498,15 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Start capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
-     * @param durationInSeconds The duration to keep capturing in seconds
+     * @param durationInSeconds The duration to keep capturing in seconds.
+     * @param maxFrameLength The maximum frame length in bytes (Optional).
+     * @param sasUrl The Blob URL to store capture file.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    public Observable<ServiceResponse<String>> startWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds) {
+    public Observable<ServiceResponse<String>> startWebSiteNetworkTraceSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Integer durationInSeconds, Integer maxFrameLength, String sasUrl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -19309,7 +19520,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-08-01";
-        return service.startWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.startWebSiteNetworkTraceSlot(resourceGroupName, name, slot, this.client.subscriptionId(), durationInSeconds, maxFrameLength, sasUrl, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
                 public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
@@ -19335,7 +19546,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -19351,7 +19562,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -19366,7 +19577,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
@@ -19385,7 +19596,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Stop ongoing capturing network packets for the site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name The name of the web app
+     * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
@@ -20980,12 +21191,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
-        ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
+    public PagedList<SlotDifferenceInner> listSlotDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+        ServiceResponse<Page<SlotDifferenceInner>> response = listSlotDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listSlotDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -21002,13 +21213,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceFuture<List<SlotDifferenceInner>> listSlotDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity),
+            listSlotDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(String nextPageLink) {
-                    return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink);
+                    return listSlotDifferencesSlotNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -21025,8 +21236,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
-        return getSlotsDifferencesSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity)
+    public Observable<Page<SlotDifferenceInner>> listSlotDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+        return listSlotDifferencesSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity)
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
@@ -21046,8 +21257,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
-        return getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity)
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+        return listSlotDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
@@ -21055,7 +21266,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listSlotDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -21071,7 +21282,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -21089,12 +21300,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         Validator.validate(slotSwapEntity);
         final String apiVersion = "2016-08-01";
-        return service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listSlotDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotDelegate(response);
+                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = listSlotDifferencesSlotDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -21103,7 +21314,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<SlotDifferenceInner>> listSlotDifferencesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -23237,12 +23448,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
-        ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
+    public PagedList<SlotDifferenceInner> listSlotDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+        ServiceResponse<Page<SlotDifferenceInner>> response = listSlotDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -23258,13 +23469,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceFuture<List<SlotDifferenceInner>> listSlotDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity),
+            listSlotDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(String nextPageLink) {
-                    return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink);
+                    return listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -23280,8 +23491,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
-        return getSlotsDifferencesFromProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity)
+    public Observable<Page<SlotDifferenceInner>> listSlotDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+        return listSlotDifferencesFromProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity)
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
@@ -23300,8 +23511,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionWithServiceResponseAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
-        return getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity)
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesFromProductionWithServiceResponseAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+        return listSlotDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
@@ -23309,7 +23520,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listSlotDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -23324,7 +23535,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionSinglePageAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesFromProductionSinglePageAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -23339,12 +23550,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         }
         Validator.validate(slotSwapEntity);
         final String apiVersion = "2016-08-01";
-        return service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listSlotDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionDelegate(response);
+                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = listSlotDifferencesFromProductionDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -23353,7 +23564,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesFromProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<SlotDifferenceInner>> listSlotDifferencesFromProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -27778,12 +27989,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) {
-        ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<SlotDifferenceInner> listSlotDifferencesSlotNext(final String nextPageLink) {
+        ServiceResponse<Page<SlotDifferenceInner>> response = listSlotDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listSlotDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -27798,13 +28009,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceFuture<List<SlotDifferenceInner>> listSlotDifferencesSlotNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink),
+            listSlotDifferencesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(String nextPageLink) {
-                    return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink);
+                    return listSlotDifferencesSlotNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -27818,8 +28029,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink) {
-        return getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<SlotDifferenceInner>> listSlotDifferencesSlotNextAsync(final String nextPageLink) {
+        return listSlotDifferencesSlotNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
@@ -27836,8 +28047,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextWithServiceResponseAsync(final String nextPageLink) {
-        return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesSlotNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSlotDifferencesSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
@@ -27845,7 +28056,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listSlotDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -27858,17 +28069,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.getSlotsDifferencesSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listSlotDifferencesSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesSlotNextDelegate(response);
+                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = listSlotDifferencesSlotNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -27877,7 +28088,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<SlotDifferenceInner>> listSlotDifferencesSlotNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -28126,12 +28337,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) {
-        ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<SlotDifferenceInner> listSlotDifferencesFromProductionNext(final String nextPageLink) {
+        ServiceResponse<Page<SlotDifferenceInner>> response = listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.body()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
-                return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -28146,13 +28357,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceFuture<List<SlotDifferenceInner>> listSlotDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceFuture<List<SlotDifferenceInner>> serviceFuture, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink),
+            listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(String nextPageLink) {
-                    return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink);
+                    return listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -28166,8 +28377,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink) {
-        return getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<SlotDifferenceInner>> listSlotDifferencesFromProductionNextAsync(final String nextPageLink) {
+        return listSlotDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
                 @Override
                 public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
@@ -28184,8 +28395,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextWithServiceResponseAsync(final String nextPageLink) {
-        return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesFromProductionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSlotDifferencesFromProductionNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
@@ -28193,7 +28404,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listSlotDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -28206,17 +28417,17 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> listSlotDifferencesFromProductionNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.getSlotsDifferencesFromProductionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listSlotDifferencesFromProductionNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = getSlotsDifferencesFromProductionNextDelegate(response);
+                        ServiceResponse<PageImpl<SlotDifferenceInner>> result = listSlotDifferencesFromProductionNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<SlotDifferenceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -28225,7 +28436,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<PageImpl<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<SlotDifferenceInner>> listSlotDifferencesFromProductionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SlotDifferenceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SlotDifferenceInner>>() { }.getType())
                 .registerError(CloudException.class)

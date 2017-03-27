@@ -11,6 +11,8 @@ import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -105,14 +107,11 @@ public class ApplicationImpl
         updateParameter.withDisplayName(this.inner().displayName());
         updateParameter.withAllowUpdates(this.inner().allowUpdates());
 
-        return this.parent().manager().inner().applications().updateAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), updateParameter)
-                .map(new Func1<Void, Application>() {
-                    @Override
-                    public Application call(Void result) {
-                        return self;
-                    }
-                })
+        return RXMapper.map(this.parent().manager().inner().applications().updateAsync(
+                    this.parent().resourceGroupName(),
+                    this.parent().name(),
+                    this.name(),
+                    updateParameter), self)
                 .flatMap(new Func1<Application, Observable<? extends Application>>() {
                     @Override
                     public Observable<? extends Application> call(Application application) {
@@ -129,7 +128,8 @@ public class ApplicationImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.parent().manager().inner().applications().deleteAsync(this.parent().resourceGroupName(),
+        return this.parent().manager().inner().applications().deleteAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }

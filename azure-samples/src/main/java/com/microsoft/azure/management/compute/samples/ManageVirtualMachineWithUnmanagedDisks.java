@@ -44,8 +44,8 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
      */
     public static boolean runSample(Azure azure) {
         final Region region = Region.US_WEST_CENTRAL;
-        final String windowsVmName = Utils.createRandomName("wVM");
-        final String linuxVmName = Utils.createRandomName("lVM");
+        final String windowsVMName = Utils.createRandomName("wVM");
+        final String linuxVMName = Utils.createRandomName("lVM");
         final String rgName = Utils.createRandomName("rgCOMV");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -60,7 +60,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             Date t1 = new Date();
 
-            VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
+            VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -193,7 +193,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
 
             System.out.println("Creating a Linux VM in the network");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)

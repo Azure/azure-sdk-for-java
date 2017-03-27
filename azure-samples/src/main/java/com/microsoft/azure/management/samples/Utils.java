@@ -203,7 +203,7 @@ public final class Utils {
         }
 
         StringBuilder extensions = new StringBuilder().append("\n\tExtensions: ");
-        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.getExtensions().entrySet()) {
+        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.listExtensions().entrySet()) {
             VirtualMachineExtension extension = extensionEntry.getValue();
             extensions.append("\n\t\tExtension: ").append(extension.id())
                     .append("\n\t\t\tName: ").append(extension.name())

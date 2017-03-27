@@ -16,7 +16,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Initializes a new instance of the GraphRbacManagementClientImpl class.
  */
-public final class GraphRbacManagementClientImpl extends AzureServiceClient {
+public class GraphRbacManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

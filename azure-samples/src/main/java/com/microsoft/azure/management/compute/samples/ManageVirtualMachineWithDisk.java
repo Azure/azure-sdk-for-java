@@ -44,9 +44,9 @@ public final class ManageVirtualMachineWithDisk {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVmName1 = Utils.createRandomName("VM1");
+        final String linuxVMName1 = Utils.createRandomName("VM1");
         final String rgName = Utils.createRandomName("rgCOMV");
-        final String publicIpDnsLabel = Utils.createRandomName("pip");
+        final String publicIPDnsLabel = Utils.createRandomName("pip");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
         final Region region = Region.US_WEST_CENTRAL;
@@ -87,12 +87,12 @@ public final class ManageVirtualMachineWithDisk {
 
             System.out.println("Creating a managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+                    .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)

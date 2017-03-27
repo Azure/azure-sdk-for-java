@@ -18,23 +18,25 @@ public class ServicePrincipalCreateParametersInner {
     /**
      * application Id.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "appId", required = true)
     private String appId;
 
     /**
      * Whether the account is enabled.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "accountEnabled", required = true)
     private boolean accountEnabled;
 
     /**
      * A collection of KeyCredential objects.
      */
+    @JsonProperty(value = "keyCredentials")
     private List<KeyCredentialInner> keyCredentials;
 
     /**
      * A collection of PasswordCredential objects.
      */
+    @JsonProperty(value = "passwordCredentials")
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**

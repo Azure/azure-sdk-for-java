@@ -38,8 +38,8 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String linuxVmName1 = Utils.createRandomName("VM1");
-        final String linuxVmName2 = Utils.createRandomName("VM2");
+        final String linuxVMName1 = Utils.createRandomName("VM1");
+        final String linuxVMName2 = Utils.createRandomName("VM2");
         final String managedOSDiskName = Utils.createRandomName("ds-os-");
         final String managedDataDiskNamePrefix = Utils.createRandomName("ds-data-");
         final String rgName = Utils.createRandomName("rgCOMV");
@@ -58,7 +58,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName1)
+            VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName1)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
@@ -149,7 +149,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
 
             System.out.println("Creating a Linux VM using specialized OS and data disks");
 
-            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVmName2)
+            VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVMName2)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
