@@ -22,13 +22,10 @@ import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
 import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
 import com.microsoft.azure.management.compute.ContainerServiceVMDiagnostics;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.sun.tools.javac.util.Assert;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The implementation for {@link ContainerService} and its create and update interfaces.
