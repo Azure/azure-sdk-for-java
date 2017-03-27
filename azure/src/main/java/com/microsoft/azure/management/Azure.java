@@ -567,5 +567,7 @@ public final class Azure {
     /**
      * @return entry point to container services.
      */
-    public ContainerServices containerServices() { return computeManager.containerServices(); }
+    public ContainerServices containerServices() {
+        return computeManager.containerServices();
+    }
 }
