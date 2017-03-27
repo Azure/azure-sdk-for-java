@@ -8,6 +8,8 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
 
 /**
@@ -22,6 +24,11 @@ class WebAppImpl
             WebApp.DefinitionStages.NewAppServicePlanWithGroup,
             WebApp.Update {
 
+    private static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
+    private static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
+    private static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
+    private static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
+
     private DeploymentSlots deploymentSlots;
 
     WebAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
@@ -34,5 +41,85 @@ class WebAppImpl
             deploymentSlots = new DeploymentSlotsImpl(this);
         }
         return deploymentSlots;
+    }
+
+    @Override
+    public WebAppImpl withBuiltInImage(RuntimeStack runtimeStack) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withLinuxFxVersion(String.format("%s|%s", runtimeStack.stack(), runtimeStack.version()));
+        if (runtimeStack.stack().equals("NODE")) {
+            siteConfig.withNodeVersion(runtimeStack.version());
+        }
+        if (runtimeStack.stack().equals("PHP")) {
+            siteConfig.withPhpVersion(runtimeStack.version());
+        }
+        if (runtimeStack.stack().equals("DOTNETCORE")) {
+            siteConfig.withNetFrameworkVersion(runtimeStack.version());
+        }
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withDockerHubImage(String imageAndTag) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        return null;
+    }
+
+    @Override
+    public WebAppImpl withDockerHubCredentials(String username, String password) {
+        withAppSetting(SETTING_REGISTRY_USERNAME, username);
+        withAppSetting(SETTING_REGISTRY_PASSWORD, password);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withRegistryCredentials(String username, String password) {
+        withAppSetting(SETTING_REGISTRY_USERNAME, username);
+        withAppSetting(SETTING_REGISTRY_PASSWORD, password);
+        return this;
+    }
+
+    private void ensureLinuxPlan() {
+        if (OperatingSystem.WINDOWS.equals(operatingSystem())) {
+            throw new IllegalArgumentException("Docker container settings only apply to Linux app service plans.");
+        }
+    }
+
+    private void cleanUpContainerSettings() {
+        // Ruby
+        if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
+            siteConfig.withLinuxFxVersion(null);
+        }
+        // PHP
+        if (siteConfig != null && siteConfig.phpVersion() != null) {
+            siteConfig.withPhpVersion(null);
+        }
+        // Node
+        if (siteConfig != null && siteConfig.nodeVersion() != null) {
+            siteConfig.withNodeVersion(null);
+        }
+        // .NET
+        if (siteConfig != null && siteConfig.netFrameworkVersion() != null) {
+            siteConfig.withNetFrameworkVersion("v4.0");
+        }
+        // Docker Hub
+        withoutAppSetting(SETTING_DOCKER_IMAGE);
+        withoutAppSetting(SETTING_REGISTRY_SERVER);
+        withoutAppSetting(SETTING_REGISTRY_USERNAME);
+        withoutAppSetting(SETTING_REGISTRY_PASSWORD);
     }
 }

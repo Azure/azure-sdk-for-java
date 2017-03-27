@@ -40,6 +40,8 @@ public interface WebApp extends
             DefinitionStages.Blank,
             DefinitionStages.ExistingAppServicePlanWithGroup,
             DefinitionStages.WithNewAppServicePlan,
+            DefinitionStages.WithDockerHubCredentials,
+            DefinitionStages.WithRegistryCredentials,
             DefinitionStages.WithCreate {
     }
 
@@ -147,13 +149,67 @@ public interface WebApp extends
         }
 
         /**
+         * A web app definition allowing docker image source to be specified.
+         */
+        interface WithDockerContainerImage {
+            /**
+             * Specifies the docker container image to be a built in one.
+             * @param runtimeStack the runtime stack installed on the image
+             * @return the next stage of the web app definition
+             */
+            WithCreate withBuiltInImage(RuntimeStack runtimeStack);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the web app definition
+             */
+            WithDockerHubCredentials withDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from a private registry.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @param serverUrl the URL to the private registry server
+             * @return the next stage of the web app definition
+             */
+            WithRegistryCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /**
+         * A web app definition allowing docker hub credentials to be set.
+         */
+        interface WithDockerHubCredentials extends WithCreate {
+            /**
+             * Specifies the username and password for Docker Hub.
+             * @param username the username for Docker Hub
+             * @param password the password for Docker Hub
+             * @return the next stage of the web app definition
+             */
+            WithCreate withDockerHubCredentials(String username, String password);
+        }
+
+        /**
+         * A web app definition allowing private docker registry credentials to be set.
+         */
+        interface WithRegistryCredentials {
+            /**
+             * Specifies the username and password for the private registry.
+             * @param username the username for the private registry
+             * @param password the password for the private registry
+             * @return the next stage of the web app definition
+             */
+            WithCreate withRegistryCredentials(String username, String password);
+        }
+
+        /**
          * A site definition with sufficient inputs to create a new web app /
          * deployments slot in the cloud, but exposing additional optional
          * inputs to specify.
          */
         interface WithCreate extends
             Creatable<WebApp>,
-            WebAppBase.DefinitionStages.WithCreate<WebApp> {
+            WebAppBase.DefinitionStages.WithCreate<WebApp>,
+            DefinitionStages.WithDockerContainerImage {
         }
     }
 
