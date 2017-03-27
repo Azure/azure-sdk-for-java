@@ -55,7 +55,7 @@ class CSAgentPoolProfileImpl
 
     @Override
     public CSAgentPoolProfileImpl withCount(int agentPoolCount) {
-        if(agentPoolCount < 0 || agentPoolCount > 100) {
+        if (agentPoolCount < 0 || agentPoolCount > 100) {
             throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
         }
 

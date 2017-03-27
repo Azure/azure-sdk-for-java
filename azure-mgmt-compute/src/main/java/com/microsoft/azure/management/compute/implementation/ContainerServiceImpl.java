@@ -71,7 +71,7 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceAgentPoolProfile agentPoolProfile() {
-        if(this.inner().agentPoolProfiles().size() > 0) {
+        if (this.inner().agentPoolProfiles().size() > 0) {
             return this.inner().agentPoolProfiles().get(0);
         }
 
@@ -141,7 +141,7 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceImpl withLinuxProfile() {
-        if(this.inner().linuxProfile() == null) {
+        if (this.inner().linuxProfile() == null) {
             this.inner().withLinuxProfile(new ContainerServiceLinuxProfile());
         }
 
@@ -207,7 +207,7 @@ public class ContainerServiceImpl
 
     @Override
     public Update withAgentPoolCount(int agentPoolCount) {
-        if(agentPoolCount < 0 || agentPoolCount > 100) {
+        if (agentPoolCount < 0 || agentPoolCount > 100) {
             throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
         }
 
