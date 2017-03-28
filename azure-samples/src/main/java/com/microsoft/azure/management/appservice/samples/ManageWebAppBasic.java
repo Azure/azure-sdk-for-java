@@ -54,9 +54,9 @@ public final class ManageWebAppBasic {
 
             WebApp app1 = azure.webApps()
                     .define(app1Name)
-                    .withNewResourceGroup(rg1Name, Region.US_WEST)
-                    .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(PricingTier.STANDARD_S1)
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rg1Name)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -69,8 +69,8 @@ public final class ManageWebAppBasic {
             AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rg1Name, planName);
             WebApp app2 = azure.webApps()
                     .define(app2Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rg1Name)
-                    .withExistingAppServicePlan(plan)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -83,8 +83,8 @@ public final class ManageWebAppBasic {
             System.out.println("Creating another web app " + app3Name + " in resource group " + rg2Name + "...");
             WebApp app3 = azure.webApps()
                     .define(app3Name)
-                    .withNewResourceGroup(rg2Name, Region.US_WEST)
-                    .withExistingAppServicePlan(plan)
+                    .withExistingWindowsPlan(plan)
+                    .withNewResourceGroup(rg2Name)
                     .create();
 
             System.out.println("Created web app " + app3.name());

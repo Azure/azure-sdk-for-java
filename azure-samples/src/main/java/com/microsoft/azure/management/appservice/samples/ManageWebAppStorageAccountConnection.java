@@ -99,9 +99,9 @@ public final class ManageWebAppStorageAccountConnection {
             System.out.println("Creating web app " + app1Name + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
+                    .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
-                    .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(PricingTier.STANDARD_S1)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)

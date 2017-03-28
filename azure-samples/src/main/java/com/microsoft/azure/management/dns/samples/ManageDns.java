@@ -86,9 +86,9 @@ public class ManageDns {
 
             System.out.println("Creating Web App " + webAppName + "...");
             WebApp webApp = azure.webApps().define(webAppName)
+                    .withRegion(Region.US_EAST2)
                     .withExistingResourceGroup(rgName)
-                    .withNewAppServicePlan(appServicePlanName, Region.US_EAST2)
-                    .withPricingTier(PricingTier.BASIC_B1)
+                    .withNewWindowsPlan(PricingTier.BASIC_B1)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                         .withBranch("master")

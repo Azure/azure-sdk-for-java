@@ -168,9 +168,9 @@ public final class ManageCdn {
 
         WebApp app = azure.webApps()
                 .define(appName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
-                .withNewAppServicePlan(planName, region)
-                .withPricingTier(PricingTier.STANDARD_S1)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .defineSourceControl()

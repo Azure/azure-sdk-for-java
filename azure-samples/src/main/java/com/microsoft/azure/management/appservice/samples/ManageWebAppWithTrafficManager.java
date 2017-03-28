@@ -276,8 +276,8 @@ public final class ManageWebAppWithTrafficManager {
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azure.webApps().define(name)
+                .withExistingWindowsPlan(plan)
                 .withExistingResourceGroup(RG_NAME)
-                .withExistingAppServicePlan(plan)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())

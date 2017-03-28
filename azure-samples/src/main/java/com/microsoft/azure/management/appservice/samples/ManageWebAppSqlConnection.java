@@ -82,9 +82,9 @@ public final class ManageWebAppSqlConnection {
             System.out.println("Creating web app " + appName + "...");
 
             WebApp app = azure.webApps().define(appName)
+                    .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
-                    .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(PricingTier.STANDARD_S1)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .withPhpVersion(PhpVersion.PHP5_6)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/ProjectNami/projectnami")

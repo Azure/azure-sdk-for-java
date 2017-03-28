@@ -130,8 +130,8 @@ public final class ManageTrafficManager {
                 String webAppName = webAppNamePrefix + id;
                 System.out.println("Creating a web app " + webAppName + " using the plan " + appServicePlan.name() + "...");
                 WebApp webApp = azure.webApps().define(webAppName)
+                        .withExistingWindowsPlan(appServicePlan)
                         .withExistingResourceGroup(rgName)
-                        .withExistingAppServicePlan(appServicePlan)
                         .withManagedHostnameBindings(domain, webAppName)
                         .defineSslBinding()
                             .forHostname(webAppName + "." + domain.name())

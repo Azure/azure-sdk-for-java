@@ -40,9 +40,9 @@ public final class ManageFunctionAppBasic {
 
             FunctionApp app1 = azure.appServices().functionApps()
                     .define(app1Name)
-                    .withNewResourceGroup(rg1Name, Region.US_WEST)
-                    .withNewConsumptionPlan(Region.US_WEST)
-                    .withNewStorageAccount()
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rg1Name)
+                    .withNewConsumptionPlan()
                     .withRuntimeVersion("1")
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/azure-appservice-samples/AzureFunctions-Samples")

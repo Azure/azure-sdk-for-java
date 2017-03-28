@@ -71,9 +71,9 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating web app " + app1Name + " in resource group " + rgName + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
-                    .withNewResourceGroup(rgName, Region.US_WEST)
-                    .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(PricingTier.STANDARD_S1)
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
@@ -104,8 +104,8 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
             WebApp app2 = azure.webApps().define(app2Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withExistingAppServicePlan(plan)
                     .withLocalGitSourceControl()
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
@@ -148,8 +148,8 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Creating another web app " + app3Name + "...");
             WebApp app3 = azure.webApps().define(app3Name)
-                    .withNewResourceGroup(rgName, Region.US_WEST)
-                    .withExistingAppServicePlan(plan)
+                    .withExistingWindowsPlan(plan)
+                    .withNewResourceGroup(rgName)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
                         .withBranch("master")
@@ -172,8 +172,8 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating another web app " + app4Name + "...");
             WebApp app4 = azure.webApps()
                     .define(app4Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withExistingAppServicePlan(plan)
                     // Uncomment the following lines to turn on 4th scenario
                     //.defineSourceControl()
                     //    .withContinuouslyIntegratedGitHubRepository("username", "reponame")

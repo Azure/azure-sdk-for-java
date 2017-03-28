@@ -138,9 +138,9 @@ public final class ManageWebAppSlots {
 
         WebApp app = azure.webApps()
                 .define(appName)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(resourceGroupName)
-                .withNewAppServicePlan(planName, Region.US_WEST)
-                .withPricingTier(PricingTier.STANDARD_S1)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .defineSourceControl()

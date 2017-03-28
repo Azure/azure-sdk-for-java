@@ -61,9 +61,9 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Creating web app " + app1Name + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
-                    .withNewResourceGroup(rgName, Region.US_WEST)
-                    .withNewAppServicePlan(planName, Region.US_WEST)
-                    .withPricingTier(PricingTier.STANDARD_S1)
+                    .withRegion(Region.US_WEST)
+                    .withNewResourceGroup(rgName)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -75,8 +75,8 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Creating another web app " + app2Name + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
             WebApp app2 = azure.webApps().define(app2Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withExistingAppServicePlan(plan)
                     .create();
 
             System.out.println("Created web app " + app2.name());
