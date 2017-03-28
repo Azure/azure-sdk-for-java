@@ -36,7 +36,7 @@ public class DeploymentSlotsTests extends AppServiceTest {
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.STANDARD_S2)
+                .withNewWindowsPlan(PricingTier.STANDARD_S2)
                 .withAppSetting("appkey", "appvalue")
                 .withStickyAppSetting("stickykey", "stickyvalue")
                 .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)

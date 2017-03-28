@@ -29,7 +29,7 @@ public class WebAppConfigTests extends AppServiceTest {
         appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.BASIC_B1)
+                .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
                 .create();
 

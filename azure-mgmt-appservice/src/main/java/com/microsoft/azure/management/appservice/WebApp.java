@@ -38,10 +38,10 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.ExistingAppServicePlanWithGroup,
+            DefinitionStages.NewAppServicePlanWithGroup,
             DefinitionStages.WithNewAppServicePlan,
-            DefinitionStages.WithDockerHubCredentials,
-            DefinitionStages.WithRegistryCredentials,
+            DefinitionStages.WithDockerContainerImage,
+            DefinitionStages.WithCredentials,
             DefinitionStages.WithCreate {
     }
 
@@ -58,32 +58,39 @@ public interface WebApp extends
              * @param appServicePlan the existing app service plan
              * @return the next stage of the web app definition
              */
-            ExistingAppServicePlanWithGroup withExistingAppServicePlan(AppServicePlan appServicePlan);
+            ExistingWindowsPlanWithGroup withExistingWindowsPlan(AppServicePlan appServicePlan);
+
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlan the existing app service plan
+             * @return the next stage of the web app definition
+             */
+            ExistingWindowsPlanWithGroup withExistingLinuxPlan(AppServicePlan appServicePlan);
         }
 
         /**
          * A web app definition allowing resource group to be specified when an existing app service plan is used.
          */
-        interface ExistingAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface NewAppServicePlanWithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNewAppServicePlan> {
         }
 
         /**
          * A web app definition allowing resource group to be specified when a new app service plan is to be created.
          */
-        interface NewAppServicePlanWithGroup {
+        interface ExistingWindowsPlanWithGroup {
             /**
              * Associates the resource with an existing resource group.
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withExistingResourceGroup(String groupName);
+            WithCreate withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
              * @param group an existing resource group to put the resource in
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withExistingResourceGroup(ResourceGroup group);
+            WithCreate withExistingResourceGroup(ResourceGroup group);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -92,7 +99,7 @@ public interface WebApp extends
              * @param name the name of the new group
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup(String name);
+            WithCreate withNewResourceGroup(String name);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -101,14 +108,58 @@ public interface WebApp extends
              * The group's name is automatically derived from the resource's name.
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup();
+            WithCreate withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the resource definition
              */
-            WithNewAppServicePlan withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+            WithCreate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
+        }
+
+        /**
+         * A web app definition allowing resource group to be specified when a new app service plan is to be created.
+         */
+        interface ExistingLinuxPlanWithGroup {
+            /**
+             * Associates the resource with an existing resource group.
+             * @param groupName the name of an existing resource group to put this resource in.
+             * @return the next stage of the resource definition
+             */
+            WithDockerContainerImage withExistingResourceGroup(String groupName);
+
+            /**
+             * Associates the resource with an existing resource group.
+             * @param group an existing resource group to put the resource in
+             * @return the next stage of the resource definition
+             */
+            WithDockerContainerImage withExistingResourceGroup(ResourceGroup group);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * @param name the name of the new group
+             * @return the next stage of the resource definition
+             */
+            WithDockerContainerImage withNewResourceGroup(String name);
+
+            /**
+             * Creates a new resource group to put the resource in.
+             * <p>
+             * The group will be created in the same location as the resource.
+             * The group's name is automatically derived from the resource's name.
+             * @return the next stage of the resource definition
+             */
+            WithDockerContainerImage withNewResourceGroup();
+
+            /**
+             * Creates a new resource group to put the resource in, based on the definition specified.
+             * @param groupDefinition a creatable definition for a new resource group
+             * @return the next stage of the resource definition
+             */
+            WithDockerContainerImage withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
@@ -133,11 +184,10 @@ public interface WebApp extends
             /**
              * Creates a new app service plan to use.
              *
-             * @param operatingSystem the operating system of the VM running the web app
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the web app definition
              */
-            WithCreate withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier);
+            WithCreate withNewWindowsPlan(PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.
@@ -145,7 +195,23 @@ public interface WebApp extends
              * @param appServicePlanCreatable the new app service plan creatable
              * @return the next stage of the web app definition
              */
-            WithCreate withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
+            WithCreate withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param pricingTier the sku of the app service plan
+             * @return the next stage of the web app definition
+             */
+            WithDockerContainerImage withNewLinuxPlan(PricingTier pricingTier);
+
+            /**
+             * Creates a new app service plan to use.
+             *
+             * @param appServicePlanCreatable the new app service plan creatable
+             * @return the next stage of the web app definition
+             */
+            WithDockerContainerImage withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
         /**
@@ -164,7 +230,14 @@ public interface WebApp extends
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app definition
              */
-            WithDockerHubCredentials withDockerHubImage(String imageAndTag);
+            WithCreate withPublicDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the web app definition
+             */
+            WithCredentials withPrivateDockerHubImage(String imageAndTag);
 
             /**
              * Specifies the docker container image to be one from a private registry.
@@ -172,33 +245,20 @@ public interface WebApp extends
              * @param serverUrl the URL to the private registry server
              * @return the next stage of the web app definition
              */
-            WithRegistryCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+            WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
         }
 
         /**
          * A web app definition allowing docker hub credentials to be set.
          */
-        interface WithDockerHubCredentials extends WithCreate {
+        interface WithCredentials {
             /**
              * Specifies the username and password for Docker Hub.
              * @param username the username for Docker Hub
              * @param password the password for Docker Hub
              * @return the next stage of the web app definition
              */
-            WithCreate withDockerHubCredentials(String username, String password);
-        }
-
-        /**
-         * A web app definition allowing private docker registry credentials to be set.
-         */
-        interface WithRegistryCredentials {
-            /**
-             * Specifies the username and password for the private registry.
-             * @param username the username for the private registry
-             * @param password the password for the private registry
-             * @return the next stage of the web app definition
-             */
-            WithCreate withRegistryCredentials(String username, String password);
+            WithCreate withCredentials(String username, String password);
         }
 
         /**
@@ -208,8 +268,7 @@ public interface WebApp extends
          */
         interface WithCreate extends
             Creatable<WebApp>,
-            WebAppBase.DefinitionStages.WithCreate<WebApp>,
-            DefinitionStages.WithDockerContainerImage {
+            WebAppBase.DefinitionStages.WithCreate<WebApp> {
         }
     }
 
@@ -259,6 +318,53 @@ public interface WebApp extends
              */
             Update withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
+
+        /**
+         * A web app definition allowing docker image source to be specified.
+         */
+        interface WithDockerContainerImage {
+            /**
+             * Specifies the docker container image to be a built in one.
+             * @param runtimeStack the runtime stack installed on the image
+             * @return the next stage of the web app definition
+             */
+            Update withBuiltInImage(RuntimeStack runtimeStack);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the web app definition
+             */
+            Update withPublicDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from Docker Hub.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @return the next stage of the web app definition
+             */
+            WithCredentials withPrivateDockerHubImage(String imageAndTag);
+
+            /**
+             * Specifies the docker container image to be one from a private registry.
+             * @param imageAndTag image and optional tag (eg 'image:tag')
+             * @param serverUrl the URL to the private registry server
+             * @return the next stage of the web app definition
+             */
+            WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
+        }
+
+        /**
+         * A web app definition allowing docker hub credentials to be set.
+         */
+        interface WithCredentials {
+            /**
+             * Specifies the username and password for Docker Hub.
+             * @param username the username for Docker Hub
+             * @param password the password for Docker Hub
+             * @return the next stage of the web app definition
+             */
+            Update withCredentials(String username, String password);
+        }
     }
 
     /**
@@ -267,6 +373,7 @@ public interface WebApp extends
     interface Update extends
         Appliable<WebApp>,
         UpdateStages.WithAppServicePlan,
-        WebAppBase.Update<WebApp> {
+        WebAppBase.Update<WebApp>,
+        UpdateStages.WithDockerContainerImage {
     }
 }

@@ -7,10 +7,13 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * The implementation for WebApp.
@@ -21,8 +24,10 @@ class WebAppImpl
         implements
             WebApp,
             WebApp.Definition,
-            WebApp.DefinitionStages.NewAppServicePlanWithGroup,
-            WebApp.Update {
+            WebApp.DefinitionStages.ExistingWindowsPlanWithGroup,
+            WebApp.DefinitionStages.ExistingLinuxPlanWithGroup,
+            WebApp.Update,
+            WebApp.UpdateStages.WithCredentials {
 
     private static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
     private static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
@@ -64,7 +69,7 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withDockerHubImage(String imageAndTag) {
+    public WebAppImpl withPublicDockerHubImage(String imageAndTag) {
         ensureLinuxPlan();
         cleanUpContainerSettings();
         withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
@@ -73,21 +78,22 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
-        ensureLinuxPlan();
-        cleanUpContainerSettings();
-        return null;
+    public WebAppImpl withPrivateDockerHubImage(String imageAndTag) {
+        return withPublicDockerHubImage(imageAndTag);
     }
 
     @Override
-    public WebAppImpl withDockerHubCredentials(String username, String password) {
-        withAppSetting(SETTING_REGISTRY_USERNAME, username);
-        withAppSetting(SETTING_REGISTRY_PASSWORD, password);
+    public WebAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
+        withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
         return this;
     }
 
     @Override
-    public WebAppImpl withRegistryCredentials(String username, String password) {
+    public WebAppImpl withCredentials(String username, String password) {
         withAppSetting(SETTING_REGISTRY_USERNAME, username);
         withAppSetting(SETTING_REGISTRY_PASSWORD, password);
         return this;
@@ -100,7 +106,6 @@ class WebAppImpl
     }
 
     private void cleanUpContainerSettings() {
-        // Ruby
         if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
             siteConfig.withLinuxFxVersion(null);
         }
@@ -121,5 +126,35 @@ class WebAppImpl
         withoutAppSetting(SETTING_REGISTRY_SERVER);
         withoutAppSetting(SETTING_REGISTRY_USERNAME);
         withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+    }
+
+    @Override
+    public WebAppImpl withExistingWindowsPlan(AppServicePlan appServicePlan) {
+        return super.withExistingAppServicePlan(appServicePlan);
+    }
+
+    @Override
+    public WebAppImpl withExistingLinuxPlan(AppServicePlan appServicePlan) {
+        return super.withExistingAppServicePlan(appServicePlan);
+    }
+
+    @Override
+    public WebAppImpl withNewWindowsPlan(PricingTier pricingTier) {
+        return super.withNewAppServicePlan(OperatingSystem.WINDOWS, pricingTier);
+    }
+
+    @Override
+    public WebAppImpl withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable) {
+        return super.withNewAppServicePlan(appServicePlanCreatable);
+    }
+
+    @Override
+    public WebAppImpl withNewLinuxPlan(PricingTier pricingTier) {
+        return super.withNewAppServicePlan(OperatingSystem.LINUX, pricingTier);
+    }
+
+    @Override
+    public WebAppImpl withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable) {
+        return super.withNewAppServicePlan(appServicePlanCreatable);
     }
 }

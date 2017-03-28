@@ -651,10 +651,10 @@ abstract class WebAppBaseImpl<
                         if (stringDictionaryInner.properties() == null) {
                             stringDictionaryInner.withProperties(new HashMap<String, String>());
                         }
-                        stringDictionaryInner.properties().putAll(appSettingsToAdd);
                         for (String appSettingKey : appSettingsToRemove) {
                             stringDictionaryInner.properties().remove(appSettingKey);
                         }
+                        stringDictionaryInner.properties().putAll(appSettingsToAdd);
                         return updateAppSettings(stringDictionaryInner);
                     }
                 }).map(new Func1<StringDictionaryInner, SiteInner>() {
@@ -681,10 +681,10 @@ abstract class WebAppBaseImpl<
                         if (dictionaryInner.properties() == null) {
                             dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
                         }
-                        dictionaryInner.properties().putAll(connectionStringsToAdd);
                         for (String connectionString : connectionStringsToRemove) {
                             dictionaryInner.properties().remove(connectionString);
                         }
+                        dictionaryInner.properties().putAll(connectionStringsToAdd);
                         return updateConnectionStrings(dictionaryInner);
                     }
                 }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {

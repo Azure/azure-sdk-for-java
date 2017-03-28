@@ -255,12 +255,14 @@ abstract class AppServiceBaseImpl<
         String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
                 resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanCreatable.name(), "");
         inner().withServerFarmId(id);
+        inner().withReserved(((AppServicePlanImpl) appServicePlanCreatable).inner().reserved());
         return (FluentImplT) this;
     }
 
     @SuppressWarnings("unchecked")
     public FluentImplT withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
+        inner().withReserved(appServicePlan.inner().reserved());
         this.withRegion(appServicePlan.regionName());
         return (FluentImplT) this;
     }

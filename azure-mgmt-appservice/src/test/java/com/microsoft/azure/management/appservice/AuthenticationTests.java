@@ -40,7 +40,7 @@ public class AuthenticationTests extends AppServiceTest {
         WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
-                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.BASIC_B1)
+                .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .defineAuthentication()
                     .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
                     .withFacebook("appId", "appSecret")

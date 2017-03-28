@@ -34,7 +34,7 @@ public class SourceControlTests extends AppServiceTest {
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.STANDARD_S1)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .defineSourceControl()
                     .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                     .withBranch("master")
