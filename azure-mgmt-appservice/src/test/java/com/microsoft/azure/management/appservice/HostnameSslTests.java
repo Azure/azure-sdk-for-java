@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -37,6 +38,7 @@ public class HostnameSslTests extends AppServiceTest {
     }
 
     @Test
+    @Ignore("Need a domain and a certificate")
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
         appServiceManager.webApps().define(WEBAPP_NAME)

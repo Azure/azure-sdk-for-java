@@ -320,27 +320,27 @@ public interface WebApp extends
         }
 
         /**
-         * A web app definition allowing docker image source to be specified.
+         * A web app update allowing docker image source to be specified.
          */
         interface WithDockerContainerImage {
             /**
              * Specifies the docker container image to be a built in one.
              * @param runtimeStack the runtime stack installed on the image
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update withBuiltInImage(RuntimeStack runtimeStack);
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
              * @param imageAndTag image and optional tag (eg 'image:tag')
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update withPublicDockerHubImage(String imageAndTag);
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
              * @param imageAndTag image and optional tag (eg 'image:tag')
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             WithCredentials withPrivateDockerHubImage(String imageAndTag);
 
@@ -348,20 +348,20 @@ public interface WebApp extends
              * Specifies the docker container image to be one from a private registry.
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @param serverUrl the URL to the private registry server
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
         }
 
         /**
-         * A web app definition allowing docker hub credentials to be set.
+         * A web app update allowing docker hub credentials to be set.
          */
         interface WithCredentials {
             /**
              * Specifies the username and password for Docker Hub.
              * @param username the username for Docker Hub
              * @param password the password for Docker Hub
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update withCredentials(String username, String password);
         }
