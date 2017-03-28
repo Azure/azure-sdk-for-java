@@ -131,14 +131,13 @@ public final class ManageWebAppSlots {
     }
 
     private static WebApp createWebApp(Azure azure, String appName, Region region, String resourceGroupName) {
-        final String planName = SdkContext.randomResourceName("jplan_", 15);
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
 
         WebApp app = azure.webApps()
                 .define(appName)
-                .withRegion(Region.US_WEST)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
