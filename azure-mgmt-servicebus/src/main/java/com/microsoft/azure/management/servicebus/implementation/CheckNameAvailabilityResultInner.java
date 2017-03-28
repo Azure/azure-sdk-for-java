@@ -23,15 +23,15 @@ public class CheckNameAvailabilityResultInner {
     private Boolean nameAvailable;
 
     /**
-     * The reason for unavailability of a namespace. Possible values include:
+     * The unavailabilityReason for unavailability of a namespace. Possible values include:
      * 'None', 'InvalidName', 'SubscriptionIsDisabled', 'NameInUse',
      * 'NameInLockdown', 'TooManyNamespaceInCurrentSubscription'.
      */
-    @JsonProperty(value = "reason")
+    @JsonProperty(value = "unavailabilityReason")
     private UnavailableReason reason;
 
     /**
-     * The detailed info regarding the reason associated with the namespace.
+     * The detailed info regarding the unavailabilityReason associated with the namespace.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
@@ -49,7 +49,7 @@ public class CheckNameAvailabilityResultInner {
      * Set the nameAvailable value.
      *
      * @param nameAvailable the nameAvailable value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
+     * @return the CheckNameAvailabilityResultInner object itself
      */
     public CheckNameAvailabilityResultInner withNameAvailable(Boolean nameAvailable) {
         this.nameAvailable = nameAvailable;
@@ -57,19 +57,19 @@ public class CheckNameAvailabilityResultInner {
     }
 
     /**
-     * Get the reason value.
+     * Get the unavailabilityReason value.
      *
-     * @return the reason value
+     * @return the unavailabilityReason value
      */
     public UnavailableReason reason() {
         return this.reason;
     }
 
     /**
-     * Set the reason value.
+     * Set the unavailabilityReason value.
      *
-     * @param reason the reason value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
+     * @param reason the unavailabilityReason value to set
+     * @return the CheckNameAvailabilityResultInner object itself
      */
     public CheckNameAvailabilityResultInner withReason(UnavailableReason reason) {
         this.reason = reason;
