@@ -27,7 +27,7 @@ import java.io.File;
  * - List function apps
  * - Delete a function app
  */
-public final class ManageFunctionAppBasic {
+public final class ManageFunctionApp {
 
     /**
      * Main function which runs the actual sample.

@@ -65,7 +65,7 @@ public interface WebApp extends
              * @param appServicePlan the existing app service plan
              * @return the next stage of the web app definition
              */
-            ExistingWindowsPlanWithGroup withExistingLinuxPlan(AppServicePlan appServicePlan);
+            ExistingLinuxPlanWithGroup withExistingLinuxPlan(AppServicePlan appServicePlan);
         }
 
         /**

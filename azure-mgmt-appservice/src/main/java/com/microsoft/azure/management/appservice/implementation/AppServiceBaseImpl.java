@@ -225,7 +225,7 @@ abstract class AppServiceBaseImpl<
                 .withRegion(regionName());
         appServicePlan.withOperatingSystem(operatingSystem());
         if (super.creatableGroup != null && isInCreateMode()) {
-            appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
+            appServicePlan = appServicePlan.withNewResourceGroup(super.creatableGroup);
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
