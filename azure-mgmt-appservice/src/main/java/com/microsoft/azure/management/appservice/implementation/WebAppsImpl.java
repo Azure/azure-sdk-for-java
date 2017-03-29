@@ -39,6 +39,11 @@ class WebAppsImpl
                 WebAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 return impl.cacheSiteProperties().toBlocking().single();
             }
+
+            @Override
+            protected boolean filter(SiteInner inner) {
+                return "app".equals(inner.kind());
+            }
         };
     }
 

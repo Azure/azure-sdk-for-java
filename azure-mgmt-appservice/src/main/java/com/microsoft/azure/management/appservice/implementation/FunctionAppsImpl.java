@@ -38,6 +38,11 @@ class FunctionAppsImpl
                 FunctionAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
                 return impl.cacheSiteProperties().toBlocking().single();
             }
+
+            @Override
+            protected boolean filter(SiteInner inner) {
+                return "functionapp".equals(inner.kind());
+            }
         };
     }
 

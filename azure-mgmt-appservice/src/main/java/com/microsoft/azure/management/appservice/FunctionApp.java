@@ -136,11 +136,10 @@ public interface FunctionApp extends
             /**
              * Creates a new app service plan to use.
              *
-             * @param operatingSystem the operating system of the VM running the function app
              * @param pricingTier the sku of the app service plan
              * @return the next stage of the function app definition
              */
-            WithCreate withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier);
+            WithCreate withNewAppServicePlan(PricingTier pricingTier);
 
             /**
              * Creates a new app service plan to use.

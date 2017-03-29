@@ -71,7 +71,7 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp3 = appServiceManager.functionApps().define(WEBAPP_NAME_3)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME_2)
-                .withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.BASIC_B1)
+                .withNewAppServicePlan(PricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assert.assertNotNull(functionApp2);

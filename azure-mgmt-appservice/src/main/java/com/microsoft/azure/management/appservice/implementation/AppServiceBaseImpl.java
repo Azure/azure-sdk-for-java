@@ -241,7 +241,7 @@ abstract class AppServiceBaseImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public FluentImplT withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
+    FluentImplT withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
         return withNewAppServicePlan(newDefaultAppServicePlan().withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
     }
 
