@@ -18,7 +18,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceManage
 import com.microsoft.azure.management.appservice.implementation.AppServicePlanInner;
 
 /**
- * An immutable client-side representation of an Azure App Service Plan.
+ * An immutable client-side representation of an Azure App service plan.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta

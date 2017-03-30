@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import java.io.File;
 
 /**
- * A Host name - SSL certificate binding definition.
+ * An immutable representation of an host name SSL binding.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta
