@@ -42,6 +42,7 @@ public interface WebApp extends
             DefinitionStages.WithNewAppServicePlan,
             DefinitionStages.WithDockerContainerImage,
             DefinitionStages.WithCredentials,
+            DefinitionStages.WithStartUpCommand,
             DefinitionStages.WithCreate {
     }
 
@@ -230,7 +231,7 @@ public interface WebApp extends
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app definition
              */
-            WithCreate withPublicDockerHubImage(String imageAndTag);
+            WithStartUpCommand withPublicDockerHubImage(String imageAndTag);
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
@@ -249,16 +250,29 @@ public interface WebApp extends
         }
 
         /**
-         * A web app definition allowing docker hub credentials to be set.
+         * A web app definition allowing docker registry credentials to be set.
          */
         interface WithCredentials {
             /**
-             * Specifies the username and password for Docker Hub.
-             * @param username the username for Docker Hub
-             * @param password the password for Docker Hub
+             * Specifies the username and password for Docker Hub or the docker registry.
+             * @param username the username for Docker Hub or the docker registry
+             * @param password the password for Docker Hub or the docker registry
              * @return the next stage of the web app definition
              */
-            WithCreate withCredentials(String username, String password);
+            WithStartUpCommand withCredentials(String username, String password);
+        }
+
+        /**
+         * A web app definition allowing docker startup command to be specified.
+         * This will replace the "CMD" section in the Dockerfile.
+         */
+        interface WithStartUpCommand extends WithCreate {
+            /**
+             * Specifies the startup command.
+             * @param startUpCommand startup command to replace "CMD" in Dockerfile
+             * @return the next stage of the web app definition
+             */
+            WithCreate withStartUpCommand(String startUpCommand);
         }
 
         /**
@@ -335,7 +349,7 @@ public interface WebApp extends
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app update
              */
-            Update withPublicDockerHubImage(String imageAndTag);
+            WithStartUpCommand withPublicDockerHubImage(String imageAndTag);
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
@@ -363,7 +377,20 @@ public interface WebApp extends
              * @param password the password for Docker Hub
              * @return the next stage of the web app update
              */
-            Update withCredentials(String username, String password);
+            WithStartUpCommand withCredentials(String username, String password);
+        }
+
+        /**
+         * A web app definition allowing docker startup command to be specified.
+         * This will replace the "CMD" section in the Dockerfile.
+         */
+        interface WithStartUpCommand extends Update {
+            /**
+             * Specifies the startup command.
+             * @param startUpCommand startup command to replace "CMD" in Dockerfile
+             * @return the next stage of the web app definition
+             */
+            Update withStartUpCommand(String startUpCommand);
         }
     }
 

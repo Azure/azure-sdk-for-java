@@ -27,7 +27,8 @@ class WebAppImpl
             WebApp.DefinitionStages.ExistingWindowsPlanWithGroup,
             WebApp.DefinitionStages.ExistingLinuxPlanWithGroup,
             WebApp.Update,
-            WebApp.UpdateStages.WithCredentials {
+            WebApp.UpdateStages.WithCredentials,
+            WebApp.UpdateStages.WithStartUpCommand {
 
     private static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
     private static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
@@ -126,6 +127,15 @@ class WebAppImpl
         withoutAppSetting(SETTING_REGISTRY_SERVER);
         withoutAppSetting(SETTING_REGISTRY_USERNAME);
         withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+    }
+
+    @Override
+    public WebAppImpl withStartUpCommand(String startUpCommand) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAppCommandLine(startUpCommand);
+        return this;
     }
 
     @Override

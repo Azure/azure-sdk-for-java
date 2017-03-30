@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.management.appservice.samples.ManageFunctionApp;
+import com.microsoft.azure.management.appservice.samples.ManageLinuxWebApp;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppBasic;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSlots;
 import com.microsoft.azure.management.appservice.samples.ManageWebAppSourceControl;
@@ -30,8 +31,13 @@ public class AppServiceSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageFunctionAppBasic() {
+    public void testManageFunctionApp() {
         Assert.assertTrue(ManageFunctionApp.runSample(azure));
+    }
+
+    @Test
+    public void testManageLinuxApp() {
+        Assert.assertTrue(ManageLinuxWebApp.runSample(azure));
     }
 
     @Test
