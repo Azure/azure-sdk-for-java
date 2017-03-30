@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
 import rx.Completable;
 
 /**
- * An immutable client-side representation of an Azure batch account application.
+ * An immutable client-side representation of an Azure batch account application package.
  */
 @Fluent
 public interface ApplicationPackage extends

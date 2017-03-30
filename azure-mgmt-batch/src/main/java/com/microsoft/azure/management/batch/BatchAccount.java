@@ -20,7 +20,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import java.util.Map;
 
 /**
- * An immutable client-side representation of an Azure batch account.
+ * An immutable client-side representation of an Azure Batch account.
  */
 @Fluent
 public interface BatchAccount extends

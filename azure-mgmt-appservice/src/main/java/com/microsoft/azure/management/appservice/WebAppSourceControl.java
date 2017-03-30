@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.SiteSourceControlInner;
 
 /**
- * A web app source control in a web app.
+ * An immutable representation of a web app source control configuration in a web app.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta

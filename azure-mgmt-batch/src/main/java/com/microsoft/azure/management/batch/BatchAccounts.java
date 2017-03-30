@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- *  Entry point to batch account management API.
+ *  Entry point to Azure Batch account management API.
  */
 @Fluent
 public interface BatchAccounts extends
