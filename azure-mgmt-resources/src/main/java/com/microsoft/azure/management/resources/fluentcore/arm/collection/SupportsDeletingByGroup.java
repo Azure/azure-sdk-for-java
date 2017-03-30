@@ -14,8 +14,8 @@ import rx.Completable;
 
 /**
  * Provides access to deleting a resource from Azure, identifying it by its name and its resource group.
- *
- * (Note: this interface is not intended to be implemented by user code)
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsDeletingByGroup {

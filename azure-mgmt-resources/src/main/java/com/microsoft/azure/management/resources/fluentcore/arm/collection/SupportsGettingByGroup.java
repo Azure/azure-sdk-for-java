@@ -14,8 +14,8 @@ import rx.Observable;
 
 /**
  * Provides access to getting a specific Azure resource based on its name and resource group.
- *
- * (Note: this interface is not intended to be implemented by user code)
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  *
  * @param <T> the type of the resource to get.
  */

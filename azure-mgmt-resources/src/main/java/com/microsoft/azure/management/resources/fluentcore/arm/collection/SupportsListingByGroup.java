@@ -12,8 +12,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 
 /**
  * Provides access to listing Azure resources of a specific type in a specific resource group.
- *
- * (Note: this interface is not intended to be implemented by user code)
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  *
  * @param <T> the type of the resources listed.
  */

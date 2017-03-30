@@ -13,7 +13,8 @@ import rx.Observable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
- *
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  * @param <T> the type of the resource collection
  * @param <ParentT> the parent resource type
  * @param <ManagerT> the client manager type representing the service
