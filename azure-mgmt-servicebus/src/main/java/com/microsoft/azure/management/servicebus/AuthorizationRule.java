@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 @Beta
-public interface AuthorizationRule<RuleT extends AuthorizationRule> extends
+public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
         IndependentChildResource<ServiceBusManager, SharedAccessAuthorizationRuleInner>,
         Refreshable<RuleT> {
 
