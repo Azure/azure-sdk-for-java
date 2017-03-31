@@ -8,15 +8,10 @@
 
 package com.microsoft.azure.management.eventhub.implementation;
 
-import com.microsoft.azure.management.eventhub.EventHubManagementClient;
 import com.microsoft.azure.management.eventhub.Operations;
 import com.microsoft.azure.management.eventhub.Namespaces;
 import com.microsoft.azure.management.eventhub.EventHubs;
 import com.microsoft.azure.management.eventhub.ConsumerGroups;
-import com.microsoft.azure.management.eventhub.implementation.OperationsImpl;
-import com.microsoft.azure.management.eventhub.implementation.NamespacesImpl;
-import com.microsoft.azure.management.eventhub.implementation.EventHubsImpl;
-import com.microsoft.azure.management.eventhub.implementation.ConsumerGroupsImpl;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
