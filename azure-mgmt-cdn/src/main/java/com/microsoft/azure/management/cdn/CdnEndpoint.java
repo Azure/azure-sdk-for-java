@@ -513,7 +513,7 @@ public interface CdnEndpoint extends
         }
 
         /**
-         * The final stage of the Premium Verizon endpoint definition, at which it can be attached to the parent
+         * The final stage of the Premium Verizon endpoint definition, at which it can be attached to the parent.
          * 
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
@@ -824,7 +824,7 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withOriginPath(String originPath);
 
         /**
-         * Specifies the host header
+         * Specifies the host header.
          *
          * @param hostHeader a host header.
          * @return the next stage of the endpoint update
