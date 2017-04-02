@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure availability set.
@@ -45,7 +46,7 @@ public interface AvailabilitySet extends
     /**
      * @return the resource IDs of the virtual machines in the availability set
      */
-    List<String> virtualMachineIds();
+    Set<String> virtualMachineIds();
 
     /**
      * @return the statuses of the existing virtual machines in the availability set
