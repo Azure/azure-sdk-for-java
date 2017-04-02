@@ -15,31 +15,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
  */
 @LangDefinition
 public class ImageReference extends WrapperImpl<ImageReferenceInner> {
-    /**
-     * the image resource ID
-     */
     private String id;
-
-    /**
-     * the image publisher
-     */
     private String publisher;
-
-    /**
-     * the image offer
-     */
     private String offer;
-
-    /**
-     * the image SKU
-     */
     private String sku;
-
-    /**
-     * the image version. The allowed formats are Major.Minor.Build or
-     * 'latest'. Major, Minor and Build being decimal numbers. Specify
-     * 'latest' to use the latest version of image.
-     */
     private String version;
 
 
