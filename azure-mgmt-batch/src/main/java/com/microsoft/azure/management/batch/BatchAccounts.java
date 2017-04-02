@@ -38,11 +38,12 @@ public interface BatchAccounts extends
         SupportsBatchDeletion,
         HasManager<BatchManager>,
         HasInner<BatchAccountsInner> {
+
     /**
-     * Queries the number of the batch account can be created in specified region`.
+     * Looks up the number of Batch accounts that can be created in the specified region.
      *
-     * @param region the region in for which to check quota
-     * @return whether the number of batch accounts can be created in specified region.
+     * @param region an Azure region
+     * @return the number of Batch accounts that can be created in the specified region
      */
     int getBatchAccountQuotaByLocation(Region region);
 }
