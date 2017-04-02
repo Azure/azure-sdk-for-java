@@ -72,7 +72,7 @@ public interface BatchAccount extends
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
-     * Synchronizes the storage account keys for this Batch account
+     * Synchronizes the storage account keys for this Batch account.
      */
     void synchronizeAutoStorageKeys();
 
@@ -130,7 +130,7 @@ public interface BatchAccount extends
         }
 
         /**
-         * The stage of a Batch account definition allowing to associate storage accounts with the Batch account
+         * The stage of a Batch account definition allowing to associate storage accounts with the Batch account.
          */
         interface WithStorage {
             /**
