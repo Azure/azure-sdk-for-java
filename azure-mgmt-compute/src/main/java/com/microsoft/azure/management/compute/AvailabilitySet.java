@@ -125,7 +125,7 @@ public interface AvailabilitySet extends
 
         /**
          * The stage of an availability set definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -157,8 +157,6 @@ public interface AvailabilitySet extends
     /**
      * The template for an availability set update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<AvailabilitySet>,
