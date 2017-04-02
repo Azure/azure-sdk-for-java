@@ -17,8 +17,8 @@ public class WindowsVMDiskEncryptionConfiguration
     /**
      * Creates WindowsVMDiskEncryptionConfiguration.
      *
-     * @param keyVaultId the resource id of the key vault to store the disk encryption key
-     * @param aadClientId  client id of an AAD application which has permission to the key vault
+     * @param keyVaultId the resource ID of the key vault to store the disk encryption key
+     * @param aadClientId  client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
     public WindowsVMDiskEncryptionConfiguration(String keyVaultId,

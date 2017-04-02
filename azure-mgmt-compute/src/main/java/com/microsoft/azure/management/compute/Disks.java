@@ -44,7 +44,7 @@ public interface Disks extends
      * @param diskName the disk name
      * @param accessLevel access level
      * @param accessDuration access duration
-     * @return the readonly SAS uri to the disk
+     * @return the read-only SAS URI to the disk
      */
     String grantAccess(String resourceGroupName,
                        String diskName,

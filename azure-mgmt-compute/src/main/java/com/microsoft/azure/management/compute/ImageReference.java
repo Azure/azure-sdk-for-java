@@ -16,22 +16,22 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 @LangDefinition
 public class ImageReference extends WrapperImpl<ImageReferenceInner> {
     /**
-     * the image resource id.
+     * the image resource ID
      */
     private String id;
 
     /**
-     * the image publisher.
+     * the image publisher
      */
     private String publisher;
 
     /**
-     * the image offer.
+     * the image offer
      */
     private String offer;
 
     /**
-     * the image sku.
+     * the image SKU
      */
     private String sku;
 
@@ -80,15 +80,15 @@ public class ImageReference extends WrapperImpl<ImageReferenceInner> {
     }
 
     /**
-     * @return the resource id of the image
+     * @return the resource ID of the image
      */
     public String id() {
         return this.id;
     }
 
     /**
-     * Sets the image resource id value.
-     * @param id the id
+     * Sets the image resource ID value.
+     * @param id the ID
      * @return the ImageReference object itself.
      */
     public ImageReference withId(String id) {
@@ -137,18 +137,16 @@ public class ImageReference extends WrapperImpl<ImageReferenceInner> {
     }
 
     /**
-     * Get the sku value.
-     *
-     * @return the sku value
+     * @return the SKU
      */
     public String sku() {
         return this.sku;
     }
 
     /**
-     * Set the sku value.
+     * Sets the SKU.
      *
-     * @param sku the sku value to set
+     * @param sku the SKU
      * @return the ImageReference object itself.
      */
     public ImageReference withSku(String sku) {

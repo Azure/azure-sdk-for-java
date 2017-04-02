@@ -40,7 +40,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
          */
         interface WithDiskSource<ParentT> {
             /**
-             * specifies that unmanaged disk needs to be created with a new vhd of given size.
+             * specifies that unmanaged disk needs to be created with a new VHD of given size.
              *
              * @param sizeInGB the initial disk size in GB
              * @return the next stage of unmanaged data disk definition
@@ -48,16 +48,16 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
             WithNewVhdDiskSettings<ParentT> withNewVhd(int sizeInGB);
 
             /**
-             * Specifies the image lun identifier of the source disk image.
+             * Specifies the image LUN identifier of the source disk image.
              *
-             * @param imageLun the lun
+             * @param imageLun the LUN
              * @return the next stage of unmanaged data disk definition
              */
             WithFromImageDiskSettings<ParentT> fromImage(int imageLun);
         }
 
         /**
-         * The stage that allows configure the unmanaged disk based on new vhd.
+         * The stage that allows configure the unmanaged disk based on new VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -152,7 +152,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
          */
         interface WithDiskSource<ParentT> {
             /**
-             * specifies that unmanaged disk needs to be created with a new vhd of given size.
+             * specifies that unmanaged disk needs to be created with a new VHD of given size.
              *
              * @param sizeInGB the initial disk size in GB
              * @return the next stage of unmanaged data disk definition
@@ -161,7 +161,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         }
 
         /**
-         * The stage that allows configure the unmanaged disk based on new vhd.
+         * The stage that allows configure the unmanaged disk based on new VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -220,7 +220,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         }
 
         /**
-         * The stage of the unmanaged data disk update allowing to set the disk lun.
+         * The stage of the unmanaged data disk update allowing to set the disk LUN.
          */
         interface WithDiskLun {
             /**

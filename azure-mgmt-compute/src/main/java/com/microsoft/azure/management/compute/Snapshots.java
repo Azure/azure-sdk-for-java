@@ -44,7 +44,7 @@ public interface Snapshots extends
      * @param snapshotName the snapshot name
      * @param accessLevel access level
      * @param accessDuration access duration
-     * @return the readonly SAS uri to the snapshot
+     * @return the read-only SAS URI to the snapshot
      */
     String grantAccess(String resourceGroupName,
                        String snapshotName,

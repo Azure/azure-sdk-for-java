@@ -19,7 +19,7 @@ import java.util.Map;
 public interface VirtualMachineImage extends
         HasInner<VirtualMachineImageInner> {
     /**
-     * @return the resource id of this image
+     * @return the resource ID of this image
      */
     String id();
 
@@ -64,7 +64,7 @@ public interface VirtualMachineImage extends
     OSDiskImage osDiskImage();
 
     /**
-     * @return data disk images in the virtual machine image, indexed by the disk lun
+     * @return data disk images in the virtual machine image, indexed by the disk LUN
      */
     Map<Integer, DataDiskImage> dataDiskImages();
 }

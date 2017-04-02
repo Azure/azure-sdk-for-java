@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
  *
  * @param <T> type presenting Windows or Linux specific settings
  */
-public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMachineEncryptionConfiguration> {
+public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMachineEncryptionConfiguration<T>> {
     protected final String keyVaultId;
     protected final String aadClientId;
     protected final String aadSecret;
@@ -26,8 +26,8 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     /**
      * Creates VirtualMachineEncryptionConfiguration.
      *
-     * @param keyVaultId resource id of the key vault to store the disk encryption key
-     * @param aadClientId AAD application client id to access the key vault
+     * @param keyVaultId resource ID of the key vault to store the disk encryption key
+     * @param aadClientId AAD application client ID to access the key vault
      * @param aadSecret AAD application client secret to access the key vault
      */
     protected VirtualMachineEncryptionConfiguration(String keyVaultId,
@@ -44,7 +44,7 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     public abstract OperatingSystemTypes osType();
 
     /**
-     * @return the AAD application client id to access the key vault
+     * @return the AAD application client ID to access the key vault
      */
     public String aadClientId() {
         return this.aadClientId;
@@ -68,14 +68,14 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     }
 
     /**
-     * @return resource id of the key vault to store the disk encryption key
+     * @return resource ID of the key vault to store the disk encryption key
      */
     public String keyVaultId() {
         return this.keyVaultId;
     }
 
     /**
-     * @return url to the key vault to store the disk encryption key
+     * @return URL to the key vault to store the disk encryption key
      */
     public String keyVaultUrl() {
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
@@ -83,14 +83,14 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     }
 
     /**
-     * @return resource id of the key vault holding key encryption key (KEK)
+     * @return resource ID of the Key Vault holding key encryption key (KEK)
      */
     public String keyEncryptionKeyVaultId() {
         return this.keyEncryptionKeyVaultId;
     }
 
     /**
-     * @return key vault url to the key (KEK) to protect (encrypt) the disk-encryption key
+     * @return key vault URL to the key (KEK) to protect (encrypt) the disk-encryption key
      */
     public String keyEncryptionKeyURL() {
         return this.keyEncryptionKeyURL;
@@ -116,15 +116,16 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param volumeType the volume type
      * @return VirtualMachineEncryptionConfiguration
      */
+    @SuppressWarnings("unchecked")
     public T withVolumeType(DiskVolumeType volumeType) {
         this.volumeType = volumeType;
         return (T) this;
     }
 
     /**
-     * Specifies the key vault url to the key for protecting or wrapping the disk-encryption key.
+     * Specifies the Key Vault URL to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyURL the key (KEK) url
+     * @param keyEncryptionKeyURL the key (KEK) URL
      * @return VirtualMachineEncryptionConfiguration
      */
     public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL) {
@@ -132,12 +133,13 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     }
 
     /**
-     * Specifies the and key vault Id and a vault url to the key for protecting or wrapping the disk-encryption key.
+     * Specifies the and key vault Id and a vault URL to the key for protecting or wrapping the disk-encryption key.
      *
-     * @param keyEncryptionKeyURL the key (KEK) url
-     * @param keyEncryptionKeyKevVaultId resource id of the keyVault storing KEK
+     * @param keyEncryptionKeyURL the key (KEK) URL
+     * @param keyEncryptionKeyKevVaultId resource ID of the keyVault storing KEK
      * @return VirtualMachineEncryptionConfiguration
      */
+    @SuppressWarnings("unchecked")
     public T withVolumeEncryptionKeyEncrypted(String keyEncryptionKeyURL, String keyEncryptionKeyKevVaultId) {
         this.keyEncryptionKeyURL = keyEncryptionKeyURL;
         this.keyEncryptionKeyVaultId = keyEncryptionKeyKevVaultId;
@@ -150,6 +152,7 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param encryptionAlgorithm the algorithm
      * @return VirtualMachineEncryptionConfiguration
      */
+    @SuppressWarnings("unchecked")
     public T withVolumeEncryptionKeyEncryptAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return (T) this;

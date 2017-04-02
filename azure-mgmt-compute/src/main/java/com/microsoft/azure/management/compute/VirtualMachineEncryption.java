@@ -15,8 +15,8 @@ public interface VirtualMachineEncryption {
     /**
      * Enable encryption for virtual machine disks.
      *
-     * @param keyVaultId resource id of the key vault to store the disk encryption key
-     * @param aadClientId  client id of an AAD application which has permission to the key vault
+     * @param keyVaultId resource ID of the key vault to store the disk encryption key
+     * @param aadClientId  client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      *
      * @return observable that emits current volume encryption status
@@ -56,8 +56,8 @@ public interface VirtualMachineEncryption {
     /**
      * Enable encryption for virtual machine disks.
      *
-     * @param keyVaultId resource id of the key vault to store the disk encryption key
-     * @param aadClientId  client id of an AAD application which has permission to the key vault
+     * @param keyVaultId resource ID of the key vault to store the disk encryption key
+     * @param aadClientId  client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      *
      * @return current volume decryption status
