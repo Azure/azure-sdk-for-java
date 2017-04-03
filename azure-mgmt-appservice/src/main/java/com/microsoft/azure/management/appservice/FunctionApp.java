@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
  * An immutable client-side representation of an Azure Function App.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface FunctionApp extends
     WebAppBase,
     Refreshable<FunctionApp>,

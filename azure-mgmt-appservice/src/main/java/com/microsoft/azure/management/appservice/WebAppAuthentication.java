@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.SiteAuthSettingsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * A web app authentication configuration in a web app.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
+@Beta
 public interface WebAppAuthentication extends
         HasInner<SiteAuthSettingsInner>,
         Indexable,
