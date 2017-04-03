@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The implementation for {@link AvailabilitySet} and its create and update interfaces.
+ * The implementation for AvailabilitySet and its create and update interfaces.
  */
 @LangDefinition
 class AvailabilitySetImpl

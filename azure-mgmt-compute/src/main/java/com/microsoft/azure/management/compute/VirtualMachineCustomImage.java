@@ -262,8 +262,6 @@ public interface VirtualMachineCustomImage extends
 
             /**
              * Begins the definition of a new data disk image to add to the image.
-             * <p>
-             * The definition must be completed with a call to {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
              * @return the first stage of the new data disk image definition
              */
             CustomImageDataDisk.DefinitionStages.Blank<WithCreateAndDataDiskImageOSDiskSettings> defineDataDiskImage();
@@ -271,7 +269,7 @@ public interface VirtualMachineCustomImage extends
 
         /**
          * The stage of an image definition containing all the required inputs for
-         * the resource to be created (via {@link VirtualMachineCustomImage.DefinitionStages.WithCreate#create()}), but also allowing
+         * the resource to be created, but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -292,7 +290,7 @@ public interface VirtualMachineCustomImage extends
         interface DefinitionStages {
             /**
              * The first stage of the data disk image definition.
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface Blank<ParentT> extends WithDiskLun<ParentT> {
             }
@@ -300,7 +298,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * The stage of the image definition allowing to specify the LUN for the disk image.
              *
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithDiskLun<ParentT> {
                 /**
@@ -315,7 +313,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * The stage of the image definition allowing to choose the source of the data disk image.
              *
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithImageSource<ParentT> {
                 /**
@@ -355,7 +353,7 @@ public interface VirtualMachineCustomImage extends
              * The stage of data disk image definition allowing to specify configurations for the data disk when it
              * is created from the same data disk image.
              *
-             *  @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithDiskSettings<ParentT> {
                 /**
@@ -379,8 +377,8 @@ public interface VirtualMachineCustomImage extends
              * The final stage of the data disk image definition.
              * <p>
              * At this stage, any remaining optional settings can be specified, or the data disk definition
-             * can be attached to the parent image definition using {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}.
-             * @param <ParentT> the return type of {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * can be attached to the parent image definition.
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAttach<ParentT> extends
                     Attachable.InDefinition<ParentT>,
@@ -389,7 +387,7 @@ public interface VirtualMachineCustomImage extends
         }
 
         /** The entirety of a data disk image definition.
-         * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Definition<ParentT> extends
                 DefinitionStages.Blank<ParentT>,

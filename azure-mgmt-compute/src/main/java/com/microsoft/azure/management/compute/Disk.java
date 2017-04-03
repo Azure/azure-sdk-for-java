@@ -105,7 +105,8 @@ public interface Disk extends
      * Revokes access granted to the disk asynchronously.
      *
      * @param callback the callback to call on success or failure
-     * @return a handle to cancel the request     */
+     * @return a handle to cancel the request
+     */
     ServiceFuture<Void> revokeAccessAsync(ServiceCallback<Void> callback);
 
     /**
@@ -291,7 +292,7 @@ public interface Disk extends
              * Specifies the ID of source data managed disk.
              *
              * @param managedDiskId source managed disk resource ID
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromDisk(String managedDiskId);
 
@@ -299,7 +300,7 @@ public interface Disk extends
              * Specifies the source data managed disk.
              *
              * @param managedDisk source managed disk
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromDisk(Disk managedDisk);
         }
@@ -312,7 +313,7 @@ public interface Disk extends
              * Specifies the source data managed snapshot.
              *
              * @param snapshotId snapshot resource ID
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromSnapshot(String snapshotId);
 
@@ -320,7 +321,7 @@ public interface Disk extends
              * Specifies the source data managed snapshot.
              *
              * @param snapshot snapshot resource
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromSnapshot(Snapshot snapshot);
         }
@@ -330,28 +331,28 @@ public interface Disk extends
          */
         interface WithOsDiskFromImage {
             /**
-             * Specifies ID of the image containing operating system.
+             * Specifies the ID of an image containing the operating system.
              *
              * @param imageId image resource ID
              * @param osType operating system type
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(String imageId,
                                         OperatingSystemTypes osType);
 
             /**
-             * Specifies the image containing operating system.
+             * Specifies an image containing the operating system.
              *
              * @param image the image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(VirtualMachineImage image);
 
             /**
-             * Specifies the custom image containing operating system.
+             * Specifies a custom image containing the operating system.
              *
              * @param image the image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
@@ -360,43 +361,43 @@ public interface Disk extends
          */
         interface WithDataDiskFromImage {
             /**
-             * Specifies ID of the image containing source data disk image.
+             * Specifies the ID of an image containing source data disk image.
              *
              * @param imageId image resource ID
              * @param diskLun LUN of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(String imageId,
                                         int diskLun);
 
             /**
-             * Specifies the image containing source data disk image.
+             * Specifies an image containing source data disk image.
              *
              * @param image the image
              * @param diskLun LUN of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(VirtualMachineImage image, int diskLun);
 
             /**
-             * Specifies the custom image containing source data disk image.
+             * Specifies a custom image containing a source data disk image.
              *
              * @param image the image
              * @param diskLun LUN of the disk image
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image, int diskLun);
         }
 
         /**
-         * The stage of the managed disk definition that allowing to create or optionally specify size.
+         * The stage of the managed disk definition allowing to create the disk or optionally specify size.
          */
         interface WithCreateAndSize extends WithCreate {
             /**
              * Specifies the disk size.
              *
              * @param sizeInGB the disk size in GB
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize withSizeInGB(int sizeInGB);
         }
@@ -406,17 +407,17 @@ public interface Disk extends
          */
         interface WithSku {
             /**
-             * Specifies the sku.
+             * Specifies the SKU.
              *
-             * @param sku the sku
-             * @return the next stage of the managed disk definition
+             * @param sku the SKU
+             * @return the next stage of the definition
              */
             WithCreate withSku(DiskSkuTypes sku);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -431,14 +432,14 @@ public interface Disk extends
      */
     interface UpdateStages {
         /**
-         * The stage of the managed disk update allowing to choose sku type.
+         * The stage of the managed disk update allowing to choose the SKU type.
          */
         interface WithSku {
             /**
-             * Specifies the sku.
+             * Specifies the SKU.
              *
-             * @param sku the sku
-             * @return the next stage of the managed disk update
+             * @param sku a SKU
+             * @return the next stage of the update
              */
             Update withSku(DiskSkuTypes sku);
         }
@@ -451,20 +452,20 @@ public interface Disk extends
              * Specifies the disk size.
              *
              * @param sizeInGB the disk size in GB
-             * @return the next stage of the managed disk update
+             * @return the next stage of the update
              */
             Update withSizeInGB(int sizeInGB);
         }
 
         /**
-         * The stage of the managed disk update allowing to specify Os settings.
+         * The stage of the managed disk update allowing to specify OS settings.
          */
         interface WithOsSettings {
             /**
-             * Specifies the operating system type.
+             * Specifies the operating system.
              *
              * @param osType operating system type
-             * @return the next stage of the managed disk update
+             * @return the next stage of the update
              */
             Update withOSType(OperatingSystemTypes osType);
         }
@@ -473,8 +474,6 @@ public interface Disk extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Disk.Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<Disk>,

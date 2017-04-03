@@ -40,25 +40,19 @@ public interface VirtualMachine extends
         HasNetworkInterfaces {
     // Actions
     /**
-     * Shuts down the Virtual Machine and releases the compute resources.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources.
      */
     void deallocate();
 
     /**
-     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable deallocateAsync();
 
     /**
-     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -66,19 +60,19 @@ public interface VirtualMachine extends
     ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
 
     /**
-     * Generalize the Virtual Machine.
+     * Generalizes the virtual machine.
      */
     void generalize();
 
     /**
-     * Generalize the Virtual Machine asynchronously.
+     * Generalizes the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable generalizeAsync();
 
     /**
-     * Generalize the Virtual Machine asynchronously.
+     * Generalizes the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -86,16 +80,12 @@ public interface VirtualMachine extends
     ServiceFuture<Void> generalizeAsync(ServiceCallback<Void> callback);
 
     /**
-     * Power off (stop) the virtual machine.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
+     * Powers off (stops) the virtual machine.
      */
     void powerOff();
 
     /**
-     * Power off (stop) the virtual machine asynchronously.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
+     * Powers off (stops) the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
@@ -103,8 +93,6 @@ public interface VirtualMachine extends
 
     /**
      * Power off (stop) the virtual machine asynchronously.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -203,7 +191,7 @@ public interface VirtualMachine extends
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
      * <p>
-     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}.
+     * The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the refreshed instance view
      */
@@ -256,7 +244,7 @@ public interface VirtualMachine extends
     int osDiskSize();
 
     /**
-     * @return the storage account type of the managed disk backing Os disk
+     * @return the storage account type of the managed disk backing OS disk
      */
     StorageAccountTypes osDiskStorageAccountType();
 
@@ -310,7 +298,7 @@ public interface VirtualMachine extends
     Observable<VirtualMachineExtension> listExtensionsAsync();
 
     /**
-     * @return the extensions attached to the Virtual Machine
+     * @return the extensions attached to the virtual machine
      */
     Map<String, VirtualMachineExtension> listExtensions();
 
@@ -360,7 +348,7 @@ public interface VirtualMachine extends
     /**
      * Get the virtual machine instance view.
      * <p>
-     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}.
+     * The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the virtual machine instance view
      */
@@ -612,7 +600,7 @@ public interface VirtualMachine extends
             /**
              * Specifies the version of a marketplace Windows image needs to be used.
              *
-             * @param imageReference describes publisher, offer, sku and version of the market-place image
+             * @param imageReference describes publisher, offer, SKU and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
@@ -654,7 +642,7 @@ public interface VirtualMachine extends
             /**
              * Specifies the version of a market-place Linux image needs to be used.
              *
-             * @param imageReference describes publisher, offer, sku and version of the market-place image
+             * @param imageReference describes publisher, offer, SKU and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
@@ -934,7 +922,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateManagedOrUnmanaged extends WithFromImageCreateOptionsManagedOrUnmanaged {
@@ -951,7 +939,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateManaged extends WithFromImageCreateOptionsManaged {
@@ -968,7 +956,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
@@ -993,7 +981,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}, but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithWindowsCreateManaged extends WithFromImageCreateOptionsManaged {
@@ -1034,7 +1022,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}, but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithWindowsCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
@@ -1317,7 +1305,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(Creatable<AvailabilitySet> creatable);
 
             /**
-             * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
+             * Specifies an existing availability set to to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
              * maintenance event at least one virtual machine will be available.
@@ -1356,7 +1344,7 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
-             * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
+             * Specifies an existing storage account to put the VM's OS and data disk VHD in.
              * <p>
              * An OS disk based on marketplace or user image (generalized image) will be stored in this
              * storage account.
@@ -1440,7 +1428,7 @@ public interface VirtualMachine extends
                 WithManagedDataDisk,
                 WithCreate {
             /**
-             * Specifies the storage account type for managed Os disk.
+             * Specifies the storage account type for managed OS disk.
              *
              * @param accountType the storage account type
              * @return  the stage representing creatable VM definition
@@ -1484,7 +1472,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -1762,8 +1750,6 @@ public interface VirtualMachine extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<VirtualMachine>,

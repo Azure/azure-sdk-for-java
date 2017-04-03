@@ -28,7 +28,7 @@ public final class DiskSkuTypes {
     }
 
     /**
-     * @return the account type associated with the sku.
+     * @return the account type associated with the SKU.
      */
     public StorageAccountTypes accountType() {
         return this.value;

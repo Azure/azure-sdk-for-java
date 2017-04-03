@@ -9,7 +9,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
 /**
- * Scale set virtual machine sku types.
+ * Scale set virtual machine SKU types.
  */
 @LangDefinition
 public class VirtualMachineScaleSetSkuTypes {
@@ -188,18 +188,18 @@ public class VirtualMachineScaleSetSkuTypes {
     public static final VirtualMachineScaleSetSkuTypes STANDARD_F16 = new VirtualMachineScaleSetSkuTypes("STANDARD_F16", "Standard");
 
     /**
-     * the sku corresponding to this size.
+     * the SKU corresponding to this size.
      */
     private Sku sku;
 
     /**
-     * The string value of the sku.
+     * The string value of the SKU.
      */
     private String value;
     /**
      * Creates a custom value for VirtualMachineSizeTypes.
-     * @param skuName the sku name
-     * @param skuTier thr sku tier
+     * @param skuName the SKU name
+     * @param skuTier thr SKU tier
      */
     public VirtualMachineScaleSetSkuTypes(String skuName, String skuTier) {
         this(new Sku().withName(skuName).withTier(skuTier));
@@ -207,7 +207,7 @@ public class VirtualMachineScaleSetSkuTypes {
 
     /**
      * Creates a custom value for VirtualMachineSizeTypes.
-     * @param sku the sku
+     * @param sku the SKU
      */
     public VirtualMachineScaleSetSkuTypes(Sku sku) {
         this.sku = sku;
