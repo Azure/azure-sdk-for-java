@@ -29,7 +29,7 @@ public interface Snapshot extends
         Refreshable<Snapshot>,
         Updatable<Snapshot.Update> {
     /**
-     * @return the snapshot sku type
+     * @return the snapshot SKU type
      */
     DiskSkuTypes sku();
 
@@ -374,9 +374,9 @@ public interface Snapshot extends
          */
         interface WithSku {
             /**
-             * Specifies the sku type.
+             * Specifies the SKU type.
              *
-             * @param sku sku type
+             * @param sku SKU type
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withSku(DiskSkuTypes sku);
@@ -406,7 +406,7 @@ public interface Snapshot extends
             /**
              * Specifies the account type.
              *
-             * @param sku sku type
+             * @param sku SKU type
              * @return the next stage of the managed snapshot update
              */
             Update withSku(DiskSkuTypes sku);

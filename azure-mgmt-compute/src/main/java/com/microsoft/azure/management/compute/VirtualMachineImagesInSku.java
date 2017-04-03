@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
- * Entry point to virtual machine sku images.
+ * Entry point to virtual machine SKU images.
  */
 @Fluent
 public interface VirtualMachineImagesInSku extends SupportsListingAsync<VirtualMachineImage> {

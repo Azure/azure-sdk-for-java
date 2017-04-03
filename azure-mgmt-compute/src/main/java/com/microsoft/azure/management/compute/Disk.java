@@ -406,9 +406,9 @@ public interface Disk extends
          */
         interface WithSku {
             /**
-             * Specifies the sku.
+             * Specifies the SKU.
              *
-             * @param sku the sku
+             * @param sku the SKU
              * @return the next stage of the managed disk definition
              */
             WithCreate withSku(DiskSkuTypes sku);
@@ -431,13 +431,13 @@ public interface Disk extends
      */
     interface UpdateStages {
         /**
-         * The stage of the managed disk update allowing to choose sku type.
+         * The stage of the managed disk update allowing to choose SKU type.
          */
         interface WithSku {
             /**
-             * Specifies the sku.
+             * Specifies the SKU.
              *
-             * @param sku the sku
+             * @param sku the SKU
              * @return the next stage of the managed disk update
              */
             Update withSku(DiskSkuTypes sku);

@@ -612,7 +612,7 @@ public interface VirtualMachine extends
             /**
              * Specifies the version of a marketplace Windows image needs to be used.
              *
-             * @param imageReference describes publisher, offer, sku and version of the market-place image
+             * @param imageReference describes publisher, offer, SKU and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
@@ -654,7 +654,7 @@ public interface VirtualMachine extends
             /**
              * Specifies the version of a market-place Linux image needs to be used.
              *
-             * @param imageReference describes publisher, offer, sku and version of the market-place image
+             * @param imageReference describes publisher, offer, SKU and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);

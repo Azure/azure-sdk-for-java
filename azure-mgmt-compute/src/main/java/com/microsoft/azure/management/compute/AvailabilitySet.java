@@ -39,7 +39,7 @@ public interface AvailabilitySet extends
     int faultDomainCount();
 
     /**
-     * @return the availability set sku
+     * @return the availability set SKU
      */
     AvailabilitySetSkuTypes sku();
 
@@ -115,7 +115,7 @@ public interface AvailabilitySet extends
          */
         interface WithSku {
             /**
-             * Specifies the sku type for the availability set.
+             * Specifies the SKU type for the availability set.
              *
              * @param skuType the sku type
              * @return the next stage of the definition
@@ -142,13 +142,13 @@ public interface AvailabilitySet extends
      */
     interface UpdateStages {
         /**
-         * The stage of the availability set definition allowing to specify sku.
+         * The stage of the availability set definition allowing to specify SKU.
          */
         interface WithSku {
             /**
-             * Specifies the sku type for the availability set.
+             * Specifies the SKU type for the availability set.
              *
-             * @param skuType the sku type
+             * @param skuType the SKU type
              * @return the next stage of the definition
              */
             Update withSku(AvailabilitySetSkuTypes skuType);
