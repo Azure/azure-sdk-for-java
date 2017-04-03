@@ -32,6 +32,7 @@ import com.microsoft.azure.management.appservice.PythonVersion;
 import com.microsoft.azure.management.appservice.RemoteVisualStudioVersion;
 import com.microsoft.azure.management.appservice.ScmType;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
+import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.WebAppBase;
@@ -556,19 +557,13 @@ abstract class WebAppBaseImpl<
     }
 
     Observable<SiteInner> submitSite(final SiteInner site) {
-        final boolean emptyConfig = siteConfig == null;
-        if (emptyConfig) {
-            siteConfig = new SiteConfigResourceInner();
-        }
-        siteConfig.withLocation(inner().location());
+        site.withSiteConfig(new SiteConfig());
         // Construct web app observable
         return createOrUpdateInner(site)
             .map(new Func1<SiteInner, SiteInner>() {
                 @Override
                 public SiteInner call(SiteInner siteInner) {
-                    if (emptyConfig) {
-                        siteConfig = null;
-                    }
+                    site.withSiteConfig(null);
                     return siteInner;
                 }
             });
@@ -627,6 +622,7 @@ abstract class WebAppBaseImpl<
         if (siteConfig == null) {
             return Observable.just(site);
         }
+        siteConfig.withLocation(inner().location());
         return createOrUpdateSiteConfig(siteConfig)
                 .flatMap(new Func1<SiteConfigResourceInner, Observable<SiteInner>>() {
                     @Override

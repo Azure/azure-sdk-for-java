@@ -73,7 +73,7 @@ public final class ManageFunctionApp {
                     .withExistingResourceGroup(rg1Name)
                     .withExistingStorageAccount(app1.storageAccount())
                     .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/azure-appservice-samples/AzureFunctions-Samples")
+                        .withPublicGitRepository("https://github.com/azure-appservice-samples/AzureFunctions-Samples.git")
                         .withBranch("master")
                         .attach()
                     .create();
