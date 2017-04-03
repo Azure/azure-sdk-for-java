@@ -15,12 +15,10 @@ import java.util.Map;
 
 public class WebAppConfigTests extends AppServiceTest {
     private static String WEBAPP_NAME = "";
-    private static String APP_SERVICE_PLAN_NAME = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
-        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
@@ -29,10 +27,9 @@ public class WebAppConfigTests extends AppServiceTest {
     public void canCRUDWebAppConfig() throws Exception {
         // Create with new app service plan
         appServiceManager.webApps().define(WEBAPP_NAME)
-                .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME)
                 .withRegion(Region.US_WEST)
-                .withPricingTier(AppServicePricingTier.BASIC_B1)
+                .withNewResourceGroup(RG_NAME)
+                .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
                 .create();
 

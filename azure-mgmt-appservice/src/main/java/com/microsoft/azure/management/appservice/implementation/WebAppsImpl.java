@@ -8,10 +8,10 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
@@ -37,7 +37,12 @@ class WebAppsImpl
             @Override
             public WebApp typeConvert(SiteInner siteInner) {
                 WebAppImpl impl = wrapModel(siteInner, manager.inner().webApps().getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
+                return impl.cacheSiteProperties().toBlocking().single();
+            }
+
+            @Override
+            protected boolean filter(SiteInner inner) {
+                return "app".equals(inner.kind());
             }
         };
     }
@@ -59,7 +64,7 @@ class WebAppsImpl
                 return self.inner().getConfigurationAsync(groupName, name).flatMap(new Func1<SiteConfigResourceInner, Observable<WebApp>>() {
                     @Override
                     public Observable<WebApp> call(SiteConfigResourceInner siteConfigInner) {
-                        return wrapModel(siteInner, siteConfigInner).cacheAppSettingsAndConnectionStrings();
+                        return wrapModel(siteInner, siteConfigInner).cacheSiteProperties();
                     }
                 });
             }

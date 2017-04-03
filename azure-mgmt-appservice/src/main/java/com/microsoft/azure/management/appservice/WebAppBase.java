@@ -244,6 +244,11 @@ public interface WebAppBase extends
     Map<String, ConnectionString> connectionStrings();
 
     /**
+     * @return the operating system the web app is running on
+     */
+    OperatingSystem operatingSystem();
+
+    /**
      * @return the URL and credentials for publishing through FTP or Git
      */
     PublishingProfile getPublishingProfile();
@@ -306,16 +311,17 @@ public interface WebAppBase extends
     void resetSlotConfigurations();
 
     /**************************************************************
-     * Fluent interfaces to provision a Web App or deployment slot
+     * Fluent interfaces to provision a Web App or deployment slot.
      **************************************************************/
 
     /**
-     * Container interface for all the definitions that need to be implemented.
-     * @param <FluentT> the fluent interface of the web app or deployment slot
+     * The entirety of the web app base definition.
+     *
+     * @param <FluentT> the type of the resource
      */
     interface Definition<FluentT> extends
-            DefinitionStages.WithHostNameSslBinding<FluentT>,
-            DefinitionStages.WithWebContainer<FluentT> {
+            DefinitionStages.WithWebContainer<FluentT>,
+            DefinitionStages.WithCreate<FluentT> {
     }
 
     /**
@@ -324,15 +330,15 @@ public interface WebAppBase extends
     interface DefinitionStages {
         /**
          * A web app definition stage allowing host name binding to be specified.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
-        interface WithHostNameBinding<FluentT> extends WithCreate<FluentT> {
+        interface WithHostNameBinding<FluentT> {
             /**
              * Starts the definition of a new host name binding.
              * @return the first stage of a hostname binding definition
              */
             @Method
-            HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineHostnameBinding();
+            HostNameBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineHostnameBinding();
 
             /**
              * Defines a list of host names of an Azure managed domain. The DNS record type is
@@ -341,7 +347,7 @@ public interface WebAppBase extends
              * @param hostnames the list of sub-domains
              * @return the next stage of the web app definition
              */
-            WithHostNameSslBinding<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
+            WithCreate<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
             /**
              * Defines a list of host names of an externally purchased domain. The hostnames
@@ -350,25 +356,25 @@ public interface WebAppBase extends
              * @param hostnames the list of sub-domains
              * @return the next stage of the web app definition
              */
-            WithHostNameSslBinding<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
+            WithCreate<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
         }
 
         /**
          * A web app definition stage allowing SSL binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
-        interface WithHostNameSslBinding<FluentT> extends WithHostNameBinding<FluentT> {
+        interface WithHostNameSslBinding<FluentT> {
             /**
              * Starts a definition of an SSL binding.
              * @return the first stage of an SSL binding definition
              */
             @Method
-            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBinding();
+            HostNameSslBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineSslBinding();
         }
 
         /**
          * A web app definition stage allowing disabling the web app upon creation.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSiteEnabled<FluentT> {
             /**
@@ -380,7 +386,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithScmSiteAlsoStopped<FluentT> {
             /**
@@ -393,7 +399,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if client affinity is enabled.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithClientAffinityEnabled<FluentT> {
             /**
@@ -406,7 +412,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing setting if client cert is enabled.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithClientCertEnabled<FluentT> {
             /**
@@ -420,7 +426,7 @@ public interface WebAppBase extends
         /**
          * A web app definition stage allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithWebContainer<FluentT> {
             /**
@@ -434,7 +440,7 @@ public interface WebAppBase extends
         /**
          * A web app definition stage allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSiteConfigs<FluentT> {
             /**
@@ -543,7 +549,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing app settings to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithAppSettings<FluentT> {
             /**
@@ -581,7 +587,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing connection strings to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithConnectionString<FluentT> {
             /**
@@ -606,7 +612,7 @@ public interface WebAppBase extends
 
         /**
          * A web app definition stage allowing source control to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSourceControl<FluentT> {
             /**
@@ -624,22 +630,36 @@ public interface WebAppBase extends
         }
 
         /**
+         * A web app definition stage allowing authentication to be set.
+         * @param <FluentT> the type of the resource
+         */
+        interface WithAuthentication<FluentT> {
+            /**
+             * Specifies the definition of a new authentication configuration.
+             * @return the first stage of an authentication definition
+             */
+            WebAppAuthentication.DefinitionStages.Blank<WithCreate<FluentT>> defineAuthentication();
+        }
+
+        /**
          * A site definition with sufficient inputs to create a new web app /
          * deployments slot in the cloud, but exposing additional optional
          * inputs to specify.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithCreate<FluentT> extends
-                Creatable<FluentT>,
-                GroupableResource.DefinitionWithTags<WithCreate<FluentT>>,
-                WithSiteEnabled<FluentT>,
-                WithScmSiteAlsoStopped<FluentT>,
-                WithClientAffinityEnabled<FluentT>,
-                WithClientCertEnabled<FluentT>,
-                WithSiteConfigs<FluentT>,
-                WithAppSettings<FluentT>,
-                WithConnectionString<FluentT>,
-                WithSourceControl<FluentT> {
+            Creatable<FluentT>,
+            GroupableResource.DefinitionWithTags<WithCreate<FluentT>>,
+            WithClientAffinityEnabled<FluentT>,
+            WithClientCertEnabled<FluentT>,
+            WithScmSiteAlsoStopped<FluentT>,
+            WithSiteConfigs<FluentT>,
+            WithAppSettings<FluentT>,
+            WithConnectionString<FluentT>,
+            WithSourceControl<FluentT>,
+            WithHostNameBinding<FluentT>,
+            WithHostNameSslBinding<FluentT>,
+            WithAuthentication<FluentT> {
         }
     }
 
@@ -649,7 +669,7 @@ public interface WebAppBase extends
     interface UpdateStages {
         /**
          * The stage of the web app update allowing host name binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameBinding<FluentT> {
             /**
@@ -687,7 +707,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing SSL binding to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithHostNameSslBinding<FluentT> {
             /**
@@ -707,7 +727,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing disabling the web app upon creation.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSiteEnabled<FluentT> {
             /**
@@ -719,7 +739,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if SCM site is also stopped when the web app is stopped.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithScmSiteAlsoStopped<FluentT> {
             /**
@@ -732,7 +752,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if client affinity is enabled.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithClientAffinityEnabled<FluentT> {
             /**
@@ -745,7 +765,7 @@ public interface WebAppBase extends
 
         /**
          * The stage of the web app update allowing setting if client cert is enabled.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithClientCertEnabled<FluentT> {
             /**
@@ -759,7 +779,7 @@ public interface WebAppBase extends
         /**
          * The stage of the web app update allowing Java web container to be set. This is required
          * after specifying Java version.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithWebContainer<FluentT> {
             /**
@@ -773,7 +793,7 @@ public interface WebAppBase extends
         /**
          * The stage of the web app update allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSiteConfigs<FluentT> {
             /**
@@ -888,7 +908,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing app settings to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithAppSettings<FluentT> {
             /**
@@ -941,7 +961,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing connection strings to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithConnectionString<FluentT> {
             /**
@@ -981,7 +1001,7 @@ public interface WebAppBase extends
 
         /**
          * A web app update stage allowing source control to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         * @param <FluentT> the type of the resource
          */
         interface WithSourceControl<FluentT> {
             /**
@@ -1004,24 +1024,48 @@ public interface WebAppBase extends
             Update<FluentT> withLocalGitSourceControl();
 
         }
+
+        /**
+         * A web app definition stage allowing authentication to be set.
+         * @param <FluentT> the type of the resource
+         */
+        interface WithAuthentication<FluentT> {
+            /**
+             * Specifies the definition of a new authentication configuration.
+             * @return the first stage of an authentication definition
+             */
+            WebAppAuthentication.UpdateDefinitionStages.Blank<Update<FluentT>> defineAuthentication();
+
+            /**
+             * Updates the authentication configuration of the web app.
+             * @return the first stage of an authentication update
+             */
+            WebAppAuthentication.Update<Update<FluentT>> updateAuthentication();
+
+            /**
+             * Turns off the authentication on the web app.
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withoutAuthentication();
+        }
     }
 
     /**
-     * The template for a web app update operation, containing all the settings that can be modified.
-     * @param <FluentT> the fluent interface of the web app or deployment slot
+     * The template for a site update operation, containing all the settings that can be modified.
+     * @param <FluentT> the type of the resource
      */
     interface Update<FluentT> extends
-            Appliable<FluentT>,
-            GroupableResource.UpdateWithTags<Update<FluentT>>,
-            UpdateStages.WithHostNameBinding<FluentT>,
-            UpdateStages.WithHostNameSslBinding<FluentT>,
-            UpdateStages.WithClientAffinityEnabled<FluentT>,
-            UpdateStages.WithClientCertEnabled<FluentT>,
-            UpdateStages.WithScmSiteAlsoStopped<FluentT>,
-            UpdateStages.WithSiteEnabled<FluentT>,
-            UpdateStages.WithSiteConfigs<FluentT>,
-            UpdateStages.WithAppSettings<FluentT>,
-            UpdateStages.WithConnectionString<FluentT>,
-            UpdateStages.WithSourceControl<FluentT> {
+        Appliable<FluentT>,
+        GroupableResource.UpdateWithTags<Update<FluentT>>,
+        UpdateStages.WithClientAffinityEnabled<FluentT>,
+        UpdateStages.WithClientCertEnabled<FluentT>,
+        UpdateStages.WithScmSiteAlsoStopped<FluentT>,
+        UpdateStages.WithSiteConfigs<FluentT>,
+        UpdateStages.WithAppSettings<FluentT>,
+        UpdateStages.WithConnectionString<FluentT>,
+        UpdateStages.WithSourceControl<FluentT>,
+        UpdateStages.WithHostNameBinding<FluentT>,
+        UpdateStages.WithHostNameSslBinding<FluentT>,
+        UpdateStages.WithAuthentication<FluentT> {
     }
 }

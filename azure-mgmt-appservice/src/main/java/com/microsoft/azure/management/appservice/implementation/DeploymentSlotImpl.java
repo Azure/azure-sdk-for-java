@@ -234,6 +234,16 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner) {
+        return manager().inner().webApps().updateAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
+    Observable<SiteAuthSettingsInner> getAuthentication() {
+        return manager().inner().webApps().getAuthSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
     public WebAppSourceControl getSourceControl() {
         SiteSourceControlInner siteSourceControlInner = manager().inner().webApps().getSourceControlSlot(resourceGroupName(), parent().name(), name());
         return new WebAppSourceControlImpl<>(siteSourceControlInner, this);
