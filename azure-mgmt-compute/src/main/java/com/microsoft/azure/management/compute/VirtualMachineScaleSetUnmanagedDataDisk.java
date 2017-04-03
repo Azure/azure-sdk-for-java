@@ -27,7 +27,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The first stage of a unmanaged data disk definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT>
                 extends WithDiskSource<ParentT> {
@@ -36,7 +36,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The stage of the unmanaged data disk definition allowing to choose the source.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDiskSource<ParentT> {
             /**
@@ -59,7 +59,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The stage that allows configure the unmanaged disk based on new VHD.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNewVhdDiskSettings<ParentT> extends WithAttach<ParentT> {
             /**
@@ -82,7 +82,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The stage that allows configure the unmanaged disk based on an image.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFromImageDiskSettings<ParentT> extends WithAttach<ParentT> {
             /**
@@ -105,14 +105,14 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The final stage of the unmanaged data disk definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
         }
     }
 
     /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface DefinitionWithNewVhd<ParentT> extends
             DefinitionStages.Blank<ParentT>,
@@ -123,7 +123,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
 
 
     /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface DefinitionWithImage<ParentT> extends
             DefinitionStages.Blank<ParentT>,
@@ -139,7 +139,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The first stage of a unmanaged data disk definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface Blank<ParentT>
                 extends WithDiskSource<ParentT> {
@@ -148,7 +148,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The stage of the unmanaged data disk definition allowing to choose the source.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithDiskSource<ParentT> {
             /**
@@ -163,7 +163,7 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The stage that allows configure the unmanaged disk based on new VHD.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithNewVhdDiskSettings<ParentT> extends WithAttach<ParentT> {
             /**
@@ -186,14 +186,14 @@ public interface VirtualMachineScaleSetUnmanagedDataDisk extends
         /**
          * The final stage of the unmanaged data disk definition.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
         }
     }
 
     /** The entirety of a unmanaged data disk of a virtual machine scale set definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,

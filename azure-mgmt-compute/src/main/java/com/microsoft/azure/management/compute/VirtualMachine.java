@@ -203,7 +203,7 @@ public interface VirtualMachine extends
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
      * <p>
-     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}.
+     * The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the refreshed instance view
      */
@@ -360,7 +360,7 @@ public interface VirtualMachine extends
     /**
      * Get the virtual machine instance view.
      * <p>
-     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}.
+     * The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
      * @return the virtual machine instance view
      */
@@ -934,7 +934,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateManagedOrUnmanaged extends WithFromImageCreateOptionsManagedOrUnmanaged {
@@ -951,7 +951,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateManaged extends WithFromImageCreateOptionsManaged {
@@ -968,7 +968,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithLinuxCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
@@ -993,7 +993,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}, but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithWindowsCreateManaged extends WithFromImageCreateOptionsManaged {
@@ -1034,7 +1034,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}, but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithWindowsCreateUnmanaged extends WithFromImageCreateOptionsUnmanaged {
@@ -1317,7 +1317,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(Creatable<AvailabilitySet> creatable);
 
             /**
-             * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
+             * Specifies an existing availability set to to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
              * maintenance event at least one virtual machine will be available.
@@ -1356,7 +1356,7 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
-             * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
+             * Specifies an existing storage account to put the VM's OS and data disk VHD in.
              * <p>
              * An OS disk based on marketplace or user image (generalized image) will be stored in this
              * storage account.
@@ -1484,7 +1484,7 @@ public interface VirtualMachine extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -1762,8 +1762,6 @@ public interface VirtualMachine extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<VirtualMachine>,

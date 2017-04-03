@@ -416,7 +416,7 @@ public interface Disk extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -473,8 +473,6 @@ public interface Disk extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Disk.Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<Disk>,

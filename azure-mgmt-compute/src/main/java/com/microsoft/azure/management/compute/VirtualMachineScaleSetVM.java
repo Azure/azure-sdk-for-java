@@ -125,7 +125,7 @@ public interface VirtualMachineScaleSetVM extends
     int osDiskSizeInGB();
 
     /**
-     * @return the virtual machine instance computer name with prefix {@link VirtualMachineScaleSet#computerNamePrefix()}
+     * @return the virtual machine instance computer name with the VM scale set prefix.
      */
     String computerName();
 
@@ -290,7 +290,7 @@ public interface VirtualMachineScaleSetVM extends
     /**
      * Gets the instance view of the virtual machine instance.
      * <p>
-     * To get the latest instance view use {@link VirtualMachineScaleSetVM#refreshInstanceView()}.
+     * To get the latest instance view use <code>refreshInstanceView()</code>.
      *
      * @return the instance view
      */

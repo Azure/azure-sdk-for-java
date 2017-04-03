@@ -879,7 +879,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -902,7 +902,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -920,7 +920,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -938,7 +938,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -948,7 +948,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -1002,7 +1002,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -1292,7 +1292,7 @@ public interface VirtualMachineScaleSet extends
             WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
-             * Specifies an existing {@link StorageAccount} for the OS and data disk VHDs of
+             * Specifies an existing storage account for the OS and data disk VHDs of
              * the virtual machines in the scale set.
              *
              * @param storageAccount an existing storage account
@@ -1329,7 +1329,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource
-         * to be created (via {@link WithCreate#create()}), but also allowing for any other optional settings
+         * to be created, but also allowing for any other optional settings
          * to be specified.
          */
         interface WithCreate extends
@@ -1675,8 +1675,7 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * The stage of a virtual machine scale set update containing inputs for the resource to be updated
-         * (via {@link WithApply#apply()}).
+         * The stage of a virtual machine scale set update containing inputs for the resource to be updated.
          */
         interface WithApply extends
                 Appliable<VirtualMachineScaleSet>,
@@ -1693,7 +1692,7 @@ public interface VirtualMachineScaleSet extends
     }
 
     /**
-     * The entirety of the load balancer update.
+     * The entirety of the virtual machine scale set update.
      */
     interface Update extends
             UpdateStages.WithPrimaryLoadBalancer,
