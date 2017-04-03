@@ -14,7 +14,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 @LangDefinition
 public enum CreationSourceType {
     /**
-     * Indicates that disk or snapshot is created from Os disk image of a virtual machine
+     * Indicates that disk or snapshot is created from OS disk image of a virtual machine
      * platform or virtual machine user image.
      */
     FROM_OS_DISK_IMAGE,

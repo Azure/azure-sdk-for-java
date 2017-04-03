@@ -37,11 +37,12 @@ public interface Disks extends
         SupportsBatchDeletion,
         HasManager<ComputeManager>,
         HasInner<DisksInner> {
+
     /**
      * Grants access to a disk.
      *
-     * @param resourceGroupName the resource group name
-     * @param diskName the disk name
+     * @param resourceGroupName a resource group name
+     * @param diskName a disk name
      * @param accessLevel access level
      * @param accessDuration access duration
      * @return the read-only SAS URI to the disk

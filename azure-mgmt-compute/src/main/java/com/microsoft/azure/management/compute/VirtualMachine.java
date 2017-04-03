@@ -40,25 +40,19 @@ public interface VirtualMachine extends
         HasNetworkInterfaces {
     // Actions
     /**
-     * Shuts down the Virtual Machine and releases the compute resources.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources.
      */
     void deallocate();
 
     /**
-     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable deallocateAsync();
 
     /**
-     * Shuts down the Virtual Machine and releases the compute resources asynchronously.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -66,19 +60,19 @@ public interface VirtualMachine extends
     ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback);
 
     /**
-     * Generalize the Virtual Machine.
+     * Generalizes the virtual machine.
      */
     void generalize();
 
     /**
-     * Generalize the Virtual Machine asynchronously.
+     * Generalizes the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable generalizeAsync();
 
     /**
-     * Generalize the Virtual Machine asynchronously.
+     * Generalizes the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -86,16 +80,12 @@ public interface VirtualMachine extends
     ServiceFuture<Void> generalizeAsync(ServiceCallback<Void> callback);
 
     /**
-     * Power off (stop) the virtual machine.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
+     * Powers off (stops) the virtual machine.
      */
     void powerOff();
 
     /**
-     * Power off (stop) the virtual machine asynchronously.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
+     * Powers off (stops) the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
@@ -103,8 +93,6 @@ public interface VirtualMachine extends
 
     /**
      * Power off (stop) the virtual machine asynchronously.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -256,7 +244,7 @@ public interface VirtualMachine extends
     int osDiskSize();
 
     /**
-     * @return the storage account type of the managed disk backing Os disk
+     * @return the storage account type of the managed disk backing OS disk
      */
     StorageAccountTypes osDiskStorageAccountType();
 
@@ -310,7 +298,7 @@ public interface VirtualMachine extends
     Observable<VirtualMachineExtension> listExtensionsAsync();
 
     /**
-     * @return the extensions attached to the Virtual Machine
+     * @return the extensions attached to the virtual machine
      */
     Map<String, VirtualMachineExtension> listExtensions();
 
@@ -1440,7 +1428,7 @@ public interface VirtualMachine extends
                 WithManagedDataDisk,
                 WithCreate {
             /**
-             * Specifies the storage account type for managed Os disk.
+             * Specifies the storage account type for managed OS disk.
              *
              * @param accountType the storage account type
              * @return  the stage representing creatable VM definition

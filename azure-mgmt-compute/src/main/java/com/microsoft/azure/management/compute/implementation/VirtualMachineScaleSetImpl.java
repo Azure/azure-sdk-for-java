@@ -104,7 +104,7 @@ public class VirtualMachineScaleSetImpl
     private String vhdContainerName;
     // the child resource extensions
     private Map<String, VirtualMachineScaleSetExtension> extensions;
-    // reference to the primary and internal internet facing load balancer
+    // reference to the primary and internal Internet facing load balancer
     private LoadBalancer primaryInternetFacingLoadBalancer;
     private LoadBalancer primaryInternalLoadBalancer;
     // Load balancer specific variables used during update
@@ -424,7 +424,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
         if (loadBalancer.publicIPAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
+            throw new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer");
         }
 
         if (isInCreateMode()) {

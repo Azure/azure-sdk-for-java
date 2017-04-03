@@ -237,7 +237,7 @@ public interface VirtualMachineScaleSet extends
     String osDiskName();
 
     /**
-     * @return the upgradeModel
+     * @return the upgrade model
      */
     UpgradeMode upgradeModel();
 
@@ -268,7 +268,7 @@ public interface VirtualMachineScaleSet extends
     Network getPrimaryNetwork() throws IOException;
 
     /**
-     * @return the internet-facing load balancer associated with the primary network interface of
+     * @return the Internet-facing load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
      *
      * @throws IOException the IO exception
@@ -276,7 +276,7 @@ public interface VirtualMachineScaleSet extends
     LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's backends associated with the primary network interface
+     * @return the Internet-facing load balancer's backends associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -284,7 +284,7 @@ public interface VirtualMachineScaleSet extends
     Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's inbound NAT pool associated with the primary network interface
+     * @return the Internet-facing load balancer's inbound NAT pool associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -357,7 +357,7 @@ public interface VirtualMachineScaleSet extends
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
     /**
-     * List the network interface associated with a specific virtual machine instance in the scale set.
+     * Lists the network interface associated with a specific virtual machine instance in the scale set.
      *
      * @param virtualMachineInstanceId the instance ID
      * @return the network interfaces
@@ -1130,7 +1130,7 @@ public interface VirtualMachineScaleSet extends
          */
         interface WithManagedDiskOptionals {
             /**
-             * Specifies the storage account type for managed Os disk.
+             * Specifies the storage account type for managed OS disk.
              *
              * @param accountType the storage account type
              * @return  the stage representing creatable VM definition
@@ -1359,7 +1359,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies the load balancer to be used as the Internet-facing load balancer for the virtual machines in the
              * scale set.
              * <p>
-             * This will replace the current internet-facing load balancer associated with the virtual machines in the
+             * This will replace the current Internet-facing load balancer associated with the virtual machines in the
              * scale set (if any).
              * By default all the backend and inbound NAT pool of the load balancer will be associated with the primary
              * network interface of the virtual machines unless a subset of them is selected in the next stages
