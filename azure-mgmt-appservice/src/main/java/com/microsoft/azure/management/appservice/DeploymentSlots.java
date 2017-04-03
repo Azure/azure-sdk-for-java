@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for Azure web app deployment slot management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta

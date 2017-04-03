@@ -18,9 +18,10 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Func1;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The implementation for {@link AvailabilitySet} and its create and update interfaces.
@@ -38,7 +39,7 @@ class AvailabilitySetImpl
         AvailabilitySet.Definition,
         AvailabilitySet.Update {
 
-    private List<String> idOfVMsInSet;
+    private Set<String> idOfVMsInSet;
 
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
@@ -63,14 +64,14 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public List<String> virtualMachineIds() {
+    public Set<String> virtualMachineIds() {
         if (idOfVMsInSet == null) {
-            idOfVMsInSet = new ArrayList<>();
+            idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.inner().virtualMachines()) {
                 idOfVMsInSet.add(resource.id());
             }
         }
-        return Collections.unmodifiableList(idOfVMsInSet);
+        return Collections.unmodifiableSet(idOfVMsInSet);
     }
 
     @Override

@@ -22,7 +22,7 @@ import org.joda.time.DateTime;
 import rx.Observable;
 
 /**
- * An immutable client-side representation of an Azure App Service Certificate Order.
+ * An immutable client-side representation of an Azure App Service certificate order.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta

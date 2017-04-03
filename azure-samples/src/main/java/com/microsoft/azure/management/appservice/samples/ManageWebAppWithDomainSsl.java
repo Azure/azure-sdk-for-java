@@ -12,7 +12,7 @@ import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -97,7 +97,7 @@ public final class ManageWebAppWithDomainSsl {
                         .withAddressLine1("123 4th Ave")
                         .withCity("Redmond")
                         .withStateOrProvince("WA")
-                        .withCountry(CountryISOCode.UNITED_STATES)
+                        .withCountry(CountryIsoCode.UNITED_STATES)
                         .withPostalCode("98052")
                         .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                         .withPhoneNumber("4258828080")

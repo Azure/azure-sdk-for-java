@@ -30,7 +30,7 @@ public interface VirtualMachineScaleSetVM extends
         Refreshable<VirtualMachineScaleSetVM>,
         HasInner<VirtualMachineScaleSetVMInner> {
     /**
-     * @return the instance id assigned to this virtual machine instance
+     * @return the instance ID assigned to this virtual machine instance
      */
     String instanceId();
 
@@ -84,7 +84,7 @@ public interface VirtualMachineScaleSetVM extends
     VirtualMachineCustomImage getOSCustomImage();
 
     /**
-     * @return vhd uri of the custom image that the virtual machine instance operating system is based on,
+     * @return VHD URI of the custom image that the virtual machine instance operating system is based on,
      * null will be returned if the operating system is based on platform image
      */
     String storedImageUnmanagedVhdUri();
@@ -95,22 +95,22 @@ public interface VirtualMachineScaleSetVM extends
     String osDiskName();
 
     /**
-     * @return vhd uri to the operating system disk
+     * @return VHD URI to the operating system disk
      */
     String osUnmanagedDiskVhdUri();
 
     /**
-     * @return resource id of the managed disk backing OS disk
+     * @return resource ID of the managed disk backing OS disk
      */
     String osDiskId();
 
     /**
-     * @return the unmanaged data disks associated with this virtual machine instance, indexed by lun
+     * @return the unmanaged data disks associated with this virtual machine instance, indexed by LUN
      */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
     /**
-     * @return the managed data disks associated with this virtual machine instance, indexed by lun
+     * @return the managed data disks associated with this virtual machine instance, indexed by LUN
      */
     Map<Integer, VirtualMachineDataDisk> dataDisks();
 
@@ -165,22 +165,22 @@ public interface VirtualMachineScaleSetVM extends
     boolean bootDiagnosticEnabled();
 
     /**
-     * @return the uri to the storage account storing boot diagnostics log
+     * @return the URI to the storage account storing boot diagnostics log
      */
     String bootDiagnosticStorageAccountUri();
 
     /**
-     * @return the resource id of the availability set that this virtual machine instance belongs to
+     * @return the resource ID of the availability set that this virtual machine instance belongs to
      */
     String availabilitySetId();
 
     /**
-     * @return the list of resource id of network interface associated with the virtual machine instance
+     * @return the list of resource ID of network interface associated with the virtual machine instance
      */
     List<String> networkInterfaceIds();
 
     /**
-     * @return resource id of primary network interface associated with virtual machine instance
+     * @return resource ID of primary network interface associated with virtual machine instance
      */
     String primaryNetworkInterfaceId();
 

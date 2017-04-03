@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point for Redis Caches management API.
+ * Entry point for Redis Cache management API.
  */
 @Fluent
 public interface RedisCaches extends

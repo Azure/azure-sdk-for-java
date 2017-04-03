@@ -11,7 +11,8 @@ import rx.Observable;
 
 /**
  * Provides access to getting a specific resource based on its name.
- *
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  * @param <T> the type of the resource collection
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)

@@ -57,7 +57,7 @@ public interface Snapshot extends
      * Grants access to the snapshot.
      *
      * @param accessDurationInSeconds the access duration in seconds
-     * @return the readonly SAS uri to the snapshot
+     * @return the read-only SAS URI to the snapshot
      */
     String grantAccess(int accessDurationInSeconds);
 
@@ -65,7 +65,7 @@ public interface Snapshot extends
      * Grants access to the snapshot asynchronously.
      *
      * @param accessDurationInSeconds the access duration in seconds
-     * @return the observable to readonly SAS uri to the disk
+     * @return the observable to read-only SAS URI to the disk
      */
     Observable<String> grantAccessAsync(int accessDurationInSeconds);
 
@@ -73,7 +73,7 @@ public interface Snapshot extends
      * Grants access to the snapshot asynchronously.
      *
      * @param accessDurationInSeconds the access duration in seconds
-     * @param callback the callback to call on success or failure, on success it will pass readonly SAS uri to the disk in callback
+     * @param callback the callback to call on success or failure, on success it will pass read-only SAS URI to the disk in callback
      * @return a handle to cancel the request
      */
     ServiceFuture<String> grantAccessAsync(int accessDurationInSeconds, ServiceCallback<String> callback);
@@ -146,7 +146,7 @@ public interface Snapshot extends
             /**
              * Specifies the source Windows OS managed disk.
              *
-             * @param sourceDiskId source managed disk resource id
+             * @param sourceDiskId source managed disk resource ID
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withWindowsFromDisk(String sourceDiskId);
@@ -162,7 +162,7 @@ public interface Snapshot extends
             /**
              * Specifies the source Windows OS managed snapshot.
              *
-             * @param sourceSnapshotId snapshot resource id
+             * @param sourceSnapshotId snapshot resource ID
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withWindowsFromSnapshot(String sourceSnapshotId);
@@ -176,9 +176,9 @@ public interface Snapshot extends
             WithCreate withWindowsFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Windows OS vhd.
+             * Specifies the source specialized or generalized Windows OS VHD.
              *
-             * @param vhdUrl the source vhd url
+             * @param vhdUrl the source VHD URL
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withWindowsFromVhd(String vhdUrl);
@@ -191,7 +191,7 @@ public interface Snapshot extends
             /**
              * Specifies the source Linux OS managed disk.
              *
-             * @param sourceDiskId source managed disk resource id
+             * @param sourceDiskId source managed disk resource ID
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withLinuxFromDisk(String sourceDiskId);
@@ -207,7 +207,7 @@ public interface Snapshot extends
             /**
              * Specifies the source Linux OS managed snapshot.
              *
-             * @param sourceSnapshotId snapshot resource id
+             * @param sourceSnapshotId snapshot resource ID
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withLinuxFromSnapshot(String sourceSnapshotId);
@@ -221,9 +221,9 @@ public interface Snapshot extends
             WithCreate withLinuxFromSnapshot(Snapshot sourceSnapshot);
 
             /**
-             * Specifies the source specialized or generalized Linux OS vhd.
+             * Specifies the source specialized or generalized Linux OS VHD.
              *
-             * @param vhdUrl the source vhd url
+             * @param vhdUrl the source VHD URL
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withLinuxFromVhd(String vhdUrl);
@@ -239,13 +239,13 @@ public interface Snapshot extends
         }
 
         /**
-         * The stage of the managed disk definition allowing to choose source data disk vhd.
+         * The stage of the managed disk definition allowing to choose source data disk VHD.
          */
         interface WithDataSnapshotFromVhd {
             /**
-             * Specifies the source data vhd.
+             * Specifies the source data VHD.
              *
-             * @param vhdUrl the source vhd url
+             * @param vhdUrl the source VHD URL
              * @return the next stage of the managed snapshot definition
              */
             WithCreate withDataFromVhd(String vhdUrl);
@@ -256,9 +256,9 @@ public interface Snapshot extends
          */
         interface WithDataSnapshotFromDisk {
             /**
-             * Specifies the id of source data managed disk.
+             * Specifies the ID of source data managed disk.
              *
-             * @param managedDiskId source managed disk resource id
+             * @param managedDiskId source managed disk resource ID
              * @return the next stage of the managed disk definition
              */
             WithCreate withDataFromDisk(String managedDiskId);
@@ -279,7 +279,7 @@ public interface Snapshot extends
             /**
              * Specifies the source data managed snapshot.
              *
-             * @param snapshotId snapshot resource id
+             * @param snapshotId snapshot resource ID
              * @return the next stage of the managed disk definition
              */
             WithCreate withDataFromSnapshot(String snapshotId);
@@ -298,9 +298,9 @@ public interface Snapshot extends
          */
         interface WithOsSnapshotFromImage {
             /**
-             * Specifies id of the image containing operating system.
+             * Specifies ID of the image containing operating system.
              *
-             * @param imageId image resource id
+             * @param imageId image resource ID
              * @param osType operating system type
              * @return the next stage of the managed disk definition
              */
@@ -328,10 +328,10 @@ public interface Snapshot extends
          */
         interface WithDataSnapshotFromImage {
             /**
-             * Specifies id of the image containing source data disk image.
+             * Specifies ID of the image containing source data disk image.
              *
-             * @param imageId image resource id
-             * @param diskLun lun of the disk image
+             * @param imageId image resource ID
+             * @param diskLun LUN of the disk image
              * @return the next stage of the managed disk definition
              */
             WithCreate fromImage(String imageId,
@@ -341,7 +341,7 @@ public interface Snapshot extends
              * Specifies the image containing source data disk image.
              *
              * @param image the image
-             * @param diskLun lun of the disk image
+             * @param diskLun LUN of the disk image
              * @return the next stage of the managed disk definition
              */
             WithCreate fromImage(VirtualMachineImage image, int diskLun);
@@ -350,7 +350,7 @@ public interface Snapshot extends
              * Specifies the custom image containing source data disk image.
              *
              * @param image the image
-             * @param diskLun lun of the disk image
+             * @param diskLun LUN of the disk image
              * @return the next stage of the managed disk definition
              */
             WithCreate fromImage(VirtualMachineCustomImage image, int diskLun);

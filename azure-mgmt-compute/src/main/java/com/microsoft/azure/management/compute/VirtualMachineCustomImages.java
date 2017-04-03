@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point for image management API.
+ * Entry point to custom virtual machine image management.
  */
 @Fluent
 public interface VirtualMachineCustomImages extends

@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
 import rx.Completable;
 
 /**
- * An immutable client-side representation of an Azure batch account application.
+ * An immutable client-side representation of an Azure Batch application package.
  */
 @Fluent
 public interface ApplicationPackage extends
@@ -24,49 +24,51 @@ public interface ApplicationPackage extends
         HasInner<ApplicationPackageInner> {
 
     /**
-     * @return the sate of the application package
+     * @return the state of the application package
      */
     PackageState state();
 
     /**
-     * @return the format of application package
+     * @return the format of the application package
      */
     String format();
 
     /**
-     * @return the storage Url of application package where application should be uploaded
+     * @return the storage URL of the application package where teh application should be uploaded
      */
     String storageUrl();
 
     /**
-     * @return the expiry of the storage url for application package
+     * @return the expiry of the storage URL for the application package
      */
     DateTime storageUrlExpiry();
 
     /**
-     * @return the date when last time this application package was activate.
+     * @return the last time this application package was activated
      */
     DateTime lastActivationTime();
 
     /**
      * Activates the application package.
      *
-     * @param format format of the uploaded package supported values zip, tar
+     * @param format the format of the uploaded Batch application package, either "zip" or "tar"
      */
+    // TODO: this should take an enum
     void activate(String format);
 
     /**
      * Activates the application package asynchronously.
      *
-     * @param format format of the uploaded package supported values zip, tar
-     * @return a representation of the deferred computation of this call.
+     * @param format the format of the uploaded Batch application package, either "zip" or "tar"
+     * @return a representation of the deferred computation of this call
      */
+    // TODO: this should take an enum
     Completable activateAsync(String format);
 
     /**
      * Activates the application package asynchronously.
      *
-     * @param format format of the uploaded package supported values zip, tar
+     * @param format the format of the uploaded Batch application package, either "zip" or "tar"
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */

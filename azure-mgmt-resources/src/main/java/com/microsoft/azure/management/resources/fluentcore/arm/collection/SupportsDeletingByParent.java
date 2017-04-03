@@ -13,6 +13,8 @@ import rx.Completable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
 public interface SupportsDeletingByParent {

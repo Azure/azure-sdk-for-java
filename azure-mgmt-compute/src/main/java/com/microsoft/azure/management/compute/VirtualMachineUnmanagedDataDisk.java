@@ -30,7 +30,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
     int lun();
 
     /**
-     * @return uri to the virtual hard disk backing this data disk
+     * @return URI to the virtual hard disk backing this data disk
      */
     String vhdUri();
 
@@ -48,7 +48,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
      * <p>
      * null will be returned if this disk is not based on an image
      *
-     * @return the uri of the source vhd image
+     * @return the URI of the source VHD image
      */
     String sourceImageUri();
 
@@ -77,7 +77,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
          */
         interface WithDiskSource<ParentT> {
             /**
-             * Specifies the existing source vhd of the disk.
+             * Specifies the existing source VHD of the disk.
              *
              * @param storageAccountName the storage account name
              * @param containerName      the name of the container holding VHD file
@@ -88,7 +88,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
                                                                  String containerName,
                                                                  String vhdName);
             /**
-             * specifies that disk needs to be created with a new vhd of given size.
+             * specifies that disk needs to be created with a new VHD of given size.
              *
              * @param sizeInGB the initial disk size in GB
              * @return the next stage of data disk definition
@@ -96,16 +96,16 @@ public interface VirtualMachineUnmanagedDataDisk extends
             WithNewVhdDiskSettings<ParentT> withNewVhd(int sizeInGB);
 
             /**
-             * Specifies the image lun identifier of the source disk image.
+             * Specifies the image LUN identifier of the source disk image.
              *
-             * @param imageLun the lun
+             * @param imageLun the LUN
              * @return the next stage of data disk definition
              */
             WithFromImageDiskSettings<ParentT> fromImage(int imageLun);
         }
 
         /**
-         * The stage that allows configure the disk based on existing vhd.
+         * The stage that allows configure the disk based on existing VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -136,7 +136,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
 
         /**
-         * The stage that allows configure the disk based on new vhd.
+         * The stage that allows configure the disk based on new VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -260,7 +260,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
          */
         interface WithDiskSource<ParentT> {
             /**
-             * Specifies the existing source vhd of the disk.
+             * Specifies the existing source VHD of the disk.
              *
              * @param storageAccountName the storage account name
              * @param containerName      the name of the container holding VHD file
@@ -272,7 +272,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
                                                                  String vhdName);
 
             /**
-             * specifies that disk needs to be created with a new vhd of given size.
+             * specifies that disk needs to be created with a new VHD of given size.
              *
              * @param sizeInGB the initial disk size in GB
              * @return the next stage of data disk definition
@@ -281,7 +281,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
 
         /**
-         * The stage that allows configure the disk based on existing vhd.
+         * The stage that allows configure the disk based on existing VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -312,7 +312,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
 
         /**
-         * The stage that allows configure the disk based on new vhd.
+         * The stage that allows configure the disk based on new VHD.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -391,7 +391,7 @@ public interface VirtualMachineUnmanagedDataDisk extends
         }
 
         /**
-         * The stage of the virtual machine data disk update allowing to set the disk lun.
+         * The stage of the virtual machine data disk update allowing to set the disk LUN.
          */
         interface WithDiskLun {
             /**

@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
 /**
- * Entry point for app service plan management API.
+ * Entry point for App Service plan management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta

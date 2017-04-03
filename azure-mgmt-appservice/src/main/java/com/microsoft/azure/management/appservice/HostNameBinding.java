@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.appservice.implementation.HostNameBindingInner;
 
 /**
- * A host name binding object.
+ * An immutable representation of a host name binding.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 @Beta
