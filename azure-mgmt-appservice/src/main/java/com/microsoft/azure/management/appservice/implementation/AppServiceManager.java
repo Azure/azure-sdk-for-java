@@ -7,18 +7,20 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
+import com.microsoft.azure.management.appservice.AppServiceCertificates;
+import com.microsoft.azure.management.appservice.AppServiceDomains;
+import com.microsoft.azure.management.appservice.AppServicePlans;
+import com.microsoft.azure.management.appservice.FunctionApps;
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.appservice.WebApps;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.appservice.AppServiceCertificates;
-import com.microsoft.azure.management.appservice.AppServiceDomains;
-import com.microsoft.azure.management.appservice.AppServicePlans;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
-import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.rest.RestClient;
 
 /**
  * Entry point to Azure storage resource management.
@@ -27,12 +29,14 @@ import com.microsoft.azure.management.appservice.WebApps;
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
     // Managers
     private KeyVaultManager keyVaultManager;
+    private StorageManager storageManager;
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
     private AppServiceCertificateOrders appServiceCertificateOrders;
     private AppServiceCertificates appServiceCertificates;
     private AppServiceDomains appServiceDomains;
+    private FunctionApps functionApps;
     private RestClient restClient;
 
     /**
@@ -99,6 +103,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
                 subscriptionId,
                 new WebSiteManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
+        storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.restClient = restClient;
     }
 
@@ -107,6 +112,13 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     KeyVaultManager keyVaultManager() {
         return keyVaultManager;
+    }
+
+    /**
+     * @return the storage manager instance.
+     */
+    StorageManager storageManager() {
+        return storageManager;
     }
 
     RestClient restClient() {
@@ -162,5 +174,14 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             appServiceDomains = new AppServiceDomainsImpl(this);
         }
         return appServiceDomains;
+    }
+    /**
+     * @return the web app management API entry point
+     */
+    public FunctionApps functionApps() {
+        if (functionApps == null) {
+            functionApps = new FunctionAppsImpl(this);
+        }
+        return functionApps;
     }
 }

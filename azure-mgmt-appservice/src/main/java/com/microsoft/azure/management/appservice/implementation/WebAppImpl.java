@@ -6,118 +6,39 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
-import com.google.common.io.CharStreams;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
-import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.PublishingProfile;
+import com.microsoft.azure.management.appservice.OperatingSystem;
+import com.microsoft.azure.management.appservice.PricingTier;
+import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebAppSourceControl;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import rx.Observable;
-import rx.functions.Func1;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * The implementation for WebApp.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppImpl
-        extends WebAppBaseImpl<WebApp, WebAppImpl>
+        extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
         implements
             WebApp,
             WebApp.Definition,
+            WebApp.DefinitionStages.ExistingWindowsPlanWithGroup,
+            WebApp.DefinitionStages.ExistingLinuxPlanWithGroup,
             WebApp.Update,
-            WebApp.UpdateStages.WithNewAppServicePlan {
+            WebApp.UpdateStages.WithCredentials,
+            WebApp.UpdateStages.WithStartUpCommand {
+
+    private static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
+    private static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
+    private static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
+    private static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
 
     private DeploymentSlots deploymentSlots;
-    private AppServicePlanImpl appServicePlan;
 
     WebAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
-    }
-
-    @Override
-    Observable<SiteInner> createOrUpdateInner(SiteInner site) {
-        return this.manager().inner().webApps().createOrUpdateAsync(resourceGroupName(), name(), site);
-    }
-
-    @Override
-    Observable<SiteInner> getInner() {
-        return this.manager().inner().webApps().getByResourceGroupAsync(resourceGroupName(), name());
-    }
-
-    @Override
-    Observable<SiteConfigResourceInner> getConfigInner() {
-        return this.manager().inner().webApps().getConfigurationAsync(resourceGroupName(), name());
-    }
-
-    @Override
-    Observable<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
-        return this.manager().inner().webApps().createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
-    }
-
-    @Override
-    Observable<Void> deleteHostNameBinding(String hostname) {
-        return this.manager().inner().webApps().deleteHostNameBindingAsync(resourceGroupName(), name(), hostname);
-    }
-
-    @Override
-    Observable<StringDictionaryInner> listAppSettings() {
-        return this.manager().inner().webApps().listApplicationSettingsAsync(resourceGroupName(), name());
-    }
-
-    @Override
-    Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
-        return this.manager().inner().webApps().updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
-    }
-
-    @Override
-    Observable<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return this.manager().inner().webApps().listConnectionStringsAsync(resourceGroupName(), name());
-    }
-
-    @Override
-    Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
-        return this.manager().inner().webApps().updateConnectionStringsAsync(resourceGroupName(), name(), inner);
-    }
-
-    @Override
-    Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
-        return this.manager().inner().webApps().listSlotConfigurationNamesAsync(resourceGroupName(), name());
-    }
-
-    @Override
-    Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return this.manager().inner().webApps().updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
-    }
-
-    @Override
-    Observable<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
-        return this.manager().inner().webApps().createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
-    }
-
-    @Override
-    Observable<Void> deleteSourceControl() {
-        return this.manager().inner().webApps().deleteSourceControlAsync(resourceGroupName(), name()).map(new Func1<Object, Void>() {
-            @Override
-            public Void call(Object o) {
-                return null;
-            }
-        });
     }
 
     @Override
@@ -129,132 +50,121 @@ class WebAppImpl
     }
 
     @Override
-    public Map<String, HostNameBinding> getHostNameBindings() {
-        List<HostNameBindingInner> collectionInner = this.manager().inner().webApps().listHostNameBindings(resourceGroupName(), name());
-        List<HostNameBinding> hostNameBindings = new ArrayList<>();
-        for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner, this));
+    public WebAppImpl withBuiltInImage(RuntimeStack runtimeStack) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
         }
-        return Collections.unmodifiableMap(Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
-            @Override
-            public String apply(HostNameBinding input) {
-                return input.name().replace(name() + "/", "");
-            }
-        }));
-    }
-
-    @Override
-    public PublishingProfile getPublishingProfile() {
-        InputStream stream = this.manager().inner().webApps().listPublishingProfileXmlWithSecrets(resourceGroupName(), name());
-        try {
-            String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml, this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        siteConfig.withLinuxFxVersion(String.format("%s|%s", runtimeStack.stack(), runtimeStack.version()));
+        if (runtimeStack.stack().equals("NODE")) {
+            siteConfig.withNodeVersion(runtimeStack.version());
         }
-    }
-
-    @Override
-    public WebAppSourceControl getSourceControl() {
-        SiteSourceControlInner siteSourceControlInner = this.manager().inner().webApps().getSourceControl(resourceGroupName(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this);
-    }
-
-    @Override
-    public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
-        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
-    }
-
-    @Override
-    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
-        IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
-        identifierInner.withLocation("global");
-        return this.manager().inner().webApps().createOrUpdateDomainOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
-                .map(new Func1<IdentifierInner, Void>() {
-                    @Override
-                    public Void call(IdentifierInner identifierInner) {
-                        return null;
-                    }
-                });
-    }
-
-    @Override
-    public void start() {
-        this.manager().inner().webApps().start(resourceGroupName(), name());
-        refresh();
-    }
-
-    @Override
-    public void stop() {
-        this.manager().inner().webApps().stop(resourceGroupName(), name());
-        refresh();
-    }
-
-    @Override
-    public void restart() {
-        this.manager().inner().webApps().restart(resourceGroupName(), name());
-        refresh();
-    }
-
-    @Override
-    public void swap(String slotName) {
-        this.manager().inner().webApps().swapSlotWithProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
-    }
-
-    @Override
-    public void applySlotConfigurations(String slotName) {
-        this.manager().inner().webApps().applySlotConfigToProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
-    }
-
-    @Override
-    public void resetSlotConfigurations() {
-        this.manager().inner().webApps().resetProductionSlotConfig(resourceGroupName(), name());
-    }
-
-    @Override
-    public WebAppImpl withNewAppServicePlan(String name) {
-        appServicePlan = (AppServicePlanImpl) this.manager().appServicePlans().define(name);
-        String id = ResourceUtils.constructResourceId(this.manager().subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", name, "");
-        inner().withServerFarmId(id);
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withFreePricingTier() {
-        return withPricingTier(AppServicePricingTier.FREE_F1);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public WebAppImpl withPricingTier(AppServicePricingTier pricingTier) {
-        appServicePlan = appServicePlan
-                .withRegion(region())
-                .withPricingTier(pricingTier);
-        if (super.creatableGroup != null && isInCreateMode()) {
-            appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
-            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
-        } else {
-            appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
+        if (runtimeStack.stack().equals("PHP")) {
+            siteConfig.withPhpVersion(runtimeStack.version());
         }
-        if (isInCreateMode()) {
-            addCreatableDependency(appServicePlan);
-        } else {
-            addAppliableDependency(appServicePlan);
+        if (runtimeStack.stack().equals("DOTNETCORE")) {
+            siteConfig.withNetFrameworkVersion(runtimeStack.version());
         }
         return this;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public WebAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
-        inner().withServerFarmId(appServicePlan.id());
-        if (super.creatableGroup != null && isInCreateMode()) {
-            ((HasInner<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
-        }
-        this.withRegion(appServicePlan.regionName());
+    public WebAppImpl withPublicDockerHubImage(String imageAndTag) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
         return this;
+    }
+
+    @Override
+    public WebAppImpl withPrivateDockerHubImage(String imageAndTag) {
+        return withPublicDockerHubImage(imageAndTag);
+    }
+
+    @Override
+    public WebAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
+        ensureLinuxPlan();
+        cleanUpContainerSettings();
+        withBuiltInImage(RuntimeStack.NODEJS_6_6_0);
+        withAppSetting(SETTING_DOCKER_IMAGE, imageAndTag);
+        withAppSetting(SETTING_REGISTRY_SERVER, serverUrl);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withCredentials(String username, String password) {
+        withAppSetting(SETTING_REGISTRY_USERNAME, username);
+        withAppSetting(SETTING_REGISTRY_PASSWORD, password);
+        return this;
+    }
+
+    private void ensureLinuxPlan() {
+        if (OperatingSystem.WINDOWS.equals(operatingSystem())) {
+            throw new IllegalArgumentException("Docker container settings only apply to Linux app service plans.");
+        }
+    }
+
+    private void cleanUpContainerSettings() {
+        if (siteConfig != null && siteConfig.linuxFxVersion() != null) {
+            siteConfig.withLinuxFxVersion(null);
+        }
+        // PHP
+        if (siteConfig != null && siteConfig.phpVersion() != null) {
+            siteConfig.withPhpVersion(null);
+        }
+        // Node
+        if (siteConfig != null && siteConfig.nodeVersion() != null) {
+            siteConfig.withNodeVersion(null);
+        }
+        // .NET
+        if (siteConfig != null && siteConfig.netFrameworkVersion() != null) {
+            siteConfig.withNetFrameworkVersion("v4.0");
+        }
+        // Docker Hub
+        withoutAppSetting(SETTING_DOCKER_IMAGE);
+        withoutAppSetting(SETTING_REGISTRY_SERVER);
+        withoutAppSetting(SETTING_REGISTRY_USERNAME);
+        withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+    }
+
+    @Override
+    public WebAppImpl withStartUpCommand(String startUpCommand) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAppCommandLine(startUpCommand);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withExistingWindowsPlan(AppServicePlan appServicePlan) {
+        return super.withExistingAppServicePlan(appServicePlan);
+    }
+
+    @Override
+    public WebAppImpl withExistingLinuxPlan(AppServicePlan appServicePlan) {
+        return super.withExistingAppServicePlan(appServicePlan);
+    }
+
+    @Override
+    public WebAppImpl withNewWindowsPlan(PricingTier pricingTier) {
+        return super.withNewAppServicePlan(OperatingSystem.WINDOWS, pricingTier);
+    }
+
+    @Override
+    public WebAppImpl withNewWindowsPlan(Creatable<AppServicePlan> appServicePlanCreatable) {
+        return super.withNewAppServicePlan(appServicePlanCreatable);
+    }
+
+    @Override
+    public WebAppImpl withNewLinuxPlan(PricingTier pricingTier) {
+        return super.withNewAppServicePlan(OperatingSystem.LINUX, pricingTier);
+    }
+
+    @Override
+    public WebAppImpl withNewLinuxPlan(Creatable<AppServicePlan> appServicePlanCreatable) {
+        return super.withNewAppServicePlan(appServicePlanCreatable);
     }
 }

@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CloningInfo;
@@ -31,6 +32,7 @@ import com.microsoft.azure.management.appservice.PythonVersion;
 import com.microsoft.azure.management.appservice.RemoteVisualStudioVersion;
 import com.microsoft.azure.management.appservice.ScmType;
 import com.microsoft.azure.management.appservice.SiteAvailabilityState;
+import com.microsoft.azure.management.appservice.SiteConfig;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.WebAppBase;
@@ -40,7 +42,8 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.Func3;
+import rx.functions.Func2;
+import rx.functions.Func4;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
@@ -53,8 +56,8 @@ import java.util.Set;
 
 /**
  * The implementation for WebAppBase.
- *  @param <FluentT> the fluent interface of the web app or deployment slot
- *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
+ * @param <FluentT> the fluent interface of the web app or deployment slot or function app
+ * @param <FluentImplT> the fluent implementation of the web app or deployment slot or function app
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class WebAppBaseImpl<
@@ -92,6 +95,8 @@ abstract class WebAppBaseImpl<
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
+    private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
+    private boolean authenticationToUpdate;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -111,6 +116,7 @@ abstract class WebAppBaseImpl<
         this.connectionStringStickiness = new HashMap<>();
         this.sourceControl = null;
         this.sourceControlToDelete = false;
+        this.authenticationToUpdate = false;
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -382,12 +388,29 @@ abstract class WebAppBaseImpl<
         return cachedConnectionStrings;
     }
 
+    @Override
+    public OperatingSystem operatingSystem() {
+        if (inner().reserved() != null && inner().reserved()) {
+            return OperatingSystem.LINUX;
+        } else {
+            return OperatingSystem.WINDOWS;
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    Observable<FluentT> cacheAppSettingsAndConnectionStrings() {
+    Observable<FluentT> cacheSiteProperties() {
         final FluentT self = (FluentT) this;
-        return Observable.zip(listAppSettings(), listConnectionStrings(), listSlotConfigurations(), new Func3<StringDictionaryInner, ConnectionStringDictionaryInner, SlotConfigNamesResourceInner, FluentT>() {
+        return Observable.zip(
+                listAppSettings(),
+                listConnectionStrings(),
+                listSlotConfigurations(),
+                getAuthentication(),
+                new Func4<StringDictionaryInner, ConnectionStringDictionaryInner, SlotConfigNamesResourceInner, SiteAuthSettingsInner, FluentT>() {
             @Override
-            public FluentT call(final StringDictionaryInner appSettingsInner, final ConnectionStringDictionaryInner connectionStringsInner, final SlotConfigNamesResourceInner slotConfigs) {
+            public FluentT call(final StringDictionaryInner appSettingsInner,
+                                final ConnectionStringDictionaryInner connectionStringsInner,
+                                final SlotConfigNamesResourceInner slotConfigs,
+                                final SiteAuthSettingsInner siteAuth) {
                 cachedAppSettings = new HashMap<>();
                 cachedConnectionStrings = new HashMap<>();
                 if (appSettingsInner != null && appSettingsInner.properties() != null) {
@@ -408,6 +431,7 @@ abstract class WebAppBaseImpl<
                         }
                     });
                 }
+                authentication = new WebAppAuthenticationImpl<>(siteAuth, WebAppBaseImpl.this);
                 return self;
             }
         });
@@ -439,257 +463,82 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<Void> deleteSourceControl();
 
+    abstract Observable<SiteAuthSettingsInner> updateAuthentication(SiteAuthSettingsInner inner);
+
+    abstract Observable<SiteAuthSettingsInner> getAuthentication();
+
     @Override
     public Observable<FluentT> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
-        final boolean emptyConfig = siteConfig == null;
-        if (emptyConfig) {
-            siteConfig = new SiteConfigResourceInner();
-        }
-        siteConfig.withLocation(inner().location());
-        // Construct web app observable
-        return createOrUpdateInner(inner())
-        .map(new Func1<SiteInner, SiteInner>() {
-            @Override
-            public SiteInner call(SiteInner siteInner) {
-                if (emptyConfig) {
-                    siteConfig = null;
-                }
-                return siteInner;
-            }
-        })
+        return submitSite(inner())
         // Submit hostname bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner site) {
-                List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
-                for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
-                    bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync()));
-                }
-                for (String binding: hostNameBindingsToDelete) {
-                    bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {
-                        @Override
-                        public HostNameBinding call(Object o) {
-                            return null;
-                        }
-                    }));
-                }
-                if (bindingObservables.isEmpty()) {
-                    return Observable.just(site);
-                } else {
-                    return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
-                        @Override
-                        public SiteInner call(Object... args) {
-                            return site;
-                        }
-                    });
-                }
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitHostNameBindings(inner);
             }
         })
         // refresh after hostname bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(SiteInner site) {
+            public Observable<SiteInner> call(SiteInner inner) {
                 return getInner();
             }
         })
         // Submit SSL bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
-                for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
-                    certs.add(binding.newCertificate());
-                    hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
-                }
-                siteInner.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
-                if (certs.isEmpty()) {
-                    return Observable.just(siteInner);
-                } else {
-                    return Observable.zip(certs, new FuncN<SiteInner>() {
-                        @Override
-                        public SiteInner call(Object... args) {
-                            return siteInner;
-                        }
-                    }).flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                        @Override
-                        public Observable<SiteInner> call(SiteInner inner) {
-                            return createOrUpdateInner(inner);
-                        }
-                    });
-                }
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSslBindings(inner);
             }
         })
         // submit config
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                if (siteConfig == null) {
-                    return Observable.just(siteInner);
-                }
-                return createOrUpdateSiteConfig(siteConfig)
-                        .flatMap(new Func1<SiteConfigResourceInner, Observable<SiteInner>>() {
-                            @Override
-                            public Observable<SiteInner> call(SiteConfigResourceInner returnedSiteConfig) {
-                                siteConfig = returnedSiteConfig;
-                                return Observable.just(siteInner);
-                            }
-                        });
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSiteConfig(inner);
             }
         })
-        // app settings
+        // app settings and connection strings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
-                    observable = listAppSettings()
-                            .flatMap(new Func1<StringDictionaryInner, Observable<StringDictionaryInner>>() {
-                                @Override
-                                public Observable<StringDictionaryInner> call(StringDictionaryInner stringDictionaryInner) {
-                                    if (stringDictionaryInner == null) {
-                                        stringDictionaryInner = new StringDictionaryInner();
-                                        stringDictionaryInner.withLocation(regionName());
-                                    }
-                                    if (stringDictionaryInner.properties() == null) {
-                                        stringDictionaryInner.withProperties(new HashMap<String, String>());
-                                    }
-                                    stringDictionaryInner.properties().putAll(appSettingsToAdd);
-                                    for (String appSettingKey : appSettingsToRemove) {
-                                        stringDictionaryInner.properties().remove(appSettingKey);
-                                    }
-                                    return updateAppSettings(stringDictionaryInner);
-                                }
-                            }).map(new Func1<StringDictionaryInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(StringDictionaryInner stringDictionaryInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
-            }
-        })
-        // connection strings
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
-                    observable = listConnectionStrings()
-                            .flatMap(new Func1<ConnectionStringDictionaryInner, Observable<ConnectionStringDictionaryInner>>() {
-                                @Override
-                                public Observable<ConnectionStringDictionaryInner> call(ConnectionStringDictionaryInner dictionaryInner) {
-                                    if (dictionaryInner == null) {
-                                        dictionaryInner = new ConnectionStringDictionaryInner();
-                                        dictionaryInner.withLocation(regionName());
-                                    }
-                                    if (dictionaryInner.properties() == null) {
-                                        dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
-                                    }
-                                    dictionaryInner.properties().putAll(connectionStringsToAdd);
-                                    for (String connectionString : connectionStringsToRemove) {
-                                        dictionaryInner.properties().remove(connectionString);
-                                    }
-                                    return updateConnectionStrings(dictionaryInner);
-                                }
-                            }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(ConnectionStringDictionaryInner stringDictionaryInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
+                return submitAppSettings(inner).zipWith(submitConnectionStrings(inner), new Func2<SiteInner, SiteInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(SiteInner siteInner, SiteInner siteInner2) {
+                        return inner;
+                    }
+                });
             }
         })
         // app setting & connection string stickiness
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                Observable<SiteInner> observable = Observable.just(inner);
-                if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
-                    observable = listSlotConfigurations()
-                            .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
-                                @Override
-                                public Observable<SlotConfigNamesResourceInner> call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
-                                    if (slotConfigNamesResourceInner == null) {
-                                        slotConfigNamesResourceInner = new SlotConfigNamesResourceInner();
-                                        slotConfigNamesResourceInner.withLocation(regionName());
-                                    }
-                                    if (slotConfigNamesResourceInner.appSettingNames() == null) {
-                                        slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
-                                    }
-                                    if (slotConfigNamesResourceInner.connectionStringNames() == null) {
-                                        slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<String>());
-                                    }
-                                    Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
-                                    Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
-                                    for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
-                                        if (stickiness.getValue()) {
-                                            stickyAppSettingKeys.add(stickiness.getKey());
-                                        } else {
-                                            stickyAppSettingKeys.remove(stickiness.getKey());
-                                        }
-                                    }
-                                    for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
-                                        if (stickiness.getValue()) {
-                                            stickyConnectionStringNames.add(stickiness.getKey());
-                                        } else {
-                                            stickyConnectionStringNames.remove(stickiness.getKey());
-                                        }
-                                    }
-                                    slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
-                                    slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
-                                    return updateSlotConfigurations(slotConfigNamesResourceInner);
-                                }
-                            }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
-                                @Override
-                                public SiteInner call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
-                                    return inner;
-                                }
-                            });
-                }
-                return observable;
-            }
-        })
-        // create source control
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(final SiteInner inner) {
-                if (sourceControl == null || sourceControlToDelete) {
-                    return Observable.just(inner);
-                }
-                return sourceControl.registerGithubAccessToken()
-                .flatMap(new Func1<SourceControlInner, Observable<SiteSourceControlInner>>() {
-                    @Override
-                    public Observable<SiteSourceControlInner> call(SourceControlInner sourceControlInner) {
-                        return createOrUpdateSourceControl(sourceControl.inner());
-                    }
-                })
-                .map(new Func1<SiteSourceControlInner, SiteInner>() {
-                    @Override
-                    public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
-                        return inner;
-                    }
-                });
+                return submitStickiness(inner);
             }
         })
         // delete source control
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner inner) {
-                if (!sourceControlToDelete) {
-                    return Observable.just(inner);
-                }
-                return deleteSourceControl().map(new Func1<Void, SiteInner>() {
-                    @Override
-                    public SiteInner call(Void aVoid) {
-                        return inner;
-                    }
-                });
+                return submitSourceControlToDelete(inner);
+            }
+        })
+        // create source control
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner inner) {
+                return submitSourceControlToCreate(inner);
+            }
+        })
+        // authentication
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(SiteInner inner) {
+                return submitAuthentication(inner);
             }
         })
         // convert from inner
@@ -702,7 +551,234 @@ abstract class WebAppBaseImpl<
         }).flatMap(new Func1<FluentT, Observable<FluentT>>() {
             @Override
             public Observable<FluentT> call(FluentT fluentT) {
-                return cacheAppSettingsAndConnectionStrings();
+                return cacheSiteProperties();
+            }
+        });
+    }
+
+    Observable<SiteInner> submitSite(final SiteInner site) {
+        site.withSiteConfig(new SiteConfig());
+        // Construct web app observable
+        return createOrUpdateInner(site)
+            .map(new Func1<SiteInner, SiteInner>() {
+                @Override
+                public SiteInner call(SiteInner siteInner) {
+                    site.withSiteConfig(null);
+                    return siteInner;
+                }
+            });
+    }
+
+    Observable<SiteInner> submitHostNameBindings(final SiteInner site) {
+        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
+        for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
+            bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync()));
+        }
+        for (String binding: hostNameBindingsToDelete) {
+            bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {
+                @Override
+                public HostNameBinding call(Object o) {
+                    return null;
+                }
+            }));
+        }
+        if (bindingObservables.isEmpty()) {
+            return Observable.just(site);
+        } else {
+            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
+                @Override
+                public SiteInner call(Object... args) {
+                    return site;
+                }
+            });
+        }
+    }
+
+    Observable<SiteInner> submitSslBindings(final SiteInner site) {
+        List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
+        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
+            certs.add(binding.newCertificate());
+            hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
+        }
+        site.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+        if (certs.isEmpty()) {
+            return Observable.just(site);
+        } else {
+            return Observable.zip(certs, new FuncN<SiteInner>() {
+                @Override
+                public SiteInner call(Object... args) {
+                    return site;
+                }
+            }).flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                @Override
+                public Observable<SiteInner> call(SiteInner inner) {
+                    return createOrUpdateInner(inner);
+                }
+            });
+        }
+    }
+
+    Observable<SiteInner> submitSiteConfig(final SiteInner site) {
+        if (siteConfig == null) {
+            return Observable.just(site);
+        }
+        siteConfig.withLocation(inner().location());
+        return createOrUpdateSiteConfig(siteConfig)
+                .flatMap(new Func1<SiteConfigResourceInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(SiteConfigResourceInner returnedSiteConfig) {
+                        siteConfig = returnedSiteConfig;
+                        return Observable.just(site);
+                    }
+                });
+    }
+
+    Observable<SiteInner> submitAppSettings(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
+            observable = listAppSettings()
+                .flatMap(new Func1<StringDictionaryInner, Observable<StringDictionaryInner>>() {
+                    @Override
+                    public Observable<StringDictionaryInner> call(StringDictionaryInner stringDictionaryInner) {
+                        if (stringDictionaryInner == null) {
+                            stringDictionaryInner = new StringDictionaryInner();
+                            stringDictionaryInner.withLocation(regionName());
+                        }
+                        if (stringDictionaryInner.properties() == null) {
+                            stringDictionaryInner.withProperties(new HashMap<String, String>());
+                        }
+                        for (String appSettingKey : appSettingsToRemove) {
+                            stringDictionaryInner.properties().remove(appSettingKey);
+                        }
+                        stringDictionaryInner.properties().putAll(appSettingsToAdd);
+                        return updateAppSettings(stringDictionaryInner);
+                    }
+                }).map(new Func1<StringDictionaryInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(StringDictionaryInner stringDictionaryInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitConnectionStrings(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
+            observable = listConnectionStrings()
+                .flatMap(new Func1<ConnectionStringDictionaryInner, Observable<ConnectionStringDictionaryInner>>() {
+                    @Override
+                    public Observable<ConnectionStringDictionaryInner> call(ConnectionStringDictionaryInner dictionaryInner) {
+                        if (dictionaryInner == null) {
+                            dictionaryInner = new ConnectionStringDictionaryInner();
+                            dictionaryInner.withLocation(regionName());
+                        }
+                        if (dictionaryInner.properties() == null) {
+                            dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
+                        }
+                        for (String connectionString : connectionStringsToRemove) {
+                            dictionaryInner.properties().remove(connectionString);
+                        }
+                        dictionaryInner.properties().putAll(connectionStringsToAdd);
+                        return updateConnectionStrings(dictionaryInner);
+                    }
+                }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(ConnectionStringDictionaryInner stringDictionaryInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitStickiness(final SiteInner site) {
+        Observable<SiteInner> observable = Observable.just(site);
+        if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
+            observable = listSlotConfigurations()
+                .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
+                    @Override
+                    public Observable<SlotConfigNamesResourceInner> call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                        if (slotConfigNamesResourceInner == null) {
+                            slotConfigNamesResourceInner = new SlotConfigNamesResourceInner();
+                            slotConfigNamesResourceInner.withLocation(regionName());
+                        }
+                        if (slotConfigNamesResourceInner.appSettingNames() == null) {
+                            slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
+                        }
+                        if (slotConfigNamesResourceInner.connectionStringNames() == null) {
+                            slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<String>());
+                        }
+                        Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
+                        Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
+                        for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
+                            if (stickiness.getValue()) {
+                                stickyAppSettingKeys.add(stickiness.getKey());
+                            } else {
+                                stickyAppSettingKeys.remove(stickiness.getKey());
+                            }
+                        }
+                        for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
+                            if (stickiness.getValue()) {
+                                stickyConnectionStringNames.add(stickiness.getKey());
+                            } else {
+                                stickyConnectionStringNames.remove(stickiness.getKey());
+                            }
+                        }
+                        slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
+                        slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
+                        return updateSlotConfigurations(slotConfigNamesResourceInner);
+                    }
+                }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                        return site;
+                    }
+                });
+        }
+        return observable;
+    }
+
+    Observable<SiteInner> submitSourceControlToCreate(final SiteInner site) {
+        if (sourceControl == null || sourceControlToDelete) {
+            return Observable.just(site);
+        }
+        return sourceControl.registerGithubAccessToken()
+            .flatMap(new Func1<SourceControlInner, Observable<SiteSourceControlInner>>() {
+                @Override
+                public Observable<SiteSourceControlInner> call(SourceControlInner sourceControlInner) {
+                    return createOrUpdateSourceControl(sourceControl.inner());
+                }
+            })
+            .map(new Func1<SiteSourceControlInner, SiteInner>() {
+                @Override
+                public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
+                    return site;
+                }
+            });
+    }
+
+    Observable<SiteInner> submitSourceControlToDelete(final SiteInner site) {
+        if (!sourceControlToDelete) {
+            return Observable.just(site);
+        }
+        return deleteSourceControl().map(new Func1<Void, SiteInner>() {
+            @Override
+            public SiteInner call(Void aVoid) {
+                return site;
+            }
+        });
+    }
+
+    Observable<SiteInner> submitAuthentication(final SiteInner site) {
+        if (!authenticationToUpdate) {
+            return Observable.just(site);
+        }
+        return updateAuthentication(authentication.inner()).map(new Func1<SiteAuthSettingsInner, SiteInner>() {
+            @Override
+            public SiteInner call(SiteAuthSettingsInner siteAuthSettingsInner) {
+                return site;
             }
         });
     }
@@ -714,7 +790,6 @@ abstract class WebAppBaseImpl<
         return this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
         for (String hostname : hostnames) {
@@ -735,7 +810,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public HostNameBindingImpl<FluentT, FluentImplT> defineHostnameBinding() {
         HostNameBindingInner inner = new HostNameBindingInner();
@@ -747,7 +821,6 @@ abstract class WebAppBaseImpl<
         return new HostNameBindingImpl<>(inner, (FluentImplT) this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withThirdPartyHostnameBinding(String domain, String... hostnames) {
         for (String hostname : hostnames) {
@@ -760,14 +833,12 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutHostnameBinding(String hostname) {
         hostNameBindingsToDelete.add(hostname);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutSslBinding(String hostname) {
         if (hostNameSslStateMap.containsKey(hostname)) {
@@ -784,41 +855,35 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppDisabledOnCreation() {
         inner().withEnabled(false);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withScmSiteAlsoStopped(boolean scmSiteAlsoStopped) {
         inner().withScmSiteAlsoStopped(scmSiteAlsoStopped);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withClientAffinityEnabled(boolean enabled) {
         inner().withClientAffinityEnabled(enabled);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withClientCertEnabled(boolean enabled) {
         inner().withClientCertEnabled(enabled);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
         return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNetFrameworkVersion(NetFrameworkVersion version) {
         if (siteConfig == null) {
@@ -828,7 +893,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPhpVersion(PhpVersion version) {
         if (siteConfig == null) {
@@ -838,12 +902,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutPhp() {
         return withPhpVersion(new PhpVersion(""));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withJavaVersion(JavaVersion version) {
         if (siteConfig == null) {
@@ -853,12 +915,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutJava() {
         return withJavaVersion(new JavaVersion("")).withWebContainer(null);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebContainer(WebContainer webContainer) {
         if (siteConfig == null) {
@@ -875,7 +935,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPythonVersion(PythonVersion version) {
         if (siteConfig == null) {
@@ -885,12 +944,10 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withoutPython() {
         return withPythonVersion(new PythonVersion(""));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withPlatformArchitecture(PlatformArchitecture platform) {
         if (siteConfig == null) {
@@ -900,7 +957,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebSocketsEnabled(boolean enabled) {
         if (siteConfig == null) {
@@ -910,7 +966,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebAppAlwaysOn(boolean alwaysOn) {
         if (siteConfig == null) {
@@ -920,7 +975,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedPipelineMode(ManagedPipelineMode managedPipelineMode) {
         if (siteConfig == null) {
@@ -930,7 +984,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAutoSwapSlotName(String slotName) {
         if (siteConfig == null) {
@@ -940,7 +993,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion) {
         if (siteConfig == null) {
@@ -951,7 +1003,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withRemoteDebuggingDisabled() {
         if (siteConfig == null) {
@@ -961,7 +1012,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocument(String document) {
         if (siteConfig == null) {
@@ -974,7 +1024,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withDefaultDocuments(List<String> documents) {
         if (siteConfig == null) {
@@ -987,7 +1036,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutDefaultDocument(String document) {
         if (siteConfig == null) {
@@ -999,27 +1047,23 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSetting(String key, String value) {
         appSettingsToAdd.put(key, value);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSettings(Map<String, String> settings) {
         appSettingsToAdd.putAll(settings);
         return (FluentImplT) this;
     }
 
-    @Override
     public FluentImplT withStickyAppSetting(String key, String value) {
         withAppSetting(key, value);
         return withAppSettingStickiness(key, true);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withStickyAppSettings(Map<String, String> settings) {
         withAppSettings(settings);
@@ -1032,7 +1076,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutAppSetting(String key) {
         appSettingsToRemove.add(key);
@@ -1040,21 +1083,18 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSettingStickiness(String key, boolean sticky) {
         appSettingStickiness.put(key, sticky);
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withConnectionString(String name, String value, ConnectionStringType type) {
         connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withStickyConnectionString(String name, String value, ConnectionStringType type) {
         connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
@@ -1062,7 +1102,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutConnectionString(String name) {
         connectionStringsToRemove.add(name);
@@ -1070,7 +1109,6 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withConnectionStringStickiness(String name, boolean stickiness) {
         connectionStringStickiness.put(name, stickiness);
@@ -1083,14 +1121,12 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
         SiteSourceControlInner sourceControlInner = new SiteSourceControlInner();
         sourceControlInner.withLocation(regionName());
         return new WebAppSourceControlImpl<>(sourceControlInner, this);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withLocalGitSourceControl() {
         if (siteConfig == null) {
@@ -1100,10 +1136,16 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withoutSourceControl() {
         sourceControlToDelete = true;
+        return (FluentImplT) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    FluentImplT withAuthentication(WebAppAuthenticationImpl<FluentT, FluentImplT> authentication) {
+        this.authentication = authentication;
+        authenticationToUpdate = true;
         return (FluentImplT) this;
     }
 
@@ -1119,7 +1161,7 @@ abstract class WebAppBaseImpl<
                         siteConfig = returnedSiteConfig;
                         final WebAppBaseImpl<FluentT, FluentImplT> impl = (WebAppBaseImpl<FluentT, FluentImplT>) fluentT;
 
-                        return impl.cacheAppSettingsAndConnectionStrings();
+                        return impl.cacheSiteProperties();
                     }
                 });
             }
@@ -1129,5 +1171,23 @@ abstract class WebAppBaseImpl<
     @Override
     protected Observable<SiteInner> getInnerAsync() {
         return getInner();
+    }
+
+    @Override
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> defineAuthentication() {
+        return new WebAppAuthenticationImpl<>(new SiteAuthSettingsInner().withEnabled(true), this);
+    }
+
+    @Override
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> updateAuthentication() {
+        return authentication;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutAuthentication() {
+        this.authentication.inner().withEnabled(false);
+        authenticationToUpdate = true;
+        return (FluentImplT) this;
     }
 }

@@ -45,7 +45,7 @@ class HostNameSslBindingImpl<
     extends IndexableWrapperImpl<HostNameSslState>
     implements
         HostNameSslBinding,
-        HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
+        HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         HostNameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private Observable<AppServiceCertificate> newCertificate;

@@ -13,39 +13,33 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * Defines App service pricing tiers.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
-public class AppServicePricingTier {
-    /** Free app service plan. */
-    public static final AppServicePricingTier FREE_F1 = new AppServicePricingTier("Free", "F1");
-
-    /** App service plan with shared infrastructure. */
-    public static final AppServicePricingTier SHARED_D1 = new AppServicePricingTier("Shared", "D1");
-
+public class PricingTier {
     /** Basic pricing tier with a small size. */
-    public static final AppServicePricingTier BASIC_B1 = new AppServicePricingTier("Basic", "B1");
+    public static final PricingTier BASIC_B1 = new PricingTier("Basic", "B1");
 
     /** Basic pricing tier with a medium size. */
-    public static final AppServicePricingTier BASIC_B2 = new AppServicePricingTier("Basic", "B2");
+    public static final PricingTier BASIC_B2 = new PricingTier("Basic", "B2");
 
     /** Basic pricing tier with a large size. */
-    public static final AppServicePricingTier BASIC_B3 = new AppServicePricingTier("Basic", "B3");
+    public static final PricingTier BASIC_B3 = new PricingTier("Basic", "B3");
 
     /** Standard pricing tier with a small size. */
-    public static final AppServicePricingTier STANDARD_S1 = new AppServicePricingTier("Standard", "S1");
+    public static final PricingTier STANDARD_S1 = new PricingTier("Standard", "S1");
 
     /** Standard pricing tier with a medium size. */
-    public static final AppServicePricingTier STANDARD_S2 = new AppServicePricingTier("Standard", "S2");
+    public static final PricingTier STANDARD_S2 = new PricingTier("Standard", "S2");
 
     /** Standard pricing tier with a large size. */
-    public static final AppServicePricingTier STANDARD_S3 = new AppServicePricingTier("Standard", "S3");
+    public static final PricingTier STANDARD_S3 = new PricingTier("Standard", "S3");
 
     /** Premium pricing tier with a small size. */
-    public static final AppServicePricingTier PREMIUM_P1 = new AppServicePricingTier("Premium", "P1");
+    public static final PricingTier PREMIUM_P1 = new PricingTier("Premium", "P1");
 
     /** Premium pricing tier with a medium size. */
-    public static final AppServicePricingTier PREMIUM_P2 = new AppServicePricingTier("Premium", "P2");
+    public static final PricingTier PREMIUM_P2 = new PricingTier("Premium", "P2");
 
     /** Premium pricing tier with a large size. */
-    public static final AppServicePricingTier PREMIUM_P3 = new AppServicePricingTier("Premium", "P3");
+    public static final PricingTier PREMIUM_P3 = new PricingTier("Premium", "P3");
 
     /** The actual serialized value for a SiteAvailabilityState instance. */
     private SkuDescription skuDescription;
@@ -55,7 +49,7 @@ public class AppServicePricingTier {
      * @param tier the tier name
      * @param size the size of the plan
      */
-    public AppServicePricingTier(String tier, String size) {
+    public PricingTier(String tier, String size) {
         this.skuDescription = new SkuDescription()
                 .withName(size)
                 .withTier(tier)
@@ -68,11 +62,11 @@ public class AppServicePricingTier {
      * @param skuDescription the serialized value to parse.
      * @return the parsed AppServicePricingTier object, or null if unable to parse.
      */
-    public static AppServicePricingTier fromSkuDescription(SkuDescription skuDescription) {
+    public static PricingTier fromSkuDescription(SkuDescription skuDescription) {
         if (skuDescription == null) {
             return null;
         }
-        return new AppServicePricingTier(skuDescription.tier(), skuDescription.size());
+        return new PricingTier(skuDescription.tier(), skuDescription.size());
     }
 
     @Override
@@ -95,13 +89,13 @@ public class AppServicePricingTier {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AppServicePricingTier)) {
+        if (!(obj instanceof PricingTier)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        AppServicePricingTier rhs = (AppServicePricingTier) obj;
+        PricingTier rhs = (PricingTier) obj;
         return toString().equalsIgnoreCase(rhs.toString());
     }
 }

@@ -17,6 +17,7 @@ import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.Contact;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.batch.Application;
@@ -89,6 +90,8 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpo
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1441,6 +1444,26 @@ public final class Utils {
             }
         }
         System.out.println(builder.toString());
+    }
+
+    /**
+     * Uploads a file to an Azure web app.
+     * @param profile the publishing profile for the web app.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     * @throws Exception when ftp upload fails
+     */
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "./site/wwwroot/webapps";
+        ftpClient.connect(server);
+        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        ftpClient.changeWorkingDirectory(path);
+        ftpClient.storeFile(fileName, file);
+        ftpClient.disconnect();
     }
 
     private Utils() {

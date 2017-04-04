@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -16,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
@@ -223,6 +223,7 @@ public interface StorageAccount extends
              * @param encryption the encryption setting
              * @return the nest stage of storage account definition
              */
+            @Beta
             WithCreate withEncryption(Encryption encryption);
         }
 
@@ -355,6 +356,7 @@ public interface StorageAccount extends
              * @param encryption the encryption setting
              * @return the nest stage of storage account update
              */
+            @Beta
             Update withEncryption(Encryption encryption);
         }
 

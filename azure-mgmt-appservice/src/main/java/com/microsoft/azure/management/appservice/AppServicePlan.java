@@ -50,7 +50,12 @@ public interface AppServicePlan extends
     /**
      * @return the pricing tier information of the App Service Plan
      */
-    AppServicePricingTier pricingTier();
+    PricingTier pricingTier();
+
+    /**
+     * @return the operating system the web app is running on
+     */
+    OperatingSystem operatingSystem();
 
     /**************************************************************
      * Fluent interfaces to provision a App service plan
@@ -63,6 +68,7 @@ public interface AppServicePlan extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithPricingTier,
+            DefinitionStages.WithOperatingSystem,
             DefinitionStages.WithCreate {
     }
 
@@ -92,7 +98,20 @@ public interface AppServicePlan extends
              * @param pricingTier the pricing tier enum
              * @return the next stage of the app service plan definition
              */
-            WithCreate withPricingTier(AppServicePricingTier pricingTier);
+            WithOperatingSystem withPricingTier(PricingTier pricingTier);
+        }
+
+        /**
+         * An app service plan definition allowing the operating system to be set.
+         */
+        interface WithOperatingSystem {
+            /**
+             * Specifies the operating system of the app service plan.
+             *
+             * @param operatingSystem the operating system
+             * @return the next stage of the app service plan definition
+             */
+            WithCreate withOperatingSystem(OperatingSystem operatingSystem);
         }
 
         /**
@@ -148,7 +167,7 @@ public interface AppServicePlan extends
              * @param pricingTier the pricing tier enum
              * @return the next stage of the app service plan update
              */
-            Update withPricingTier(AppServicePricingTier pricingTier);
+            Update withPricingTier(PricingTier pricingTier);
         }
 
         /**

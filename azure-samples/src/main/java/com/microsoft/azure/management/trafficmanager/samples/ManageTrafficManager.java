@@ -8,8 +8,9 @@ package com.microsoft.azure.management.trafficmanager.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -112,7 +113,8 @@ public final class ManageTrafficManager {
                 AppServicePlan appServicePlan = azure.appServices().appServicePlans().define(planName)
                         .withRegion(region)
                         .withExistingResourceGroup(rgName)
-                        .withPricingTier(AppServicePricingTier.BASIC_B1)
+                        .withPricingTier(PricingTier.BASIC_B1)
+                        .withOperatingSystem(OperatingSystem.WINDOWS)
                         .create();
                 System.out.println("Created app service plan " + planName);
                 Utils.print(appServicePlan);
@@ -128,8 +130,8 @@ public final class ManageTrafficManager {
                 String webAppName = webAppNamePrefix + id;
                 System.out.println("Creating a web app " + webAppName + " using the plan " + appServicePlan.name() + "...");
                 WebApp webApp = azure.webApps().define(webAppName)
+                        .withExistingWindowsPlan(appServicePlan)
                         .withExistingResourceGroup(rgName)
-                        .withExistingAppServicePlan(appServicePlan)
                         .withManagedHostnameBindings(domain, webAppName)
                         .defineSslBinding()
                             .forHostname(webAppName + "." + domain.name())

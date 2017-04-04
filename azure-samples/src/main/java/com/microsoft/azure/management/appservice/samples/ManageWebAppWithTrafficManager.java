@@ -8,8 +8,9 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -268,14 +269,15 @@ public final class ManageWebAppWithTrafficManager {
         return azure.appServices().appServicePlans().define(name)
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
-                .withPricingTier(AppServicePricingTier.BASIC_B1)
+                .withPricingTier(PricingTier.BASIC_B1)
+                .withOperatingSystem(OperatingSystem.WINDOWS)
                 .create();
     }
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azure.webApps().define(name)
+                .withExistingWindowsPlan(plan)
                 .withExistingResourceGroup(RG_NAME)
-                .withExistingAppServicePlan(plan)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())
