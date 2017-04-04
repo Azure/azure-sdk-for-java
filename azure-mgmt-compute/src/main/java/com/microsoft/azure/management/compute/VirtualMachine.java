@@ -92,7 +92,7 @@ public interface VirtualMachine extends
     Completable powerOffAsync();
 
     /**
-     * Power off (stop) the virtual machine asynchronously.
+     * Powers off (stop) the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -100,19 +100,19 @@ public interface VirtualMachine extends
     ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback);
 
     /**
-     * Restart the virtual machine.
+     * Restarts the virtual machine.
      */
     void restart();
 
     /**
-     * Restart the virtual machine asynchronously.
+     * Restarts the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable restartAsync();
 
     /**
-     * Restart the virtual machine asynchronously.
+     * Restarts the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -120,19 +120,19 @@ public interface VirtualMachine extends
     ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback);
 
     /**
-     * Start the virtual machine.
+     * Starts the virtual machine.
      */
     void start();
 
     /**
-     * Start the virtual machine asynchronously.
+     * Starts the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable startAsync();
 
     /**
-     * Start the virtual machine asynchronously.
+     * Starts the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -140,19 +140,19 @@ public interface VirtualMachine extends
     ServiceFuture<Void> startAsync(ServiceCallback<Void> callback);
 
     /**
-     * Redeploy the virtual machine.
+     * Redeploys the virtual machine.
      */
     void redeploy();
 
     /**
-     * Redeploy the virtual machine asynchronously.
+     * Redeploys the virtual machine asynchronously.
      *
      * @return a representation of the deferred computation of this call
      */
     Completable redeployAsync();
 
     /**
-     * Redeploy the virtual machine asynchronously.
+     * Redeploys the virtual machine asynchronously.
      *
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
@@ -165,12 +165,12 @@ public interface VirtualMachine extends
     VirtualMachineEncryption diskEncryption();
 
     /**
-     * Convert (migrate) the virtual machine with un-managed disks to use managed disk.
+     * Converts (migrates) the virtual machine with un-managed disks to use managed disk.
      */
     void convertToManaged();
 
     /**
-     * List of all available virtual machine sizes this virtual machine can resized to.
+     * Lists all available virtual machine sizes this virtual machine can resized to.
      *
      * @return the virtual machine sizes
      */
@@ -178,13 +178,12 @@ public interface VirtualMachine extends
     PagedList<VirtualMachineSize> availableSizes();
 
     /**
-     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as json
-     * string that can be used to create similar VMs.
+     * Captures the virtual machine by copying virtual hard disks of the VM.
      *
      * @param containerName destination container name to store the captured VHD
      * @param vhdPrefix the prefix for the VHD holding captured image
      * @param overwriteVhd whether to overwrites destination VHD if it exists
-     * @return the template as JSON string
+     * @return the JSON template for creating more such virtual machines
      */
     String capture(String containerName, String vhdPrefix, boolean overwriteVhd);
 
@@ -209,7 +208,7 @@ public interface VirtualMachine extends
     //
 
     /**
-     * @return true if managed disk is used for the virtual machine's disks (os, data)
+     * @return true if managed disks are used for the virtual machine's disks (os, data)
      */
     boolean isManagedDiskEnabled();
 
@@ -234,7 +233,7 @@ public interface VirtualMachine extends
     String osUnmanagedDiskVhdUri();
 
     /**
-     * @return the operating system disk caching type, valid values are 'None', 'ReadOnly', 'ReadWrite'
+     * @return the operating system disk caching type
      */
     CachingTypes osDiskCachingType();
 
@@ -249,7 +248,7 @@ public interface VirtualMachine extends
     StorageAccountTypes osDiskStorageAccountType();
 
     /**
-     * @return resource ID of the managed disk backing OS disk
+     * @return resource ID of the managed disk backing the OS disk
      */
     String osDiskId();
 
@@ -266,7 +265,7 @@ public interface VirtualMachine extends
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
      * <p>
-     * note that this method makes a rest API call to fetch the resource.
+     * Note that this method makes a rest API call to fetch the resource.
      *
      * @return the public IP of the primary network interface
      */
@@ -293,12 +292,12 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return an observable that emits extensions attached to the virtual machine
+     * @return extensions attached to the virtual machine
      */
     Observable<VirtualMachineExtension> listExtensionsAsync();
 
     /**
-     * @return the extensions attached to the virtual machine
+     * @return extensions attached to the virtual machine
      */
     Map<String, VirtualMachineExtension> listExtensions();
 
@@ -309,29 +308,18 @@ public interface VirtualMachine extends
 
     /**
      * Returns the storage profile of an Azure virtual machine.
-     * <p>
-     * The storage profile contains information such as the details of the VM image or user image
-     * from which this virtual machine is created, the Azure storage account where the operating system
-     * disk is stored, details of the data disk attached to the virtual machine.
      *
      * @return the storageProfile value
      */
     StorageProfile storageProfile();
 
     /**
-     * Gets the operating system profile of an Azure virtual machine.
-     *
-     * @return the osProfile value
+     * @return the operating system profile
      */
     OSProfile osProfile();
 
     /**
-     * Returns the diagnostics profile of an Azure virtual machine.
-     * <p>
-     * Enabling diagnostic features in a virtual machine enable you to easily diagnose and recover
-     * virtual machine from boot failures.
-     *
-     * @return the diagnosticsProfile value
+     * @return the diagnostics profile
      */
     DiagnosticsProfile diagnosticsProfile();
 
@@ -350,7 +338,7 @@ public interface VirtualMachine extends
      * <p>
      * The instance view will be cached for later retrieval using <code>instanceView</code>.
      *
-     * @return the virtual machine instance view
+     * @return the virtual machine's instance view
      */
     VirtualMachineInstanceView instanceView();
 
@@ -437,47 +425,47 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify the resource group.
+         * The stage of a virtual machine definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNetwork> {
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify virtual network for the new primary network
+         * The stage of a virtual machine definition allowing to specify virtual network for the new primary network
          * interface or to use a creatable or existing network interface.
          */
         interface WithNetwork extends WithPrimaryNetworkInterface {
             /**
-             * Create a new virtual network to associate with the virtual machine's primary network interface, based on
+             * Creates a new virtual network to associate with the virtual machine's primary network interface, based on
              * the provided definition.
              *
              * @param creatable a creatable definition for a new virtual network
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithPrivateIP withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual machine's primary network interface.
              * <p>
-             * the virtual network will be created in the same resource group and region as of virtual machine, it will be
+             * The virtual network will be created in the same resource group and region as of virtual machine, it will be
              * created with the specified address space and a default subnet covering the entirety of the network IP address space.
              *
              * @param addressSpace the address space for the virtual network
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithPrivateIP withNewPrimaryNetwork(String addressSpace);
 
             /**
-             * Associate an existing virtual network with the the virtual machine's primary network interface.
+             * Associates an existing virtual network with the the virtual machine's primary network interface.
              *
              * @param network an existing virtual network
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithSubnet withExistingPrimaryNetwork(Network network);
         }
 
         /**
-         * The stage of the virtual machine definition allowing to specify virtual network subnet for the new primary network interface.
+         * The stage of a virtual machine definition allowing to specify virtual network subnet for the new primary network interface.
          *
          */
         interface WithSubnet {
@@ -498,7 +486,7 @@ public interface VirtualMachine extends
              * Enables dynamic private IP address allocation within the specified existing virtual network subnet for
              * virtual machine's primary network interface.
              *
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithPublicIPAddress withPrimaryPrivateIPAddressDynamic();
 
@@ -506,9 +494,8 @@ public interface VirtualMachine extends
              * Assigns the specified static private IP address within the specified existing virtual network subnet to the
              * virtual machine's primary network interface.
              *
-             * @param staticPrivateIPAddress the static IP address within the specified subnet to assign to
-             *                               the network interface
-             * @return the next stage of the virtual machine definition
+             * @param staticPrivateIPAddress the static IP address within the specified subnet to assign to the network interface
+             * @return the next stage of the definition
              */
             WithPublicIPAddress withPrimaryPrivateIPAddressStatic(String staticPrivateIPAddress);
         }
@@ -518,11 +505,11 @@ public interface VirtualMachine extends
          */
         interface WithPublicIPAddress {
             /**
-             * Create a new public IP address to associate with virtual machine primary network interface, based on the
+             * Creates a new public IP address to associate with virtual machine primary network interface, based on the
              * provided definition.
              *
              * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithOS withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
@@ -893,8 +880,8 @@ public interface VirtualMachine extends
             /**
              * Specifies the computer name for the virtual machine.
              *
-             * @param computerName the computer name
-             * @return the stage representing creatable VM definition
+             * @param computerName a name for the computer
+             * @return the next stage stage of the definition
              */
             WithFromImageCreateOptionsManaged withComputerName(String computerName);
         }
