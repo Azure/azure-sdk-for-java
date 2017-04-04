@@ -118,13 +118,13 @@ public final class ManageWebAppBasic {
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
 
             System.out.println("Printing list of web apps in resource group " + rg2Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByGroup(rg2Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg2Name)) {
                 Utils.print(webApp);
             }
 
@@ -136,7 +136,7 @@ public final class ManageWebAppBasic {
             System.out.println("Deleted web app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
             return true;

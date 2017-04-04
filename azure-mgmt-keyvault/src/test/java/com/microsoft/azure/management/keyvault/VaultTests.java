@@ -47,7 +47,7 @@ public class VaultTests extends KeyVaultManagementTest {
             }
         }
         // LIST
-        List<Vault> vaults = keyVaultManager.vaults().listByGroup(RG_NAME);
+        List<Vault> vaults = keyVaultManager.vaults().listByResourceGroup(RG_NAME);
         for (Vault v : vaults) {
             if (VAULT_NAME.equals(v.name())) {
                 vault = v;

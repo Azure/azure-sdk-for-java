@@ -55,7 +55,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
         // List
-        PagedList<Deployment> deployments = resourceClient.deployments().listByGroup(rgName);
+        PagedList<Deployment> deployments = resourceClient.deployments().listByResourceGroup(rgName);
         boolean found = false;
         for (Deployment deployment : deployments) {
             if (deployment.name().equals(dp)) {

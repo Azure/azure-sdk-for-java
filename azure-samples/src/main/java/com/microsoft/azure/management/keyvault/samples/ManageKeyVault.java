@@ -117,7 +117,7 @@ public final class ManageKeyVault {
 
             System.out.println("Listing key vaults...");
 
-            for (Vault vault : azure.vaults().listByGroup(rgName)) {
+            for (Vault vault : azure.vaults().listByResourceGroup(rgName)) {
                 Utils.print(vault);
             }
 

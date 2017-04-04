@@ -158,7 +158,7 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Printing list of availability sets  =======");
 
-            for (AvailabilitySet availabilitySet : azure.availabilitySets().listByGroup(resourceGroupName)) {
+            for (AvailabilitySet availabilitySet : azure.availabilitySets().listByResourceGroup(resourceGroupName)) {
                 Utils.print(availabilitySet);
             }
 

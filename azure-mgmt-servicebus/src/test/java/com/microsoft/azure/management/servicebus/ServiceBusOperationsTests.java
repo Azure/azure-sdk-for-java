@@ -71,7 +71,7 @@ public class ServiceBusOperationsTests extends TestBase {
         Assert.assertNotNull(namespace);
         Assert.assertNotNull(namespace.inner());
 
-        PagedList<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByGroup(RG_NAME);
+        PagedList<ServiceBusNamespace> namespaces = serviceBusManager.namespaces().listByResourceGroup(RG_NAME);
         Assert.assertNotNull(namespaces);
         Assert.assertTrue(namespaces.size() > 0);
         boolean found = false;

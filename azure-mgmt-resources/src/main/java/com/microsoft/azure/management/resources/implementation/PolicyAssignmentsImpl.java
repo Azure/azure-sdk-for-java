@@ -94,7 +94,7 @@ final class PolicyAssignmentsImpl
     }
 
     @Override
-    public PagedList<PolicyAssignment> listByGroup(String resourceGroupName) {
+    public PagedList<PolicyAssignment> listByResourceGroup(String resourceGroupName) {
         return wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
@@ -104,7 +104,7 @@ final class PolicyAssignmentsImpl
     }
 
     @Override
-    public Observable<PolicyAssignment> listByGroupAsync(String resourceGroupName) {
+    public Observable<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.client.listByResourceGroupAsync(resourceGroupName));
     }
 }

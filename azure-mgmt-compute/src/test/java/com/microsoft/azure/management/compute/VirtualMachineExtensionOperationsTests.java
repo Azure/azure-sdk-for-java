@@ -206,7 +206,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Get the created virtual machine via VM List not by VM GET
         List<VirtualMachine> virtualMachines = computeManager.virtualMachines()
-                .listByGroup(RG_NAME);
+                .listByResourceGroup(RG_NAME);
         VirtualMachine vmWithExtensionReference = null;
         for (VirtualMachine virtualMachine : virtualMachines) {
             if (virtualMachine.name().equalsIgnoreCase(VMNAME)) {
@@ -228,7 +228,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         // Again getting VM with extension reference
         virtualMachines = computeManager.virtualMachines()
-                .listByGroup(RG_NAME);
+                .listByResourceGroup(RG_NAME);
         vmWithExtensionReference = null;
         for (VirtualMachine virtualMachine : virtualMachines) {
             vmWithExtensionReference = virtualMachine;

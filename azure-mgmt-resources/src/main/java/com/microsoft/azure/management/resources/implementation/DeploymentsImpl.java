@@ -57,7 +57,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public PagedList<Deployment> listByGroup(String groupName) {
+    public PagedList<Deployment> listByResourceGroup(String groupName) {
         return converter.convert(this.manager().inner().deployments().listByResourceGroup(groupName));
     }
 
@@ -149,14 +149,14 @@ final class DeploymentsImpl
         return this.manager().resourceGroups().listAsync().flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
             @Override
             public Observable<Deployment> call(ResourceGroup resourceGroup) {
-                return listByGroupAsync(resourceGroup.name());
+                return listByResourceGroupAsync(resourceGroup.name());
             }
         });
     }
 
 
     @Override
-    public Observable<Deployment> listByGroupAsync(String resourceGroupName) {
+    public Observable<Deployment> listByResourceGroupAsync(String resourceGroupName) {
         final DeploymentsInner client = this.manager().inner().deployments();
         return ReadableWrappersImpl.convertPageToInnerAsync(client.listByResourceGroupAsync(resourceGroupName))
                 .map(new Func1<DeploymentExtendedInner, Deployment>() {

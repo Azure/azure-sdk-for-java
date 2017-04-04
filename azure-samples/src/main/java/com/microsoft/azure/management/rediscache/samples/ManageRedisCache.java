@@ -111,7 +111,7 @@ public final class ManageRedisCache {
 
             System.out.println("Listing Redis Caches");
 
-            List<RedisCache> caches = azure.redisCaches().listByGroup(rgName);
+            List<RedisCache> caches = azure.redisCaches().listByResourceGroup(rgName);
 
             // Walk through all the caches
             for (RedisCache redis : caches) {

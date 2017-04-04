@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -64,7 +63,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assert.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
         // List by Resource Group
-        List<RedisCache> redisCaches = redisManager.redisCaches().listByGroup(RG_NAME);
+        List<RedisCache> redisCaches = redisManager.redisCaches().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (RedisCache existingRedisCache : redisCaches) {
             if (existingRedisCache.name().equals(RR_NAME)) {
