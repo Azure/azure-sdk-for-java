@@ -36,7 +36,7 @@ public class CertificateOrdersTests extends AppServiceTest {
         // GET
         Assert.assertNotNull(appServiceManager.certificateOrders().getByGroup(RG_NAME, CERTIFICATE_NAME));
         // LIST
-        List<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByGroup(RG_NAME);
+        List<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
             if (CERTIFICATE_NAME.equals(co.name())) {

@@ -89,7 +89,7 @@ public final class ManageLinuxWebApp {
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
 
@@ -101,7 +101,7 @@ public final class ManageLinuxWebApp {
             System.out.println("Deleted web app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
             return true;

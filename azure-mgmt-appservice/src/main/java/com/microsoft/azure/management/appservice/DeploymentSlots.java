@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
  * Entry point for Azure web app deployment slot management API.
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 @Beta
 public interface DeploymentSlots extends
         SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
-        SupportsListingAsync<DeploymentSlot>,
+        SupportsListing<DeploymentSlot>,
         SupportsGettingByName<DeploymentSlot>,
         SupportsGettingById<DeploymentSlot>,
         SupportsDeletingById,

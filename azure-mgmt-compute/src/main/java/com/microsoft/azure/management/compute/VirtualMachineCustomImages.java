@@ -13,12 +13,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -26,10 +26,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent
 public interface VirtualMachineCustomImages extends
-        SupportsListingAsync<VirtualMachineCustomImage>,
+        SupportsListing<VirtualMachineCustomImage>,
         SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroup<VirtualMachineCustomImage>,
+        SupportsListingByResourceGroup<VirtualMachineCustomImage>,
         SupportsGettingByGroup<VirtualMachineCustomImage>,
         SupportsGettingById<VirtualMachineCustomImage>,
         SupportsDeletingByGroup,

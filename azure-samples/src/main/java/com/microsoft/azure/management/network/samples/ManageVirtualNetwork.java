@@ -226,7 +226,7 @@ public final class ManageVirtualNetwork {
             //============================================================
             // List virtual networks
 
-            for (Network virtualNetwork : azure.networks().listByGroup(rgName)) {
+            for (Network virtualNetwork : azure.networks().listByResourceGroup(rgName)) {
                 Utils.print(virtualNetwork);
             }
 

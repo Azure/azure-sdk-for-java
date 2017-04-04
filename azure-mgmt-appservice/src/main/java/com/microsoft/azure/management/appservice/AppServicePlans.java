@@ -13,11 +13,11 @@ import com.microsoft.azure.management.appservice.implementation.AppServicePlansI
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
@@ -29,8 +29,8 @@ import rx.Observable;
 public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroupAsync<AppServicePlan>,
-        SupportsListingAsync<AppServicePlan>,
+        SupportsListingByResourceGroup<AppServicePlan>,
+        SupportsListing<AppServicePlan>,
         SupportsGettingByGroup<AppServicePlan>,
         SupportsGettingById<AppServicePlan>,
         SupportsDeletingByGroup,

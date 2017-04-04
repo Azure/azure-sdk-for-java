@@ -48,7 +48,7 @@ public class AppServicePlansTests extends AppServiceTest {
         // GET
         Assert.assertNotNull(appServiceManager.appServicePlans().getByGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
         // LIST
-        List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByGroup(RG_NAME);
+        List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServicePlan asp : appServicePlans) {
             if (APP_SERVICE_PLAN_NAME.equals(asp.name())) {

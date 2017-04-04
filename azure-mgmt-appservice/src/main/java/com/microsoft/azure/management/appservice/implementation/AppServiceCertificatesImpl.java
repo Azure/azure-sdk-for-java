@@ -43,8 +43,13 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    public PagedList<AppServiceCertificate> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceCertificate> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public Observable<AppServiceCertificate> listByResourceGroupAsync(String resourceGroupName) {
+        return null;
     }
 
     @Override
@@ -63,5 +68,15 @@ class AppServiceCertificatesImpl
     @Override
     public AppServiceCertificateImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public PagedList<AppServiceCertificate> list() {
+        return wrapList(inner().list());
+    }
+
+    @Override
+    public Observable<AppServiceCertificate> listAsync() {
+        return wrapPageAsync(inner().listAsync());
     }
 }

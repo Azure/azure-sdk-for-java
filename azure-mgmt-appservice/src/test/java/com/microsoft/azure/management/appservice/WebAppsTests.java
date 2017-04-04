@@ -66,9 +66,9 @@ public class WebAppsTests extends AppServiceTest {
         Assert.assertEquals(webApp2.name(), webApp.name());
 
         // List
-        List<WebApp> webApps = appServiceManager.webApps().listByGroup(RG_NAME_1);
+        List<WebApp> webApps = appServiceManager.webApps().listByResourceGroup(RG_NAME_1);
         Assert.assertEquals(1, webApps.size());
-        webApps = appServiceManager.webApps().listByGroup(RG_NAME_2);
+        webApps = appServiceManager.webApps().listByResourceGroup(RG_NAME_2);
         Assert.assertEquals(1, webApps.size());
 
         // Update

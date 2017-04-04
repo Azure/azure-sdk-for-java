@@ -76,7 +76,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         disk = computeManager.disks().getByGroup(disk.resourceGroupName(), disk.name());
         Assert.assertNotNull(disk);
 
-        PagedList<Disk> myDisks = computeManager.disks().listByGroup(disk.resourceGroupName());
+        PagedList<Disk> myDisks = computeManager.disks().listByResourceGroup(disk.resourceGroupName());
         Assert.assertNotNull(myDisks);
         Assert.assertTrue(myDisks.size() > 0);
 

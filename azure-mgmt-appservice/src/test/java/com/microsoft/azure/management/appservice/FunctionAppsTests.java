@@ -84,9 +84,9 @@ public class FunctionAppsTests extends AppServiceTest {
         Assert.assertEquals(functionApp2.name(), functionApp.name());
 
         // List
-        List<FunctionApp> functionApps = appServiceManager.functionApps().listByGroup(RG_NAME_1);
+        List<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_1);
         Assert.assertEquals(1, functionApps.size());
-        functionApps = appServiceManager.functionApps().listByGroup(RG_NAME_2);
+        functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_2);
         Assert.assertEquals(2, functionApps.size());
 
         // Update

@@ -36,7 +36,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         Assert.assertEquals(RG_NAME, batchAccount.resourceGroupName());
         Assert.assertNull(batchAccount.autoStorage());
         // List
-        List<BatchAccount> accounts = batchManager.batchAccounts().listByGroup(RG_NAME);
+        List<BatchAccount> accounts = batchManager.batchAccounts().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (BatchAccount account : accounts) {
             if (account.name().equals(BATCH_NAME)) {
@@ -186,7 +186,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         Assert.assertEquals(ResourceUtils.nameFromResourceId(batchAccount.autoStorage().storageAccountId()), SA_NAME);
 
         // List
-        List<BatchAccount> accounts = batchManager.batchAccounts().listByGroup(RG_NAME);
+        List<BatchAccount> accounts = batchManager.batchAccounts().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (BatchAccount account : accounts) {
             if (account.name().equals(BATCH_NAME)) {

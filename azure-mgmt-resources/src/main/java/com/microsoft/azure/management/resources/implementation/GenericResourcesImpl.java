@@ -44,7 +44,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public PagedList<GenericResource> listByGroup(String groupName) {
+    public PagedList<GenericResource> listByResourceGroup(String groupName) {
         return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(groupName));
     }
 
@@ -93,7 +93,7 @@ final class GenericResourcesImpl
             String resourceType,
             String name) {
 
-        PagedList<GenericResource> genericResources = this.listByGroup(resourceGroupName);
+        PagedList<GenericResource> genericResources = this.listByResourceGroup(resourceGroupName);
         for (GenericResource resource : genericResources) {
             if (resource.name().equalsIgnoreCase(name)
                     && resource.resourceProviderNamespace().equalsIgnoreCase(providerNamespace)
@@ -231,7 +231,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<GenericResource> listByGroupAsync(String resourceGroupName) {
+    public Observable<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(resourceGroupName));
     }
 }

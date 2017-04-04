@@ -62,7 +62,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .create();
 
         VirtualMachine foundVM = null;
-        List<VirtualMachine> vms = computeManager.virtualMachines().listByGroup(RG_NAME);
+        List<VirtualMachine> vms = computeManager.virtualMachines().listByResourceGroup(RG_NAME);
         for (VirtualMachine vm1 : vms) {
             if (vm1.name().equals(VMNAME)) {
                 foundVM = vm1;

@@ -182,7 +182,7 @@ public final class ManageBatchAccount {
 
             System.out.println("Listing Batch accounts");
 
-            List<BatchAccount> accounts = azure.batchAccounts().listByGroup(rgName);
+            List<BatchAccount> accounts = azure.batchAccounts().listByResourceGroup(rgName);
             BatchAccount ba;
             for (int i = 0; i < accounts.size(); i++) {
                 ba = accounts.get(i);

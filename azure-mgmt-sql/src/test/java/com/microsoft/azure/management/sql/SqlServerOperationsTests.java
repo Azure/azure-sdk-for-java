@@ -55,7 +55,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
         // List
-        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
+        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (SqlServer server : sqlServers) {
             if (server.name().equals(SQL_SERVER_NAME)) {
@@ -121,7 +121,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
 
         // List
-        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
+        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (SqlServer server : sqlServers) {
             if (server.name().equals(SQL_SERVER_NAME)) {

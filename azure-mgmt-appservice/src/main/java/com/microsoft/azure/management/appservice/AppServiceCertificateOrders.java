@@ -13,11 +13,11 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceManage
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
@@ -30,8 +30,8 @@ public interface AppServiceCertificateOrders extends
         SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
-        SupportsListingByGroupAsync<AppServiceCertificateOrder>,
-        SupportsListingAsync<AppServiceCertificateOrder>,
+        SupportsListingByResourceGroup<AppServiceCertificateOrder>,
+        SupportsListing<AppServiceCertificateOrder>,
         SupportsGettingByGroup<AppServiceCertificateOrder>,
         SupportsGettingById<AppServiceCertificateOrder>,
         HasManager<AppServiceManager>,

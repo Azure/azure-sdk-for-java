@@ -85,7 +85,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assert.assertNotNull(image);
         PagedList<VirtualMachineCustomImage> images = computeManager
                 .virtualMachineCustomImages()
-                .listByGroup(RG_NAME);
+                .listByResourceGroup(RG_NAME);
         Assert.assertTrue(images.size() > 0);
 
         // Create virtual machine from custom image
