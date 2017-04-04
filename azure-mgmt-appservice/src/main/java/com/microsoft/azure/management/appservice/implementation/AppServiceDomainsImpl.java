@@ -8,40 +8,29 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServiceDomains;
 import com.microsoft.azure.management.appservice.DomainLegalAgreement;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
 /**
  * The implementation for AppServiceDomains.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainsImpl
-        extends GroupableResourcesImpl<
-        AppServiceDomain,
-        AppServiceDomainImpl,
-        DomainInner,
-        DomainsInner,
-        AppServiceManager>
+        extends TopLevelModifiableResourcesImpl<
+                AppServiceDomain,
+                AppServiceDomainImpl,
+                DomainInner,
+                DomainsInner,
+                AppServiceManager>
         implements AppServiceDomains {
 
     AppServiceDomainsImpl(AppServiceManager manager) {
         super(manager.inner().domains(), manager);
     }
 
-    @Override
-    protected Observable<DomainInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name).toCompletable();
-    }
 
     @Override
     protected AppServiceDomainImpl wrapModel(String name) {
@@ -59,16 +48,6 @@ class AppServiceDomainsImpl
     @Override
     public AppServiceDomainImpl define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public PagedList<AppServiceDomain> list() {
-        return wrapList(this.inner().list());
-    }
-
-    @Override
-    public PagedList<AppServiceDomain> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override

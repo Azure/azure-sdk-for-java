@@ -14,11 +14,11 @@ import com.microsoft.azure.management.appservice.implementation.DomainsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -28,8 +28,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Beta
 public interface AppServiceDomains extends
         SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
-        SupportsListing<AppServiceDomain>,
-        SupportsListingByGroup<AppServiceDomain>,
+        SupportsListingAsync<AppServiceDomain>,
+        SupportsListingByGroupAsync<AppServiceDomain>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsGettingByGroup<AppServiceDomain>,
