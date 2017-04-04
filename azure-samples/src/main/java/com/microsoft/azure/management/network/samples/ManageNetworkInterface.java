@@ -87,7 +87,7 @@ public final class ManageNetworkInterface {
                     .withSubnet("Front-end")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
-                    .withIpForwarding()
+                    .withIPForwarding()
                     .create();
 
             System.out.println("Created network interface 1");

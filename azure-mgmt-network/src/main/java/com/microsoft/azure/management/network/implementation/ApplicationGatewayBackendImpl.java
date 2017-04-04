@@ -53,7 +53,7 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public Map<String, String> backendNicIpConfigurationNames() {
+    public Map<String, String> backendNicIPConfigurationNames() {
         // This assumes a NIC can only have one IP config associated with the backend of an app gateway,
         // which is correct at the time of this implementation and seems unlikely to ever change
         final Map<String, String> ipConfigNames = new TreeMap<>();
@@ -129,8 +129,8 @@ class ApplicationGatewayBackendImpl
 
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
-            String curIpAddress = addresses.get(i).ipAddress();
-            if (curIpAddress != null && curIpAddress.equalsIgnoreCase(ipAddress)) {
+            String curIPAddress = addresses.get(i).ipAddress();
+            if (curIPAddress != null && curIPAddress.equalsIgnoreCase(ipAddress)) {
                 addresses.remove(i);
                 break;
             }

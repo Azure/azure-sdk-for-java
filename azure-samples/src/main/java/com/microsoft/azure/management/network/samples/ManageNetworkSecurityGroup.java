@@ -164,7 +164,7 @@ public final class ManageNetworkSecurityGroup {
                     .withSubnet("Front-end")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
-                    .withIpForwarding()
+                    .withIPForwarding()
                     .withExistingNetworkSecurityGroup(frontEndNSG)
                     .create();
 

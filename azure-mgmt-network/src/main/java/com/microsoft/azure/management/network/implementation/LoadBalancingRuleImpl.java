@@ -47,7 +47,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public boolean floatingIpEnabled() {
+    public boolean floatingIPEnabled() {
         return this.inner().enableFloatingIP();
     }
 
@@ -120,19 +120,19 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public LoadBalancingRuleImpl withFloatingIp(boolean enable) {
+    public LoadBalancingRuleImpl withFloatingIP(boolean enable) {
         this.inner().withEnableFloatingIP(enable);
         return this;
     }
 
     @Override
-    public LoadBalancingRuleImpl withFloatingIpEnabled() {
-        return withFloatingIp(true);
+    public LoadBalancingRuleImpl withFloatingIPEnabled() {
+        return withFloatingIP(true);
     }
 
     @Override
-    public LoadBalancingRuleImpl withFloatingIpDisabled() {
-        return withFloatingIp(false);
+    public LoadBalancingRuleImpl withFloatingIPDisabled() {
+        return withFloatingIP(false);
     }
 
     @Override

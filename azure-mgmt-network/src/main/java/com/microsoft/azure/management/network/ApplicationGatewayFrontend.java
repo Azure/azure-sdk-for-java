@@ -74,7 +74,7 @@ public interface ApplicationGatewayFrontend extends
          * should be available at within the selected subnet.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithPrivateIp<ParentT> extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+        interface WithPrivateIP<ParentT> extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -95,7 +95,7 @@ public interface ApplicationGatewayFrontend extends
         interface WithAttach<ParentT> extends
             Attachable.InDefinitionAlt<ParentT>,
             WithSubnet<ParentT>,
-            WithPrivateIp<ParentT> {
+            WithPrivateIP<ParentT> {
         }
     }
 

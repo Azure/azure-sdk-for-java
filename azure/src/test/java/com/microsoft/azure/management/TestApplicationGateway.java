@@ -21,7 +21,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfi
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
-import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
@@ -1035,9 +1035,9 @@ public class TestApplicationGateway {
                 .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                 .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
                 .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
@@ -1069,7 +1069,7 @@ public class TestApplicationGateway {
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
-                .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+                .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
 
             // Show addresses
             List<ApplicationGatewayBackendAddress> addresses = backend.addresses();

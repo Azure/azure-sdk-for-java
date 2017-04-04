@@ -121,7 +121,7 @@ class VirtualMachineImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private boolean isMarketplaceLinuxImage;
     // Intermediate state of network interface definition to which private IP can be associated
-    private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
+    private NetworkInterface.DefinitionStages.WithPrimaryPrivateIP nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryNetworkSubnet nicDefinitionWithSubnet;
     // Intermediate state of network interface definition to which public IP can be associated

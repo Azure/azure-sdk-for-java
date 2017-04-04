@@ -47,7 +47,7 @@ class NicIPConfigurationImpl
     /**
      * unique key of a creatable public IP to be associated with the ip configuration.
      */
-    private String creatablePublicIpKey;
+    private String creatablePublicIPKey;
     /**
      * reference to an existing virtual network to be associated with the ip configuration.
      */
@@ -74,7 +74,7 @@ class NicIPConfigurationImpl
         this.networkManager = networkManager;
     }
 
-    protected static NicIPConfigurationImpl prepareNicIpConfiguration(
+    protected static NicIPConfigurationImpl prepareNicIPConfiguration(
             String name,
             NetworkInterfaceImpl parent,
             final NetworkManager networkManager) {
@@ -106,7 +106,7 @@ class NicIPConfigurationImpl
 
     @Override
     public NetworkInterfaceImpl attach() {
-        return parent().withIpConfiguration(this);
+        return parent().withIPConfiguration(this);
     }
 
     @Override
@@ -158,8 +158,8 @@ class NicIPConfigurationImpl
 
     @Override
     public NicIPConfigurationImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
-        if (this.creatablePublicIpKey == null) {
-            this.creatablePublicIpKey = creatable.key();
+        if (this.creatablePublicIPKey == null) {
+            this.creatablePublicIPKey = creatable.key();
             this.parent().addToCreatableDependencies(creatable);
         }
         return this;
@@ -168,12 +168,12 @@ class NicIPConfigurationImpl
     @Override
     public NicIPConfigurationImpl withNewPublicIPAddress() {
         String name = this.parent().namer.randomName("pip", 15);
-        return withNewPublicIPAddress(prepareCreatablePublicIp(name, name));
+        return withNewPublicIPAddress(prepareCreatablePublicIP(name, name));
     }
 
     @Override
     public NicIPConfigurationImpl withNewPublicIPAddress(String leafDnsLabel) {
-        return withNewPublicIPAddress(prepareCreatablePublicIp(this.parent().namer.randomName("pip", 15), leafDnsLabel));
+        return withNewPublicIPAddress(prepareCreatablePublicIP(this.parent().namer.randomName("pip", 15), leafDnsLabel));
     }
 
     @Override
@@ -241,16 +241,16 @@ class NicIPConfigurationImpl
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIPConfiguration> nicIpConfigurations) {
-        for (NicIPConfiguration nicIpConfiguration : nicIpConfigurations) {
-            NicIPConfigurationImpl config = (NicIPConfigurationImpl) nicIpConfiguration;
+    protected static void ensureConfigurations(Collection<NicIPConfiguration> nicIPConfigurations) {
+        for (NicIPConfiguration nicIPConfiguration : nicIPConfigurations) {
+            NicIPConfigurationImpl config = (NicIPConfigurationImpl) nicIPConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());
-            config.inner().withPublicIPAddress(config.publicIpToAssociate());
+            config.inner().withPublicIPAddress(config.publicIPToAssociate());
         }
     }
 
     // Creates a creatable public IP address definition with the given name and DNS label.
-    private Creatable<PublicIPAddress> prepareCreatablePublicIp(String name, String leafDnsLabel) {
+    private Creatable<PublicIPAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
         PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIPAddresses()
                     .define(name)
                     .withRegion(this.parent().regionName());
@@ -312,13 +312,13 @@ class NicIPConfigurationImpl
      * not specified then existing associated (if any) public IP will be returned.
      * @return public ip SubResource
      */
-    private SubResource publicIpToAssociate() {
+    private SubResource publicIPToAssociate() {
         String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
-        } else if (this.creatablePublicIpKey != null) {
+        } else if (this.creatablePublicIPKey != null) {
             pipId = ((PublicIPAddress) this.parent()
-                    .createdDependencyResource(this.creatablePublicIpKey)).id();
+                    .createdDependencyResource(this.creatablePublicIPKey)).id();
         } else if (this.existingPublicIPAddressIdToAssociate != null) {
             pipId = this.existingPublicIPAddressIdToAssociate;
         }

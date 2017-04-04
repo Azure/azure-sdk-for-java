@@ -70,7 +70,7 @@ public class ApplicationGatewayBackendHealthServer {
      * @param ipConfiguration the ipConfiguration value to set
      * @return the ApplicationGatewayBackendHealthServer object itself.
      */
-    public ApplicationGatewayBackendHealthServer withIpConfiguration(SubResource ipConfiguration) {
+    public ApplicationGatewayBackendHealthServer withIPConfiguration(SubResource ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }

@@ -156,7 +156,7 @@ class NetworkImpl
     }
 
     @Override
-    public List<String> dnsServerIps() {
+    public List<String> dnsServerIPs() {
         List<String> ips = new ArrayList<String>();
         if (this.inner().dhcpOptions() == null) {
             return Collections.unmodifiableList(ips);
