@@ -106,7 +106,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionStringAsync(String)}
+	 * Build a connection string
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
 	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
@@ -123,7 +123,7 @@ public class ConnectionStringBuilder
 	
 
 	/**
-	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionStringAsync(String)}
+	 * Build a connection string
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
 	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
