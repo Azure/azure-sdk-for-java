@@ -33,9 +33,14 @@ public final class StringUtil
 		return true;
 	}
 
+	public static String getShortRandomString()
+	{
+		return getRandomString().substring(0, 6);
+	}
+	
 	public static String getRandomString()
 	{
-		return UUID.randomUUID().toString().substring(0, 6);
+		return UUID.randomUUID().toString();
 	}
 	
 	static String convertBytesToString(byte[] bytes)

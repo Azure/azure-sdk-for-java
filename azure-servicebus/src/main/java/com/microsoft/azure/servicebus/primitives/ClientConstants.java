@@ -45,6 +45,7 @@ public final class ClientConstants
     public static final Symbol SESSIONS_CANNOT_BE_LOCKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-cannot-be-locked");
     public static final Symbol MESSAGE_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":message-not-found");
     public static final Symbol SESSION_NOT_FOUND_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-not-found");
+    public static final Symbol ENTITY_ALREADY_EXISTS_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-already-exists");
     public static final Symbol SESSION_FILTER = Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter");
     public static final Symbol LOCKED_UNTIL_UTC = Symbol.getSymbol(AmqpConstants.VENDOR + ":locked-until-utc");
 	
@@ -84,6 +85,8 @@ public final class ClientConstants
     public static final String REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION = AmqpConstants.VENDOR + ":get-session-state";
     public static final String REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION = AmqpConstants.VENDOR + ":set-session-state";
     public static final String REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION = AmqpConstants.VENDOR + ":get-message-sessions";
+    public static final String REQUEST_RESPONSE_ADD_RULE_OPERATION = AmqpConstants.VENDOR + ":add-rule";
+    public static final String REQUEST_RESPONSE_REMOVE_RULE_OPERATION = AmqpConstants.VENDOR + ":remove-rule";
 	public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
 	public static final String REQUEST_RESPONSE_LOCKTOKEN = "lock-token";
 	public static final String REQUEST_RESPONSE_EXPIRATION = "expiration";
@@ -111,6 +114,19 @@ public final class ClientConstants
     public static final String REQUEST_RESPONSE_SKIP = "skip";
     public static final String REQUEST_RESPONSE_TOP = "top";
     public static final String REQUEST_RESPONSE_SESSIONIDS = "sessions-ids";
+    public static final String REQUEST_RESPONSE_RULENAME = "rule-name";
+    public static final String REQUEST_RESPONSE_RULEDESCRIPTION = "rule-description";
+    public static final String REQUEST_RESPONSE_SQLFILTER = "sql-filter";
+    public static final String REQUEST_RESPONSE_SQLRULEACTION = "sql-rule-action";
+    public static final String REQUEST_RESPONSE_EXPRESSION = "expression";
+    public static final String REQUEST_RESPONSE_CORRELATION_FILTER = "correlation-filter";
+    public static final String REQUEST_RESPONSE_CORRELATION_ID = "correlation-id";
+    public static final String REQUEST_RESPONSE_TO = "to";
+    public static final String REQUEST_RESPONSE_REPLY_TO = "reply-to";
+    public static final String REQUEST_RESPONSE_LABEL = "label";
+    public static final String REQUEST_RESPONSE_REPLY_TO_SESSION_ID = "reply-to-session-id";
+    public static final String REQUEST_RESPONSE_CONTENT_TYPE = "content-type";
+    public static final String REQUEST_RESPONSE_CORRELATION_FILTER_PROPERTIES = "properties";
     
     public static final String DISPOSITION_STATUS_COMPLETED = "completed";
     public static final String DISPOSITION_STATUS_DEFERED = "defered";

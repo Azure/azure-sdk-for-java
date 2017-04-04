@@ -7,8 +7,9 @@ package com.microsoft.azure.servicebus.primitives;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
  */
 final public class Timer
 {
-	private static ScheduledThreadPoolExecutor executor = null;
+	private static ScheduledExecutorService executor = null;
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private static final HashSet<String> references = new HashSet<String>();
@@ -58,8 +59,8 @@ final public class Timer
 					TRACE_LOGGER.log(Level.FINE, 
 							String.format(Locale.US, "Starting ScheduledThreadPoolExecutor with coreThreadPoolSize: %s", corePoolSize));
 				}
-
-				executor = new ScheduledThreadPoolExecutor(corePoolSize);
+				
+				executor = Executors.newScheduledThreadPool(corePoolSize);
 			}
 
 			references.add(clientId);

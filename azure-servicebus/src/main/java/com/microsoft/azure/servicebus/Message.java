@@ -15,7 +15,7 @@ import java.util.UUID;
  * 
  * 
  */
-final public class BrokeredMessage implements Serializable, IBrokeredMessage {
+final public class Message implements Serializable, IMessage {
 	private static final long serialVersionUID = 7849508139219590863L;
 	
 	private static final Charset DEFAULT_CHAR_SET = Charset.forName("UTF-8");
@@ -64,37 +64,37 @@ final public class BrokeredMessage implements Serializable, IBrokeredMessage {
 	
 	private byte[] deliveryTag;
 	
-	public BrokeredMessage()
+	public Message()
 	{
 		this(DEFAULT_CONTENT);
 	}
 	
-	public BrokeredMessage(String content)
+	public Message(String content)
 	{
 		this(content.getBytes(DEFAULT_CHAR_SET));
 	}	
 	
-	public BrokeredMessage(byte[] content)
+	public Message(byte[] content)
 	{
 		this(content, DEFAULT_CONTENT_TYPE);
 	}
 	
-	public BrokeredMessage(String content, String contentType)
+	public Message(String content, String contentType)
 	{
 		this(content.getBytes(DEFAULT_CHAR_SET), contentType);
 	}
 	
-	public BrokeredMessage(byte[] content, String contentType)
+	public Message(byte[] content, String contentType)
 	{
 		this(UUID.randomUUID().toString(), content, contentType);
 	}
 	
-	public BrokeredMessage(String messageId, String content, String contentType)
+	public Message(String messageId, String content, String contentType)
 	{
 		this(messageId, content.getBytes(DEFAULT_CHAR_SET), contentType);
 	}
 	
-	public BrokeredMessage(String messageId, byte[] content, String contentType)
+	public Message(String messageId, byte[] content, String contentType)
 	{
 		this.messageId = messageId;
 		this.content = content;

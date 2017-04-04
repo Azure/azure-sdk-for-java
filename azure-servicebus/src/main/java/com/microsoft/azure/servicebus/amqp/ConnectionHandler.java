@@ -47,7 +47,7 @@ public final class ConnectionHandler extends BaseHandler
 		final Connection connection = event.getConnection();
 		final String hostName = event.getReactor().getConnectionAddress(connection);
 		connection.setHostname(hostName);
-		connection.setContainer(StringUtil.getRandomString());
+		connection.setContainer(StringUtil.getShortRandomString());
 		connection.open();
 	}
 

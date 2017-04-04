@@ -39,6 +39,7 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
@@ -46,7 +47,7 @@ import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
-public class RequestResponseLink extends ClientEntity{
+class RequestResponseLink extends ClientEntity{
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
 	private MessagingFactory underlyingFactory;
@@ -91,8 +92,8 @@ public class RequestResponseLink extends ClientEntity{
 				@Override
 				public void onEvent()
 				{
-					requestReponseLink.createInternalLinks();
-					requestReponseLink.amqpSender.openFuture.runAfterBoth(requestReponseLink.amqpReceiver.openFuture, () -> requestReponseLink.createFuture.complete(requestReponseLink));
+					requestReponseLink.createInternalLinks();					
+					requestReponseLink.amqpSender.openFuture.runAfterBothAsync(requestReponseLink.amqpReceiver.openFuture, () -> requestReponseLink.createFuture.complete(requestReponseLink));
 				}
 			});
 		}
@@ -102,6 +103,11 @@ public class RequestResponseLink extends ClientEntity{
 		}
 		
 		return requestReponseLink.createFuture;
+	}
+	
+	public static String getRequestResponseLinkPath(String entityPath)
+	{
+		return entityPath + AmqpConstants.MANAGEMENT_ADDRESS_SEGMENT;
 	}
 	
 	private RequestResponseLink(MessagingFactory messagingFactory, String linkName, String linkPath)
@@ -133,7 +139,7 @@ public class RequestResponseLink extends ClientEntity{
 		session.open();
 		BaseHandler.setHandler(session, new SessionHandler(this.linkPath));
 
-		String sendLinkNamePrefix = StringUtil.getRandomString();
+		String sendLinkNamePrefix = StringUtil.getShortRandomString();
 		String sendLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ?
 				sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				sendLinkNamePrefix;
@@ -154,7 +160,7 @@ public class RequestResponseLink extends ClientEntity{
 		sender.open();
 		
 		// Create receive link
-		String receiveLinkNamePrefix = StringUtil.getRandomString();
+		String receiveLinkNamePrefix = StringUtil.getShortRandomString();
 		String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ? 
 				receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				receiveLinkNamePrefix;
@@ -198,7 +204,7 @@ public class RequestResponseLink extends ClientEntity{
 		}
 		
 		this.createInternalLinks();
-		this.amqpSender.openFuture.thenCompose((v) -> this.amqpReceiver.openFuture).get();
+		this.amqpSender.openFuture.thenComposeAsync((v) -> this.amqpReceiver.openFuture).get();
 	}
 	
 	private void handleConnectionError(Exception exception)
@@ -218,7 +224,7 @@ public class RequestResponseLink extends ClientEntity{
 	private void completeAllPendingRequestsWithException(Exception exception)
 	{
 		for(RequestResponseWorkItem workItem : this.pendingRequests.values())
-		{
+		{			
 			workItem.getWork().completeExceptionally(exception);
 			workItem.cancelTimeoutTask(true);
 		}

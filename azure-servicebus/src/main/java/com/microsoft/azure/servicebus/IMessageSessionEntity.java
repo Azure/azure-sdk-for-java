@@ -2,34 +2,37 @@ package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+
 public interface IMessageSessionEntity {
-	int getPrefetchCount();
-	
-	void setPrefetchCount(int prefetchCount);
+//	int getSessionPrefetchCount();
+//	
+//	void setSessionPrefetchCount(int prefetchCount);
+//
+//    IMessageSession acceptMessageSession() throws InterruptedException, ServiceBusException;
+//
+//    IMessageSession acceptMessageSession(Duration serverWaitTime) throws InterruptedException, ServiceBusException;
+//
+//    IMessageSession acceptMessageSession(String sessionId) throws InterruptedException, ServiceBusException;
+//
+//    IMessageSession acceptMessageSession(String sessionId, Duration serverWaitTime) throws InterruptedException, ServiceBusException;
+//
+//    CompletableFuture<IMessageSession> acceptMessageSessionAsync();
+//
+//    CompletableFuture<IMessageSession> acceptMessageSessionAsync(Duration serverWaitTime);
+//
+//    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId);
+//
+//    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId, Duration serverWaitTime);
+    
+    Collection<IMessageSession> getMessageSessions() throws InterruptedException, ServiceBusException;
 
-    IMessageSession acceptMessageSession();
+    Collection<IMessageSession> getMessageSessions(Instant lastUpdatedTime) throws InterruptedException, ServiceBusException;
 
-    IMessageSession acceptMessageSession(Duration serverWaitTime);
+    CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync();
 
-    IMessageSession acceptMessageSession(String sessionId);
-
-    IMessageSession acceptMessageSession(String sessionId, Duration serverWaitTime);
-
-    Iterable<IMessageSession> getMessageSessions();
-
-    Iterable<IMessageSession> getMessageSessions(Instant lastUpdatedTime);
-
-    CompletableFuture<IMessageSession> acceptMessageSessionAsync();
-
-    CompletableFuture<IMessageSession> acceptMessageSessionAsync(Duration serverWaitTime);
-
-    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId);
-
-    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId, Duration serverWaitTime);
-
-    CompletableFuture<Iterable<IMessageSession>> getMessageSessionsAsync();
-
-    CompletableFuture<Iterable<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime);
+    CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime);
 }

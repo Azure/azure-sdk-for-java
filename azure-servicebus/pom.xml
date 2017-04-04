@@ -35,11 +35,11 @@
 	 	    <artifactId>proton-j</artifactId>
 	 	    <version>${proton-j-version}</version>
 	 	</dependency>
-	 	<!--<dependency>
+	 	<dependency>
 	 	    <groupId>org.bouncycastle</groupId> 
 	 	    <artifactId>bcpkix-jdk15on</artifactId> 
 	 	    <version>1.49</version> 
-	  	</dependency>-->   	
+	  	</dependency>
 		<dependency>
 	 	    <groupId>junit</groupId>
 	 	    <artifactId>junit</artifactId>

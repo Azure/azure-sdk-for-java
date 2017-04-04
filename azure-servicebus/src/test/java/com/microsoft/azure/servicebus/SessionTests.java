@@ -1,6 +1,5 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
@@ -25,7 +24,7 @@ public abstract class SessionTests {
 	private IMessageSession session;	
 	
 	@Before
-	public void setup() throws IOException, InterruptedException, ExecutionException, ServiceBusException
+	public void setup() throws InterruptedException, ExecutionException, ServiceBusException
 	{
 		sendBuilder = this.getSenderConnectionStringBuilder();
 		receiveBuilder = this.getReceiverConnectionStringBuilder();		
@@ -39,9 +38,9 @@ public abstract class SessionTests {
 	}
 	
 	@After
-	public void tearDown() throws ServiceBusException, InterruptedException, IOException
+	public void tearDown() throws ServiceBusException, InterruptedException
 	{
-		this.drainAllMessages();
+		this.drainSession();
 		
 		this.sender.close();
 		if(this.session != null)
@@ -50,9 +49,8 @@ public abstract class SessionTests {
 	}
 	
 	@AfterClass
-	public static void afterClass() throws ServiceBusException, InterruptedException, IOException
+	public static void afterClass() throws ServiceBusException, InterruptedException
 	{
-//		drainAllSessions();
 		factory.close();
 	}	
 	
@@ -61,7 +59,7 @@ public abstract class SessionTests {
 	public abstract ConnectionStringBuilder getReceiverConnectionStringBuilder();
 	
 	@Test
-	public void testBasicReceiveAndDelete() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.ReceiveAndDelete);
@@ -69,7 +67,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.ReceiveAndDelete);
@@ -77,7 +75,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -85,7 +83,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -93,7 +91,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveAndDeadLetter() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndDeadLetter() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -101,7 +99,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -109,7 +107,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -117,7 +115,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, IOException, ExecutionException
+	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -125,7 +123,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException, IOException
+	public void testSendSceduledMessageAndReceive() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.ReceiveAndDelete);
@@ -133,7 +131,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException, IOException
+	public void testSendSceduledMessageAndCancel() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.ReceiveAndDelete);
@@ -141,7 +139,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testPeekMessage() throws InterruptedException, ServiceBusException, IOException
+	public void testPeekMessage() throws InterruptedException, ServiceBusException
 	{		
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -149,7 +147,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testPeekMessageBatch() throws InterruptedException, ServiceBusException, IOException
+	public void testPeekMessageBatch() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -157,7 +155,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException, IOException
+	public void testReceiveBySequenceNumberAndComplete() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -165,7 +163,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException, IOException
+	public void testReceiveBySequenceNumberAndAbandon() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -173,7 +171,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException, IOException
+	public void testReceiveBySequenceNumberAndDefer() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -181,7 +179,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException, IOException
+	public void testReceiveBySequenceNumberAndDeadletter() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -189,11 +187,11 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testAcceptAnySession() throws InterruptedException, ServiceBusException, IOException
+	public void testAcceptAnySession() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		String messageId = getRandomString();
-		BrokeredMessage message = new BrokeredMessage("AMQP message");
+		Message message = new Message("AMQP message");
 		message.setMessageId(messageId);
 		if(sessionId != null)
 		{
@@ -206,7 +204,7 @@ public abstract class SessionTests {
 	}
 	
 	@Test
-	public void testRenewSessionLock() throws InterruptedException, ServiceBusException, IOException
+	public void testRenewSessionLock() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -220,7 +218,7 @@ public abstract class SessionTests {
 	}
 		
 	@Test
-	public void testGetAndSetState() throws InterruptedException, ServiceBusException, IOException
+	public void testGetAndSetState() throws InterruptedException, ServiceBusException
 	{
 		String sessionId = getRandomString();
 		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), sessionId, ReceiveMode.PeekLock);
@@ -238,80 +236,12 @@ public abstract class SessionTests {
 		Assert.assertArrayEquals("Session state not updated properly", customState, updatedState);
 	}
 	
-	@Test
-	public void testGetMessageSessions() throws InterruptedException, ServiceBusException, IOException
-	{		
-		int defaultPageSize = 100;
-		int numSessions = 110; // More than default page size
-		String[] sessionIds = new String[numSessions];
-		for(int i=0; i<numSessions; i++)
-		{
-			sessionIds[i] = getRandomString();
-			BrokeredMessage message = new BrokeredMessage("AMQP message");
-			message.setSessionId(sessionIds[i]);
-			this.sender.send(message);
-		}
-		
-		this.session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), null, ReceiveMode.PeekLock);
-		SessionBrowser sessionBrowser = new SessionBrowser(factory, (BrokeredMessageReceiver)this.session, receiveBuilder.getEntityPath());
-		Collection<? extends IMessageSession> sessions = Utils.completeFuture(sessionBrowser.getMessageSessionsAsync());
-		Assert.assertEquals("GetMessageSessions returned more than " + defaultPageSize + " sessions", defaultPageSize, sessions.size());
-		Collection<? extends IMessageSession> remainingSessions = Utils.completeFuture(sessionBrowser.getMessageSessionsAsync());
-		Assert.assertTrue("GetMessageSessions didnot return all sessions", numSessions >= defaultPageSize);
-		
-		IMessageSession anySession = (IMessageSession)remainingSessions.toArray()[0];
-		try{
-			anySession.receive();
-			Assert.fail("Browsable session should not support receive operation");
-		}
-		catch(UnsupportedOperationException e)
-		{
-			// Expected
-		}
-		
-		try{
-			anySession.setState(null);
-			Assert.fail("Browsable session should not support setstate operation");
-		}
-		catch(UnsupportedOperationException e)
-		{
-			// Expected
-		}
-		
-		// shouldn't throw an exception
-		byte[] sessionState = anySession.getState();	
-		
-		IBrokeredMessage peekedMessage = anySession.peek();
-		Assert.assertNotNull("Peek on a browsable session failed.", peekedMessage);			
-	}
-	
-	private void drainAllMessages() throws IOException, InterruptedException, ServiceBusException
+	private void drainSession() throws InterruptedException, ServiceBusException
 	{
 		if(this.session != null)
 		{
 			TestCommons.drainAllMessagesFromReceiver(this.session);
+			session.setState(null);
 		}
-	}
-	
-	private static void drainAllSessions() throws InterruptedException, ServiceBusException, IOException
-	{
-		int count = 0;
-		while(true)
-		{
-			try
-			{
-				IMessageSession session = ClientFactory.acceptSessionFromEntityPath(factory, receiveBuilder.getEntityPath(), null, ReceiveMode.ReceiveAndDelete);
-				count++;
-				TestCommons.drainAllMessagesFromReceiver(session);
-				session.setState(null);
-				session.close();				
-			}
-			catch(TimeoutException te)
-			{
-				System.out.println("Breaking.. on count:" + count);
-				// Session not found
-				break;
-			}			
-		}
-	}
+	}	
 }

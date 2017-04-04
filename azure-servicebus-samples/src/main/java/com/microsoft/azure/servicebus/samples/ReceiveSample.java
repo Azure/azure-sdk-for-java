@@ -3,7 +3,7 @@ package com.microsoft.azure.servicebus.samples;
 import java.time.Duration;
 
 import com.microsoft.azure.servicebus.ClientFactory;
-import com.microsoft.azure.servicebus.IBrokeredMessage;
+import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.IMessageReceiver;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
@@ -32,7 +32,7 @@ public class ReceiveSample {
 
 	private static void receiveMessages() throws InterruptedException, ServiceBusException {
 		while (true) {
-			IBrokeredMessage receivedMessage = receiver.receive(Duration.ofMinutes(1));
+			IMessage receivedMessage = receiver.receive(Duration.ofMinutes(1));
 			System.out.println(new String(receivedMessage.getContent()));
 			receiver.complete(receivedMessage.getLockToken());
 		}

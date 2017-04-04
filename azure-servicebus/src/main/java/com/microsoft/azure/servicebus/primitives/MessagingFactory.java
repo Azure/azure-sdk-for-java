@@ -7,7 +7,6 @@ package com.microsoft.azure.servicebus.primitives;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -63,7 +62,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	 */
 	MessagingFactory(final ConnectionStringBuilder builder)
 	{
-		super("MessagingFactory".concat(StringUtil.getRandomString()), null);
+		super("MessagingFactory".concat(StringUtil.getShortRandomString()), null);
 
 		Timer.register(this.getClientId());
 		this.hostName = builder.getEndpoint().getHost();
@@ -74,6 +73,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.closeTask = new CompletableFuture<Void>();
 		this.reactorLock = new Object();
 		this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
+		this.open = new CompletableFuture<MessagingFactory>();
 		this.openConnection = new CompletableFuture<Connection>();
 		
 		this.reactorHandler = new ReactorHandler()
@@ -110,12 +110,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 	}
 
-	private void createConnection(ConnectionStringBuilder builder) throws IOException
-	{
-		this.open = new CompletableFuture<MessagingFactory>();
-		this.startReactor(this.reactorHandler);
-	}
-
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
 		final Reactor newReactor = ProtonUtil.reactor(reactorHandler);
@@ -150,26 +144,30 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return this.retryPolicy;
 	}
 
-	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilderAsync(final ConnectionStringBuilder builder) throws IOException
+	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilderAsync(final ConnectionStringBuilder builder)
 	{		
 		MessagingFactory messagingFactory = new MessagingFactory(builder);
-
-		messagingFactory.createConnection(builder);
+		try {			
+			messagingFactory.startReactor(messagingFactory.reactorHandler);
+		} catch (IOException e) {			
+			e.printStackTrace();
+			messagingFactory.open.completeExceptionally(e);
+		}
 		return messagingFactory.open;
 	}
 	
-	public static CompletableFuture<MessagingFactory> createFromConnectionStringAsync(final String connectionString) throws IOException
+	public static CompletableFuture<MessagingFactory> createFromConnectionStringAsync(final String connectionString)
 	{
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
 		return createFromConnectionStringBuilderAsync(builder);
 	}
 	
-	public static MessagingFactory createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws IOException, InterruptedException, ExecutionException
+	public static MessagingFactory createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws InterruptedException, ExecutionException
 	{		
 		return createFromConnectionStringBuilderAsync(builder).get();
 	}
 	
-	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException, InterruptedException, ExecutionException
+	public static MessagingFactory createFromConnectionString(final String connectionString) throws InterruptedException, ExecutionException
 	{		
 		return createFromConnectionStringAsync(connectionString).get();
 	}
@@ -179,13 +177,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		if (exception == null)
 		{
-			this.open.complete(this);
-			this.openConnection.complete(this.connection);
+			AsyncUtil.completeFuture(this.open, this);
+			AsyncUtil.completeFuture(this.openConnection, this.connection);			
 		}
 		else
 		{
-			this.open.completeExceptionally(exception);
-			this.openConnection.completeExceptionally(exception);
+			AsyncUtil.completeFutureExceptionally(this.open, exception);
+			AsyncUtil.completeFutureExceptionally(this.openConnection, exception);
 		}
 	}
 
@@ -308,8 +306,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				this.operationTimeout, TimerType.OneTimeRun);
 			}
 			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
-			{
-				this.closeTask.complete(null);
+			{				
+				AsyncUtil.completeFuture(this.closeTask, null);
 			}
 		}		
 

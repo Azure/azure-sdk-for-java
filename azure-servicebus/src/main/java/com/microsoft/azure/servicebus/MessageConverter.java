@@ -13,7 +13,6 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
@@ -23,9 +22,9 @@ import com.microsoft.azure.servicebus.primitives.Util;
 
 public class MessageConverter
 {	
-	public static Message convertBrokeredMessageToAmqpMessage(BrokeredMessage brokeredMessage)	
+	public static org.apache.qpid.proton.message.Message convertBrokeredMessageToAmqpMessage(Message brokeredMessage)	
 	{
-		Message amqpMessage = Proton.message();
+		org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
 		if(brokeredMessage.getContent() != null)
 		{
 			amqpMessage.setBody(new Data(new Binary(brokeredMessage.getContent())));
@@ -66,45 +65,45 @@ public class MessageConverter
 		return amqpMessage;
 	}
 	
-	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage)
+	public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage)
 	{
 		return convertAmqpMessageToBrokeredMessage(amqpMessage, (byte[])null);
 	}
 	
-	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag)
+	public static Message convertAmqpMessageToBrokeredMessage(MessageWithDeliveryTag amqpMessageWithDeliveryTag)
 	{
-		Message amqpMessage = amqpMessageWithDeliveryTag.getMessage();
+		org.apache.qpid.proton.message.Message amqpMessage = amqpMessageWithDeliveryTag.getMessage();
 		byte[] deliveryTag = amqpMessageWithDeliveryTag.getDeliveryTag();
 		return convertAmqpMessageToBrokeredMessage(amqpMessage, deliveryTag);
 	}
 	
-	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(MessageWithLockToken amqpMessageWithLockToken)
+	public static Message convertAmqpMessageToBrokeredMessage(MessageWithLockToken amqpMessageWithLockToken)
 	{
-		BrokeredMessage convertedMessage = convertAmqpMessageToBrokeredMessage(amqpMessageWithLockToken.getMessage(), (byte[])null);
+		Message convertedMessage = convertAmqpMessageToBrokeredMessage(amqpMessageWithLockToken.getMessage(), (byte[])null);
 		convertedMessage.setLockToken(amqpMessageWithLockToken.getLockToken());
 		return convertedMessage;		
 	}
 		
-	public static BrokeredMessage convertAmqpMessageToBrokeredMessage(Message amqpMessage, byte[] deliveryTag)
+	public static Message convertAmqpMessageToBrokeredMessage(org.apache.qpid.proton.message.Message amqpMessage, byte[] deliveryTag)
 	{		
-		BrokeredMessage brokeredMessage;
+		Message brokeredMessage;
 		Section body = amqpMessage.getBody();
 		if(body != null)
 		{
 			if(body instanceof Data)
 			{
 				Binary messageData = ((Data)body).getValue();
-				brokeredMessage = new BrokeredMessage(messageData.getArray());
+				brokeredMessage = new Message(messageData.getArray());
 			}
 			else
 			{
 				// TODO: handle other types of message body
-				brokeredMessage = new BrokeredMessage();
+				brokeredMessage = new Message();
 			}
 		}
 		else
 		{
-			brokeredMessage = new BrokeredMessage();
+			brokeredMessage = new Message();
 		}
 		
 		// Application properties

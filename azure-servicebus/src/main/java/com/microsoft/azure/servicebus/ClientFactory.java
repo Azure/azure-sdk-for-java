@@ -1,185 +1,181 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public class ClientFactory {
+class ClientFactory {
 	
 	private static final ReceiveMode DEFAULTRECEIVEMODE = ReceiveMode.PeekLock;
 	
 	// Create sender
-	public static IMessageSender createMessageSenderFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSender createMessageSenderFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException
 	{		
 		return Utils.completeFuture(createMessageSenderFromConnectionStringAsync(amqpConnectionString));
 	}
 	
-	public static IMessageSender createMessageSenderFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSender createMessageSenderFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException
 	{
 		return Utils.completeFuture(createMessageSenderFromConnectionStringBuilderAsync(amqpConnectionStringBuilder));
 	}
 	
-	public static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSender createMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException
 	{
-		return Utils.completeFuture(createMessageSenderFromFromEntityPathAsync(messagingFactory, entityPath));
+		return Utils.completeFuture(createMessageSenderFromEntityPathAsync(messagingFactory, entityPath));
 	}
 	
-	public static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringAsync(String amqpConnectionString) throws IOException
+	public static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringAsync(String amqpConnectionString)
 	{
 		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
 		return createMessageSenderFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
-	}
+	}	
 	
-	// Throwing IOException is ugly in an async method. Change it
-	public static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
+	public static CompletableFuture<IMessageSender> createMessageSenderFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder)
 	{
 		Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
-		BrokeredMessageSender sender = new BrokeredMessageSender(amqpConnectionStringBuilder);
+		MessageSender sender = new MessageSender(amqpConnectionStringBuilder);
 		return sender.initializeAsync().thenApply((v) -> sender);
 	}
 	
-	public static CompletableFuture<IMessageSender> createMessageSenderFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) throws IOException
+	public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath)
 	{
 		Utils.assertNonNull("messagingFactory", messagingFactory);
-		BrokeredMessageSender sender = new BrokeredMessageSender(messagingFactory, entityPath);
+		MessageSender sender = new MessageSender(messagingFactory, entityPath);
 		return sender.initializeAsync().thenApply((v) -> sender);
 	}
 	
 	
 	// Create receiver
-	public static IMessageReceiver createMessageReceiverFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromConnectionString(String amqpConnectionString) throws InterruptedException, ServiceBusException
 	{		
 		return createMessageReceiverFromConnectionString(amqpConnectionString, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageReceiver createMessageReceiverFromConnectionString(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromConnectionString(String amqpConnectionString, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{		
 		return Utils.completeFuture(createMessageReceiverFromConnectionStringAsync(amqpConnectionString, receiveMode));
 	}
 	
-	public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException
 	{
 		return createMessageReceiverFromConnectionStringBuilder(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		return Utils.completeFuture(createMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, receiveMode));
 	}
 	
-	public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath) throws InterruptedException, ServiceBusException
 	{
 		return createMessageReceiverFromEntityPath(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageReceiver createMessageReceiverFromEntityPath(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		return Utils.completeFuture(createMessageReceiverFromFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
+		return Utils.completeFuture(createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, receiveMode));
 	}
 	
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString) throws IOException
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString)
 	{		
 		return createMessageReceiverFromConnectionStringAsync(amqpConnectionString, DEFAULTRECEIVEMODE);
 	}
 	
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString, ReceiveMode receiveMode) throws IOException
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
 		return createMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
 	}	
 	
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder)
 	{		
 		return createMessageReceiverFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, DEFAULTRECEIVEMODE);
 	}
-	
-	// Throwing IOException is ugly in an async method. Change it
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) throws IOException
+
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
-		BrokeredMessageReceiver receiver = new BrokeredMessageReceiver(amqpConnectionStringBuilder, receiveMode);
+		MessageReceiver receiver = new MessageReceiver(amqpConnectionStringBuilder, receiveMode);
 		return receiver.initializeAsync().thenApply((v) -> receiver);
 	}
 	
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) throws IOException
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath)
 	{		
-		return createMessageReceiverFromFromEntityPathAsync(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
+		return createMessageReceiverFromEntityPathAsync(messagingFactory, entityPath, DEFAULTRECEIVEMODE);
 	}
 	
-	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode) throws IOException
+	public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("messagingFactory", messagingFactory);
-		BrokeredMessageReceiver receiver = new BrokeredMessageReceiver(messagingFactory, entityPath, receiveMode);
+		MessageReceiver receiver = new MessageReceiver(messagingFactory, entityPath, receiveMode);
 		return receiver.initializeAsync().thenApply((v) -> receiver);
 	}
 	
 	// Accept Session
-	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId) throws InterruptedException, ServiceBusException
 	{		
 		return acceptSessionFromConnectionString(amqpConnectionString, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionString(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{		
 		return Utils.completeFuture(acceptSessionFromConnectionStringAsync(amqpConnectionString, sessionId, receiveMode));
 	}
 	
-	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId) throws InterruptedException, ServiceBusException
 	{
 		return acceptSessionFromConnectionStringBuilder(amqpConnectionStringBuilder, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromConnectionStringBuilder(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
 		return Utils.completeFuture(acceptSessionFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, sessionId, receiveMode));
 	}
 	
-	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId) throws InterruptedException, ServiceBusException
 	{
 		return acceptSessionFromEntityPath(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException, IOException
+	public static IMessageSession acceptSessionFromEntityPath(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		return Utils.completeFuture(acceptSessionFromFromEntityPathAsync(messagingFactory, entityPath, sessionId, receiveMode));
+		return Utils.completeFuture(acceptSessionFromEntityPathAsync(messagingFactory, entityPath, sessionId, receiveMode));
 	}
 	
-	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId)
 	{		
 		return acceptSessionFromConnectionStringAsync(amqpConnectionString, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
 		return acceptSessionFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), sessionId);
 	}	
 	
-	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId)
 	{		
 		return acceptSessionFromConnectionStringBuilderAsync(amqpConnectionStringBuilder, sessionId, DEFAULTRECEIVEMODE);
 	}
-	
-	// Throwing IOException is ugly in an async method. Change it
-	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode) throws IOException
+		
+	public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder, String sessionId, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("amqpConnectionStringBuilder", amqpConnectionStringBuilder);
-		BrokeredMessageSession session = new BrokeredMessageSession(amqpConnectionStringBuilder, sessionId, receiveMode);
+		MessageSession session = new MessageSession(amqpConnectionStringBuilder, sessionId, receiveMode);
 		return session.initializeAsync().thenApply((v) -> session);
 	}
 	
-	public static CompletableFuture<IMessageSession> acceptSessionFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId)
 	{		
-		return acceptSessionFromFromEntityPathAsync(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
+		return acceptSessionFromEntityPathAsync(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
 	}
 	
-	public static CompletableFuture<IMessageSession> acceptSessionFromFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) throws IOException
+	public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode)
 	{
 		Utils.assertNonNull("messagingFactory", messagingFactory);
-		BrokeredMessageSession session = new BrokeredMessageSession(messagingFactory, entityPath, sessionId, receiveMode);
+		MessageSession session = new MessageSession(messagingFactory, entityPath, sessionId, receiveMode);
 		return session.initializeAsync().thenApply((v) -> session);
-	}
+	}	
 }

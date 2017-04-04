@@ -37,7 +37,7 @@ public abstract class ClientEntity
 		return this.clientId;
 	}
 
-	boolean getIsClosed()
+	protected boolean getIsClosed()
 	{
 		final boolean isParentClosed = this.parent != null && this.parent.getIsClosed();
 		synchronized (this.syncClose)
@@ -47,7 +47,7 @@ public abstract class ClientEntity
 	}
 
 	// returns true even if the Parent is (being) Closed
-	boolean getIsClosingOrClosed()
+	protected boolean getIsClosingOrClosed()
 	{
 		final boolean isParentClosingOrClosed = this.parent != null && this.parent.getIsClosingOrClosed();
 		synchronized (this.syncClose)
@@ -67,6 +67,11 @@ public abstract class ClientEntity
 
 	public final CompletableFuture<Void> closeAsync()
 	{
+		if(this.getIsClosingOrClosed())
+		{
+			return CompletableFuture.completedFuture(null);
+		}
+		
 		synchronized (this.syncClose)
 		{
 			this.isClosing = true;

@@ -55,6 +55,7 @@ import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
+import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 /**
  * Common Receiver that abstracts all amqp related details
@@ -62,10 +63,11 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
  */
 
 // TODO Take a re-look at the choice of collections used. Some of them are overkill may be.
-public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
+public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
+	private final Object requestResonseLinkCreationLock = new Object();
 	private final List<ReceiveWorkItem> pendingReceives;
 	private final ConcurrentHashMap<String, UpdateStateWorkItem> pendingUpdateStateRequests;
 	private final ConcurrentHashMap<String, Delivery> tagsToDeliveriesMap;
@@ -85,7 +87,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
 	private Receiver receiveLink;
 	private RequestResponseLink requestResponseLink;
-	private WorkItem<MessageReceiver> linkOpen;
+	private WorkItem<CoreMessageReceiver> linkOpen;
 	private Duration factoryRceiveTimeout;
 
 	private Exception lastKnownLinkError;
@@ -97,7 +99,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	// Change onReceiveComplete to handle empty deliveries. Change onError to retry updateState requests.
 	
 
-	private MessageReceiver(final MessagingFactory factory,
+	private CoreMessageReceiver(final MessagingFactory factory,
 			final String name, 
 			final String recvPath,
 			final String sessionId,
@@ -129,12 +131,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.timedOutUpdateStateRequestsDaemon = new Runnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<String, UpdateStateWorkItem> entry : MessageReceiver.this.pendingUpdateStateRequests.entrySet())
+				for(Map.Entry<String, UpdateStateWorkItem> entry : CoreMessageReceiver.this.pendingUpdateStateRequests.entrySet())
 				{
 					Duration remainingTime = entry.getValue().getTimeoutTracker().remaining();
 					if(remainingTime.isZero() || remainingTime.isNegative())
 					{
-						MessageReceiver.this.pendingUpdateStateRequests.remove(entry.getKey());
+						CoreMessageReceiver.this.pendingUpdateStateRequests.remove(entry.getKey());
 						Exception exception = entry.getValue().getLastKnownException();
 						if(exception == null)
 						{
@@ -151,14 +153,14 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	}
 
 	// Connection has to be associated with Reactor before Creating a receiver on it.
-	public static CompletableFuture<MessageReceiver> create(
+	public static CompletableFuture<CoreMessageReceiver> create(
 			final MessagingFactory factory, 
 			final String name, 
 			final String recvPath,
 			final int prefetchCount,
 			final SettleModePair settleModePair)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(
+		CoreMessageReceiver msgReceiver = new CoreMessageReceiver(
 				factory,
 				name, 
 				recvPath,
@@ -168,7 +170,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return msgReceiver.createLink();
 	}
 	
-	public static CompletableFuture<MessageReceiver> create(
+	public static CompletableFuture<CoreMessageReceiver> create(
 			final MessagingFactory factory, 
 			final String name, 
 			final String recvPath,
@@ -177,7 +179,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			final int prefetchCount,
 			final SettleModePair settleModePair)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(
+		CoreMessageReceiver msgReceiver = new CoreMessageReceiver(
 				factory,
 				name, 
 				recvPath,
@@ -189,9 +191,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return msgReceiver.createLink();
 	}
 
-	private CompletableFuture<MessageReceiver> createLink()
+	private CompletableFuture<CoreMessageReceiver> createLink()
 	{
-		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
+		this.linkOpen = new WorkItem<CoreMessageReceiver>(new CompletableFuture<CoreMessageReceiver>(), this.operationTimeout);
 		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());		
 		try
 		{
@@ -200,7 +202,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				@Override
 				public void onEvent()
 				{
-					MessageReceiver.this.createReceiveLink();
+					CoreMessageReceiver.this.createReceiveLink();
 				}
 			});
 		}
@@ -209,12 +211,25 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			this.linkOpen.getWork().completeExceptionally(new ServiceBusException(false, "Failed to create Receiver, see cause for more details.", ioException));
 		}
 		
-		// Create request-response link too
-		String requestResponseLinkPath = this.receivePath + AmqpConstants.MANAGEMENT_ADDRESS_SEGMENT;
-		CompletableFuture<Void> crateAndAssignRequestResponseLink = 
-				RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {MessageReceiver.this.requestResponseLink = rrlink;});
-
-		return crateAndAssignRequestResponseLink.thenCompose((v) -> this.linkOpen.getWork());
+		return this.linkOpen.getWork();		
+	}
+	
+	private CompletableFuture<Void> createRequestResponseLink()
+	{
+		synchronized (this.requestResonseLinkCreationLock)
+		{
+			if(this.requestResponseLink == null)
+			{
+				String requestResponseLinkPath = RequestResponseLink.getRequestResponseLinkPath(this.receivePath);
+				CompletableFuture<Void> crateAndAssignRequestResponseLink =
+								RequestResponseLink.createAsync(this.underlyingFactory, this.getClientId() + "-RequestResponse", requestResponseLinkPath).thenAccept((rrlink) -> {this.requestResponseLink = rrlink;});
+				return crateAndAssignRequestResponseLink;
+			}
+			else
+			{
+				return CompletableFuture.completedFuture(null);
+			}
+		}				
 	}
 	
 	private void createReceiveLink()
@@ -226,7 +241,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		session.open();
 		BaseHandler.setHandler(session, new SessionHandler(this.receivePath));
 
-		final String receiveLinkNamePrefix = StringUtil.getRandomString();
+		final String receiveLinkNamePrefix = StringUtil.getShortRandomString();
 		final String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ? 
 				receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				receiveLinkNamePrefix;
@@ -369,12 +384,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				@Override
 				public void onEvent()
 				{
-					MessageReceiver.this.ensureLinkIsOpen();
+					CoreMessageReceiver.this.ensureLinkIsOpen();
 
 					final List<MessageWithDeliveryTag> messages = receiveCore(maxMessageCount);
 					if (messages != null)
-					{
-						onReceive.complete(messages);						
+					{						
+						AsyncUtil.completeFuture(onReceive, messages);
 					}
 					else
 					{
@@ -384,7 +399,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 								{
 									public void run()
 									{										
-										if( MessageReceiver.this.pendingReceives.remove(receiveWorkItem))
+										if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
 										{										
 											// TODO: can we do it better?
 											// workaround to push the sendflow-performative to reactor
@@ -392,7 +407,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 											// (and increment the unsentCredits in proton by 0)
 											try
 											{
-												MessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+												CoreMessageReceiver.this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
 												{
 													@Override
 													public void onEvent()
@@ -400,7 +415,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 														//TODO: not working
 														// Make credit 0, to stop further receiving on this link
 														//MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
-														MessageReceiver.this.receiveLink.flow(0);
+														CoreMessageReceiver.this.receiveLink.flow(0);
 														
 														// See if detach stops
 //														MessageReceiver.this.receiveLink.detach();
@@ -433,6 +448,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return onReceive;
 	}
 
+	@Override
 	public void onOpenComplete(Exception exception)
 	{		
 		if (exception == null)
@@ -464,8 +480,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		if (exception == null)
 		{			
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
-			{
-				this.linkOpen.getWork().complete(this);
+			{				
+				AsyncUtil.completeFuture(this.linkOpen.getWork(), this);
 			}
 
 			this.lastKnownLinkError = null;
@@ -486,7 +502,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
 				this.setClosed();
-				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this);
+				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this, true);
 			}
 
 			this.lastKnownLinkError = exception;
@@ -534,8 +550,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					
 					List<MessageWithDeliveryTag> messages = this.receiveCore(currentReceive.getMaxMessageCount());
 
-					CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();
-					future.complete(messages);
+					CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();					
+					AsyncUtil.completeFuture(future, messages);
 				}
 			}
 		}
@@ -634,7 +650,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 		if (this.getIsClosingOrClosed())
 		{
-			this.linkClose.complete(null);			
+			AsyncUtil.completeFuture(this.linkClose, null);
 			this.clearAllPendingWorkItems(exception);
 		}
 		else
@@ -699,20 +715,23 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	private void sendFlow(final int credits)
 	{
-		// slow down sending the flow - to make the protocol less-chat'y
-		this.nextCreditToFlow += credits;
-		if (this.nextCreditToFlow >= this.prefetchCount || this.nextCreditToFlow >= 100)
+		if(!this.isBrowsableSession)
 		{
-			final int tempFlow = this.nextCreditToFlow;
-			this.receiveLink.flow(tempFlow);
-			this.nextCreditToFlow = 0;
-			
-			if(TRACE_LOGGER.isLoggable(Level.FINE))
+			// slow down sending the flow - to make the protocol less-chat'y
+			this.nextCreditToFlow += credits;
+			if (this.nextCreditToFlow >= this.prefetchCount || this.nextCreditToFlow >= 100)
 			{
-				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
-						this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow));
+				final int tempFlow = this.nextCreditToFlow;
+				this.receiveLink.flow(tempFlow);
+				this.nextCreditToFlow = 0;
+				
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
+				{
+					TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
+							this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow));
+				}
 			}
-		}
+		}		
 	}
 
 	private void scheduleLinkOpenTimeout(final TimeoutTracker timeout)
@@ -726,16 +745,16 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 						if (!linkOpen.getWork().isDone())
 						{
 							Exception operationTimedout = new TimeoutException(
-									String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
-									MessageReceiver.this.lastKnownLinkError);
+									String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", CoreMessageReceiver.this.receiveLink.getName(), CoreMessageReceiver.this.receivePath, ZonedDateTime.now()),
+									CoreMessageReceiver.this.lastKnownLinkError);
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
-										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(),  "Open"), 
+										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", CoreMessageReceiver.this.receivePath, CoreMessageReceiver.this.receiveLink.getName(),  "Open"), 
 										operationTimedout);
 							}
 
-							ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, MessageReceiver.this);
+							ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, CoreMessageReceiver.this, false);
 						}
 					}
 				}
@@ -753,15 +772,15 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					{
 						if (!linkClose.isDone())
 						{
-							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", CoreMessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
-										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(), "Close"), 
+										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", CoreMessageReceiver.this.receivePath, CoreMessageReceiver.this.receiveLink.getName(), "Close"), 
 										operationTimedout);
 							}
 
-							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageReceiver.this);
+							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, CoreMessageReceiver.this, false);
 						}
 					}
 				}
@@ -813,13 +832,13 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
 			}
 			else
-			{
-				this.linkClose.complete(null);
+			{				
+				AsyncUtil.completeFuture(this.linkClose, null);
 			}
 		}
 
 		return this.linkClose.thenCompose((v) -> {
-			return MessageReceiver.this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : MessageReceiver.this.requestResponseLink.closeAsync();});
+			return this.requestResponseLink == null ? CompletableFuture.completedFuture(null) : this.requestResponseLink.closeAsync();});
 	}
 	
 	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag)
@@ -904,18 +923,18 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				@Override
 				public void onEvent()
 				{
-					MessageReceiver.this.ensureLinkIsOpen();
+					CoreMessageReceiver.this.ensureLinkIsOpen();
 					
 					String deliveryTagAsString = StringUtil.convertBytesToString(deliveryTag);
-					Delivery delivery = MessageReceiver.this.tagsToDeliveriesMap.get(deliveryTagAsString);
+					Delivery delivery = CoreMessageReceiver.this.tagsToDeliveriesMap.get(deliveryTagAsString);
 					if(delivery == null)
-					{
-						completeMessageFuture.completeExceptionally(generateDeliveryNotFoundException());
+					{						
+						AsyncUtil.completeFutureExceptionally(completeMessageFuture, generateDeliveryNotFoundException());
 					}
 					else
 					{
-						final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, MessageReceiver.this.factoryRceiveTimeout);
-						MessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
+						final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, CoreMessageReceiver.this.factoryRceiveTimeout);
+						CoreMessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
 						delivery.disposition((DeliveryState)outcome);
 					}						
 				}
@@ -941,12 +960,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	{
 		delivery.settle();
 		if(exception == null)
-		{
-			workItem.getWork().complete(null);
+		{			
+			AsyncUtil.completeFuture(workItem.getWork(), null);
 		}
 		else
 		{
-			ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this);
+			ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this, true);
 		}	
 		
 		this.tagsToDeliveriesMap.remove(deliveryTagAsString);
@@ -966,12 +985,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			
 			CompletableFuture<Collection<MessageWithDeliveryTag>> future = workItem.getWork();
 			if (isTransientException)
-			{
-				future.complete(null);
+			{				
+				AsyncUtil.completeFuture(future, null);
 			}
 			else
 			{
-				ExceptionUtil.completeExceptionally(future, exception, this);
+				ExceptionUtil.completeExceptionally(future, exception, this, true);
 			}
 			
 			workItem.cancelTimeoutTask(false);
@@ -980,7 +999,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		for(Map.Entry<String, UpdateStateWorkItem> pendingUpdate : this.pendingUpdateStateRequests.entrySet())
 		{
 			pendingUpdateStateRequests.remove(pendingUpdate.getKey());			
-			ExceptionUtil.completeExceptionally(pendingUpdate.getValue().getWork(), exception, this);
+			ExceptionUtil.completeExceptionally(pendingUpdate.getValue().getWork(), exception, this, true);
 		}		
 		
 		this.tagsToDeliveriesMap.clear();		
@@ -998,299 +1017,230 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	
 	public CompletableFuture<Collection<Instant>> renewMessageLocksAsync(UUID[] lockTokens)
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
-		if(this.isSessionReceiver)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
-		}
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
+			if(this.isSessionReceiver)
 			{
-				Date[] expirations = (Date[])RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATIONS);
-				returningFuture.complete(Arrays.stream(expirations).map((d) -> d.toInstant()).collect(Collectors.toList()));
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});				
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					Date[] expirations = (Date[])RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATIONS);
+					returningFuture.complete(Arrays.stream(expirations).map((d) -> d.toInstant()).collect(Collectors.toList()));
+				}
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});					
 	}
 	
 	public CompletableFuture<Collection<MessageWithLockToken>> receiveBySequenceNumbersAsync(Long[] sequenceNumbers)
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RECEIVER_SETTLE_MODE, UnsignedInteger.valueOf(this.settleModePair.getReceiverSettleMode() == ReceiverSettleMode.FIRST ? 0 : 1));		
-		if(this.isSessionReceiver)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
-		}
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SEQUENCE_NUMBERS, sequenceNumbers);
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RECEIVER_SETTLE_MODE, UnsignedInteger.valueOf(this.settleModePair.getReceiverSettleMode() == ReceiverSettleMode.FIRST ? 0 : 1));		
+			if(this.isSessionReceiver)
 			{
-				List<MessageWithLockToken> receivedMessages = new ArrayList<MessageWithLockToken>();
-				Object responseBodyMap = ((AmqpValue)responseMessage.getBody()).getValue();
-				if(responseBodyMap != null && responseBodyMap instanceof Map)
-				{					
-					Object messages = ((Map)responseBodyMap).get(ClientConstants.REQUEST_RESPONSE_MESSAGES);
-					if(messages != null && messages instanceof Iterable)
-					{
-						for(Object message : (Iterable)messages)
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+			}
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					List<MessageWithLockToken> receivedMessages = new ArrayList<MessageWithLockToken>();
+					Object responseBodyMap = ((AmqpValue)responseMessage.getBody()).getValue();
+					if(responseBodyMap != null && responseBodyMap instanceof Map)
+					{					
+						Object messages = ((Map)responseBodyMap).get(ClientConstants.REQUEST_RESPONSE_MESSAGES);
+						if(messages != null && messages instanceof Iterable)
 						{
-							if(message instanceof Map)
+							for(Object message : (Iterable)messages)
 							{
-								Message receivedMessage = Message.Factory.create();
-								Binary messagePayLoad = (Binary)((Map)message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
-								receivedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());								
-								UUID lockToken = ClientConstants.ZEROLOCKTOKEN;
-								if(((Map)message).containsKey(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN))
+								if(message instanceof Map)
 								{
-									lockToken = (UUID)((Map)message).get(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN);									
-								}								
-																
-								receivedMessages.add(new MessageWithLockToken(receivedMessage, lockToken));
+									Message receivedMessage = Message.Factory.create();
+									Binary messagePayLoad = (Binary)((Map)message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
+									receivedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());								
+									UUID lockToken = ClientConstants.ZEROLOCKTOKEN;
+									if(((Map)message).containsKey(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN))
+									{
+										lockToken = (UUID)((Map)message).get(ClientConstants.REQUEST_RESPONSE_LOCKTOKEN);									
+									}								
+																	
+									receivedMessages.add(new MessageWithLockToken(receivedMessage, lockToken));
+								}
 							}
 						}
-					}
-				}				
-				returningFuture.complete(receivedMessages);
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
+					}				
+					returningFuture.complete(receivedMessages);
+				}
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});		
 	}
 	
 	public CompletableFuture<Void> updateDispositionAsync(UUID[] lockTokens, String dispositionStatus, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DISPOSITION_STATUS, dispositionStatus);
-		
-		if(deadLetterReason != null)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_REASON, deadLetterReason);
-		}
-		
-		if(deadLetterErrorDescription != null)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_DESCRIPTION, deadLetterErrorDescription);
-		}
-		
-		if(propertiesToModify != null && propertiesToModify.size() > 0)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_PROPERTIES_TO_MODIFY, propertiesToModify);
-		}
-		
-		if(this.isSessionReceiver)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
-		}
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DISPOSITION_STATUS, dispositionStatus);
+			
+			if(deadLetterReason != null)
 			{
-				returningFuture.complete(null);
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_REASON, deadLetterReason);
 			}
-			else
+			
+			if(deadLetterErrorDescription != null)
 			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_DEADLETTER_DESCRIPTION, deadLetterErrorDescription);
 			}
-			return returningFuture;
-		});
+			
+			if(propertiesToModify != null && propertiesToModify.size() > 0)
+			{
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_PROPERTIES_TO_MODIFY, propertiesToModify);
+			}
+			
+			if(this.isSessionReceiver)
+			{
+				requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+			}
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					returningFuture.complete(null);
+				}
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});		
 	}
 	
 	public CompletableFuture<Void> renewSessionLocksAsync()
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
-			{
-				Date expiration = (Date)RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATION);
-				this.sessionLockedUntilUtc = expiration.toInstant();
-				returningFuture.complete(null);
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					Date expiration = (Date)RequestResponseUtils.getResponseBody(responseMessage).get(ClientConstants.REQUEST_RESPONSE_EXPIRATION);
+					this.sessionLockedUntilUtc = expiration.toInstant();
+					returningFuture.complete(null);
+				}
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});		
 	}
 	
 	public CompletableFuture<byte[]> getSessionStateAsync()
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<byte[]> returningFuture = new CompletableFuture<byte[]>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
-			{
-				byte[] receivedState = null;
-				Map bodyMap = RequestResponseUtils.getResponseBody(responseMessage);
-				if(bodyMap.containsKey(ClientConstants.REQUEST_RESPONSE_SESSION_STATE))
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<byte[]> returningFuture = new CompletableFuture<byte[]>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
 				{
-					Object sessionState = bodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSION_STATE);
-					if(sessionState != null)
+					byte[] receivedState = null;
+					Map bodyMap = RequestResponseUtils.getResponseBody(responseMessage);
+					if(bodyMap.containsKey(ClientConstants.REQUEST_RESPONSE_SESSION_STATE))
 					{
-						receivedState = ((Binary)sessionState).getArray();
-					}					
+						Object sessionState = bodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSION_STATE);
+						if(sessionState != null)
+						{
+							receivedState = ((Binary)sessionState).getArray();
+						}					
+					}
+					
+					returningFuture.complete(receivedState);
 				}
-				
-				returningFuture.complete(receivedState);
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});		
 	}
 	
 	// NULL session state is allowed
 	public CompletableFuture<Void> setSessionStateAsync(byte[] sessionState)
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_STATE, sessionState == null ? null : new Binary(sessionState));
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
-			{
-				returningFuture.complete(null);				
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			HashMap requestBodyMap = new HashMap();
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
+			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_STATE, sessionState == null ? null : new Binary(sessionState));
+			
+			Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			return responseFuture.thenComposeAsync((responseMessage) -> {
+				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
+				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+				if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
+				{
+					returningFuture.complete(null);				
+				}
+				else
+				{
+					// error response
+					returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
+				}
+				return returningFuture;
+			});
+		});		
 	}
 	
 	// A receiver can be used to peek messages from any session-id, useful for browsable sessions
 	public CompletableFuture<Collection<Message>> peekMessagesAsync(long fromSequenceNumber, int messageCount, String sessionId)
 	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGE_COUNT, messageCount);		
-		if(sessionId != null)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
-		}
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Collection<Message>> returningFuture = new CompletableFuture<Collection<Message>>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
-			{
-				List<Message> peekedMessages = new ArrayList<Message>();
-				Object responseBodyMap = ((AmqpValue)responseMessage.getBody()).getValue();
-				if(responseBodyMap != null && responseBodyMap instanceof Map)
-				{					
-					Object messages = ((Map)responseBodyMap).get(ClientConstants.REQUEST_RESPONSE_MESSAGES);
-					if(messages != null && messages instanceof Iterable)
-					{
-						for(Object message : (Iterable)messages)
-						{
-							if(message instanceof Map)
-							{
-								Message peekedMessage = Message.Factory.create();
-								Binary messagePayLoad = (Binary)((Map)message).get(ClientConstants.REQUEST_RESPONSE_MESSAGE);
-								peekedMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(), messagePayLoad.getLength());
-								peekedMessages.add(peekedMessage);
-							}
-						}
-					}
-				}				
-				returningFuture.complete(peekedMessages);
-			}
-			else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE ||
-					(statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.MESSAGE_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage))))
-			{
-				returningFuture.complete(new ArrayList<Message>());
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
-	}
-	
-	public CompletableFuture<Pair<String[], Integer>> getMessageSessionsAsync(Date lastUpdatedTime, int skip, int top, String lastSessionId)
-	{
-		HashMap requestBodyMap = new HashMap();
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LAST_UPDATED_TIME, lastUpdatedTime);
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SKIP, skip);
-		requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_TOP, top);
-		if(lastSessionId != null)
-		{
-			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_LAST_SESSION_ID, lastSessionId);
-		}
-		
-		Message requestMessage = RequestResponseUtils.createRequestMessage(ClientConstants.REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout));
-		CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
-		return responseFuture.thenCompose((responseMessage) -> {
-			CompletableFuture<Pair<String[], Integer>> returningFuture = new CompletableFuture<Pair<String[], Integer>>();
-			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-			if(statusCode == ClientConstants.REQUEST_RESPONSE_OK_STATUS_CODE)
-			{
-				Map responseBodyMap = RequestResponseUtils.getResponseBody(responseMessage);
-				int responseSkip = (int)responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SKIP);
-				String[] sessionIds = (String[])responseBodyMap.get(ClientConstants.REQUEST_RESPONSE_SESSIONIDS);
-				returningFuture.complete(new Pair<>(sessionIds, responseSkip));				
-			}
-			else if(statusCode == ClientConstants.REQUEST_RESPONSE_NOCONTENT_STATUS_CODE ||
-					(statusCode == ClientConstants.REQUEST_RESPONSE_NOTFOUND_STATUS_CODE && ClientConstants.SESSION_NOT_FOUND_ERROR.equals(RequestResponseUtils.getResponseErrorCondition(responseMessage))))
-			{
-				returningFuture.complete(new Pair<>(new String[0], 0));
-			}
-			else
-			{
-				// error response
-				returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
-			}
-			return returningFuture;
-		});
-	}
+		return this.createRequestResponseLink().thenComposeAsync((v) -> {
+			return MessageBrowserUtil.peekMessagesAsync(this.requestResponseLink, this.operationTimeout, fromSequenceNumber, messageCount, sessionId);
+		});		
+	}	
 }

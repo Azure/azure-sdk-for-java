@@ -1,6 +1,6 @@
 package com.microsoft.azure.servicebus.samples;
 
-import com.microsoft.azure.servicebus.BrokeredMessage;
+import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ClientFactory;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
@@ -31,7 +31,7 @@ public class SendSample {
 	private static void sendMessages(int numMessages) throws InterruptedException, ServiceBusException {
 		for(int i = 0; i < numMessages; i ++) {
 			String messageBody = "MessageNumber: " + i;
-			BrokeredMessage message = new BrokeredMessage(messageBody.getBytes());
+			Message message = new Message(messageBody.getBytes());
 			sender.send(message);
 			System.out.println("Sending message " + i);
 		}

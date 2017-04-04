@@ -11,6 +11,10 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
+import com.microsoft.azure.servicebus.rules.CorrelationFilter;
+import com.microsoft.azure.servicebus.rules.RuleDescription;
+import com.microsoft.azure.servicebus.rules.SqlFilter;
+import com.microsoft.azure.servicebus.rules.SqlRuleAction;
 
 public class RequestResponseUtils {
 	public static Message createRequestMessage(String operation, Map propertyBag, Duration timeout)
@@ -56,5 +60,53 @@ public class RequestResponseUtils {
 	public static Exception generateExceptionFromError(Symbol errorCondition, String exceptionMessage)
 	{	
 		return ExceptionUtil.toException(new ErrorCondition(errorCondition, exceptionMessage));		
+	}
+	
+	public static Map<String, Object> encodeRuleDescriptionToMap(RuleDescription ruleDescription)
+	{
+		HashMap<String, Object> descriptionMap = new HashMap<>();
+		if(ruleDescription.getFilter() instanceof SqlFilter)
+		{
+			HashMap<String, Object> filterMap = new HashMap<>();
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_EXPRESSION, ((SqlFilter)ruleDescription.getFilter()).getSqlExpression());
+			descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLFILTER, filterMap);
+		}
+		else if(ruleDescription.getFilter() instanceof CorrelationFilter)
+		{
+			CorrelationFilter correlationFilter = (CorrelationFilter)ruleDescription.getFilter();
+			HashMap<String, Object> filterMap = new HashMap<>();
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_CORRELATION_ID, correlationFilter.getCorrelationId());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_MESSAGE_ID, correlationFilter.getMessageId());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_TO, correlationFilter.getTo());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_REPLY_TO, correlationFilter.getReplyTo());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_LABEL, correlationFilter.getLabel());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_ID, correlationFilter.getSessionId());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_REPLY_TO_SESSION_ID, correlationFilter.getReplyToSessionId());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_CONTENT_TYPE, correlationFilter.getContentType());
+			filterMap.put(ClientConstants.REQUEST_RESPONSE_CORRELATION_FILTER_PROPERTIES, correlationFilter.getProperties());		
+			
+			descriptionMap.put(ClientConstants.REQUEST_RESPONSE_CORRELATION_FILTER, filterMap);
+		}
+		else
+		{
+			throw new IllegalArgumentException("This API supports the addition of only SQLFilters and CorrelationFilters.");
+		}
+		
+		if(ruleDescription.getAction() == null)
+		{
+			descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLRULEACTION, null);
+		}
+		else if(ruleDescription.getAction() instanceof SqlRuleAction)
+		{
+			HashMap<String, Object> sqlActionMap = new HashMap<>();
+			sqlActionMap.put(ClientConstants.REQUEST_RESPONSE_EXPRESSION, ((SqlRuleAction)ruleDescription.getAction()).getSqlExpression());
+			descriptionMap.put(ClientConstants.REQUEST_RESPONSE_SQLRULEACTION, sqlActionMap);
+		}
+		else
+		{
+			throw new IllegalArgumentException("This API supports the addition of only filters with SqlRuleActions.");
+		}
+		
+		return descriptionMap;
 	}
 }

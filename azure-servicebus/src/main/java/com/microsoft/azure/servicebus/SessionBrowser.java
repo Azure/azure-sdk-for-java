@@ -6,48 +6,63 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
-import com.microsoft.azure.servicebus.primitives.Util;
+import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
+import com.microsoft.azure.servicebus.primitives.Pair;
 
-final class SessionBrowser
-{
+final class SessionBrowser {
 	private static final int PAGESIZE = 100;
 	// .net DateTime.MaxValue need to be passed
-	private static final Date MAXDATE = new Date(253402300800000l);
+	private static final Date MAXDATE = new Date(253402300800000l);	
 	
-	private final BrokeredMessageReceiver messageReceiver;
 	private final MessagingFactory messagingFactory;
 	private final String entityPath;
-	private String lastSessionId = null;
-	private int lastReceivedSkip = 0;
+	private MiscRequestResponseOperationHandler miscRequestResponseHandler;	
 	
-	SessionBrowser(MessagingFactory messagingFactory, BrokeredMessageReceiver messageReceiver, String entityPath)
-	{
-		this.messagingFactory = messagingFactory;
-		this.messageReceiver = messageReceiver;
+	SessionBrowser(MessagingFactory messagingFactory, String entityPath, MiscRequestResponseOperationHandler miscRequestResponseHandler)
+	{		
+		this.messagingFactory = messagingFactory;		
 		this.entityPath = entityPath;
+		this.miscRequestResponseHandler = miscRequestResponseHandler;
 	}
 	
-	public CompletableFuture<Collection<? extends IMessageSession>> getMessageSessionsAsync()
+	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync()
 	{
 		return this.getMessageSessionsAsync(MAXDATE);
 	}
 	
-	public CompletableFuture<Collection<? extends IMessageSession>> getMessageSessionsAsync(Date lastUpdatedTime)
+	public CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Date lastUpdatedTime)
 	{
-		return this.messageReceiver.getInternalReceiver().getMessageSessionsAsync(lastUpdatedTime, this.lastReceivedSkip, PAGESIZE, this.lastSessionId).thenApply((p) ->
-		{
-			ArrayList<BrowsableMessageSession> sessionsList = new ArrayList<>();
-			this.lastReceivedSkip = p.getSecondItem();
+		return this.getMessageSessionsAsync(lastUpdatedTime, 0, null);
+	}
+	
+	private CompletableFuture<Collection<IMessageSession>> getMessageSessionsAsync(Date lastUpdatedTime, int lastReceivedSkip, String lastSessionId)
+	{
+		return this.miscRequestResponseHandler.getMessageSessionsAsync(lastUpdatedTime, lastReceivedSkip, PAGESIZE, lastSessionId).thenComposeAsync((p) ->
+		{						
+			int newLastReceivedSkip = p.getSecondItem();
 			String[] sessionIds = p.getFirstItem();
+			ArrayList<IMessageSession> sessionsList = new ArrayList<>();			
 			if(sessionIds != null && sessionIds.length > 0)
 			{
-				this.lastSessionId = sessionIds[sessionIds.length - 1];
+				CompletableFuture[] initFutures = new CompletableFuture[sessionIds.length];
+				int initFutureIndex = 0;
+				String newLastSessionId = sessionIds[sessionIds.length - 1];
 				for(String sessionId : sessionIds)
 				{
-					sessionsList.add(new BrowsableMessageSession(sessionId, this.messagingFactory, this.messageReceiver.getInternalReceiver(), this.entityPath));
+					BrowsableMessageSession browsableSession = new BrowsableMessageSession(sessionId, this.messagingFactory, this.entityPath);
+					sessionsList.add(browsableSession);
+					initFutures[initFutureIndex++] = browsableSession.initializeAsync();					
 				}
+				CompletableFuture<Void> allInitFuture = CompletableFuture.allOf(initFutures);
+				return allInitFuture.thenComposeAsync((v) -> getMessageSessionsAsync(lastUpdatedTime, newLastReceivedSkip, newLastSessionId)).thenApply((c) -> {
+					sessionsList.addAll(c);
+					return sessionsList;
+				});
 			}
-			return sessionsList;
+			else
+			{
+				return CompletableFuture.completedFuture(sessionsList);
+			}			
 		});
 	}
 }

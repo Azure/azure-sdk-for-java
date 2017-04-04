@@ -1,34 +1,31 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.qpid.proton.message.Message;
-
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.MessageSender;
+import com.microsoft.azure.servicebus.primitives.CoreMessageSender;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
 
-final class BrokeredMessageSender extends InitializableEntity implements IMessageSender
+final class MessageSender extends InitializableEntity implements IMessageSender
 {
 	private boolean ownsMessagingFactory;
 	private ConnectionStringBuilder amqpConnectionStringBuilder = null;
 	private String entityPath = null;
 	private MessagingFactory messagingFactory = null;
-	private MessageSender internalSender = null;
+	private CoreMessageSender internalSender = null;
 	private boolean isInitialized = false;
 	
-	private BrokeredMessageSender()
+	private MessageSender()
 	{
-		super(StringUtil.getRandomString(), null);
+		super(StringUtil.getShortRandomString(), null);
 	}
 	
-	BrokeredMessageSender(ConnectionStringBuilder amqpConnectionStringBuilder)
+	MessageSender(ConnectionStringBuilder amqpConnectionStringBuilder)
 	{
 		this();
 		
@@ -37,12 +34,12 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 		this.ownsMessagingFactory = true;
 	}
 	
-	BrokeredMessageSender(MessagingFactory messagingFactory, String entityPath)
+	MessageSender(MessagingFactory messagingFactory, String entityPath)
 	{		
 		this(messagingFactory, entityPath, false);
 	}
 			
-	private BrokeredMessageSender(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory)
+	private MessageSender(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory)
 	{		
 		this();
 		
@@ -52,7 +49,7 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 	}
 	
 	@Override
-	synchronized CompletableFuture<Void> initializeAsync() throws IOException
+	synchronized CompletableFuture<Void> initializeAsync()
 	{
 		if(this.isInitialized)
 		{
@@ -63,47 +60,52 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 			CompletableFuture<Void> factoryFuture;
 			if(this.messagingFactory == null)
 			{
-				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAccept((f) -> {this.messagingFactory = f;});
+				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAcceptAsync((f) -> {this.messagingFactory = f;});
 			}
 			else
 			{
 				factoryFuture = CompletableFuture.completedFuture(null);
 			}
 			
-			return factoryFuture.thenCompose((v) ->
+			return factoryFuture.thenComposeAsync((v) ->
 			{
-				CompletableFuture<MessageSender> senderFuture = MessageSender.create(this.messagingFactory, StringUtil.getRandomString(), this.entityPath);
-				return senderFuture.thenAccept((s) -> 
+				CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath);
+				return senderFuture.thenAcceptAsync((s) -> 
 				{
 					this.internalSender = s;
 					this.isInitialized = true;
 				});
 			});
 		}
-	}		
+	}
+	
+	final CoreMessageSender getInternalSender()
+	{
+		return this.internalSender;
+	}
 	
 	@Override
-	public void send(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
+	public void send(IMessage message) throws InterruptedException, ServiceBusException {
 		Utils.completeFuture(this.sendAsync(message));		
 	}
 
 	@Override
-	public void sendBatch(Collection<? extends IBrokeredMessage> message) throws InterruptedException, ServiceBusException {
+	public void sendBatch(Collection<? extends IMessage> message) throws InterruptedException, ServiceBusException {
 		Utils.completeFuture(this.sendBatchAsync(message));
 	}
 
 	@Override
-	public CompletableFuture<Void> sendAsync(IBrokeredMessage message) {		
-		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message);
+	public CompletableFuture<Void> sendAsync(IMessage message) {		
+		org.apache.qpid.proton.message.Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((Message)message);
 		return this.internalSender.sendAsync(amqpMessage);
 	}
 
 	@Override
-	public CompletableFuture<Void> sendBatchAsync(Collection<? extends IBrokeredMessage> messages) {
-		ArrayList<Message> convertedMessages = new ArrayList<Message>();
-		for(IBrokeredMessage message : messages)
+	public CompletableFuture<Void> sendBatchAsync(Collection<? extends IMessage> messages) {
+		ArrayList<org.apache.qpid.proton.message.Message> convertedMessages = new ArrayList<org.apache.qpid.proton.message.Message>();
+		for(IMessage message : messages)
 		{
-			convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message));
+			convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage((Message)message));
 		}
 		
 		return this.internalSender.sendAsync(convertedMessages);
@@ -115,9 +117,9 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 		{
 			return this.internalSender.closeAsync().thenComposeAsync((v) -> 
 			{
-				if(BrokeredMessageSender.this.ownsMessagingFactory)
+				if(MessageSender.this.ownsMessagingFactory)
 				{
-					return BrokeredMessageSender.this.messagingFactory.closeAsync();
+					return MessageSender.this.messagingFactory.closeAsync();
 				}
 				else
 				{
@@ -137,10 +139,10 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 	}
 
 	@Override
-	public CompletableFuture<Long> scheduleMessageAsync(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc) {
+	public CompletableFuture<Long> scheduleMessageAsync(IMessage message, Instant scheduledEnqueueTimeUtc) {
 		message.setScheduledEnqueuedTimeUtc(scheduledEnqueueTimeUtc);
-		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message);
-		return this.internalSender.scheduleMessageAsync(new Message[] {amqpMessage}, this.messagingFactory.getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
+		org.apache.qpid.proton.message.Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((Message)message);
+		return this.internalSender.scheduleMessageAsync(new org.apache.qpid.proton.message.Message[] {amqpMessage}, this.messagingFactory.getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
 	}
 
 	@Override
@@ -149,7 +151,7 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 	}
 
 	@Override
-	public long scheduleMessage(IBrokeredMessage message, Instant scheduledEnqueueTimeUtc) throws InterruptedException, ServiceBusException
+	public long scheduleMessage(IMessage message, Instant scheduledEnqueueTimeUtc) throws InterruptedException, ServiceBusException
 	{
 		return Utils.completeFuture(this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc));
 	}
@@ -158,5 +160,10 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 	public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException
 	{
 		Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber));
+	}
+	
+	MessagingFactory getMessagingFactory()
+	{
+		return this.messagingFactory;
 	}
 }
