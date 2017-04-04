@@ -38,7 +38,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
                 .create();
 
         String storageAccessKey = storageManagementClient.storageAccounts()
-                .getByGroup(rgName, storageAcct)
+                .getByResourceGroup(rgName, storageAcct)
                 .getKeys().get(0).value();
 
         // create second ADLS account

@@ -10,10 +10,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancersInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -30,11 +30,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface LoadBalancers extends
     SupportsCreating<LoadBalancer.DefinitionStages.Blank>,
     SupportsListing<LoadBalancer>,
-    SupportsListingByGroup<LoadBalancer>,
-    SupportsGettingByGroup<LoadBalancer>,
+    SupportsListingByResourceGroup<LoadBalancer>,
+    SupportsGettingByResourceGroup<LoadBalancer>,
     SupportsGettingById<LoadBalancer>,
     SupportsDeletingById,
-    SupportsDeletingByGroup,
+    SupportsDeletingByResourceGroup,
     SupportsBatchCreation<LoadBalancer>,
     SupportsBatchDeletion,
     HasManager<NetworkManager>,

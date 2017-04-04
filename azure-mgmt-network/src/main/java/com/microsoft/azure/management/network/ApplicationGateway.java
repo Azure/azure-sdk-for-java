@@ -114,7 +114,7 @@ public interface ApplicationGateway extends
     /**
      * @return IP configurations of this application gateway, indexed by name
      */
-    Map<String, ApplicationGatewayIpConfiguration> ipConfigurations();
+    Map<String, ApplicationGatewayIPConfiguration> ipConfigurations();
 
     /**
      * @return backend address pools of this application gateway, indexed by name
@@ -129,7 +129,7 @@ public interface ApplicationGateway extends
     /**
      * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
      */
-    ApplicationGatewayIpConfiguration defaultIpConfiguration();
+    ApplicationGatewayIPConfiguration defaultIPConfiguration();
 
     /**
      * @return frontend IP configurations, indexed by name
@@ -506,7 +506,7 @@ public interface ApplicationGateway extends
         /**
          * The stage of an application gateway update allowing to modify IP configurations.
          */
-        interface WithIpConfig {
+        interface WithIPConfig {
             /**
              * Removes the specified IP configuration.
              * <p>
@@ -515,30 +515,30 @@ public interface ApplicationGateway extends
              * @param ipConfigurationName the name of the IP configuration to remove
              * @return the next stage of the update
              */
-            Update withoutIpConfiguration(String ipConfigurationName);
+            Update withoutIPConfiguration(String ipConfigurationName);
 
             /**
              * Begins the update of an existing IP configuration.
              * @param ipConfigurationName the name of an existing IP configuration
              * @return the first stage of an IP configuration update
              */
-            ApplicationGatewayIpConfiguration.Update updateIpConfiguration(String ipConfigurationName);
+            ApplicationGatewayIPConfiguration.Update updateIPConfiguration(String ipConfigurationName);
 
             /**
              * Begins the update of the default IP configuration i.e. the only one IP configuration that exists, assuming only one exists.
              * @return the first stage of an IP configuration update.
              */
             @Method
-            ApplicationGatewayIpConfiguration.Update updateDefaultIpConfiguration();
+            ApplicationGatewayIPConfiguration.Update updateDefaultIPConfiguration();
 
             /**
              * Begins the definition of the default IP configuration.
              * <p>
-             * If a default IP configuration already exists, it will be this is equivalent to {@code updateDefaultIpConfiguration()}.
+             * If a default IP configuration already exists, it will be this is equivalent to <code>updateDefaultIPConfiguration()</code>.
              * @return the first stage of an IP configuration update
              */
             @Method
-            ApplicationGatewayIpConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIpConfiguration();
+            ApplicationGatewayIPConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIPConfiguration();
         }
 
         /**
@@ -865,7 +865,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithInstanceCount,
         UpdateStages.WithBackend,
         UpdateStages.WithBackendHttpConfig,
-        UpdateStages.WithIpConfig,
+        UpdateStages.WithIPConfig,
         UpdateStages.WithFrontend,
         UpdateStages.WithPublicIPAddress,
         UpdateStages.WithFrontendPort,

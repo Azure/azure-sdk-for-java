@@ -47,12 +47,12 @@ class FunctionAppsImpl
     }
 
     @Override
-    public PagedList<FunctionApp> listByGroup(String resourceGroupName) {
+    public PagedList<FunctionApp> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
-    public FunctionApp getByGroup(String groupName, String name) {
+    public FunctionApp getByResourceGroup(String groupName, String name) {
         SiteInner siteInner = this.inner().getByResourceGroup(groupName, name);
         if (siteInner == null) {
             return null;
@@ -98,7 +98,7 @@ class FunctionAppsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

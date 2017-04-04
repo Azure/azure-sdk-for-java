@@ -23,11 +23,11 @@ public class CertificatesTests extends AppServiceTest {
     @Test
     @Ignore("Test is failing fix it, this is based on Existing RG and settings.")
     public void canCRDCertificate() throws Exception {
-        Vault vault = keyVaultManager.vaults().getByGroup(RG_NAME, "bananagraphwebapp319com");
+        Vault vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, "bananagraphwebapp319com");
         AppServiceCertificate certificate = appServiceManager.certificates().define("bananacert")
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withExistingCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwebapp319"))
+                .withExistingCertificateOrder(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, "graphwebapp319"))
                 .create();
         Assert.assertNotNull(certificate);
 

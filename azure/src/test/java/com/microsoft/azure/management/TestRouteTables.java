@@ -108,7 +108,7 @@ public class TestRouteTables {
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE_ADDED_NAME));
 
-            routeTable.manager().networks().getByGroup(routeTable.resourceGroupName(), "net" + this.testId).update()
+            routeTable.manager().networks().getByResourceGroup(routeTable.resourceGroupName(), "net" + this.testId).update()
                 .updateSubnet("subnet1")
                     .withoutRouteTable()
                         .parent()

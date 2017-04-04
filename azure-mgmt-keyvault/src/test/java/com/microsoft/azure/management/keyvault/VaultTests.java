@@ -34,7 +34,7 @@ public class VaultTests extends KeyVaultManagementTest {
                 .create();
         Assert.assertNotNull(vault);
         // GET
-        vault = keyVaultManager.vaults().getByGroup(RG_NAME, VAULT_NAME);
+        vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, VAULT_NAME);
         Assert.assertNotNull(vault);
         for (AccessPolicy policy : vault.accessPolicies()) {
             if (policy.objectId().equals("8188d1e8-3090-4e3c-aa76-38cf2b5c7b3a")) {
@@ -47,7 +47,7 @@ public class VaultTests extends KeyVaultManagementTest {
             }
         }
         // LIST
-        List<Vault> vaults = keyVaultManager.vaults().listByGroup(RG_NAME);
+        List<Vault> vaults = keyVaultManager.vaults().listByResourceGroup(RG_NAME);
         for (Vault v : vaults) {
             if (VAULT_NAME.equals(v.name())) {
                 vault = v;

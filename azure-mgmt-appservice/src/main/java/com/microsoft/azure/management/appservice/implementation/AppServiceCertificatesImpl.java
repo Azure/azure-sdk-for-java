@@ -43,7 +43,7 @@ class AppServiceCertificatesImpl
     }
 
     @Override
-    public PagedList<AppServiceCertificate> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceCertificate> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 

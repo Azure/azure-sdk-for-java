@@ -44,7 +44,7 @@ class VaultsImpl
     }
 
     @Override
-    public PagedList<Vault> listByGroup(String groupName) {
+    public PagedList<Vault> listByResourceGroup(String groupName) {
         return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
@@ -59,7 +59,7 @@ class VaultsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 
@@ -94,7 +94,7 @@ class VaultsImpl
     }
 
     @Override
-    public Observable<Vault> listByGroupAsync(String resourceGroupName) {
+    public Observable<Vault> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 }

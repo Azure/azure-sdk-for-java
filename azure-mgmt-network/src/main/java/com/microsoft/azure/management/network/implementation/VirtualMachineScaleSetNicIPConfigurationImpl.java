@@ -16,13 +16,13 @@ import com.microsoft.azure.management.network.NicIPConfiguration;
  *  with virtual machine scale set.
  */
 @LangDefinition
-class VirtualMachineScaleSetNicIpConfigurationImpl
+class VirtualMachineScaleSetNicIPConfigurationImpl
         extends
         NicIPConfigurationBaseImpl<VirtualMachineScaleSetNetworkInterfaceImpl,
                 VirtualMachineScaleSetNetworkInterface>
         implements
         VirtualMachineScaleSetNicIPConfiguration {
-    VirtualMachineScaleSetNicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
+    VirtualMachineScaleSetNicIPConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                                            VirtualMachineScaleSetNetworkInterfaceImpl parent,
                                                            NetworkManager networkManager) {
         super(inner, parent, networkManager);

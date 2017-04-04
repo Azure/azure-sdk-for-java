@@ -32,9 +32,9 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         // Clear NIC references if any
-        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByGroup(groupName, name);
+        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(groupName, name);
         if (nsg != null) {
             Set<String> nicIds = nsg.networkInterfaceIds();
             if (nicIds != null) {

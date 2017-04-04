@@ -44,7 +44,7 @@ public interface NetworkInterface extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithPrimaryNetwork,
             DefinitionStages.WithPrimaryNetworkSubnet,
-            DefinitionStages.WithPrimaryPrivateIp,
+            DefinitionStages.WithPrimaryPrivateIP,
             DefinitionStages.WithCreate {
     }
 
@@ -99,7 +99,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
+            WithPrimaryPrivateIP withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface's primary IP configuration.
@@ -112,7 +112,7 @@ public interface NetworkInterface extends
              * @param addressSpace the address space for rhe virtual network
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withNewPrimaryNetwork(String name, String addressSpace);
+            WithPrimaryPrivateIP withNewPrimaryNetwork(String name, String addressSpace);
 
             /**
              * Creates a new virtual network to associate with the network interface's primary IP configuration.
@@ -124,7 +124,7 @@ public interface NetworkInterface extends
              * @param addressSpace the address space for the virtual network
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withNewPrimaryNetwork(String addressSpace);
+            WithPrimaryPrivateIP withNewPrimaryNetwork(String addressSpace);
 
             /**
              * Associate an existing virtual network with the network interface's primary IP configuration.
@@ -145,14 +145,14 @@ public interface NetworkInterface extends
              * @param name the subnet name
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withSubnet(String name);
+            WithPrimaryPrivateIP withSubnet(String name);
         }
 
         /**
          * The stage of the network interface definition allowing to specify private IP address within
          * a virtual network subnet.
          */
-        interface WithPrimaryPrivateIp {
+        interface WithPrimaryPrivateIP {
             /**
              * Enables dynamic private IP address allocation within the specified existing virtual network
              * subnet for the network interface's primary IP configuration.
@@ -240,14 +240,14 @@ public interface NetworkInterface extends
         /**
          * The stage of the network interface definition allowing to associate a secondary IP configurations.
          */
-        interface WithSecondaryIpConfiguration {
+        interface WithSecondaryIPConfiguration {
             /**
              * Starts definition of a secondary IP configuration.
              *
              * @param name name for the IP configuration
              * @return the first stage of a secondary IP configuration definition
              */
-            NicIPConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIpConfiguration(String name);
+            NicIPConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIPConfiguration(String name);
         }
 
         /**
@@ -260,14 +260,14 @@ public interface NetworkInterface extends
                 Resource.DefinitionWithTags<WithCreate>,
                 WithPrimaryPublicIPAddress,
                 WithNetworkSecurityGroup,
-                WithSecondaryIpConfiguration,
+                WithSecondaryIPConfiguration,
                 WithLoadBalancer {
             /**
              * Enable IP forwarding in the network interface.
              *
              * @return the next stage of the network interface definition
              */
-            WithCreate withIpForwarding();
+            WithCreate withIPForwarding();
 
             /**
              * Specifies the IP address of the custom DNS server to associate with the network interface.
@@ -311,7 +311,7 @@ public interface NetworkInterface extends
          * The stage of the network interface update allowing to specify private IP address within
          * a virtual network subnet.
          */
-        interface WithPrimaryPrivateIp {
+        interface WithPrimaryPrivateIP {
             /**
              * Enables dynamic private IP address allocation within the specified existing virtual network
              * subnet for the network interface's primary IP configuration.
@@ -419,20 +419,20 @@ public interface NetworkInterface extends
         /**
          * The stage of the network interface update allowing to enable or disable IP forwarding.
          */
-        interface WithIpForwarding {
+        interface WithIPForwarding {
             /**
              * Enable IP forwarding in the network interface.
              *
              * @return the next stage of the network interface update
              */
-            Update withIpForwarding();
+            Update withIPForwarding();
 
             /**
              * Disable IP forwarding in the network interface.
              *
              * @return the next stage of the network interface update
              */
-            Update withoutIpForwarding();
+            Update withoutIPForwarding();
         }
 
         /**
@@ -471,14 +471,14 @@ public interface NetworkInterface extends
         /**
          * The stage of the network interface update allowing to configure IP configuration.
          */
-        interface WithIpConfiguration {
+        interface WithIPConfiguration {
             /**
              * Starts definition of a secondary IP configuration.
              *
              * @param name name for the IP configuration
              * @return the first stage of a secondary IP configuration definition
              */
-            NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
+            NicIPConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(String name);
 
             /**
              * Starts update of an IP configuration.
@@ -486,7 +486,7 @@ public interface NetworkInterface extends
              * @param name name of the IP configuration
              * @return the first stage of an IP configuration update
              */
-            NicIPConfiguration.Update updateIpConfiguration(String name);
+            NicIPConfiguration.Update updateIPConfiguration(String name);
         }
 
         /**
@@ -533,12 +533,12 @@ public interface NetworkInterface extends
             Appliable<NetworkInterface>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithPrimaryNetworkSubnet,
-            UpdateStages.WithPrimaryPrivateIp,
+            UpdateStages.WithPrimaryPrivateIP,
             UpdateStages.WithPrimaryPublicIPAddress,
             UpdateStages.WithNetworkSecurityGroup,
-            UpdateStages.WithIpForwarding,
+            UpdateStages.WithIPForwarding,
             UpdateStages.WithDnsServer,
-            UpdateStages.WithIpConfiguration,
+            UpdateStages.WithIPConfiguration,
             UpdateStages.WithLoadBalancer {
     }
 }

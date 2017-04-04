@@ -11,10 +11,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -30,12 +30,12 @@ import java.io.IOException;
 @Fluent
 public interface VirtualMachineScaleSets extends
         SupportsListingAsync<VirtualMachineScaleSet>,
-        SupportsListingByGroupAsync<VirtualMachineScaleSet>,
-        SupportsGettingByGroup<VirtualMachineScaleSet>,
+        SupportsListingByResourceGroupAsync<VirtualMachineScaleSet>,
+        SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingById<VirtualMachineScaleSet>,
         SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineScaleSet>,
         SupportsBatchDeletion,
         HasManager<ComputeManager>,

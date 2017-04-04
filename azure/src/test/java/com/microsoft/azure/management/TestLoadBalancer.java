@@ -91,8 +91,8 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
             ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip0 = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
-            PublicIPAddress pip1 = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            PublicIPAddress pip0 = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIPAddress pip1 = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -261,7 +261,7 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
             ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
             NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
@@ -374,7 +374,7 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             List<NetworkInterface> nics = new ArrayList<>();
-            for (String nicId : resource.backends().get("backend1").backendNicIpConfigurationNames().keySet()) {
+            for (String nicId : resource.backends().get("backend1").backendNicIPConfigurationNames().keySet()) {
                 nics.add(resource.manager().networkInterfaces().getById(nicId));
             }
             NetworkInterface nic1 = nics.get(0);
@@ -395,7 +395,7 @@ public class TestLoadBalancer {
 
             // Update the load balancer
             ensurePIPs(resource.manager().publicIPAddresses());
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .updateInternetFrontend("frontend1")
                         .withExistingPublicIPAddress(pip)
@@ -450,7 +450,7 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.vms, this.availabilitySets, 2);
             ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -504,9 +504,9 @@ public class TestLoadBalancer {
             Assert.assertEquals(1, lb.backends().size());
             LoadBalancerBackend backend = lb.backends().get("default");
             Assert.assertNotNull(backend);
-            Assert.assertEquals(2, backend.backendNicIpConfigurationNames().size());
+            Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assert.assertTrue(backend.backendNicIpConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assert.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -515,7 +515,7 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             ensurePIPs(resource.manager().publicIPAddresses());
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[1]);
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
             resource =  resource.update()
                     .withExistingPublicIPAddress(pip)
                     .updateTcpProbe("default")
@@ -682,13 +682,13 @@ public class TestLoadBalancer {
 
             LoadBalancerBackend backend = lb.backends().get("foo");
             Assert.assertNotNull(backend);
-            Assert.assertTrue(backend.backendNicIpConfigurationNames().isEmpty());
+            Assert.assertTrue(backend.backendNicIPConfigurationNames().isEmpty());
 
             backend = lb.backends().get("default");
             Assert.assertNotNull(backend);
-            Assert.assertEquals(2, backend.backendNicIpConfigurationNames().size());
+            Assert.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assert.assertTrue(backend.backendNicIpConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assert.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -892,7 +892,7 @@ public class TestLoadBalancer {
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIpEnabled())
+                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIPEnabled())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                 .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
@@ -972,8 +972,8 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                 .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                 .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
-                .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled())
+                .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
+                .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
         }
 
@@ -999,8 +999,8 @@ public class TestLoadBalancer {
 
             // Show assigned backend NICs
             info.append("\n\t\t\tReferenced NICs: ")
-                .append(backend.backendNicIpConfigurationNames().entrySet().size());
-            for (Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
+                .append(backend.backendNicIPConfigurationNames().entrySet().size());
+            for (Entry<String, String> entry : backend.backendNicIPConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                     .append(" - IP Config: ").append(entry.getValue());
             }

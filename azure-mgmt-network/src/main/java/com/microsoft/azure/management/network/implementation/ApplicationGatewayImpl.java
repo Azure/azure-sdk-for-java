@@ -10,7 +10,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
-import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
@@ -61,7 +61,7 @@ class ApplicationGatewayImpl
         ApplicationGateway.Definition,
         ApplicationGateway.Update {
 
-    private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
+    private Map<String, ApplicationGatewayIPConfiguration> ipConfigs;
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayProbe> probes;
     private Map<String, ApplicationGatewayBackend> backends;
@@ -217,7 +217,7 @@ class ApplicationGatewayImpl
         this.creatablePipsByFrontend.clear();
 
         // Reset and update IP configs
-        ensureDefaultIpConfig();
+        ensureDefaultIPConfig();
         this.inner().withGatewayIPConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
         // Reset and update frontends
@@ -288,11 +288,11 @@ class ApplicationGatewayImpl
     protected void afterCreating() {
     }
 
-    private ApplicationGatewayIPConfigurationImpl ensureDefaultIpConfig() {
-        ApplicationGatewayIPConfigurationImpl ipConfig = (ApplicationGatewayIPConfigurationImpl) defaultIpConfiguration();
+    private ApplicationGatewayIPConfigurationImpl ensureDefaultIPConfig() {
+        ApplicationGatewayIPConfigurationImpl ipConfig = (ApplicationGatewayIPConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
             String name = SdkContext.randomResourceName("ipcfg", 11);
-            ipConfig = this.defineIpConfiguration(name);
+            ipConfig = this.defineIPConfiguration(name);
             ipConfig.attach();
         }
         return ipConfig;
@@ -351,7 +351,7 @@ class ApplicationGatewayImpl
         return this.creatablePip;
     }
 
-    private static ApplicationGatewayFrontendImpl useSubnetFromIpConfigForFrontend(
+    private static ApplicationGatewayFrontendImpl useSubnetFromIPConfigForFrontend(
             ApplicationGatewayIPConfigurationImpl ipConfig,
             ApplicationGatewayFrontendImpl frontend) {
         if (frontend != null) {
@@ -386,14 +386,14 @@ class ApplicationGatewayImpl
         }
 
         // Determine if default VNet should be created
-        final ApplicationGatewayIPConfigurationImpl defaultIpConfig = ensureDefaultIpConfig();
+        final ApplicationGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final ApplicationGatewayFrontendImpl defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
         final Observable<Resource> networkObservable;
-        if (defaultIpConfig.subnetName() != null) {
+        if (defaultIPConfig.subnetName() != null) {
             // If default IP config already has a subnet assigned to it...
             if (defaultPrivateFrontend != null) {
                 // ...and a private frontend is requested, then use the same vnet for the private frontend
-                useSubnetFromIpConfigForFrontend(defaultIpConfig, defaultPrivateFrontend);
+                useSubnetFromIPConfigForFrontend(defaultIPConfig, defaultPrivateFrontend);
             }
             // ...and no need to create a default VNet
             networkObservable = Observable.empty(); // ...and don't create another VNet
@@ -404,7 +404,7 @@ class ApplicationGatewayImpl
                     @Override
                     public Resource call(Network network) {
                         //... and assign the created VNet to the default IP config
-                        defaultIpConfig.withExistingSubnet(network, DEFAULT);
+                        defaultIPConfig.withExistingSubnet(network, DEFAULT);
                         if (defaultPrivateFrontend != null) {
                             // If a private frontend is also requested, then use the same VNet for the private frontend as for the IP config
                             /* TODO: Not sure if the assumption of the same subnet for the frontend and the IP config will hold in
@@ -413,7 +413,7 @@ class ApplicationGatewayImpl
                              * have to be the same. This may need to be revisited in the future however, as this is somewhat inconsistent
                              * with what the documentation says.
                              */
-                            useSubnetFromIpConfigForFrontend(defaultIpConfig, defaultPrivateFrontend);
+                            useSubnetFromIPConfigForFrontend(defaultIPConfig, defaultPrivateFrontend);
                         }
                         return network;
                     }
@@ -563,19 +563,19 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(Subnet subnet) {
-        ensureDefaultIpConfig().withExistingSubnet(subnet);
+        ensureDefaultIPConfig().withExistingSubnet(subnet);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(Network network, String subnetName) {
-        ensureDefaultIpConfig().withExistingSubnet(network, subnetName);
+        ensureDefaultIPConfig().withExistingSubnet(network, subnetName);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(String networkResourceId, String subnetName) {
-        ensureDefaultIpConfig().withExistingSubnet(networkResourceId, subnetName);
+        ensureDefaultIPConfig().withExistingSubnet(networkResourceId, subnetName);
         return this;
     }
 
@@ -599,8 +599,8 @@ class ApplicationGatewayImpl
     }
 
     //TODO @Override - since app gateways don't support more than one today, no need to expose this
-    private ApplicationGatewayIPConfigurationImpl defineIpConfiguration(String name) {
-        ApplicationGatewayIpConfiguration config = this.ipConfigs.get(name);
+    private ApplicationGatewayIPConfigurationImpl defineIPConfiguration(String name) {
+        ApplicationGatewayIPConfiguration config = this.ipConfigs.get(name);
         if (config == null) {
             ApplicationGatewayIPConfigurationInner inner = new ApplicationGatewayIPConfigurationInner()
                     .withName(name);
@@ -830,7 +830,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutIpConfiguration(String ipConfigurationName) {
+    public ApplicationGatewayImpl withoutIPConfiguration(String ipConfigurationName) {
         this.ipConfigs.remove(ipConfigurationName);
         return this;
     }
@@ -940,7 +940,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl updateIpConfiguration(String ipConfigurationName) {
+    public ApplicationGatewayIPConfigurationImpl updateIPConfiguration(String ipConfigurationName) {
         return (ApplicationGatewayIPConfigurationImpl) this.ipConfigs.get(ipConfigurationName);
     }
 
@@ -950,13 +950,13 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl updateDefaultIpConfiguration() {
-        return (ApplicationGatewayIPConfigurationImpl) this.defaultIpConfiguration();
+    public ApplicationGatewayIPConfigurationImpl updateDefaultIPConfiguration() {
+        return (ApplicationGatewayIPConfigurationImpl) this.defaultIPConfiguration();
     }
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl defineDefaultIpConfiguration() {
-        return ensureDefaultIpConfig();
+    public ApplicationGatewayIPConfigurationImpl defineDefaultIPConfiguration() {
+        return ensureDefaultIPConfig();
     }
 
     @Override
@@ -1003,7 +1003,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayIpConfiguration defaultIpConfiguration() {
+    public ApplicationGatewayIPConfiguration defaultIPConfiguration() {
         // Default means the only one
         if (this.ipConfigs.size() == 1) {
             return this.ipConfigs.values().iterator().next();
@@ -1060,7 +1060,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public Map<String, ApplicationGatewayIpConfiguration> ipConfigurations() {
+    public Map<String, ApplicationGatewayIPConfiguration> ipConfigurations() {
         return Collections.unmodifiableMap(this.ipConfigs);
     }
 
@@ -1103,7 +1103,7 @@ class ApplicationGatewayImpl
     }
 
     private SubResource defaultSubnetRef() {
-        ApplicationGatewayIpConfiguration ipConfig = defaultIpConfiguration();
+        ApplicationGatewayIPConfiguration ipConfig = defaultIPConfiguration();
         if (ipConfig == null) {
             return null;
         } else {

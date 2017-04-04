@@ -81,11 +81,11 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         }
         VirtualMachineCustomImage image = computeManager
                 .virtualMachineCustomImages()
-                .getByGroup(RG_NAME, vhdBasedImageName);
+                .getByResourceGroup(RG_NAME, vhdBasedImageName);
         Assert.assertNotNull(image);
         PagedList<VirtualMachineCustomImage> images = computeManager
                 .virtualMachineCustomImages()
-                .listByGroup(RG_NAME);
+                .listByResourceGroup(RG_NAME);
         Assert.assertTrue(images.size() > 0);
 
         // Create virtual machine from custom image
@@ -141,7 +141,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             diskImage.blobUri().equalsIgnoreCase(vmDisk.vhdUri());
         }
 
-        customImage = computeManager.virtualMachineCustomImages().getByGroup(RG_NAME, imageName);
+        customImage = computeManager.virtualMachineCustomImages().getByResourceGroup(RG_NAME, imageName);
         Assert.assertNotNull(customImage);
         Assert.assertNotNull(customImage.inner());
         computeManager.virtualMachineCustomImages().deleteById(customImage.id());

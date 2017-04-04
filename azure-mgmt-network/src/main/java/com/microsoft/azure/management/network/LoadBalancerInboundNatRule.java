@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
-import com.microsoft.azure.management.network.model.HasFloatingIp;
+import com.microsoft.azure.management.network.model.HasFloatingIP;
 import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
@@ -27,7 +27,7 @@ public interface LoadBalancerInboundNatRule extends
     HasFrontend,
     HasBackendPort,
     HasProtocol<TransportProtocol>,
-    HasFloatingIp,
+    HasFloatingIP,
     HasFrontendPort,
     HasInner<InboundNatRuleInner>,
     ChildResource<LoadBalancer> {
@@ -35,7 +35,7 @@ public interface LoadBalancerInboundNatRule extends
     /**
      * @return the name of the IP configuration within the network interface associated with this NAT rule
      */
-    String backendNicIpConfigurationName();
+    String backendNicIPConfigurationName();
 
     /**
      * @return the resource ID of the network interface assigned as the backend of this inbound NAT rule
@@ -68,7 +68,7 @@ public interface LoadBalancerInboundNatRule extends
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
             DefinitionStages.WithBackendPort<ParentT>,
-            DefinitionStages.WithFloatingIp<ParentT>,
+            DefinitionStages.WithFloatingIP<ParentT>,
             DefinitionStages.WithIdleTimeout<ParentT> {
         }
 
@@ -100,7 +100,7 @@ public interface LoadBalancerInboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify whether floating IP should be enabled.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.DefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.DefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**
@@ -164,7 +164,7 @@ public interface LoadBalancerInboundNatRule extends
         /**
          * The stage of an inbound NAT rule update allowing to specify whether floating IP should be enabled.
          */
-        interface WithFloatingIp extends HasFloatingIp.UpdateStages.WithFloatingIp<Update> {
+        interface WithFloatingIP extends HasFloatingIP.UpdateStages.WithFloatingIP<Update> {
         }
 
         /**
@@ -192,7 +192,7 @@ public interface LoadBalancerInboundNatRule extends
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithBackendPort,
-        UpdateStages.WithFloatingIp,
+        UpdateStages.WithFloatingIP,
         UpdateStages.WithFrontend,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithIdleTimeout,
@@ -220,7 +220,7 @@ public interface LoadBalancerInboundNatRule extends
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
             UpdateDefinitionStages.WithBackendPort<ParentT>,
-            UpdateDefinitionStages.WithFloatingIp<ParentT>,
+            UpdateDefinitionStages.WithFloatingIP<ParentT>,
             UpdateDefinitionStages.WithIdleTimeout<ParentT> {
         }
 
@@ -252,7 +252,7 @@ public interface LoadBalancerInboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify whether floating IP should be enabled.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.UpdateDefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.UpdateDefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**

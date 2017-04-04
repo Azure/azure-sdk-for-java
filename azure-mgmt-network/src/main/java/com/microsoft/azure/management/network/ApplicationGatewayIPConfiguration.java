@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent()
 @Beta
-public interface ApplicationGatewayIpConfiguration extends
+public interface ApplicationGatewayIPConfiguration extends
     HasInner<ApplicationGatewayIPConfigurationInner>,
     ChildResource<ApplicationGateway> {
 

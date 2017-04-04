@@ -64,8 +64,8 @@ public class AppServiceTest extends TestBase {
             certOrder = System.getenv("appservice-certificateorder");
         }
 
-        domain = appServiceManager.domains().getByGroup(rgName, domainName);
-        certificateOrder = appServiceManager.certificateOrders().getByGroup(rgName, certOrder);
+        domain = appServiceManager.domains().getByResourceGroup(rgName, domainName);
+        certificateOrder = appServiceManager.certificateOrders().getByResourceGroup(rgName, certOrder);
     }
 
     private static void createNewDomainAndCertificate() {

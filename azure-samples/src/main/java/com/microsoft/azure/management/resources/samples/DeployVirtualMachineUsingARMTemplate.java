@@ -64,14 +64,14 @@ public class DeployVirtualMachineUsingARMTemplate {
                     .create();
 
             System.out.println("Started a deployment for an Azure Virtual Machine with managed disks: " + deploymentName);
-            Deployment deployment = azure.deployments().getByGroup(rgName, deploymentName);
+            Deployment deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
             System.out.println("Current deployment status : " + deployment.provisioningState());
 
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
                 SdkContext.sleep(10000);
-                deployment = azure.deployments().getByGroup(rgName, deploymentName);
+                deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;

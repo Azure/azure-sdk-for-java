@@ -212,9 +212,9 @@ class LoadBalancerImpl
             String backendName = nicInBackend.getValue();
             try {
                 NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
-                NicIPConfiguration nicIp = nic.primaryIPConfiguration();
+                NicIPConfiguration nicIP = nic.primaryIPConfiguration();
                 nic.update()
-                    .updateIpConfiguration(nicIp.name())
+                    .updateIPConfiguration(nicIP.name())
                     .withExistingLoadBalancerBackend(this, backendName)
                     .parent()
                     .apply();

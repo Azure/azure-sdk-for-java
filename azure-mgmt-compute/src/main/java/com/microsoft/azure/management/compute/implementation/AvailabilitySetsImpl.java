@@ -45,7 +45,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public PagedList<AvailabilitySet> listByGroup(String groupName) {
+    public PagedList<AvailabilitySet> listByResourceGroup(String groupName) {
         return wrapList(this.inner().listByResourceGroup(groupName));
     }
 
