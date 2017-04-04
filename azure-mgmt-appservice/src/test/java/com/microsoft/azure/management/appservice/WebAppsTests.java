@@ -60,7 +60,7 @@ public class WebAppsTests extends AppServiceTest {
         Assert.assertEquals(Region.US_WEST, webApp1.region());
 
         // Get
-        WebApp webApp = appServiceManager.webApps().getByGroup(RG_NAME_1, webApp1.name());
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME_1, webApp1.name());
         Assert.assertEquals(webApp1.id(), webApp.id());
         webApp = appServiceManager.webApps().getById(webApp2.id());
         Assert.assertEquals(webApp2.name(), webApp.name());

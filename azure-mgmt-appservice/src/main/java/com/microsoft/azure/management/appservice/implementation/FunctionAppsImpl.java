@@ -46,7 +46,7 @@ class FunctionAppsImpl
     }
 
     @Override
-    public FunctionApp getByGroup(String groupName, String name) {
+    public FunctionApp getByResourceGroup(String groupName, String name) {
         SiteInner siteInner = this.inner().getByResourceGroup(groupName, name);
         if (siteInner == null) {
             return null;
@@ -87,7 +87,7 @@ class FunctionAppsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 }

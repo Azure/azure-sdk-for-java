@@ -10,8 +10,8 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceCertificateOrdersInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -29,11 +29,11 @@ import rx.Observable;
 public interface AppServiceCertificateOrders extends
         SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
         SupportsListingByResourceGroup<AppServiceCertificateOrder>,
+        SupportsGettingByResourceGroup<AppServiceCertificateOrder>,
         SupportsListing<AppServiceCertificateOrder>,
-        SupportsGettingByGroup<AppServiceCertificateOrder>,
         SupportsGettingById<AppServiceCertificateOrder>,
+        SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
         HasInner<AppServiceCertificateOrdersInner> {
     /**
@@ -43,5 +43,5 @@ public interface AppServiceCertificateOrders extends
      * @param name the name of the resource. (Note, this is not the ID)
      * @return an immutable representation of the resource
      */
-    Observable<AppServiceCertificateOrder> getByGroupAsync(String resourceGroupName, String name);
+    Observable<AppServiceCertificateOrder> getByResourceGroupAsync(String resourceGroupName, String name);
 }

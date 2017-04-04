@@ -5,17 +5,13 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -26,9 +22,12 @@ import com.microsoft.azure.management.resources.fluentcore.collection.InnerSuppo
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
-
 import rx.Completable;
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Base class for resource collection classes.
@@ -48,8 +47,8 @@ public abstract class TopLevelModifiableResourcesImpl<
     extends GroupableResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT>
     implements
         SupportsGettingById<T>,
-        SupportsGettingByGroup<T>,
-        SupportsDeletingByGroup,
+        SupportsGettingByResourceGroup<T>,
+        SupportsDeletingByResourceGroup,
         HasManager<ManagerT>,
         HasInner<InnerCollectionT>,
         SupportsListing<T>,

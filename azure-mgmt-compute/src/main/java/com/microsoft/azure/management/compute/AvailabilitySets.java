@@ -9,8 +9,8 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.AvailabilitySetsInner;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -26,12 +26,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent
 public interface AvailabilitySets extends
         SupportsListingByResourceGroup<AvailabilitySet>,
-        SupportsGettingByGroup<AvailabilitySet>,
+        SupportsGettingByResourceGroup<AvailabilitySet>,
         SupportsGettingById<AvailabilitySet>,
         SupportsListing<AvailabilitySet>,
         SupportsCreating<AvailabilitySet.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<AvailabilitySet>,
         HasManager<ComputeManager>,
         HasInner<AvailabilitySetsInner> {

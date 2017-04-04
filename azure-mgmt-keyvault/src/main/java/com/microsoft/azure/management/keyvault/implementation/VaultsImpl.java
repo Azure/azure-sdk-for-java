@@ -59,7 +59,7 @@ class VaultsImpl
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         return this.inner().deleteAsync(groupName, name).toCompletable();
     }
 

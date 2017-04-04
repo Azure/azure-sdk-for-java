@@ -10,8 +10,8 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.appservice.implementation.CertificatesInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -30,9 +30,9 @@ public interface AppServiceCertificates extends
         SupportsDeletingById,
         SupportsListingByResourceGroup<AppServiceCertificate>,
         SupportsListing<AppServiceCertificate>,
-        SupportsGettingByGroup<AppServiceCertificate>,
+        SupportsGettingByResourceGroup<AppServiceCertificate>,
         SupportsGettingById<AppServiceCertificate>,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
         HasInner<CertificatesInner> {
 }

@@ -20,7 +20,7 @@ import rx.Observable;
  * @param <T> the type of the resource to get.
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsGettingByGroup<T> {
+public interface SupportsGettingByResourceGroup<T> {
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
      *
@@ -28,7 +28,7 @@ public interface SupportsGettingByGroup<T> {
      * @param name the name of the resource. (Note, this is not the ID)
      * @return an immutable representation of the resource
      */
-    T getByGroup(String resourceGroupName, String name);
+    T getByResourceGroup(String resourceGroupName, String name);
 
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
@@ -37,7 +37,7 @@ public interface SupportsGettingByGroup<T> {
      * @param name the name of the resource. (Note, this is not the ID)
      * @return Observable to an immutable representation of the resource
      */
-    Observable<T> getByGroupAsync(String resourceGroupName, String name);
+    Observable<T> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
@@ -47,5 +47,5 @@ public interface SupportsGettingByGroup<T> {
      * @param callback the callback to call on success or failure
      * @return Observable to an immutable representation of the resource
      */
-    ServiceFuture<T> getByGroupAsync(String resourceGroupName, String name, ServiceCallback<T> callback);
+    ServiceFuture<T> getByResourceGroupAsync(String resourceGroupName, String name, ServiceCallback<T> callback);
 }

@@ -72,7 +72,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assert.assertNotNull(foundVM);
         Assert.assertEquals(REGION, foundVM.region());
         // Get
-        foundVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
+        foundVM = computeManager.virtualMachines().getByResourceGroup(RG_NAME, VMNAME);
         Assert.assertNotNull(foundVM);
         Assert.assertEquals(REGION, foundVM.region());
 

@@ -9,8 +9,8 @@ package com.microsoft.azure.management.keyvault;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.keyvault.implementation.VaultsInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -26,9 +26,9 @@ public interface Vaults extends
         SupportsCreating<Vault.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<Vault>,
-        SupportsGettingByGroup<Vault>,
+        SupportsGettingByResourceGroup<Vault>,
         SupportsGettingById<Vault>,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         HasManager<KeyVaultManager>,
         HasInner<VaultsInner> {
 }

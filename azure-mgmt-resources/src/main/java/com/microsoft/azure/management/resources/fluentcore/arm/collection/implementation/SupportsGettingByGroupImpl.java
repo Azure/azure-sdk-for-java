@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -23,16 +23,16 @@ import rx.Observable;
 public abstract class SupportsGettingByGroupImpl<T>
         extends SupportsGettingByIdImpl<T>
         implements
-            SupportsGettingByGroup<T>,
+            SupportsGettingByResourceGroup<T>,
             SupportsGettingById<T> {
     @Override
-    public T getByGroup(String resourceGroupName, String name) {
-        return this.getByGroupAsync(resourceGroupName, name).toBlocking().last();
+    public T getByResourceGroup(String resourceGroupName, String name) {
+        return this.getByResourceGroupAsync(resourceGroupName, name).toBlocking().last();
     }
 
     @Override
-    public ServiceFuture<T> getByGroupAsync(String resourceGroupName, String name, ServiceCallback<T> callback) {
-        return ServiceFuture.fromBody(getByGroupAsync(resourceGroupName, name), callback);
+    public ServiceFuture<T> getByResourceGroupAsync(String resourceGroupName, String name, ServiceCallback<T> callback) {
+        return ServiceFuture.fromBody(getByResourceGroupAsync(resourceGroupName, name), callback);
     }
 
     @Override
@@ -41,6 +41,6 @@ public abstract class SupportsGettingByGroupImpl<T>
         if (resourceId == null) {
             return null;
         }
-        return this.getByGroupAsync(resourceId.resourceGroupName(), resourceId.name());
+        return this.getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
 }

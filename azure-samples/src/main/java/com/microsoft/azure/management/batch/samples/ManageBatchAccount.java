@@ -119,7 +119,7 @@ public final class ManageBatchAccount {
 
             // ============================================================
             // Regenerate the keys for storage account
-            StorageAccount storageAccount = azure.storageAccounts().getByGroup(rgName, storageAccountName);
+            StorageAccount storageAccount = azure.storageAccounts().getByResourceGroup(rgName, storageAccountName);
             List<StorageAccountKey> storageAccountKeys = storageAccount.getKeys();
 
             Utils.print(storageAccountKeys);

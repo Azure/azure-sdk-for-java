@@ -60,7 +60,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         }
         Assert.assertTrue(found);
         // Get
-        storageAccount = storageManager.storageAccounts().getByGroup(RG_NAME, SA_NAME);
+        storageAccount = storageManager.storageAccounts().getByResourceGroup(RG_NAME, SA_NAME);
         Assert.assertNotNull(storageAccount);
 
         // Get Keys

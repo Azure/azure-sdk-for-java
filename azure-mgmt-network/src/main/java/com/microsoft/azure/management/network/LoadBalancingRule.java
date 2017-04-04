@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
-import com.microsoft.azure.management.network.model.HasFloatingIp;
+import com.microsoft.azure.management.network.model.HasFloatingIP;
 import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
@@ -28,7 +28,7 @@ public interface LoadBalancingRule extends
     ChildResource<LoadBalancer>,
     HasBackendPort,
     HasFrontend,
-    HasFloatingIp,
+    HasFloatingIP,
     HasProtocol<TransportProtocol>,
     HasFrontendPort {
 
@@ -131,7 +131,7 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            DefinitionStages.WithFloatingIp<ParentT>,
+            DefinitionStages.WithFloatingIP<ParentT>,
             DefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
             DefinitionStages.WithLoadDistribution<ParentT> {
         }
@@ -140,7 +140,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.DefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.DefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**
@@ -218,7 +218,7 @@ public interface LoadBalancingRule extends
         /**
          * The stage of a load balancing rule update allowing to enable the floating IP functionality.
          */
-        interface WithFloatingIp extends HasFloatingIp.UpdateStages.WithFloatingIp<Update> {
+        interface WithFloatingIP extends HasFloatingIP.UpdateStages.WithFloatingIP<Update> {
         }
 
         /**
@@ -255,7 +255,7 @@ public interface LoadBalancingRule extends
         UpdateStages.WithFrontend,
         UpdateStages.WithProtocol,
         UpdateStages.WithBackendPort,
-        UpdateStages.WithFloatingIp,
+        UpdateStages.WithFloatingIP,
         UpdateStages.WithIdleTimeoutInMinutes,
         UpdateStages.WithLoadDistribution {
     }
@@ -334,7 +334,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithFloatingIp<ParentT> extends HasFloatingIp.UpdateDefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
+        interface WithFloatingIP<ParentT> extends HasFloatingIP.UpdateDefinitionStages.WithFloatingIP<WithAttach<ParentT>> {
         }
 
         /**
@@ -372,7 +372,7 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithFloatingIp<ParentT>,
+            UpdateDefinitionStages.WithFloatingIP<ParentT>,
             UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
             UpdateDefinitionStages.WithLoadDistribution<ParentT> {
         }

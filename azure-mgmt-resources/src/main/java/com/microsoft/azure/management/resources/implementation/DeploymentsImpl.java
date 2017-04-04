@@ -73,7 +73,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Observable<Deployment> getByGroupAsync(String groupName, String name) {
+    public Observable<Deployment> getByResourceGroupAsync(String groupName, String name) {
         return this.manager().inner().deployments().getByResourceGroupAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
@@ -83,17 +83,17 @@ final class DeploymentsImpl
     }
 
     @Override
-    public void deleteByGroup(String groupName, String name) {
-        deleteByGroupAsync(groupName, name).await();
+    public void deleteByResourceGroup(String groupName, String name) {
+        deleteByResourceGroupAsync(groupName, name).await();
     }
 
     @Override
-    public ServiceFuture<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByGroupAsync(groupName, name).<Void>toObservable(), callback);
+    public ServiceFuture<Void> deleteByResourceGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name).<Void>toObservable(), callback);
     }
 
     @Override
-    public Completable deleteByGroupAsync(String groupName, String name) {
+    public Completable deleteByResourceGroupAsync(String groupName, String name) {
         return this.manager().inner().deployments().deleteAsync(groupName, name).toCompletable();
     }
 
@@ -119,7 +119,7 @@ final class DeploymentsImpl
 
     @Override
     public Deployment getById(String id) {
-        return this.getByGroup(
+        return this.getByResourceGroup(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));
     }
@@ -136,7 +136,7 @@ final class DeploymentsImpl
 
     @Override
     public Completable deleteByIdAsync(String id) {
-        return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override

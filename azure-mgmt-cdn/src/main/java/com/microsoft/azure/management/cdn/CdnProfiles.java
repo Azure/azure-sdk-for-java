@@ -11,8 +11,8 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -35,10 +35,10 @@ public interface CdnProfiles extends
         SupportsCreating<CdnProfile.DefinitionStages.Blank>,
         SupportsListing<CdnProfile>,
         SupportsListingByResourceGroup<CdnProfile>,
-        SupportsGettingByGroup<CdnProfile>,
+        SupportsGettingByResourceGroup<CdnProfile>,
         SupportsGettingById<CdnProfile>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<CdnProfile>,
         SupportsBatchDeletion,
         HasManager<CdnManager>,

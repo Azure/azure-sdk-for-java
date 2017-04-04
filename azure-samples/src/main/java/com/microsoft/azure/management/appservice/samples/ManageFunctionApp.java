@@ -123,7 +123,7 @@ public final class ManageFunctionApp {
             // Delete a function app
 
             System.out.println("Deleting function app " + app1Name + "...");
-            azure.webApps().deleteByGroup(rg1Name, app1Name);
+            azure.webApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted function app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");

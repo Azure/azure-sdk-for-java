@@ -46,7 +46,7 @@ public class AppServicePlansTests extends AppServiceTest {
         Assert.assertEquals(0, appServicePlan.numberOfWebApps());
         Assert.assertEquals(20, appServicePlan.maxInstances());
         // GET
-        Assert.assertNotNull(appServiceManager.appServicePlans().getByGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
+        Assert.assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
         // LIST
         List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
         boolean found = false;

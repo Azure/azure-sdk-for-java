@@ -45,7 +45,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         }
         Assert.assertTrue(found);
         // Get
-        batchAccount = batchManager.batchAccounts().getByGroup(RG_NAME, BATCH_NAME);
+        batchAccount = batchManager.batchAccounts().getByResourceGroup(RG_NAME, BATCH_NAME);
         Assert.assertNotNull(batchAccount);
 
         // Get Keys
@@ -155,7 +155,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
                     .withoutApplicationPackage(applicationPackage1Name)
                 .parent()
                 .apply();
-        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+        batchManager.batchAccounts().deleteByResourceGroup(batchAccount.resourceGroupName(), batchAccount.name());
 
         batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
         Assert.assertNull(batchAccount);
@@ -195,7 +195,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         }
         Assert.assertTrue(found);
         // Get
-        batchAccount = batchManager.batchAccounts().getByGroup(RG_NAME, BATCH_NAME);
+        batchAccount = batchManager.batchAccounts().getByResourceGroup(RG_NAME, BATCH_NAME);
         Assert.assertNotNull(batchAccount);
 
         Assert.assertTrue(batchAccount.applications().containsKey(applicationId));
@@ -205,7 +205,7 @@ public class BatchAccountOperationsTests extends BatchManagementTest {
         Assert.assertEquals(application.displayName(), applicationDisplayName);
         Assert.assertEquals(application.updatesAllowed(), allowUpdates);
 
-        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+        batchManager.batchAccounts().deleteByResourceGroup(batchAccount.resourceGroupName(), batchAccount.name());
         batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
         Assert.assertNull(batchAccount);
     }

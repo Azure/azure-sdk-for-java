@@ -133,7 +133,7 @@ public final class ManageVirtualMachineWithDisk {
             Disk disk = azure.disks().getById(lun3DiskId);
             System.out.println("Delete managed disk: " + disk.id());
 
-            azure.disks().deleteByGroup(disk.resourceGroupName(), disk.name());
+            azure.disks().deleteByResourceGroup(disk.resourceGroupName(), disk.name());
 
             System.out.println("Deleted managed disk");
 

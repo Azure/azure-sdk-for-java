@@ -9,8 +9,8 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.dns.implementation.ZonesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -28,10 +28,10 @@ public interface DnsZones extends
         SupportsCreating<DnsZone.DefinitionStages.Blank>,
         SupportsListing<DnsZone>,
         SupportsListingByResourceGroup<DnsZone>,
-        SupportsGettingByGroup<DnsZone>,
+        SupportsGettingByResourceGroup<DnsZone>,
         SupportsGettingById<DnsZone>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<DnsZone>,
         SupportsBatchDeletion,
         HasManager<DnsZoneManager>,

@@ -11,8 +11,8 @@ import com.microsoft.azure.management.batch.implementation.BatchAccountsInner;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -30,10 +30,10 @@ public interface BatchAccounts extends
         SupportsCreating<BatchAccount.DefinitionStages.Blank>,
         SupportsListing<BatchAccount>,
         SupportsListingByResourceGroup<BatchAccount>,
-        SupportsGettingByGroup<BatchAccount>,
+        SupportsGettingByResourceGroup<BatchAccount>,
         SupportsGettingById<BatchAccount>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<BatchAccount>,
         SupportsBatchDeletion,
         HasManager<BatchManager>,

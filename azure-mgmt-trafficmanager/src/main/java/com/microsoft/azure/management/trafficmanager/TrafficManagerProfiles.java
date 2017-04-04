@@ -7,8 +7,8 @@ package com.microsoft.azure.management.trafficmanager;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -31,10 +31,10 @@ public interface TrafficManagerProfiles extends
         SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
         SupportsListing<TrafficManagerProfile>,
         SupportsListingByResourceGroup<TrafficManagerProfile>,
-        SupportsGettingByGroup<TrafficManagerProfile>,
+        SupportsGettingByResourceGroup<TrafficManagerProfile>,
         SupportsGettingById<TrafficManagerProfile>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<TrafficManagerProfile>,
         SupportsBatchDeletion,
         HasManager<TrafficManager>,

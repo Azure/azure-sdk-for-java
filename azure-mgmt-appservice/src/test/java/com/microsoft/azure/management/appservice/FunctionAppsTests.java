@@ -78,7 +78,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assert.assertEquals(Region.US_WEST, functionApp2.region());
 
         // Get
-        FunctionApp functionApp = appServiceManager.functionApps().getByGroup(RG_NAME_1, functionApp1.name());
+        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(RG_NAME_1, functionApp1.name());
         Assert.assertEquals(functionApp1.id(), functionApp.id());
         functionApp = appServiceManager.functionApps().getById(functionApp2.id());
         Assert.assertEquals(functionApp2.name(), functionApp.name());

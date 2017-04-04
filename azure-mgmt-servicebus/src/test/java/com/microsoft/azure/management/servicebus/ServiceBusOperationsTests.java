@@ -67,7 +67,7 @@ public class ServiceBusOperationsTests extends TestBase {
                 .create();
 
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .getByGroup(RG_NAME, namespaceDNSLabel);
+                .getByResourceGroup(RG_NAME, namespaceDNSLabel);
         Assert.assertNotNull(namespace);
         Assert.assertNotNull(namespace.inner());
 

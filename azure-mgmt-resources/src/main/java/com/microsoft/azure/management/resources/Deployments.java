@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
@@ -27,10 +27,10 @@ public interface Deployments extends
         SupportsListing<Deployment>,
         SupportsListingByResourceGroup<Deployment>,
         SupportsGettingByName<Deployment>,
-        SupportsGettingByGroup<Deployment>,
+        SupportsGettingByResourceGroup<Deployment>,
         SupportsGettingById<Deployment>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         HasManager<ResourceManager> {
     /**
      * Checks if a deployment exists in a resource group.

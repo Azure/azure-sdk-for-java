@@ -40,7 +40,7 @@ class LoadBalancerBackendImpl
     // Getters
 
     @Override
-    public Map<String, String> backendNicIpConfigurationNames() {
+    public Map<String, String> backendNicIPConfigurationNames() {
         // This assumes a NIC can only have one IP config associated with the backend of an LB,
         // which is correct at the time of this implementation and seems unlikely to ever change
         final Map<String, String> ipConfigNames = new TreeMap<>();
@@ -79,7 +79,7 @@ class LoadBalancerBackendImpl
     @Override
     public Set<String> getVirtualMachineIds() {
         Set<String> vmIds = new HashSet<>();
-        Map<String, String> nicConfigs = this.backendNicIpConfigurationNames();
+        Map<String, String> nicConfigs = this.backendNicIPConfigurationNames();
         if (nicConfigs != null) {
             for (String nicId : nicConfigs.keySet()) {
                 try {

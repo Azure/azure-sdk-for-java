@@ -11,8 +11,8 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -31,11 +31,11 @@ import java.io.IOException;
 public interface VirtualMachineScaleSets extends
         SupportsListing<VirtualMachineScaleSet>,
         SupportsListingByResourceGroup<VirtualMachineScaleSet>,
-        SupportsGettingByGroup<VirtualMachineScaleSet>,
+        SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingById<VirtualMachineScaleSet>,
         SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineScaleSet>,
         SupportsBatchDeletion,
         HasManager<ComputeManager>,

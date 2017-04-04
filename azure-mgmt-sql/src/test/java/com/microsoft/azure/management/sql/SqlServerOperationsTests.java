@@ -31,7 +31,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Ignore("Depends on the existing SQL server")
     @Test
     public void canListRecommendedElasticPools() throws Exception {
-        SqlServer sqlServer = sqlServerManager.sqlServers().getByGroup("ans", "ans-secondary");
+        SqlServer sqlServer = sqlServerManager.sqlServers().getByResourceGroup("ans", "ans-secondary");
         sqlServer.databases().list().get(0).listServiceTierAdvisors().values().iterator().next().serviceLevelObjectiveUsageMetrics();
         Map<String, RecommendedElasticPool> recommendedElasticPools = sqlServer.listRecommendedElasticPools();
         Assert.assertNotNull(recommendedElasticPools);
@@ -64,10 +64,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         }
         Assert.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         Assert.assertNotNull(sqlServer);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -131,10 +131,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assert.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         Assert.assertNotNull(sqlServer);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -148,7 +148,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             SqlServer sqlServer,
             boolean deleteUsingUpdate) {
         validateSqlServer(sqlServer);
-        validateSqlServer(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME));
+        validateSqlServer(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME));
         validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
         validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
 
@@ -290,7 +290,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assert.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
         // End of testing service tier advisors.
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Create another database with above created database as source database.
@@ -330,7 +330,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .first();
         sqlServer.databases().delete(sqlDatabase.name());
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -388,9 +388,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer1.databases().delete(databaseInServer1.name());
         sqlServer2.databases().delete(databaseInServer2.name());
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer2.resourceGroupName(), sqlServer2.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer2.resourceGroupName(), sqlServer2.name());
         validateSqlServerNotFound(sqlServer2);
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer1.resourceGroupName(), sqlServer1.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer1.resourceGroupName(), sqlServer1.name());
         validateSqlServerNotFound(sqlServer1);
     }
 
@@ -439,7 +439,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         sqlServer.databases().delete(SQL_DATABASE_NAME);
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -464,7 +464,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Get Elastic pool
@@ -563,7 +563,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabaseNotFound("newDatabase");
 
         sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -572,7 +572,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         Observable<Indexable> resourceStream = sqlServer.elasticPools()
@@ -620,7 +620,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer.elasticPools().delete(sqlElasticPool.name());
         validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
 
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -629,7 +629,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         Observable<Indexable> resourceStream = sqlServer.firewallRules()
@@ -680,12 +680,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlFirewallRuleNotFound();
 
         // Delete server
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
     private static void validateSqlFirewallRuleNotFound() {
-        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
+        Assert.assertNull(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
     }
 
     private static void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
@@ -693,7 +693,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
-        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
+        Assert.assertNull(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
     }
 
 

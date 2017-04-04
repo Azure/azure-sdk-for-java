@@ -18,7 +18,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
  * @param <T> the fluent type of the resource
  */
 @LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsListingInGroupByTag<T> {
+public interface SupportsListingInResourceGroupByTag<T> {
     /**
      * Lists all the resources with the specified tag.
      *

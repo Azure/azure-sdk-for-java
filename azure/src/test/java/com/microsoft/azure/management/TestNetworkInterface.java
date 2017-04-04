@@ -30,7 +30,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress("pipdns" + this.testId)
-                .withIpForwarding()
+                .withIPForwarding()
                 .create();
 
         // Verify NIC is properly referenced by subnet
@@ -52,8 +52,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
-                .withoutIpForwarding()
-                .updateIpConfiguration("primary") // Updating the primary ip configuration
+                .withoutIPForwarding()
+                .updateIPConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
@@ -83,7 +83,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\tIP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\tIP forwarding enabled: ").append(resource.isIPForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
