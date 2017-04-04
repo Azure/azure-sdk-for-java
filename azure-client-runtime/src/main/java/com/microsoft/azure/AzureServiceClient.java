@@ -6,12 +6,19 @@
 
 package com.microsoft.azure;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -52,6 +59,21 @@ public abstract class AzureServiceClient extends ServiceClient {
      * @return the user agent string.
      */
     public String userAgent() {
-        return "Azure-SDK-For-Java/" + getClass().getPackage().getImplementationVersion();
+        return String.format("Azure-SDK-For-Java/%s OS:%s MacAddressHash:%s",
+                getClass().getPackage().getImplementationVersion(),
+                OS,
+                MAC_ADDRESS_HASH);
+    }
+
+    private static final HashCode MAC_ADDRESS_HASH;
+    private static final String OS;
+
+    static {
+        OS = System.getProperty("os.name") + "/" + System.getProperty("os.version");
+        try {
+            MAC_ADDRESS_HASH = Hashing.sha256().hashBytes(NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress());
+        } catch (SocketException | UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
