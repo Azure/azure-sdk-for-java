@@ -6,45 +6,26 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePlans;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for AppServicePlans.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlansImpl
-        extends GroupableResourcesImpl<
-        AppServicePlan,
-        AppServicePlanImpl,
-        AppServicePlanInner,
-        AppServicePlansInner,
-        AppServiceManager>
+        extends TopLevelModifiableResourcesImpl<
+                AppServicePlan,
+                AppServicePlanImpl,
+                AppServicePlanInner,
+                AppServicePlansInner,
+                AppServiceManager>
         implements AppServicePlans {
 
     AppServicePlansImpl(AppServiceManager manager) {
         super(manager.inner().appServicePlans(), manager);
-    }
-
-    @Override
-    protected Observable<AppServicePlanInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
-
-    }
-
-    @Override
-    public PagedList<AppServicePlan> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override

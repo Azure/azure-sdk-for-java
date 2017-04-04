@@ -13,10 +13,11 @@ import com.microsoft.azure.management.appservice.implementation.WebAppsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -27,10 +28,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface FunctionApps extends
         SupportsCreating<FunctionApp.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroup<FunctionApp>,
+        SupportsDeletingByGroup,
+        SupportsListingByGroupAsync<FunctionApp>,
+        SupportsListingAsync<FunctionApp>,
         SupportsGettingByGroup<FunctionApp>,
         SupportsGettingById<FunctionApp>,
-        SupportsDeletingByGroup,
         HasManager<AppServiceManager>,
         HasInner<WebAppsInner> {
 }

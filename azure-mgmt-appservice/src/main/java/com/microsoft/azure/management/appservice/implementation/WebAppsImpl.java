@@ -10,9 +10,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebApps;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -21,12 +20,12 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
-        extends GroupableResourcesImpl<
-            WebApp,
-            WebAppImpl,
-            SiteInner,
-            WebAppsInner,
-            AppServiceManager>
+        extends TopLevelModifiableResourcesImpl<
+                    WebApp,
+                    WebAppImpl,
+                    SiteInner,
+                    WebAppsInner,
+                    AppServiceManager>
         implements WebApps {
 
     private final PagedListConverter<SiteInner, WebApp> converter;
@@ -48,11 +47,6 @@ class WebAppsImpl
     }
 
     @Override
-    public PagedList<WebApp> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
-    }
-
-    @Override
     public Observable<WebApp> getByGroupAsync(final String groupName, final String name) {
         final WebAppsImpl self = this;
         return this.inner().getByResourceGroupAsync(groupName, name).flatMap(new Func1<SiteInner, Observable<WebApp>>() {
@@ -70,17 +64,6 @@ class WebAppsImpl
             }
         });
 
-    }
-
-    @Override
-    protected Observable<SiteInner> getInnerAsync(String resourceGroupName, String name) {
-        // Not implemented.
-        return null;
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override

@@ -27,8 +27,8 @@ public interface DeploymentSlots extends
         SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
         SupportsListingAsync<DeploymentSlot>,
         SupportsGettingByName<DeploymentSlot>,
-        SupportsDeletingById,
         SupportsGettingById<DeploymentSlot>,
+        SupportsDeletingById,
         SupportsDeletingByName,
         HasManager<AppServiceManager>,
         HasParent<WebApp> {

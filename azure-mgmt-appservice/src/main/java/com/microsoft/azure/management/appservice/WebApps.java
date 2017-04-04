@@ -14,9 +14,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -27,10 +29,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface WebApps extends
         SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,
+        SupportsDeletingByGroup,
         SupportsListingByGroup<WebApp>,
+        SupportsListingByGroupAsync<WebApp>,
+        SupportsListingAsync<WebApp>,
         SupportsGettingByGroup<WebApp>,
         SupportsGettingById<WebApp>,
-        SupportsDeletingByGroup,
         HasManager<AppServiceManager>,
         HasInner<WebAppsInner> {
 }
