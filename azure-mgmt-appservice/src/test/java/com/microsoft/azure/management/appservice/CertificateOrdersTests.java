@@ -28,15 +28,15 @@ public class CertificateOrdersTests extends AppServiceTest {
                 .withExistingResourceGroup(RG_NAME)
                 .withHostName("*.graph-webapp-319.com")
                 .withWildcardSku()
-                .withDomainVerification(appServiceManager.domains().getByGroup(RG_NAME, "graph-webapp-319.com"))
+                .withDomainVerification(appServiceManager.domains().getByResourceGroup(RG_NAME, "graph-webapp-319.com"))
                 .withNewKeyVault("graphvault", Region.US_WEST)
                 .withValidYears(1)
                 .create();
         Assert.assertNotNull(certificateOrder);
         // GET
-        Assert.assertNotNull(appServiceManager.certificateOrders().getByGroup(RG_NAME, CERTIFICATE_NAME));
+        Assert.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, CERTIFICATE_NAME));
         // LIST
-        List<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByGroup(RG_NAME);
+        List<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
             if (CERTIFICATE_NAME.equals(co.name())) {

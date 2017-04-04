@@ -19,12 +19,12 @@ import rx.Observable;
  * @param <T> the type of the resources listed.
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsListingByGroupAsync<T> extends SupportsListingByGroup<T> {
+public interface SupportsListingByResourceGroupAsync<T> extends SupportsListingByResourceGroup<T> {
     /**
      * Lists resources of the specified type in the specified resource group.
      *
      * @param resourceGroupName the name of the resource group to list the resources from
      * @return the list of resources
      */
-    Observable<T> listByGroupAsync(String resourceGroupName);
+    Observable<T> listByResourceGroupAsync(String resourceGroupName);
 }

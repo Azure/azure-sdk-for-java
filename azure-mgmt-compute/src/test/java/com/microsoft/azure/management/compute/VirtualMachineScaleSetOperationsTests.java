@@ -399,7 +399,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         virtualMachineScaleSet = this.computeManager
                 .virtualMachineScaleSets()
-                .getByGroup(RG_NAME, vmss_name);
+                .getByResourceGroup(RG_NAME, vmss_name);
 
         // Check LB after update
         //

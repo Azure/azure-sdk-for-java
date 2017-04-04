@@ -246,7 +246,7 @@ public final class ManageNetworkSecurityGroup {
             // List network security groups
 
             System.out.println("Walking through network security groups");
-            List<NetworkSecurityGroup> networkSecurityGroups = azure.networkSecurityGroups().listByGroup(rgName);
+            List<NetworkSecurityGroup> networkSecurityGroups = azure.networkSecurityGroups().listByResourceGroup(rgName);
 
             for (NetworkSecurityGroup networkSecurityGroup: networkSecurityGroups) {
                 Utils.print(networkSecurityGroup);

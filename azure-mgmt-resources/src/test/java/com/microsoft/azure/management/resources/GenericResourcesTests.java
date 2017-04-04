@@ -62,7 +62,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                 .create();
         //List
-        List<GenericResource> resourceList = genericResources.listByGroup(rgName);
+        List<GenericResource> resourceList = genericResources.listByResourceGroup(rgName);
         boolean found = false;
         for (GenericResource gr: resourceList) {
             if (gr.name().equals(resource.name())) {

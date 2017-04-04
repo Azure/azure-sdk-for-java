@@ -80,7 +80,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testGenericResources() throws Exception {
-        PagedList<GenericResource> resources = azure.genericResources().listByGroup("sdkpriv");
+        PagedList<GenericResource> resources = azure.genericResources().listByResourceGroup("sdkpriv");
         GenericResource firstResource = resources.get(0);
 
         GenericResource resourceById = azure.genericResources().getById(firstResource.id());

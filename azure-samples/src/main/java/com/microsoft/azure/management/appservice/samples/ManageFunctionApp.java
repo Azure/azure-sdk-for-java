@@ -115,7 +115,7 @@ public final class ManageFunctionApp {
 
             System.out.println("Printing list of function apps in resource group " + rg1Name + "...");
 
-            for (FunctionApp functionApp : azure.appServices().functionApps().listByGroup(rg1Name)) {
+            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
 
@@ -123,11 +123,11 @@ public final class ManageFunctionApp {
             // Delete a function app
 
             System.out.println("Deleting function app " + app1Name + "...");
-            azure.webApps().deleteByGroup(rg1Name, app1Name);
+            azure.webApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted function app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-            for (FunctionApp functionApp : azure.appServices().functionApps().listByGroup(rg1Name)) {
+            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
             return true;

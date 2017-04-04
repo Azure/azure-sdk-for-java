@@ -99,7 +99,7 @@ public final class ManageWebAppSourceControl {
             // Create a second web app with local git source control
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
+            AppServicePlan plan = azure.appServices().appServicePlans().getByResourceGroup(rgName, planName);
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)

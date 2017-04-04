@@ -68,7 +68,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assert.assertEquals(OperatingSystem.LINUX, webApp2.operatingSystem());
 
         // Get
-        WebApp webApp = appServiceManager.webApps().getByGroup(RG_NAME_1, webApp1.name());
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME_1, webApp1.name());
         Assert.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());
         webApp = appServiceManager.webApps().getById(webApp2.id());
         Assert.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());

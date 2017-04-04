@@ -52,7 +52,7 @@ public class HostnameSslTests extends AppServiceTest {
                     .attach()
                 .create();
 
-        WebApp webApp = appServiceManager.webApps().getByGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
         Assert.assertNotNull(webApp);
         if (!IS_MOCKED) {
             Response response = curl("http://" + WEBAPP_NAME + "." + DOMAIN);

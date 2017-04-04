@@ -11,10 +11,10 @@ import com.microsoft.azure.management.batch.implementation.BatchAccountsInner;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -29,11 +29,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface BatchAccounts extends
         SupportsCreating<BatchAccount.DefinitionStages.Blank>,
         SupportsListingAsync<BatchAccount>,
-        SupportsListingByGroupAsync<BatchAccount>,
-        SupportsGettingByGroup<BatchAccount>,
+        SupportsListingByResourceGroupAsync<BatchAccount>,
+        SupportsGettingByResourceGroup<BatchAccount>,
         SupportsGettingById<BatchAccount>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<BatchAccount>,
         SupportsBatchDeletion,
         HasManager<BatchManager>,

@@ -64,7 +64,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assert.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
         // List by Resource Group
-        List<RedisCache> redisCaches = redisManager.redisCaches().listByGroup(RG_NAME);
+        List<RedisCache> redisCaches = redisManager.redisCaches().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (RedisCache existingRedisCache : redisCaches) {
             if (existingRedisCache.name().equals(RR_NAME)) {
@@ -86,7 +86,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assert.assertTrue(redisCaches.size() >= 3);
 
         // Get
-        RedisCache redisCacheGet = redisManager.redisCaches().getByGroup(RG_NAME, RR_NAME);
+        RedisCache redisCacheGet = redisManager.redisCaches().getByResourceGroup(RG_NAME, RR_NAME);
         Assert.assertNotNull(redisCacheGet);
         Assert.assertEquals(redisCache.id(), redisCacheGet.id());
         Assert.assertEquals(redisCache.provisioningState(), redisCacheGet.provisioningState());

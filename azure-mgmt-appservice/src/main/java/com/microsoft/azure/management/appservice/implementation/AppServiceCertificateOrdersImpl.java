@@ -33,12 +33,12 @@ class AppServiceCertificateOrdersImpl
     }
 
     @Override
-    public AppServiceCertificateOrder getByGroup(String groupName, String name) {
+    public AppServiceCertificateOrder getByResourceGroup(String groupName, String name) {
         return wrapModel(this.inner().getByResourceGroup(groupName, name));
     }
 
     @Override
-    public PagedList<AppServiceCertificateOrder> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceCertificateOrder> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 

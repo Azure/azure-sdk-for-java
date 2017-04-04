@@ -360,7 +360,7 @@ class NetworkInterfaceImpl
             String id = this.networkSecurityGroupId();
             this.networkSecurityGroup = super.myManager
                     .networkSecurityGroups()
-                    .getByGroup(ResourceUtils.groupFromResourceId(id),
+                    .getByResourceGroup(ResourceUtils.groupFromResourceId(id),
                     ResourceUtils.nameFromResourceId(id));
         }
         return this.networkSecurityGroup;

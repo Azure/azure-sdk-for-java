@@ -43,7 +43,7 @@ class AppServicePlansImpl
     }
 
     @Override
-    public PagedList<AppServicePlan> listByGroup(String resourceGroupName) {
+    public PagedList<AppServicePlan> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 

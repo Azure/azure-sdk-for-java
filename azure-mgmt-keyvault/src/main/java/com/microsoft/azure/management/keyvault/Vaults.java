@@ -9,10 +9,10 @@ package com.microsoft.azure.management.keyvault;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.keyvault.implementation.VaultsInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
@@ -25,10 +25,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface Vaults extends
         SupportsCreating<Vault.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroupAsync<Vault>,
-        SupportsGettingByGroup<Vault>,
+        SupportsListingByResourceGroupAsync<Vault>,
+        SupportsGettingByResourceGroup<Vault>,
         SupportsGettingById<Vault>,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         HasManager<KeyVaultManager>,
         HasInner<VaultsInner> {
 }

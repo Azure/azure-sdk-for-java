@@ -459,7 +459,7 @@ public class TestApplicationGateway {
             final int configCount = resource.backendHttpConfigurations().size();
             final int certCount = resource.sslCertificates().size();
 
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
 
             resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
@@ -592,7 +592,7 @@ public class TestApplicationGateway {
                 }
             };
 
-            final PublicIPAddress pip = resources.manager().publicIPAddresses().getByGroup(GROUP_NAME, PIP_NAMES[0]);
+            final PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
 
             // Prepare for execution in a separate thread to shorten the test
             Thread creationThread = new Thread(new Runnable() {

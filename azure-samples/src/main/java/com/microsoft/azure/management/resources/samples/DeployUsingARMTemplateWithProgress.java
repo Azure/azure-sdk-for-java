@@ -66,14 +66,14 @@ public final class DeployUsingARMTemplateWithProgress {
 
             System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
 
-            Deployment deployment = azure.deployments().getByGroup(rgName, deploymentName);
+            Deployment deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
             System.out.println("Current deployment status : " + deployment.provisioningState());
 
             while (!(deployment.provisioningState().equalsIgnoreCase("Succeeded")
                     || deployment.provisioningState().equalsIgnoreCase("Failed")
                     || deployment.provisioningState().equalsIgnoreCase("Cancelled"))) {
                 SdkContext.sleep(10000);
-                deployment = azure.deployments().getByGroup(rgName, deploymentName);
+                deployment = azure.deployments().getByResourceGroup(rgName, deploymentName);
                 System.out.println("Current deployment status : " + deployment.provisioningState());
             }
             return true;

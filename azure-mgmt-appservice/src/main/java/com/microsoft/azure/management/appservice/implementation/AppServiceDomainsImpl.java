@@ -67,7 +67,7 @@ class AppServiceDomainsImpl
     }
 
     @Override
-    public PagedList<AppServiceDomain> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceDomain> listByResourceGroup(String resourceGroupName) {
         return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 

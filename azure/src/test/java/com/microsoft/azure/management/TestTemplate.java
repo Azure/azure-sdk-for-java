@@ -8,7 +8,7 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -30,7 +30,7 @@ public abstract class TestTemplate<
     ResourceT extends GroupableResource<? extends ManagerBase, ?>,
     CollectionT extends
         SupportsListing<ResourceT>
-        & SupportsGettingByGroup<ResourceT>
+        & SupportsGettingByResourceGroup<ResourceT>
         & SupportsDeletingById
         & SupportsGettingById<ResourceT>
         & HasInner<?>
@@ -82,7 +82,7 @@ public abstract class TestTemplate<
      * @throws IOException if anything goes wrong
      */
     public ResourceT verifyGetting() throws CloudException, IOException {
-        ResourceT resourceByGroup = this.collection.getByGroup(this.resource.resourceGroupName(), this.resource.name());
+        ResourceT resourceByGroup = this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
         ResourceT resourceById = this.collection.getById(resourceByGroup.id());
         Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
         return resourceById;

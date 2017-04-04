@@ -164,7 +164,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         }
         return this.manager()
             .networkSecurityGroups()
-            .getByGroup(ResourceUtils.groupFromResourceId(nsgId),
+            .getByResourceGroup(ResourceUtils.groupFromResourceId(nsgId),
                 ResourceUtils.nameFromResourceId(nsgId));
     }
 
