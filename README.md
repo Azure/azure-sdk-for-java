@@ -8,7 +8,7 @@
 
 This is the next generation Service Bus Java client library that focuses on Queues & Topics. If you are looking for Event Hubs, follow this [link](https://github.com/azure/azure-event-hubs-java).
 
-Azure Service Bus Messaging is an asynchronous messaging cloud platform that enables you to send messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
+Azure Service Bus is an asynchronous messaging cloud platform that enables you to send messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
 
 Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn more about Service Bus. 
 
