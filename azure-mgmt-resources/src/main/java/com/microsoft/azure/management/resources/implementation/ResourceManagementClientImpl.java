@@ -261,8 +261,6 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "ResourceManagementClient, 2016-09-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "ResourceManagementClient", "2016-09-01");
     }
 }

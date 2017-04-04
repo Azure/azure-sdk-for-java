@@ -182,8 +182,6 @@ public class SubscriptionClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "SubscriptionClient, 2016-06-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "SubscriptionClient", "2016-06-01");
     }
 }

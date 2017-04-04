@@ -518,9 +518,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "NetworkManagementClient, ");
+        return String.format("%s (%s)", super.userAgent(), "NetworkManagementClient");
     }
 
     private void initializeService() {
@@ -593,7 +591,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-03-01";
         final String domainNameLabel = null;
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
@@ -668,7 +666,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-03-01";
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
                 @Override

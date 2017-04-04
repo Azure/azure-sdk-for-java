@@ -247,8 +247,6 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "GraphRbacManagementClient, 1.6");
+        return String.format("%s (%s, %s)", super.userAgent(), "GraphRbacManagementClient", "1.6");
     }
 }

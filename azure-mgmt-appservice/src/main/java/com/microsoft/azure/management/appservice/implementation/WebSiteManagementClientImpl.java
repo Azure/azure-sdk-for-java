@@ -321,9 +321,7 @@ public class WebSiteManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "WebSiteManagementClient, ");
+        return String.format("%s (%s)", super.userAgent(), "WebSiteManagementClient");
     }
 
     private void initializeService() {
