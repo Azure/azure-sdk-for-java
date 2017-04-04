@@ -234,8 +234,6 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "MonitorManagementClient, ");
+        return String.format("%s (%s)", super.userAgent(), "MonitorManagementClient");
     }
 }
