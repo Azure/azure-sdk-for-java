@@ -6,14 +6,19 @@
 
 package com.microsoft.azure.credentials;
 
+import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.AzureEnvironment;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +36,15 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     private String clientId;
     /** The authentication secret for the application. */
     private String secret;
+    /** The PKCS12 certificate byte array. */
+    private byte[] certificate;
+    /** The certificate password. */
+    private String certPassword;
     /** The default subscription to use, if any. */
     private String defaultSubscription;
 
     /**
-     * Initializes a new instance of the UserTokenCredentials.
+     * Initializes a new instance of the ApplicationTokenCredentials.
      *
      * @param clientId the active directory application client id.
      * @param domain the domain or tenant id containing this application.
@@ -51,6 +60,24 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     }
 
     /**
+     * Initializes a new instance of the ApplicationTokenCredentials.
+     *
+     * @param clientId the active directory application client id.
+     * @param domain the domain or tenant id containing this application.
+     * @param certificate the PKCS12 certificate file content
+     * @param password the password to the certificate file
+     * @param environment the Azure environment to authenticate with.
+     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     */
+    public ApplicationTokenCredentials(String clientId, String domain, byte[] certificate, String password, AzureEnvironment environment) {
+        super(environment, domain);
+        this.clientId = clientId;
+        this.certificate = certificate;
+        this.certPassword = password;
+        this.tokens = new HashMap<>();
+    }
+
+    /**
      * Contains the keys of the settings in a Properties file to read credentials from.
      */
     private enum CredentialSettings {
@@ -62,6 +89,10 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         CLIENT_ID("client"),
         /** The client secret for the service principal. */
         CLIENT_KEY("key"),
+        /** The client certificate for the service principal. */
+        CLIENT_CERT("certificate"),
+        /** The password for the client certificate for the service principal. */
+        CLIENT_CERT_PASS("certificatePassword"),
         /** The management endpoint. */
         MANAGEMENT_URI("managementURI"),
         /** The base URL to the current Azure environment. */
@@ -134,23 +165,47 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         final String clientId = authSettings.getProperty(CredentialSettings.CLIENT_ID.toString());
         final String tenantId = authSettings.getProperty(CredentialSettings.TENANT_ID.toString());
         final String clientKey = authSettings.getProperty(CredentialSettings.CLIENT_KEY.toString());
+        final String certificate = authSettings.getProperty(CredentialSettings.CLIENT_CERT.toString());
+        final String certPasswrod = authSettings.getProperty(CredentialSettings.CLIENT_CERT_PASS.toString());
         final String mgmtUri = authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString());
         final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
         final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
         final String graphUrl = authSettings.getProperty(CredentialSettings.GRAPH_URL.toString());
         final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
 
-        return new ApplicationTokenCredentials(
-                clientId,
-                tenantId,
-                clientKey,
-                new AzureEnvironment(new HashMap<String, String>() {{
-                    put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl);
-                    put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
-                    put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
-                    put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
-                }}
-                )).withDefaultSubscriptionId(defaultSubscriptionId);
+        if (clientKey != null) {
+            return new ApplicationTokenCredentials(
+                    clientId,
+                    tenantId,
+                    clientKey,
+                    new AzureEnvironment(new HashMap<String, String>() {{
+                        put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl);
+                        put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
+                        put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
+                        put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
+                    }}
+                    )).withDefaultSubscriptionId(defaultSubscriptionId);
+        } else if (certificate != null) {
+            byte[] certs;
+            if (new File(certificate).exists()) {
+                certs = Files.readAllBytes(Paths.get(certificate));
+            } else {
+                certs = Files.readAllBytes(Paths.get(credentialsFile.getParent(), certificate));
+            }
+            return new ApplicationTokenCredentials(
+                    clientId,
+                    tenantId,
+                    certs,
+                    certPasswrod,
+                    new AzureEnvironment(new HashMap<String, String>() {{
+                        put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.toString(), authUrl);
+                        put(AzureEnvironment.Endpoint.MANAGEMENT.toString(), mgmtUri);
+                        put(AzureEnvironment.Endpoint.RESOURCE_MANAGER.toString(), baseUrl);
+                        put(AzureEnvironment.Endpoint.GRAPH.toString(), graphUrl);
+                    }})).withDefaultSubscriptionId(defaultSubscriptionId);
+        } else {
+            throw new IllegalArgumentException("Please specify either a client key or a client certificate.");
+        }
     }
 
     /**
@@ -186,11 +241,18 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
         try {
-            AuthenticationResult result = context.acquireToken(
-                    resource,
-                    new ClientCredential(this.getClientId(), this.getSecret()),
-                    null).get();
-            return result;
+            if (secret != null) {
+                return context.acquireToken(
+                        resource,
+                        new ClientCredential(this.getClientId(), this.getSecret()),
+                        null).get();
+            } else if (certificate != null) {
+                return context.acquireToken(
+                        resource,
+                        AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(certificate), certPassword),
+                        null).get();
+            }
+            throw new AuthenticationException("Please provide either a non-null secret or a non-null certificate.");
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         } finally {
