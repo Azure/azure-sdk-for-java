@@ -8,7 +8,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetVMsInner;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -16,6 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  */
 @Fluent
 public interface VirtualMachineScaleSetVMs extends
-    SupportsListingAsync<VirtualMachineScaleSetVM>,
+        SupportsListing<VirtualMachineScaleSetVM>,
     HasInner<VirtualMachineScaleSetVMsInner> {
 }

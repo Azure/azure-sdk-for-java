@@ -8,13 +8,13 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
  * Entry point to subscription management API.
  */
 @Fluent
 public interface Subscriptions extends
-        SupportsListingAsync<Subscription>,
+        SupportsListing<Subscription>,
         SupportsGettingById<Subscription> {
 }

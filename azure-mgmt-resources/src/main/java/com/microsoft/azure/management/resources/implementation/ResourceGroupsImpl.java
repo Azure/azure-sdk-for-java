@@ -47,6 +47,11 @@ final class ResourceGroupsImpl
     }
 
     @Override
+    public Observable<ResourceGroup> listByTagAsync(String tagName, String tagValue) {
+        return wrapPageAsync(client.listAsync(Utils.createOdataFilterForTags(tagName, tagValue), null));
+    }
+
+    @Override
     public ResourceGroupImpl getByName(String name) {
         return wrapModel(client.get(name));
     }

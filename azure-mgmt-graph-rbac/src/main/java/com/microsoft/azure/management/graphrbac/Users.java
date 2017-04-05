@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -21,7 +21,7 @@ import rx.Observable;
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 @Beta
 public interface Users extends
-        SupportsListingAsync<User>,
+        SupportsListing<User>,
         HasManager<GraphRbacManager> {
     /**
      * Gets the information about a user.

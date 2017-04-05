@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import rx.Observable;
 
 /**
  * Provides access to listing Azure resources of a specific type based on their tag.
@@ -28,4 +29,14 @@ public interface SupportsListingInResourceGroupByTag<T> {
      * @return list of resources
      */
     PagedList<T> listByTag(String resourceGroupName, String tagName, String tagValue);
+
+    /**
+     * Lists all the resources with the specified tag.
+     *
+     * @param resourceGroupName the name of the resource group
+     * @param tagName tag's name as the key
+     * @param tagValue tag's value
+     * @return list of resources
+     */
+    Observable<T> listByTagAsync(String resourceGroupName, String tagName, String tagValue);
 }

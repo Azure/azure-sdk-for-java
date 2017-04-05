@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation for VirtualMachineScaleSetNetworkInterfaces.
@@ -69,6 +70,11 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     public PagedList<VirtualMachineScaleSetNetworkInterface> list() {
         return super.wrapList(this.inner().listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName,
                 this.scaleSetName));
+    }
+
+    @Override
+    public Observable<VirtualMachineScaleSetNetworkInterface> listAsync() {
+        return wrapPageAsync(this.inner().listAsync());
     }
 
     @Override

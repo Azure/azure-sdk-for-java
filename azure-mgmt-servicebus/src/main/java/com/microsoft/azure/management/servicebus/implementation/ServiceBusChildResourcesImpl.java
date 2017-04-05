@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourc
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -43,7 +43,7 @@ abstract class ServiceBusChildResourcesImpl<
         ManagerT extends ManagerBase,
         ParentT extends Resource & HasResourceGroup>
         extends IndependentChildResourcesImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT>
-        implements SupportsGettingByNameAsync<T>, SupportsListingAsync<T>, SupportsDeletingByName {
+        implements SupportsGettingByNameAsync<T>, SupportsListing<T>, SupportsDeletingByName {
     protected ServiceBusChildResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);
     }

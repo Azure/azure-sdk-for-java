@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByGroupImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -28,7 +28,7 @@ import java.util.List;
  * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
-    extends SupportsGettingByGroupImpl<Deployment>
+    extends SupportsGettingByResourceGroupImpl<Deployment>
     implements Deployments,
     HasManager<ResourceManager> {
 
