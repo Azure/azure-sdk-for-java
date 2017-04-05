@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -107,10 +107,13 @@ public class CBSChannel {
                 CBSChannel.this.sessionProvider.getSession(
                     "cbs-session",
                     null,
-                    new Consumer<ErrorCondition>() {
+                    new BiConsumer<ErrorCondition, Exception>() {
                         @Override
-                        public void accept(ErrorCondition error) {
-                            operationCallback.onError(new AmqpException(error));
+                        public void accept(ErrorCondition error, Exception exception) {
+                            if (error != null)
+                                operationCallback.onError(new AmqpException(error));
+                            else if (exception != null)
+                                operationCallback.onError(exception);
                         }
                     }));
 

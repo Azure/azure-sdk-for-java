@@ -6,16 +6,20 @@ package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
 import java.util.Locale;
+import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ActiveClientTokenManager {
     
     private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	
-    public final Runnable sendTokenTask;
-    public final ClientEntity clientEntity;
-    public final Duration tokenRefreshInterval;
+
+    private ScheduledFuture timer;
+    
+    private final Object timerLock;
+    private final Runnable sendTokenTask;
+    private final ClientEntity clientEntity;
+    private final Duration tokenRefreshInterval;
     
     public ActiveClientTokenManager(
             final ClientEntity clientEntity,
@@ -25,8 +29,18 @@ public class ActiveClientTokenManager {
         this.sendTokenTask = sendTokenAsync;
         this.clientEntity = clientEntity;
         this.tokenRefreshInterval = tokenRefreshInterval;
+        this.timerLock = new Object();
         
-        Timer.schedule(new TimerCallback(), tokenRefreshInterval, TimerType.OneTimeRun);
+        synchronized (this.timerLock) {
+            this.timer = Timer.schedule(new TimerCallback(), tokenRefreshInterval, TimerType.OneTimeRun);
+        }
+    }
+    
+    public void cancel() {
+        
+        synchronized (this.timerLock) {
+            this.timer.cancel(false);
+        }
     }
     
     private class TimerCallback implements Runnable {
@@ -38,7 +52,9 @@ public class ActiveClientTokenManager {
                 
                 sendTokenTask.run();
                 
-                Timer.schedule(new TimerCallback(), tokenRefreshInterval, TimerType.OneTimeRun);
+                synchronized (timerLock) {
+                    timer = Timer.schedule(new TimerCallback(), tokenRefreshInterval, TimerType.OneTimeRun);
+                }
             }
             else {
                 
