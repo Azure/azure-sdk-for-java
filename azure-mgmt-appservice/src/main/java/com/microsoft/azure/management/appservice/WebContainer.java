@@ -27,11 +27,23 @@ public final class WebContainer {
     /** Static value tomcat 8.0.23 for WebContainer. */
     public static final WebContainer TOMCAT_8_0_23 = new WebContainer("tomcat 8.0.23");
 
+    /** Static value tomcat 8.0 newest for WebContainer. */
+    public static final WebContainer TOMCAT_8_5_NEWEST = new WebContainer("tomcat 8.5");
+
+    /** Static value tomcat 8.0.23 for WebContainer. */
+    public static final WebContainer TOMCAT_8_5_6 = new WebContainer("tomcat 8.5.6");
+
     /** Static value jetty 9.1 for WebContainer. */
     public static final WebContainer JETTY_9_1_NEWEST = new WebContainer("jetty 9.1");
 
     /** Static value jetty 9.1.0 v20131115 for WebContainer. */
     public static final WebContainer JETTY_9_1_V20131115 = new WebContainer("jetty 9.1.0.20131115");
+
+    /** Static value jetty 9.3 for WebContainer. */
+    public static final WebContainer JETTY_9_3_NEWEST = new WebContainer("jetty 9.3");
+
+    /** Static value jetty 9.3.13 v20161014 for WebContainer. */
+    public static final WebContainer JETTY_9_3_V20161014 = new WebContainer("jetty 9.3.13.20161014");
 
     private String value;
 
