@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -15,6 +16,7 @@ import rx.Observable;
 /**
  * Implementation for VirtualMachineScaleSetNetworkInterfaces.
  */
+@LangDefinition
 class VirtualMachineScaleSetNetworkInterfacesImpl
         extends
         ReadableWrappersImpl<VirtualMachineScaleSetNetworkInterface,
