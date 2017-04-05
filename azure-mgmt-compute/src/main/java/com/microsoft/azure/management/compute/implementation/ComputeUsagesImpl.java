@@ -11,6 +11,7 @@ import com.microsoft.azure.management.compute.ComputeUsage;
 import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * The implementation of {@link ComputeUsages}.
@@ -32,6 +33,16 @@ class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageI
     @Override
     public PagedList<ComputeUsage> listByRegion(String regionName) {
         return wrapList(client.usages().list(regionName));
+    }
+
+    @Override
+    public Observable<ComputeUsage> listByRegionAsync(Region region) {
+        return listByRegionAsync(region.name());
+    }
+
+    @Override
+    public Observable<ComputeUsage> listByRegionAsync(String regionName) {
+        return wrapPageAsync(client.usages().listAsync(regionName));
     }
 
     @Override

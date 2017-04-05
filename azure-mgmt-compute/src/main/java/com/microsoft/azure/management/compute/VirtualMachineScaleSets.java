@@ -14,12 +14,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 import java.io.IOException;
@@ -29,8 +29,8 @@ import java.io.IOException;
  */
 @Fluent
 public interface VirtualMachineScaleSets extends
-        SupportsListingAsync<VirtualMachineScaleSet>,
-        SupportsListingByResourceGroupAsync<VirtualMachineScaleSet>,
+        SupportsListing<VirtualMachineScaleSet>,
+        SupportsListingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingByResourceGroup<VirtualMachineScaleSet>,
         SupportsGettingById<VirtualMachineScaleSet>,
         SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>,

@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBa
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBeginDeletingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByTag;
 
 /**
@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  */
 @Fluent
 public interface ResourceGroups extends
-        SupportsListingAsync<ResourceGroup>,
+        SupportsListing<ResourceGroup>,
         SupportsListingByTag<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,
         SupportsCreating<ResourceGroup.DefinitionStages.Blank>,

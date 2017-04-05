@@ -11,6 +11,7 @@ import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
 
 /**
  * Implementation of CNameRecordSets.
@@ -39,6 +40,14 @@ class CNameRecordSetsImpl
     @Override
     public PagedList<CNameRecordSet> list() {
         return super.wrapList(this.parent().manager().inner().recordSets().listByType(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                RecordType.CNAME));
+    }
+
+    @Override
+    public Observable<CNameRecordSet> listAsync() {
+        return wrapPageAsync(this.parent().manager().inner().recordSets().listByTypeAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 RecordType.CNAME));
