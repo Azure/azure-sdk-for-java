@@ -8,12 +8,12 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingInResourceGroupByTag;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -26,8 +26,8 @@ import java.util.List;
  */
 @Fluent
 public interface GenericResources extends
-        SupportsListingAsync<GenericResource>,
-        SupportsListingByResourceGroupAsync<GenericResource>,
+        SupportsListing<GenericResource>,
+        SupportsListingByResourceGroup<GenericResource>,
         SupportsListingInResourceGroupByTag<GenericResource>,
         SupportsGettingById<GenericResource>,
         SupportsCreating<GenericResource.DefinitionStages.Blank>,

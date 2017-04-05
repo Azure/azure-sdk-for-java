@@ -9,6 +9,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import rx.Observable;
+
 
 /**
  * Provides access to listing Azure resources of a specific type in a specific resource group.
@@ -26,4 +28,12 @@ public interface SupportsListingByResourceGroup<T> {
      * @return the list of resources
      */
     PagedList<T> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Lists resources of the specified type in the specified resource group.
+     *
+     * @param resourceGroupName the name of the resource group to list the resources from
+     * @return the list of resources
+     */
+    Observable<T> listByResourceGroupAsync(String resourceGroupName);
 }

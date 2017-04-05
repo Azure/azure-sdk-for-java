@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -19,7 +19,7 @@ import rx.Observable;
  */
 @Fluent
 public interface Providers extends
-        SupportsListingAsync<Provider>,
+        SupportsListing<Provider>,
         SupportsGettingByName<Provider> {
     /**
      * Unregisters provider from a subscription.

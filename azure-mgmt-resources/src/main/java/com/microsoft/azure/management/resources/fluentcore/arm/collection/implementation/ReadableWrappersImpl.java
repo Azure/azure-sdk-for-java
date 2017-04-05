@@ -44,7 +44,7 @@ public abstract class ReadableWrappersImpl<
     }
 
     protected PagedList<T> wrapList(List<InnerT> list) {
-        return converter.convert(ReadableWrappersImpl.convertToPagedList(list));
+        return wrapList(ReadableWrappersImpl.convertToPagedList(list));
     }
 
     /**

@@ -13,12 +13,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -27,8 +27,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent
 public interface Snapshots extends
         SupportsCreating<Snapshot.DefinitionStages.Blank>,
-        SupportsListingAsync<Snapshot>,
-        SupportsListingByResourceGroupAsync<Snapshot>,
+        SupportsListing<Snapshot>,
+        SupportsListingByResourceGroup<Snapshot>,
         SupportsGettingByResourceGroup<Snapshot>,
         SupportsGettingById<Snapshot>,
         SupportsDeletingById,
