@@ -55,6 +55,12 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public Observable<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
+        return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(
+                resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
+    }
+
+    @Override
     public GenericResource.DefinitionStages.Blank define(String name) {
         return new GenericResourceImpl(
                 name,
