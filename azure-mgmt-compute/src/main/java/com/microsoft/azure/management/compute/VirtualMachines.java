@@ -52,7 +52,7 @@ public interface VirtualMachines extends
     void deallocate(String groupName, String name);
 
     /**
-     * Generalize the virtual machine.
+     * Generalizes the virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
@@ -60,7 +60,7 @@ public interface VirtualMachines extends
     void generalize(String groupName, String name);
 
     /**
-     * Power off (stop) a virtual machine.
+     * Powers off (stops) a virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
@@ -68,7 +68,7 @@ public interface VirtualMachines extends
     void powerOff(String groupName, String name);
 
     /**
-     * Restart a virtual machine.
+     * Restarts a virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
@@ -76,7 +76,7 @@ public interface VirtualMachines extends
     void restart(String groupName, String name);
 
     /**
-     * Start a virtual machine.
+     * Starts a virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
@@ -84,7 +84,7 @@ public interface VirtualMachines extends
     void start(String groupName, String name);
 
     /**
-     * Redeploy a virtual machine.
+     * Redeploys a virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
@@ -92,7 +92,7 @@ public interface VirtualMachines extends
     void redeploy(String groupName, String name);
 
     /**
-     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as json
+     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as a JSON
      * string that can be used to create similar VMs.
      *
      * @param groupName the resource group name
@@ -105,7 +105,7 @@ public interface VirtualMachines extends
     String capture(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
-     * Migrate the virtual machine with un-managed disks to use managed disk.
+     * Migrates the virtual machine with unmanaged disks to use managed disks.
      *
      * @param groupName the resource group name
      * @param name the virtual machine name
