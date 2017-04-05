@@ -25,160 +25,147 @@ import org.apache.qpid.proton.reactor.Reactor;
 import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
-public class SessionHandler extends BaseHandler
-{
-	protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+public class SessionHandler extends BaseHandler {
+    protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 
-	private final String entityName;
-        private final Consumer<Session> onRemoteSessionOpen;
-        private final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError;
-        
-        private boolean sessionCreated = false;
-        private boolean sessionOpenErrorDispatched = false;
-        
-	public SessionHandler(final String entityName, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError)
-	{
-		this.entityName = entityName;
-                this.onRemoteSessionOpenError = onRemoteSessionOpenError;
-                this.onRemoteSessionOpen = onRemoteSessionOpen;
-	}
-        
+    private final String entityName;
+    private final Consumer<Session> onRemoteSessionOpen;
+    private final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError;
+
+    private boolean sessionCreated = false;
+    private boolean sessionOpenErrorDispatched = false;
+
+    public SessionHandler(final String entityName, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError) {
+        this.entityName = entityName;
+        this.onRemoteSessionOpenError = onRemoteSessionOpenError;
+        this.onRemoteSessionOpen = onRemoteSessionOpen;
+    }
+
+    @Override
+    public void onSessionLocalOpen(Event e) {
+        if (this.onRemoteSessionOpenError != null) {
+
+            ReactorHandler reactorHandler = null;
+            final Reactor reactor = e.getReactor();
+            final Iterator<Handler> reactorEventHandlers = reactor.getHandler().children();
+            while (reactorEventHandlers.hasNext()) {
+                final Handler currentHandler = reactorEventHandlers.next();
+                if (currentHandler instanceof ReactorHandler) {
+                    reactorHandler = (ReactorHandler) currentHandler;
+                    break;
+                }
+            }
+
+            final ReactorDispatcher reactorDispatcher = reactorHandler.getReactorDispatcher();
+            final Session session = e.getSession();
+
+            try {
+
+                reactorDispatcher.invoke(ClientConstants.SESSION_OPEN_TIMEOUT_IN_MS, new SessionTimeoutHandler(session));
+            } catch (IOException ignore) {
+
+                if (TRACE_LOGGER.isLoggable(Level.SEVERE)) {
+                    TRACE_LOGGER.log(Level.SEVERE, String.format(Locale.US, "entityName[%s], reactorDispatcherError[%s]", this.entityName, ignore.getMessage()));
+                }
+
+                session.close();
+                this.onRemoteSessionOpenError.accept(
+                        null,
+                        new ServiceBusException(
+                                false,
+                                String.format("underlying IO of reactorDispatcher faulted with error: %s", ignore.getMessage()),
+                                ignore));
+            }
+        }
+    }
+
+    @Override
+    public void onSessionRemoteOpen(Event e) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+                    this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
+        }
+
+        final Session session = e.getSession();
+        if (session != null && session.getLocalState() == EndpointState.UNINITIALIZED) {
+            session.open();
+        }
+
+        sessionCreated = true;
+        if (this.onRemoteSessionOpen != null)
+            this.onRemoteSessionOpen.accept(session);
+    }
+
+
+    @Override
+    public void onSessionLocalClose(Event e) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+                    e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
+        }
+    }
+
+    @Override
+    public void onSessionRemoteClose(Event e) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+                    e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
+        }
+
+        final Session session = e.getSession();
+        if (session != null && session.getLocalState() != EndpointState.CLOSED) {
+            session.close();
+        }
+
+        this.sessionOpenErrorDispatched = true;
+        if (!sessionCreated && this.onRemoteSessionOpenError != null)
+            this.onRemoteSessionOpenError.accept(session.getRemoteCondition(), null);
+    }
+
+    @Override
+    public void onSessionFinal(Event e) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.entityName));
+        }
+    }
+
+    private class SessionTimeoutHandler extends DispatchHandler {
+
+        private final Session session;
+
+        public SessionTimeoutHandler(final Session session) {
+            this.session = session;
+        }
+
         @Override
-        public void onSessionLocalOpen(Event e)
-        {
-            if (this.onRemoteSessionOpenError != null) {
-                
-                ReactorHandler reactorHandler = null;
-                final Reactor reactor = e.getReactor();
-                final Iterator<Handler> reactorEventHandlers = reactor.getHandler().children();
-                while (reactorEventHandlers.hasNext()) {
-                    final Handler currentHandler = reactorEventHandlers.next();
-                    if (currentHandler instanceof ReactorHandler) {
-                        reactorHandler = (ReactorHandler) currentHandler;
-                        break;
-                    }
-                }
-                
-                final ReactorDispatcher reactorDispatcher = reactorHandler.getReactorDispatcher();
-                final Session session = e.getSession();
+        public void onEvent() {
 
-                try {
-                    
-                    reactorDispatcher.invoke(ClientConstants.SESSION_OPEN_TIMEOUT_IN_MS, new SessionTimeoutHandler(session));
-                } catch (IOException ignore) {
-                    
-                    if(TRACE_LOGGER.isLoggable(Level.SEVERE)) {
-                            TRACE_LOGGER.log(Level.SEVERE, String.format(Locale.US, "entityName[%s], reactorDispatcherError[%s]", this.entityName, ignore.getMessage()));
+            // notify - if connection or transport error'ed out before even session open completed
+            if (!sessionCreated && !sessionOpenErrorDispatched) {
+
+                final Connection connection = session.getConnection();
+
+                if (connection != null) {
+
+                    if (connection.getRemoteCondition() != null && connection.getRemoteCondition().getCondition() != null) {
+
+                        session.close();
+                        onRemoteSessionOpenError.accept(connection.getRemoteCondition(), null);
+                        return;
                     }
-                    
-                    session.close();
-                    this.onRemoteSessionOpenError.accept(
-                            null,
-                            new ServiceBusException(
-                                    false,
-                                    String.format("underlying IO of reactorDispatcher faulted with error: %s", ignore.getMessage()),
-                                    ignore));
+
+                    final Transport transport = connection.getTransport();
+                    if (transport != null && transport.getCondition() != null && transport.getCondition().getCondition() != null) {
+
+                        session.close();
+                        onRemoteSessionOpenError.accept(transport.getCondition(), null);
+                        return;
+                    }
                 }
+
+                session.close();
+                onRemoteSessionOpenError.accept(null, new ServiceBusException(false, "session creation timedout."));
             }
         }
-
-	@Override
-	public void onSessionRemoteOpen(Event e) 
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
-					this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
-		}
-
-		final Session session = e.getSession();
-		if (session != null && session.getLocalState() == EndpointState.UNINITIALIZED)
-		{
-			session.open();
-		}
-                
-                sessionCreated = true;
-                if (this.onRemoteSessionOpen != null)
-                        this.onRemoteSessionOpen.accept(session);
-	}
-
-
-	@Override 
-	public void onSessionLocalClose(Event e)
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName, 
-					e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
-		}
-	}
-
-	@Override
-	public void onSessionRemoteClose(Event e)
-	{ 
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
-					e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
-		}
-
-		final Session session = e.getSession();
-		if (session != null && session.getLocalState() != EndpointState.CLOSED)
-		{
-			session.close();
-		}
-                
-                this.sessionOpenErrorDispatched = true;
-                if (!sessionCreated && this.onRemoteSessionOpenError != null)
-                        this.onRemoteSessionOpenError.accept(session.getRemoteCondition(), null);
-	}
-
-	@Override
-	public void onSessionFinal(Event e)
-	{ 
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.entityName));
-		}
-	}
-        
-        private class SessionTimeoutHandler extends DispatchHandler {
-            
-            private final Session session;
-            
-            public SessionTimeoutHandler(final Session session) {
-                this.session = session;
-            }
-            
-            @Override
-            public void onEvent() {
-                
-                // notify - if connection or transport error'ed out before even session open completed
-                if (!sessionCreated && !sessionOpenErrorDispatched) {
-
-                    final Connection connection = session.getConnection();
-                    
-                    if (connection != null) {
-                        
-                        if (connection.getRemoteCondition() != null && connection.getRemoteCondition().getCondition() != null) {
-                            
-                            session.close();
-                            onRemoteSessionOpenError.accept(connection.getRemoteCondition(), null);
-                            return;
-                        }
-                        
-                        final Transport transport = connection.getTransport();
-                        if (transport != null && transport.getCondition() != null && transport.getCondition().getCondition() != null) {
-                            
-                            session.close();
-                            onRemoteSessionOpenError.accept(transport.getCondition(), null);
-                            return;
-                        }
-                    }
-                    
-                    session.close();
-                    onRemoteSessionOpenError.accept(null, new ServiceBusException(false, "session creation timedout."));
-                }
-            }
-        }
+    }
 }

@@ -10,30 +10,25 @@ package com.microsoft.azure.servicebus;
  * <li> When the entity user attempted to connect does not exist
  * <li> The entity user wants to connect is disabled
  * </ul>
- * 
+ *
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
-public class IllegalEntityException extends ServiceBusException 
-{
-	private static final long serialVersionUID = 1842057379278310290L;
+public class IllegalEntityException extends ServiceBusException {
+    private static final long serialVersionUID = 1842057379278310290L;
 
-	IllegalEntityException()
-	{
-		super(false);
-	}
+    IllegalEntityException() {
+        super(false);
+    }
 
-	public IllegalEntityException(final String message)
-	{
-		super(false, message);
-	}
+    public IllegalEntityException(final String message) {
+        super(false, message);
+    }
 
-	public IllegalEntityException(final Throwable cause)
-	{
-		super(false, cause);
-	}
+    public IllegalEntityException(final Throwable cause) {
+        super(false, cause);
+    }
 
-	public IllegalEntityException(final String message, final Throwable cause)
-	{
-		super(false, message, cause);
-	}
+    public IllegalEntityException(final String message, final Throwable cause) {
+        super(false, message, cause);
+    }
 }

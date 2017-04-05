@@ -4,14 +4,14 @@
  */
 package com.microsoft.azure.servicebus;
 
-public class QuotaExceededException  extends ServiceBusException {
-    
+public class QuotaExceededException extends ServiceBusException {
+
     public QuotaExceededException(String message) {
         super(false, message);
     }
-    
+
     public QuotaExceededException(Throwable cause) {
         super(false, cause);
     }
-    
+
 }

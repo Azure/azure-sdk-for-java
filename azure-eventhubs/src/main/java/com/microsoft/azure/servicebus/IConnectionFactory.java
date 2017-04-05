@@ -6,7 +6,6 @@ package com.microsoft.azure.servicebus;
 
 import org.apache.qpid.proton.engine.Connection;
 
-interface IConnectionFactory
-{
-	Connection getConnection();
+interface IConnectionFactory {
+    Connection getConnection();
 }

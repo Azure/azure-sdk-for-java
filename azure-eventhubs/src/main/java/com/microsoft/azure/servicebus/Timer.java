@@ -16,69 +16,57 @@ import java.util.logging.Logger;
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
  */
-final class Timer
-{
-	private static ScheduledThreadPoolExecutor executor = null;
+final class Timer {
+    private static ScheduledThreadPoolExecutor executor = null;
 
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private static final HashSet<String> references = new HashSet<String>();
-	private static final Object syncReferences = new Object();
+    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+    private static final HashSet<String> references = new HashSet<String>();
+    private static final Object syncReferences = new Object();
 
-	private Timer() 
-	{
-	}
+    private Timer() {
+    }
 
-	/**
-	 * @param runFrequency implemented only for TimeUnit granularity - Seconds
-	 */
-	public static ScheduledFuture<?> schedule(Runnable runnable, Duration runFrequency, TimerType timerType)
-	{
-		switch (timerType)
-		{
-		case OneTimeRun:
-			return executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
+    /**
+     * @param runFrequency implemented only for TimeUnit granularity - Seconds
+     */
+    public static ScheduledFuture<?> schedule(Runnable runnable, Duration runFrequency, TimerType timerType) {
+        switch (timerType) {
+            case OneTimeRun:
+                return executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 
-		case RepeatRun:
-			return executor.scheduleWithFixedDelay(runnable, runFrequency.toMillis(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
+            case RepeatRun:
+                return executor.scheduleWithFixedDelay(runnable, runFrequency.toMillis(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 
-		default:
-			throw new UnsupportedOperationException("Unsupported timer pattern.");
-		}
-	}
+            default:
+                throw new UnsupportedOperationException("Unsupported timer pattern.");
+        }
+    }
 
-	static void register(final String clientId)
-	{
-		synchronized (syncReferences)
-		{
-			if (references.size() == 0 && (executor == null || executor.isShutdown()))
-			{
-				final int corePoolSize = Math.max(Runtime.getRuntime().availableProcessors(), 4);
-				if (TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE, 
-							String.format(Locale.US, "Starting ScheduledThreadPoolExecutor with coreThreadPoolSize: %s", corePoolSize));
-				}
+    static void register(final String clientId) {
+        synchronized (syncReferences) {
+            if (references.size() == 0 && (executor == null || executor.isShutdown())) {
+                final int corePoolSize = Math.max(Runtime.getRuntime().availableProcessors(), 4);
+                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                    TRACE_LOGGER.log(Level.FINE,
+                            String.format(Locale.US, "Starting ScheduledThreadPoolExecutor with coreThreadPoolSize: %s", corePoolSize));
+                }
 
-				executor = new ScheduledThreadPoolExecutor(corePoolSize);
-			}
+                executor = new ScheduledThreadPoolExecutor(corePoolSize);
+            }
 
-			references.add(clientId);
-		}
-	}
+            references.add(clientId);
+        }
+    }
 
-	static void unregister(final String clientId)
-	{
-		synchronized (syncReferences)
-		{
-			if (references.remove(clientId) && references.size() == 0 && executor != null)
-			{
-				if (TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE, "Shuting down ScheduledThreadPoolExecutor.");
-				}
+    static void unregister(final String clientId) {
+        synchronized (syncReferences) {
+            if (references.remove(clientId) && references.size() == 0 && executor != null) {
+                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                    TRACE_LOGGER.log(Level.FINE, "Shuting down ScheduledThreadPoolExecutor.");
+                }
 
-				executor.shutdownNow();
-			}
-		}
-	}
+                executor.shutdownNow();
+            }
+        }
+    }
 }

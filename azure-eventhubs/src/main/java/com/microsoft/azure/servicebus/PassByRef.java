@@ -5,13 +5,13 @@
 package com.microsoft.azure.servicebus;
 
 public final class PassByRef<T extends Object> {
-    
+
     T t;
-    
+
     public T get() {
         return this.t;
     }
-    
+
     public void set(final T t) {
         this.t = t;
     }

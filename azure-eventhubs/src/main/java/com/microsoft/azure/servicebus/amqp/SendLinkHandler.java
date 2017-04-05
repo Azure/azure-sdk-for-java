@@ -12,97 +12,79 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Sender;
 
-public class SendLinkHandler extends BaseLinkHandler
-{
-	private final IAmqpSender msgSender;
-	private final Object firstFlow;
-	private boolean isFirstFlow;
+public class SendLinkHandler extends BaseLinkHandler {
+    private final IAmqpSender msgSender;
+    private final Object firstFlow;
+    private boolean isFirstFlow;
 
-	public SendLinkHandler(final IAmqpSender sender)
-	{
-		super(sender);
+    public SendLinkHandler(final IAmqpSender sender) {
+        super(sender);
 
-		this.msgSender = sender;
-		this.firstFlow = new Object();
-		this.isFirstFlow = true;
-	}
+        this.msgSender = sender;
+        this.firstFlow = new Object();
+        this.isFirstFlow = true;
+    }
 
-	@Override
-	public void onLinkRemoteOpen(Event event)
-	{
-		Link link = event.getLink();
-		if (link != null && link instanceof Sender)
-		{
-			Sender sender = (Sender) link;
-			if (link.getRemoteTarget() != null)
-			{
-				if(TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
-				}
+    @Override
+    public void onLinkRemoteOpen(Event event) {
+        Link link = event.getLink();
+        if (link != null && link instanceof Sender) {
+            Sender sender = (Sender) link;
+            if (link.getRemoteTarget() != null) {
+                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                    TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
+                }
 
-				synchronized (this.firstFlow)
-				{
-					this.isFirstFlow = false;
-					this.msgSender.onOpenComplete(null);
-				}
-			}
-			else
-			{
-				if(TRACE_LOGGER.isLoggable(Level.FINE))
-				{
-					TRACE_LOGGER.log(Level.FINE,
-							String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
-				}
-			}
-		}
-	}
+                synchronized (this.firstFlow) {
+                    this.isFirstFlow = false;
+                    this.msgSender.onOpenComplete(null);
+                }
+            } else {
+                if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                    TRACE_LOGGER.log(Level.FINE,
+                            String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
+                }
+            }
+        }
+    }
 
-	@Override
-	public void onDelivery(Event event)
-	{		
-		Delivery delivery = event.getDelivery();
-		
-		while (delivery != null)
-		{
-			Sender sender = (Sender) delivery.getLink();
-			
-			if(TRACE_LOGGER.isLoggable(Level.FINEST))
-			{
-				TRACE_LOGGER.log(Level.FINEST, 
-						"linkName[" + sender.getName() + 
-						"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getRemoteCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
-						"], delivery.isBuffered[" + delivery.isBuffered() +"], delivery.id[" + new String(delivery.getTag()) + "]");
-			}
-	
-			msgSender.onSendComplete(delivery);
-			delivery.settle();
-			
-			delivery = sender.current();
-		}
-	}
+    @Override
+    public void onDelivery(Event event) {
+        Delivery delivery = event.getDelivery();
 
-	@Override
-	public void onLinkFlow(Event event)
-	{
-		if (this.isFirstFlow)
-		{
-			synchronized (this.firstFlow)
-			{
-				if (this.isFirstFlow)
-				{
-					this.msgSender.onOpenComplete(null);
-					this.isFirstFlow = false;
-				}
-			}
-		}
+        while (delivery != null) {
+            Sender sender = (Sender) delivery.getLink();
 
-		Sender sender = event.getSender();
-		this.msgSender.onFlow(sender.getRemoteCredit());
+            if (TRACE_LOGGER.isLoggable(Level.FINEST)) {
+                TRACE_LOGGER.log(Level.FINEST,
+                        "linkName[" + sender.getName() +
+                                "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getRemoteCredit() + "], deliveryState[" + delivery.getRemoteState() +
+                                "], delivery.isBuffered[" + delivery.isBuffered() + "], delivery.id[" + new String(delivery.getTag()) + "]");
+            }
 
-		if(TRACE_LOGGER.isLoggable(Level.FINEST))
-		{
-			TRACE_LOGGER.log(Level.FINEST, "linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "]");
-		}
-	}
+            msgSender.onSendComplete(delivery);
+            delivery.settle();
+
+            delivery = sender.current();
+        }
+    }
+
+    @Override
+    public void onLinkFlow(Event event) {
+        if (this.isFirstFlow) {
+            synchronized (this.firstFlow) {
+                if (this.isFirstFlow) {
+                    this.msgSender.onOpenComplete(null);
+                    this.isFirstFlow = false;
+                }
+            }
+        }
+
+        Sender sender = event.getSender();
+        this.msgSender.onFlow(sender.getRemoteCredit());
+
+        if (TRACE_LOGGER.isLoggable(Level.FINEST)) {
+            TRACE_LOGGER.log(Level.FINEST, "linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit() + "]");
+        }
+    }
 }
