@@ -20,7 +20,7 @@ import rx.Observable;
  *
  * @param <T> the type of the resource to get.
  */
-public abstract class SupportsGettingByGroupImpl<T>
+public abstract class SupportsGettingByResourceGroupImpl<T>
         extends SupportsGettingByIdImpl<T>
         implements
             SupportsGettingByResourceGroup<T>,
