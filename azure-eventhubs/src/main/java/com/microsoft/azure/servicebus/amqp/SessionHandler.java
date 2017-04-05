@@ -9,9 +9,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -23,6 +23,7 @@ import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SessionHandler extends BaseHandler
 {
@@ -30,12 +31,12 @@ public class SessionHandler extends BaseHandler
 
 	private final String entityName;
         private final Consumer<Session> onRemoteSessionOpen;
-        private final Consumer<ErrorCondition> onRemoteSessionOpenError;
+        private final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError;
         
         private boolean sessionCreated = false;
         private boolean sessionOpenErrorDispatched = false;
         
-	public SessionHandler(final String entityName, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
+	public SessionHandler(final String entityName, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError)
 	{
 		this.entityName = entityName;
                 this.onRemoteSessionOpenError = onRemoteSessionOpenError;
@@ -45,7 +46,7 @@ public class SessionHandler extends BaseHandler
         @Override
         public void onSessionLocalOpen(Event e)
         {
-            if (onRemoteSessionOpenError != null) {
+            if (this.onRemoteSessionOpenError != null) {
                 
                 ReactorHandler reactorHandler = null;
                 final Reactor reactor = e.getReactor();
@@ -71,9 +72,12 @@ public class SessionHandler extends BaseHandler
                     }
                     
                     session.close();
-                    onRemoteSessionOpenError.accept(new ErrorCondition(
-                            Symbol.getSymbol("amqp:reactorDispatcher:faulted"),
-                            String.format("underlying IO of reactorDispatcher faulted with error: %s", ignore.getMessage())));
+                    this.onRemoteSessionOpenError.accept(
+                            null,
+                            new ServiceBusException(
+                                    false,
+                                    String.format("underlying IO of reactorDispatcher faulted with error: %s", ignore.getMessage()),
+                                    ignore));
                 }
             }
         }
@@ -126,7 +130,7 @@ public class SessionHandler extends BaseHandler
                 
                 this.sessionOpenErrorDispatched = true;
                 if (!sessionCreated && this.onRemoteSessionOpenError != null)
-                        this.onRemoteSessionOpenError.accept(session.getRemoteCondition());
+                        this.onRemoteSessionOpenError.accept(session.getRemoteCondition(), null);
 	}
 
 	@Override
@@ -159,7 +163,7 @@ public class SessionHandler extends BaseHandler
                         if (connection.getRemoteCondition() != null && connection.getRemoteCondition().getCondition() != null) {
                             
                             session.close();
-                            onRemoteSessionOpenError.accept(connection.getRemoteCondition());
+                            onRemoteSessionOpenError.accept(connection.getRemoteCondition(), null);
                             return;
                         }
                         
@@ -167,13 +171,13 @@ public class SessionHandler extends BaseHandler
                         if (transport != null && transport.getCondition() != null && transport.getCondition().getCondition() != null) {
                             
                             session.close();
-                            onRemoteSessionOpenError.accept(transport.getCondition());
+                            onRemoteSessionOpenError.accept(transport.getCondition(), null);
                             return;
                         }
                     }
                     
                     session.close();
-                    onRemoteSessionOpenError.accept(new ErrorCondition(Symbol.getSymbol("amqp:session:open-failed"), "session creation timedout."));
+                    onRemoteSessionOpenError.accept(null, new ServiceBusException(false, "session creation timedout."));
                 }
             }
         }

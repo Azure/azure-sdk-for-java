@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.servicebus;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -14,5 +15,5 @@ interface ISessionProvider
 	Session getSession(
                 final String path,
                 final Consumer<Session> onSessionOpen,
-                final Consumer<ErrorCondition> onSessionOpenError);
+                final BiConsumer<ErrorCondition, Exception> onSessionOpenError);
 }

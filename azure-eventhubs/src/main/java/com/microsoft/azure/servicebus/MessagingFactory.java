@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,8 +166,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         }
 
 	@Override
-	public Session getSession(final String path, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
+	public Session getSession(final String path, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError)
 	{
+                if (this.getIsClosingOrClosed()) {
+                    
+                    onRemoteSessionOpenError.accept(null, new OperationCancelledException("underlying messagingFactory instance is closed"));
+                }
+            
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.connection = this.getReactor().connectionToHost(this.hostName, ClientConstants.AMQPS_PORT, this.connectionHandler);
@@ -210,6 +216,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		{
 			this.open.complete(this);
 			this.openConnection.complete(this.connection);
+                        if (this.getIsClosingOrClosed())
+                            this.connection.close();
 		}
 		else
 		{
