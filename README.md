@@ -2,23 +2,35 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0 beta 5). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.0 GA). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0 beta 5** is a developer preview that supports major parts of: 
+**1.0 GA** supports: 
 
 - Azure Virtual Machines and VM Extensions
 - Virtual Machine Scale Sets
 - Managed Disks
 - Storage
-- Networking (virtual networks, subnets, network interfaces, IP addresses, network security groups, load balancers, DNS, traffic managers and application gateways)
+- Networking
+	- Virtual networks
+	- Network interfaces
+	- IP addresses
+	- Routing table
+	- Network security groups
+	- Load balancers *(preview)*
+	- DNS
+	- Traffic managers and 
+	- Application gateways *(preview)*
 - Resource Manager
 - SQL Database (databases, firewalls and elastic pools)
-- App Service (Web Apps)
-- Key Vault, Redis, CDN and Batch.
+- App Service - Web Apps in Windows and Linux *(preview)*
+- Functions *(preview)*
+- Service Bus *(preview)*
+- Key Vault, Redis, CDN and Batch
+- Async methods *(preview)*.
 
-The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and applying finishing touches to the API.
+We will continue to add support for more Azure services - Azure Monitor, Azure Container Service, Azure Container Registry, DocumentDB, Scheduler, Graph RBAC , etc.
 
 **Azure Authentication**
 
@@ -173,7 +185,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (80+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -314,15 +326,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 # Download
 
 
-**1.0 Beta 5**
+**1.0 GA**
 
-If you are using released builds from 1.0 beta 5, add the following to your POM file:
+If you are using released builds from 1.0 GA, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta5</version>
+    <version>1.0.0-GA</version>
 </dependency>
 ```
 
@@ -335,7 +347,7 @@ If you are using released builds from 1.0 beta 5, add the following to your POM 
 
 ## Help
 
-If you are migrating your code to 1.0 beta 5, you can use these notes for [preparing your code for 1.0 beta 5 from 1.0 beta 4](./notes/prepare-for-1.0.0-beta5.md).
+If you are migrating your code to 1.0 GA, you can use these notes for [preparing your code for 1.0 GA from 1.0 beta 5](./notes/prepare-for-1.0.0-GA.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -358,13 +370,14 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
-| 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
-| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
-| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
-| 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
+| 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
+| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
+| 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
+| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
+| 1.0.0-beta1+fixes | [1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
-| 0.9.3             | [v0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
+| 0.9.3             | [0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
 
 ---
 
