@@ -371,6 +371,15 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
+    public PlatformArchitecture platformArchitecture() {
+        if (siteConfig.use32BitWorkerProcess()) {
+            return PlatformArchitecture.X86;
+        } else {
+            return PlatformArchitecture.X64;
+        }
+    }
+
+    @Override
     public String autoSwapSlotName() {
         if (siteConfig == null) {
             return null;

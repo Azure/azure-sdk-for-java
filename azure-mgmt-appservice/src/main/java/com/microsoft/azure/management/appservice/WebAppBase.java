@@ -249,6 +249,11 @@ public interface WebAppBase extends
     OperatingSystem operatingSystem();
 
     /**
+     * @return the architecture of the platform, either 32 bit (x86) or 64 bit (x64).
+     */
+    PlatformArchitecture platformArchitecture();
+
+    /**
      * @return the URL and credentials for publishing through FTP or Git
      */
     PublishingProfile getPublishingProfile();
