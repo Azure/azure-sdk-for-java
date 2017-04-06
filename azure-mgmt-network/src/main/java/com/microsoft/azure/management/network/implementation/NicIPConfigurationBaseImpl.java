@@ -38,8 +38,7 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends IParentT, IParentT
     extends
         ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, IParentT>
     implements
-        NicIPConfigurationBase, HasSubnet, HasPrivateIPAddress
-{
+        NicIPConfigurationBase, HasSubnet, HasPrivateIPAddress {
     /**
      * the network client.
      */
