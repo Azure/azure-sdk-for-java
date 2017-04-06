@@ -294,7 +294,7 @@ public interface Topic extends
                 Topic.DefinitionStages.WithExpressMessage,
                 Topic.DefinitionStages.WithMessageBatching,
                 Topic.DefinitionStages.WithDuplicateMessageDetection,
-                Topic.UpdateStages.WithSubscription,
+                Topic.DefinitionStages.WithSubscription,
                 Topic.DefinitionStages.WithAuthorizationRule {
         }
     }
