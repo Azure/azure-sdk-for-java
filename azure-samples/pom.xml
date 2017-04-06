@@ -51,6 +51,11 @@
     <dependencies>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-servicebus</artifactId>
+            <version>0.9.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
             <artifactId>azure</artifactId>
             <version>1.0.0-beta6-SNAPSHOT</version>
         </dependency>
