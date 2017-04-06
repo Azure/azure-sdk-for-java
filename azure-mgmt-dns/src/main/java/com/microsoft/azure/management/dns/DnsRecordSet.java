@@ -89,7 +89,7 @@ public interface DnsRecordSet extends
              * Creates an A record with the provided IPv4 address in this record set.
              *
              * @param ipv4Address the IPv4 address
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithARecordIPv4AddressOrAttachable<ParentT> withIPv4Address(String ipv4Address);
         }
@@ -122,7 +122,7 @@ public interface DnsRecordSet extends
              * Creates an AAAA record with the provided IPv6 address in this record set.
              *
              * @param ipv6Address an IPv6 address
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAaaaRecordIPv6AddressOrAttachable<ParentT> withIPv6Address(String ipv6Address);
         }
@@ -156,7 +156,7 @@ public interface DnsRecordSet extends
              *
              * @param mailExchangeHostName the host name of the mail exchange server
              * @param priority the priority for the mail exchange host, lower the value higher the priority
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithMXRecordMailExchangeOrAttachable<ParentT> withMailExchange(String mailExchangeHostName, int priority);
         }
@@ -189,7 +189,7 @@ public interface DnsRecordSet extends
              * Creates a NS record with the provided name server in this record set.
              *
              * @param nameServerHostName the name server host name
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithNSRecordNameServerOrAttachable<ParentT> withNameServer(String nameServerHostName);
         }
@@ -222,7 +222,7 @@ public interface DnsRecordSet extends
              * Creates a PTR record with the provided target domain name in this record set.
              *
              * @param targetDomainName the target domain name
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithPtrRecordTargetDomainNameOrAttachable<ParentT> withTargetDomainName(String targetDomainName);
         }
@@ -258,7 +258,7 @@ public interface DnsRecordSet extends
              * @param port the port on which the service is bounded
              * @param priority the priority of the target host, lower the value higher the priority
              * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithSrvRecordEntryOrAttachable<ParentT> withRecord(String target, int port, int priority, int weight);
         }
@@ -291,7 +291,7 @@ public interface DnsRecordSet extends
              * Creates a Txt record with the given text in this record set.
              *
              * @param text the text value
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithTxtRecordTextValueOrAttachable<ParentT> withText(String text);
         }
@@ -316,7 +316,7 @@ public interface DnsRecordSet extends
              * Specifies the Time To Live for the records in the record set.
              *
              * @param ttlInSeconds TTL in seconds
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeToLive(long ttlInSeconds);
         }
@@ -332,7 +332,7 @@ public interface DnsRecordSet extends
              *
              * @param key the key for the metadata
              * @param value the value for the metadata
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMetadata(String key, String value);
         }
@@ -402,7 +402,7 @@ public interface DnsRecordSet extends
              * Creates an A record with the provided IPv4 address in this record set.
              *
              * @param ipv4Address the IPv4 address
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithARecordIPv4AddressOrAttachable<ParentT> withIPv4Address(String ipv4Address);
         }
@@ -435,7 +435,7 @@ public interface DnsRecordSet extends
              * Creates an AAAA record with the provided IPv6 address in this record set.
              *
              * @param ipv6Address the IPv6 address
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAaaaRecordIPv6AddressOrAttachable<ParentT> withIPv6Address(String ipv6Address);
         }
@@ -469,7 +469,7 @@ public interface DnsRecordSet extends
              *
              * @param mailExchangeHostName the host name of the mail exchange server
              * @param priority the priority for the mail exchange host, lower the value higher the priority
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithMXRecordMailExchangeOrAttachable<ParentT> withMailExchange(String mailExchangeHostName, int priority);
         }
@@ -502,7 +502,7 @@ public interface DnsRecordSet extends
              * Creates a NS record with the provided name server in this record set.
              *
              * @param nameServerHostName the name server host name
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithNSRecordNameServerOrAttachable<ParentT> withNameServer(String nameServerHostName);
         }
@@ -535,7 +535,7 @@ public interface DnsRecordSet extends
              * Creates a PTR record with the provided target domain name in this record set.
              *
              * @param targetDomainName the target domain name
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithPtrRecordTargetDomainNameOrAttachable<ParentT> withTargetDomainName(String targetDomainName);
         }
@@ -571,7 +571,7 @@ public interface DnsRecordSet extends
              * @param port the port on which the service is bounded
              * @param priority the priority of the target host, lower the value higher the priority
              * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithSrvRecordEntryOrAttachable<ParentT> withRecord(String target, int port, int priority, int weight);
         }
@@ -604,7 +604,7 @@ public interface DnsRecordSet extends
              * Creates a TXT record with the given text in this record set.
              *
              * @param text the text value
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithTxtRecordTextValueOrAttachable<ParentT> withText(String text);
         }
@@ -629,7 +629,7 @@ public interface DnsRecordSet extends
              * Specifies the TTL for the records in the record set.
              *
              * @param ttlInSeconds TTL in seconds
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTimeToLive(long ttlInSeconds);
         }
@@ -645,7 +645,7 @@ public interface DnsRecordSet extends
              *
              * @param key the key for the metadata
              * @param value the value for the metadata
-             * @return the next stage of the record set definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMetadata(String key, String value);
         }

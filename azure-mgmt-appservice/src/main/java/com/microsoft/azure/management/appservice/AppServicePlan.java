@@ -96,7 +96,7 @@ public interface AppServicePlan extends
              * Specifies the pricing tier for the app service plan.
              *
              * @param pricingTier the pricing tier enum
-             * @return the next stage of the app service plan definition
+             * @return the next stage of the definition
              */
             WithOperatingSystem withPricingTier(PricingTier pricingTier);
         }
@@ -109,7 +109,7 @@ public interface AppServicePlan extends
              * Specifies the operating system of the app service plan.
              *
              * @param operatingSystem the operating system
-             * @return the next stage of the app service plan definition
+             * @return the next stage of the definition
              */
             WithCreate withOperatingSystem(OperatingSystem operatingSystem);
         }
@@ -122,7 +122,7 @@ public interface AppServicePlan extends
              * Specifies whether per-site scaling will be turned on.
              *
              * @param perSiteScaling if each site can be scaled individually
-             * @return the next stage of the app service plan definition
+             * @return the next stage of the definition
              */
             WithCreate withPerSiteScaling(boolean perSiteScaling);
         }

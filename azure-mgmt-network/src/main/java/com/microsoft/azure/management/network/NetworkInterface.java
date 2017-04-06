@@ -97,7 +97,7 @@ public interface NetworkInterface extends
              * based on the provided definition.
              *
              * @param creatable a creatable definition for a new virtual network
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithPrimaryPrivateIP withNewPrimaryNetwork(Creatable<Network> creatable);
 
@@ -110,7 +110,7 @@ public interface NetworkInterface extends
              *
              * @param name the name of the new virtual network
              * @param addressSpace the address space for rhe virtual network
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithPrimaryPrivateIP withNewPrimaryNetwork(String name, String addressSpace);
 
@@ -122,7 +122,7 @@ public interface NetworkInterface extends
              * the network IP address space.
              *
              * @param addressSpace the address space for the virtual network
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithPrimaryPrivateIP withNewPrimaryNetwork(String addressSpace);
 
@@ -130,7 +130,7 @@ public interface NetworkInterface extends
              * Associate an existing virtual network with the network interface's primary IP configuration.
              *
              * @param network an existing virtual network
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithPrimaryNetworkSubnet withExistingPrimaryNetwork(Network network);
         }
@@ -143,7 +143,7 @@ public interface NetworkInterface extends
              * Associate a subnet with the network interface's primary IP configuration.
              *
              * @param name the subnet name
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithPrimaryPrivateIP withSubnet(String name);
         }
@@ -182,7 +182,7 @@ public interface NetworkInterface extends
              * the provided definition.
              *
              * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
@@ -192,7 +192,7 @@ public interface NetworkInterface extends
              * <p>
              * the internal name and DNS label for the public IP address will be derived from the network interface name
              *
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withNewPrimaryPublicIPAddress();
 
@@ -203,7 +203,7 @@ public interface NetworkInterface extends
              * the internal name for the public IP address will be derived from the DNS label
              *
              * @param leafDnsLabel the leaf domain label
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withNewPrimaryPublicIPAddress(String leafDnsLabel);
 
@@ -211,7 +211,7 @@ public interface NetworkInterface extends
              * Associates an existing public IP address with the network interface's primary IP configuration.
              *
              * @param publicIPAddress an existing public IP address
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
         }
@@ -224,7 +224,7 @@ public interface NetworkInterface extends
              * Create a new network security group to associate with network interface, based on the provided definition.
              *
              * @param creatable a creatable definition for a new network security group
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable);
 
@@ -232,7 +232,7 @@ public interface NetworkInterface extends
              * Associates an existing network security group with the network interface.
              *
              * @param networkSecurityGroup an existing network security group
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
         }
@@ -265,7 +265,7 @@ public interface NetworkInterface extends
             /**
              * Enable IP forwarding in the network interface.
              *
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withIPForwarding();
 
@@ -276,7 +276,7 @@ public interface NetworkInterface extends
              * added to the network interface.
              *
              * @param ipAddress the IP address of the DNS server
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withDnsServer(String ipAddress);
 
@@ -284,7 +284,7 @@ public interface NetworkInterface extends
              * Specifies the internal DNS name label for the network interface.
              *
              * @param dnsNameLabel the internal DNS name label
-             * @return the next stage of the network interface definition
+             * @return the next stage of the definition
              */
             WithCreate withInternalDnsNameLabel(String dnsNameLabel);
         }

@@ -653,7 +653,7 @@ public interface VirtualMachine extends
              *
              * @param osDiskUrl osDiskUrl the URL to the OS disk in the Azure Storage account
              * @param osType the OS type
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithUnmanagedCreate withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
 
