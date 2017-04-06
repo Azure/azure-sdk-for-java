@@ -123,10 +123,10 @@ public class QueueClientTests {
 	}
 	
 	@Test
-	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession() throws InterruptedException, ServiceBusException
+	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession() throws InterruptedException, ServiceBusException
 	{
 		this.createSessionfulQueueClient();
-		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(this.sessionfulQueueClient, this.sessionfulQueueClient);
+		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(this.sessionfulQueueClient, this.sessionfulQueueClient);
 	}
 	
 	@Test

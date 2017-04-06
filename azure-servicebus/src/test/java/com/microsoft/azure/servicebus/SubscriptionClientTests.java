@@ -189,10 +189,10 @@ public class SubscriptionClientTests {
 	}
 	
 	@Test
-	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession() throws InterruptedException, ServiceBusException
+	public void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession() throws InterruptedException, ServiceBusException
 	{
 		this.createSessionfulSubscriptionClient();
-		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
+		MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(this.sessionfulTopicClient, this.sessionfulSubscriptionClient);
 	}
 	
 	@Test

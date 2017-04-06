@@ -156,7 +156,7 @@ public class MessageAndSessionPumpTests {
 		MessageAndSessionPumpTests.testSessionPumpAutoComplete(sender, sessionPump, 1);
 	}
 	
-	public static void testSessionPumpAutoCompleteWithMultipleConcurrentCallPerSession(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
+	public static void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
 	{
 		MessageAndSessionPumpTests.testSessionPumpAutoComplete(sender, sessionPump, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION);
 	}
@@ -260,8 +260,8 @@ public class MessageAndSessionPumpTests {
 	
 	public static void testSessionPumpRenewLock(IMessageSender sender, IMessageAndSessionPump sessionPump) throws InterruptedException, ServiceBusException
 	{
-		int numSessions = 10;
-		int numMessagePerSession = 10;
+		int numSessions = 5;
+		int numMessagePerSession = 2;
 		ArrayList<String> sessionIds = new ArrayList<>();
 		for(int i=0; i<numSessions; i++)
 		{
@@ -276,9 +276,9 @@ public class MessageAndSessionPumpTests {
 		}		
 		
 		boolean autoComplete = true;
-		int sleepMinutes = 1; // This should be less than message lock duration of the queue or subscription
+		int sleepMinutes = 2; // This should be less than message lock duration of the queue or subscription
 		CountingSessionHandler sessionHandler = new CountingSessionHandler(sessionPump, !autoComplete, numSessions * numMessagePerSession, false, Duration.ofMinutes(sleepMinutes));
-		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, DEFAULT_MAX_CONCURRENT_CALLS_PER_SESSION, autoComplete, Duration.ofMinutes(10)));
+		sessionPump.registerSessionHandler(sessionHandler, new SessionHandlerOptions(DEFAULT_MAX_CONCURRENT_SESSIONS, 1, autoComplete, Duration.ofMinutes(10)));
 		int waitMinutes = 5 * sleepMinutes;
 		if(!sessionHandler.getMessageCountDownLatch().await(waitMinutes, TimeUnit.MINUTES))
 		{			
