@@ -10,6 +10,7 @@ import java.util.function.BiConsumer;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -100,21 +101,26 @@ public class CBSChannel {
         @Override
         public void run(IOperationResult<RequestResponseChannel, Exception> operationCallback) {
 
+            final Session session = CBSChannel.this.sessionProvider.getSession(
+                    "cbs-session",
+                    null,
+                    new BiConsumer<ErrorCondition, Exception>() {
+                        @Override
+                        public void accept(ErrorCondition error, Exception exception) {
+                            if (error != null)
+                                operationCallback.onError(new AmqpException(error));
+                            else if (exception != null)
+                                operationCallback.onError(exception);
+                        }
+                    });
+
+            if (session == null)
+                return;
+
             final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                     "cbs",
                     ClientConstants.CBS_ADDRESS,
-                    CBSChannel.this.sessionProvider.getSession(
-                            "cbs-session",
-                            null,
-                            new BiConsumer<ErrorCondition, Exception>() {
-                                @Override
-                                public void accept(ErrorCondition error, Exception exception) {
-                                    if (error != null)
-                                        operationCallback.onError(new AmqpException(error));
-                                    else if (exception != null)
-                                        operationCallback.onError(exception);
-                                }
-                            }));
+                    session);
 
             requestResponseChannel.open(
                     new IOperationResult<Void, Exception>() {

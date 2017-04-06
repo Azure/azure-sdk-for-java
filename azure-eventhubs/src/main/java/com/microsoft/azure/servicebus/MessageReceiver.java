@@ -64,6 +64,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
     private final ConcurrentLinkedQueue<Message> prefetchedMessages;
     private final ReceiveWork receiveWork;
     private final CreateAndReceive createAndReceive;
+    private final Object errorConditionLock;
 
     private int prefetchCount;
     private Receiver receiveLink;
@@ -95,6 +96,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         this.linkOpen = new WorkItem<>(new CompletableFuture<>(), factory.getOperationTimeout());
 
         this.pendingReceives = new ConcurrentLinkedQueue<>();
+        this.errorConditionLock = new Object();
 
         // onOperationTimeout delegate - per receive call
         this.onOperationTimedout = new Runnable() {
@@ -250,7 +252,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
     }
 
     public CompletableFuture<Collection<Message>> receive(final int maxMessageCount) {
-        this.throwIfClosed(this.lastKnownLinkError);
+        this.throwIfClosed();
 
         if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount) {
             throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
@@ -289,7 +291,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     this.openTimer.cancel(false);
             }
 
-            this.lastKnownLinkError = null;
+            synchronized (this.errorConditionLock) {
+                this.lastKnownLinkError = null;
+            }
 
             this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 
@@ -308,7 +312,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     this.openTimer.cancel(false);
             }
 
-            this.lastKnownLinkError = exception;
+            synchronized (this.errorConditionLock) {
+                this.lastKnownLinkError = exception;
+            }
         }
     }
 
@@ -328,11 +334,6 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 
         this.receiveWork.onEvent();
-    }
-
-    public void onError(final ErrorCondition error) {
-        final Exception completionException = ExceptionUtil.toException(error);
-        this.onError(completionException);
     }
 
     @Override
@@ -358,7 +359,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
             this.linkClose.complete(null);
         } else {
-            this.lastKnownLinkError = exception == null ? this.lastKnownLinkError : exception;
+            synchronized (this.errorConditionLock) {
+                this.lastKnownLinkError = exception == null ? this.lastKnownLinkError : exception;
+            }
 
             final Exception completionException = exception == null
                     ? new ServiceBusException(true, "Client encountered transient error for unknown reasons, please retry the operation.") : exception;
@@ -452,7 +455,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
                 receiver.open();
 
-                MessageReceiver.this.receiveLink = receiver;
+                synchronized (MessageReceiver.this.errorConditionLock) {
+                    MessageReceiver.this.receiveLink = receiver;
+                }
             }
         };
 
@@ -460,7 +465,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null)
-                    onError(t);
+                    onError((t != null && t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
                 else if (u != null)
                     onError(u);
             }
@@ -526,12 +531,19 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                 new Runnable() {
                     public void run() {
                         if (!linkOpen.getWork().isDone()) {
-                            Exception operationTimedout = new TimeoutException(
-                                    String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
-                                    MessageReceiver.this.lastKnownLinkError);
+                            final Receiver link;
+                            final Exception lastReportedLinkError;
+                            synchronized (errorConditionLock) {
+                                link = MessageReceiver.this.receiveLink;
+                                lastReportedLinkError = MessageReceiver.this.lastKnownLinkError;
+                            }
+
+                            final Exception operationTimedout = new TimeoutException(
+                                    String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", link.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
+                                    lastReportedLinkError);
                             if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
                                 TRACE_LOGGER.log(Level.WARNING,
-                                        String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(), "Open"),
+                                        String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, link.getName(), "Open"),
                                         operationTimedout);
                             }
 
@@ -549,10 +561,15 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                 new Runnable() {
                     public void run() {
                         if (!linkClose.isDone()) {
-                            Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
+                            final Receiver link;
+                            synchronized (errorConditionLock) {
+                                link = MessageReceiver.this.receiveLink;
+                            }
+
+                            final Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", link.getName(), ZonedDateTime.now()));
                             if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
                                 TRACE_LOGGER.log(Level.WARNING,
-                                        String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(), "Close"),
+                                        String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, link.getName(), "Close"),
                                         operationTimedout);
                             }
 
@@ -567,25 +584,27 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
     @Override
     public void onClose(ErrorCondition condition) {
-        if (condition == null || condition.getCondition() == null) {
-            this.onError((Exception) null);
-        } else {
-            this.onError(condition);
-        }
+        final Exception completionException = (condition != null && condition.getCondition() != null) ? ExceptionUtil.toException(condition) : null;
+        this.onError(completionException);
     }
 
     @Override
     public ErrorContext getContext() {
-        final boolean isLinkOpened = this.linkOpen != null && this.linkOpen.getWork().isDone();
-        final String referenceId = this.receiveLink != null && this.receiveLink.getRemoteProperties() != null && this.receiveLink.getRemoteProperties().containsKey(ClientConstants.TRACKING_ID_PROPERTY)
-                ? this.receiveLink.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
-                : ((this.receiveLink != null) ? this.receiveLink.getName() : null);
+        final Receiver link;
+        synchronized (this.errorConditionLock) {
+            link = this.receiveLink;
+        }
 
-        ReceiverContext errorContext = new ReceiverContext(this.underlyingFactory != null ? this.underlyingFactory.getHostName() : null,
+        final boolean isLinkOpened = this.linkOpen != null && this.linkOpen.getWork().isDone();
+        final String referenceId = link != null && link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(ClientConstants.TRACKING_ID_PROPERTY)
+                ? link.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
+                : ((link != null) ? link.getName() : null);
+
+        final ReceiverContext errorContext = new ReceiverContext(this.underlyingFactory != null ? this.underlyingFactory.getHostName() : null,
                 this.receivePath,
                 referenceId,
                 isLinkOpened ? this.prefetchCount : null,
-                isLinkOpened && this.receiveLink != null ? this.receiveLink.getCredit() : null,
+                isLinkOpened && link != null ? link.getCredit() : null,
                 isLinkOpened && this.prefetchedMessages != null ? this.prefetchedMessages.size() : null);
 
         return errorContext;
@@ -626,6 +645,13 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         }
 
         return this.linkClose;
+    }
+
+    @Override
+    protected Exception getLastKnownError() {
+        synchronized (this.errorConditionLock) {
+            return this.lastKnownLinkError;
+        }
     }
 
     private final class ReceiveWork extends DispatchHandler {

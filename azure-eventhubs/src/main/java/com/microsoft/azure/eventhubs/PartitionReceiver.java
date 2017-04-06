@@ -124,7 +124,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
         }
 
         final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiverOptions);
-        return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
+        return receiver.createInternalReceiver().thenApply(new Function<Void, PartitionReceiver>() {
             public PartitionReceiver apply(Void a) {
                 return receiver;
             }
@@ -136,7 +136,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 StringUtil.getRandomString(),
                 String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
                 PartitionReceiver.DEFAULT_PREFETCH_COUNT, this)
-                .thenAcceptAsync(new Consumer<MessageReceiver>() {
+                .thenAccept(new Consumer<MessageReceiver>() {
                     public void accept(MessageReceiver r) {
                         PartitionReceiver.this.internalReceiver = r;
                     }

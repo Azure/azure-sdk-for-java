@@ -102,9 +102,13 @@ public abstract class ClientEntity {
         }
     }
 
-    protected final void throwIfClosed(Throwable cause) {
+    protected final void throwIfClosed() {
         if (this.getIsClosingOrClosed()) {
-            throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is Closed.", this.getClass().getName()), cause);
+            throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is Closed.", this.getClass().getName()), this.getLastKnownError());
         }
+    }
+
+    protected Exception getLastKnownError() {
+        return null;
     }
 }

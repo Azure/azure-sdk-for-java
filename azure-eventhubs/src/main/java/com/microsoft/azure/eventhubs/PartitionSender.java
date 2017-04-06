@@ -37,7 +37,7 @@ public final class PartitionSender extends ClientEntity {
     static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException {
         final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
         return sender.createInternalSender()
-                .thenApplyAsync(new Function<Void, PartitionSender>() {
+                .thenApply(new Function<Void, PartitionSender>() {
                     public PartitionSender apply(Void a) {
                         return sender;
                     }
@@ -47,7 +47,7 @@ public final class PartitionSender extends ClientEntity {
     private CompletableFuture<Void> createInternalSender() throws ServiceBusException {
         return MessageSender.create(this.factory, StringUtil.getRandomString(),
                 String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
-                .thenAcceptAsync(new Consumer<MessageSender>() {
+                .thenAccept(new Consumer<MessageSender>() {
                     public void accept(MessageSender a) {
                         PartitionSender.this.internalSender = a;
                     }

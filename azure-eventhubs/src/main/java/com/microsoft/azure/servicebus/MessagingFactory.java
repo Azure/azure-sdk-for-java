@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ScheduledFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -61,11 +62,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     private Duration operationTimeout;
     private RetryPolicy retryPolicy;
     private CompletableFuture<MessagingFactory> open;
-    private CompletableFuture<Connection> openConnection;
+    private ScheduledFuture openTimer;
+    private ScheduledFuture closeTimer;
 
-    /**
-     * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
-     */
     MessagingFactory(final ConnectionStringBuilder builder, final RetryPolicy retryPolicy) {
         super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 
@@ -77,7 +76,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         this.registeredLinks = new LinkedList<>();
         this.reactorLock = new Object();
         this.connectionHandler = new ConnectionHandler(this);
-        this.openConnection = new CompletableFuture<>();
         this.cbsChannelCreateLock = new Object();
         this.tokenProvider = builder.getSharedAccessSignature() == null
                 ? new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey())
@@ -152,6 +150,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         if (this.getIsClosingOrClosed()) {
 
             onRemoteSessionOpenError.accept(null, new OperationCancelledException("underlying messagingFactory instance is closed"));
+            return null;
         }
 
         if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED) {
@@ -180,7 +179,17 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final RetryPolicy retryPolicy) throws IOException {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
         final MessagingFactory messagingFactory = new MessagingFactory(builder, (retryPolicy != null) ? retryPolicy : RetryPolicy.getDefault());
-
+        messagingFactory.openTimer = Timer.schedule(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            if (!messagingFactory.open.isDone()) {
+                                                                messagingFactory.open.completeExceptionally(new TimeoutException("Opening MessagingFactory timed out."));
+                                                                messagingFactory.getReactor().stop();
+                                                            }
+                                                        }
+                                                    },
+                messagingFactory.getOperationTimeout(),
+                TimerType.OneTimeRun);
         messagingFactory.createConnection(builder);
         return messagingFactory.open;
     }
@@ -189,13 +198,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     public void onOpenComplete(Exception exception) {
         if (exception == null) {
             this.open.complete(this);
-            this.openConnection.complete(this.connection);
+
+            // if connection creation is in progress and then msgFactory.close call came thru
             if (this.getIsClosingOrClosed())
                 this.connection.close();
         } else {
             this.open.completeExceptionally(exception);
-            this.openConnection.completeExceptionally(exception);
         }
+
+        if (this.openTimer != null)
+            this.openTimer.cancel(false);
     }
 
     @Override
@@ -204,21 +216,19 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
             this.onOpenComplete(ExceptionUtil.toException(error));
         } else {
             final Connection currentConnection = this.connection;
-            for (Link link : this.registeredLinks) {
+            final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
+            for (Link link : registeredLinksCopy) {
                 if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
                     link.close();
                 }
             }
 
-            this.openConnection = new CompletableFuture<>();
-
+            // if proton-j detects transport error - onConnectionError is invoked, but, the connection state is not set to closed
+            // in connection recreation we depend on currentConnection state to evaluate need for recreation
             if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED) {
                 currentConnection.close();
             }
 
-            // Clone of the registeredLinks is needed here
-            // onClose of link will lead to un-register - which will result into iteratorCollectionModified error
-            final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
             for (Link link : registeredLinksCopy) {
                 final Handler handler = BaseHandler.getHandler(link);
                 if (handler != null && handler instanceof BaseLinkHandler) {
@@ -273,6 +283,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     protected CompletableFuture<Void> onClose() {
         if (!this.getIsClosed()) {
             try {
+                this.closeTimer = Timer.schedule(new Runnable() {
+                                                     @Override
+                                                     public void run() {
+                                                         if (!closeTask.isDone()) {
+                                                             closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+                                                             getReactor().stop();
+                                                         }
+                                                     }
+                                                 },
+                        operationTimeout, TimerType.OneTimeRun);
                 this.scheduleOnReactorThread(new CloseWork());
             } catch (IOException ioException) {
                 this.closeTask.completeExceptionally(new ServiceBusException(false, "Failed to Close MessagingFactory, see cause for more details.", ioException));
@@ -319,18 +339,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                     if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED)
                         connection.close();
                 }
-            }
-
-            if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
-                Timer.schedule(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       if (!closeTask.isDone()) {
-                                           closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
-                                       }
-                                   }
-                               },
-                        operationTimeout, TimerType.OneTimeRun);
             }
         }
     }
@@ -387,6 +395,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
                 if (getIsClosingOrClosed() && !closeTask.isDone()) {
                     closeTask.complete(null);
+
+                    if (closeTimer != null)
+                        closeTimer.cancel(false);
                 }
             }
         }
