@@ -14,7 +14,10 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NicIPConfigurationBase;
+import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
@@ -28,12 +31,14 @@ import java.util.Map;
  * Base class implementation for various network interface ip configurations.
  *
  * @param <ParentImplT> parent implementation
- * @param <ParentT> parent interface
+ * @param <IParentT> parent interface
  */
 @LangDefinition
-abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT>
-        extends
-        ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT> {
+abstract class NicIPConfigurationBaseImpl<ParentImplT extends IParentT, IParentT>
+    extends
+        ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, IParentT>
+    implements
+        NicIPConfigurationBase, HasSubnet, HasPrivateIPAddress {
     /**
      * the network client.
      */

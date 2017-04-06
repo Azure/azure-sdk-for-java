@@ -40,23 +40,27 @@ public interface ApplicationGateway extends
     /**
      * Starts the application gateway.
      */
+    @Method
     void start();
 
     /**
      * Stops the application gateway.
      */
+    @Method
     void stop();
 
     /**
      * Starts the application gateway asynchronously.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable startAsync();
 
     /**
      * Stops the application gateway asynchronously.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable stopAsync();
 
     // Getters
