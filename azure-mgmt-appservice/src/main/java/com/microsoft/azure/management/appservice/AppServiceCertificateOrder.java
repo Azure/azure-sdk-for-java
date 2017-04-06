@@ -8,6 +8,7 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -121,11 +122,13 @@ public interface AppServiceCertificateOrder extends
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
 
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**

@@ -230,11 +230,6 @@ public interface WebAppBase extends
     String autoSwapSlotName();
 
     /**
-     * @return the mapping from host names and the host name bindings
-     */
-    Map<String, HostNameBinding> getHostNameBindings();
-
-    /**
      * @return the app settings defined on the web app
      */
     Map<String, AppSetting> appSettings();
@@ -255,23 +250,39 @@ public interface WebAppBase extends
     PlatformArchitecture platformArchitecture();
 
     /**
+     * @return the mapping from host names and the host name bindings
+     */
+    @Method
+    Map<String, HostNameBinding> getHostNameBindings();
+
+    /**
+     * @return the mapping from host names and the host name bindings
+     */
+    @Method
+    Observable<Map<String, HostNameBinding>> getHostNameBindingsAsync();
+
+    /**
      * @return the URL and credentials for publishing through FTP or Git
      */
+    @Method
     PublishingProfile getPublishingProfile();
 
     /**
      * @return the URL and credentials for publishing through FTP or Git
      */
+    @Method
     Observable<PublishingProfile> getPublishingProfileAsync();
 
     /**
      * @return the source control information for the web app
      */
+    @Method
     WebAppSourceControl getSourceControl();
 
     /**
      * @return the source control information for the web app
      */
+    @Method
     Observable<WebAppSourceControl> getSourceControlAsync();
 
     /**
@@ -294,34 +305,40 @@ public interface WebAppBase extends
     /**
      * Starts the web app or deployment slot.
      */
+    @Method
     void start();
 
     /**
      * Starts the web app or deployment slot.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable startAsync();
 
     /**
      * Stops the web app or deployment slot.
      */
+    @Method
     void stop();
 
     /**
      * Stops the web app or deployment slot.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable stopAsync();
 
     /**
      * Restarts the web app or deployment slot.
      */
+    @Method
     void restart();
 
     /**
      * Restarts the web app or deployment slot.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable restartAsync();
 
     /**
@@ -359,12 +376,14 @@ public interface WebAppBase extends
     /**
      * Reset the slot to its original configurations.
      */
+    @Method
     void resetSlotConfigurations();
 
     /**
      * Reset the slot to its original configurations.
      * @return a representation of the deferred computation of this call
      */
+    @Method
     Completable resetSlotConfigurationsAsync();
 
     /**************************************************************

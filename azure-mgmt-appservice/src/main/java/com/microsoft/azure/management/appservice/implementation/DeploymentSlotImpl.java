@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.ConnectionString;
@@ -24,8 +25,8 @@ import rx.functions.Func1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -57,17 +58,35 @@ class DeploymentSlotImpl
 
     @Override
     public Map<String, HostNameBinding> getHostNameBindings() {
-        List<HostNameBindingInner> collectionInner = this.manager().inner().webApps().listHostNameBindingsSlot(resourceGroupName(), this.parent().name(), name());
-        List<HostNameBinding> hostNameBindings = new ArrayList<>();
-        for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner, this));
-        }
-        return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
-            @Override
-            public String apply(HostNameBinding input) {
-                return input.name().replace(name() + "/", "");
-            }
-        });
+        return getHostNameBindingsAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<Map<String, HostNameBinding>> getHostNameBindingsAsync() {
+        return this.manager().inner().webApps().listHostNameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
+                .flatMap(new Func1<Page<HostNameBindingInner>, Observable<HostNameBindingInner>>() {
+                    @Override
+                    public Observable<HostNameBindingInner> call(Page<HostNameBindingInner> hostNameBindingInnerPage) {
+                        return Observable.from(hostNameBindingInnerPage.items());
+                    }
+                })
+                .map(new Func1<HostNameBindingInner, HostNameBinding>() {
+                    @Override
+                    public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
+                        return new HostNameBindingImpl<>(hostNameBindingInner, DeploymentSlotImpl.this);
+                    }
+                }).toList()
+                .map(new Func1<List<HostNameBinding>, Map<String, HostNameBinding>>() {
+                    @Override
+                    public Map<String, HostNameBinding> call(List<HostNameBinding> hostNameBindings) {
+                        return Collections.unmodifiableMap(Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
+                            @Override
+                            public String apply(HostNameBinding input) {
+                                return input.name().replace(name() + "/", "");
+                            }
+                        }));
+                    }
+                });
     }
 
     @Override
