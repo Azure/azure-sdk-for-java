@@ -257,7 +257,7 @@ public final class Utils {
      * @throws IOException IO errors
      * @throws CloudException Cloud errors
      */
-    public static void print(Network resource) throws CloudException, IOException {
+    public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())

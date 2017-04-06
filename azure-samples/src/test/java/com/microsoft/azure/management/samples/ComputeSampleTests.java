@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.samples.ListVirtualMachineImages;
 import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineAsync;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSetWithUnmanagedDisks;
@@ -84,6 +85,13 @@ public class ComputeSampleTests extends SamplesTestBase {
     public void testManageVirtualMachine() {
         Assert.assertTrue(ManageVirtualMachine.runSample(azure));
     }
+
+    // Recording fails due to a failure on Managed disks backend
+    // Once it will be solved we need to record this one and the above test.
+    /*@Test
+    public void testManageVirtualMachineAsync() {
+        Assert.assertTrue(ManageVirtualMachineAsync.runSample(azure));
+    }*/
 
     @Test
     public void testManageVirtualMachineExtension() {
