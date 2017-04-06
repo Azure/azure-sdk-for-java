@@ -37,7 +37,7 @@ public final class AzureClient extends AzureServiceClient {
      * The interval time between two long running operation polls. Default is
      * used if null.
      */
-    private int longRunningOperationRetryTimeout;
+    private Integer longRunningOperationRetryTimeout;
     /**
      * The executor for asynchronous requests.
      */
@@ -63,7 +63,7 @@ public final class AzureClient extends AzureServiceClient {
      *
      * @return the time in seconds.
      */
-    public int getLongRunningOperationRetryTimeout() {
+    public Integer getLongRunningOperationRetryTimeout() {
         return longRunningOperationRetryTimeout;
     }
 
@@ -72,7 +72,7 @@ public final class AzureClient extends AzureServiceClient {
      *
      * @param longRunningOperationRetryTimeout the time in seconds.
      */
-    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public void withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
