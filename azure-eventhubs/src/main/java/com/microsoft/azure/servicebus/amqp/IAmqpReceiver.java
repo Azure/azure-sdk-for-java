@@ -6,7 +6,6 @@ package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.engine.Delivery;
 
-public interface IAmqpReceiver extends IAmqpLink
-{
-	void onReceiveComplete(Delivery delivery);
+public interface IAmqpReceiver extends IAmqpLink {
+    void onReceiveComplete(Delivery delivery);
 }

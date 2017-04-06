@@ -26,120 +26,102 @@ import com.microsoft.azure.servicebus.StringUtil;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor
-public final class ConnectionHandler extends BaseHandler
-{
+public final class ConnectionHandler extends BaseHandler {
 
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+    private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 
-	private final IAmqpConnection messagingFactory;
+    private final IAmqpConnection messagingFactory;
 
-	public ConnectionHandler(final IAmqpConnection messagingFactory)
-	{
-		add(new Handshaker());
-		this.messagingFactory = messagingFactory;
-	}
-	
-	@Override
-	public void onConnectionInit(Event event)
-	{
-		final Connection connection = event.getConnection();
-		final String hostName = event.getReactor().getConnectionAddress(connection);
-		
-		connection.setHostname(hostName);
-		connection.setContainer(StringUtil.getRandomString());
-		
-		final Map<Symbol, Object> connectionProperties = new HashMap<Symbol, Object>();
-		connectionProperties.put(AmqpConstants.PRODUCT, ClientConstants.PRODUCT_NAME);
-		connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
-		connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
-		connection.setProperties(connectionProperties);
-		
-		connection.open();
-	}
+    public ConnectionHandler(final IAmqpConnection messagingFactory) {
+        add(new Handshaker());
+        this.messagingFactory = messagingFactory;
+    }
 
-	@Override
-	public void onConnectionBound(Event event)
-	{
-		Transport transport = event.getTransport();
+    @Override
+    public void onConnectionInit(Event event) {
+        final Connection connection = event.getConnection();
+        final String hostName = event.getReactor().getConnectionAddress(connection);
 
-		SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-		transport.ssl(domain);
+        connection.setHostname(hostName);
+        connection.setContainer(StringUtil.getRandomString());
 
-                Sasl sasl = transport.sasl();
-                sasl.setMechanisms("ANONYMOUS");
-	}
+        final Map<Symbol, Object> connectionProperties = new HashMap<Symbol, Object>();
+        connectionProperties.put(AmqpConstants.PRODUCT, ClientConstants.PRODUCT_NAME);
+        connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
+        connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
+        connection.setProperties(connectionProperties);
 
-	@Override
-	public void onConnectionUnbound(Event event)
-	{
-		if (TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionUnbound: hostname[" + event.getConnection().getHostname() + "]");
-		}
-	}
+        connection.open();
+    }
 
-	@Override
-	public void onTransportError(Event event)
-	{
-		ErrorCondition condition = event.getTransport().getCondition();
-		if (condition != null)
-		{
-			if (TRACE_LOGGER.isLoggable(Level.WARNING))
-			{
-				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[" + condition.getDescription() + "]");
-			}
-		}
-		else
-		{
-			if (TRACE_LOGGER.isLoggable(Level.WARNING))
-			{
-				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[no description returned]");
-			}
-		}
+    @Override
+    public void onConnectionBound(Event event) {
+        Transport transport = event.getTransport();
 
-		this.messagingFactory.onConnectionError(condition);
-	}
+        SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
+        transport.ssl(domain);
 
-	@Override
-	public void onConnectionRemoteOpen(Event event)
-	{
-		if (TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() +"]");
-		}
+        Sasl sasl = transport.sasl();
+        sasl.setMechanisms("ANONYMOUS");
+    }
 
-		this.messagingFactory.onOpenComplete(null);
-	}
+    @Override
+    public void onConnectionUnbound(Event event) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionUnbound: hostname[" + event.getConnection().getHostname() + "]");
+        }
+    }
 
-	@Override
-	public void onConnectionRemoteClose(Event event)
-	{
-		final Connection connection = event.getConnection();
-		final ErrorCondition error = connection.getRemoteCondition();
+    @Override
+    public void onTransportError(Event event) {
+        ErrorCondition condition = event.getTransport().getCondition();
+        if (condition != null) {
+            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
+                TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[" + condition.getDescription() + "]");
+            }
+        } else {
+            if (TRACE_LOGGER.isLoggable(Level.WARNING)) {
+                TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[no description returned]");
+            }
+        }
 
-		if (TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() + 
-					(error != null
-					? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
-							: "]"));
-		}
-		
-		if (connection.getRemoteState() != EndpointState.CLOSED)
-		{
-			connection.close();
-		}
+        this.messagingFactory.onConnectionError(condition);
+    }
 
-		this.messagingFactory.onConnectionError(error);
-	}
+    @Override
+    public void onConnectionRemoteOpen(Event event) {
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
+        }
 
-	private static SslDomain makeDomain(SslDomain.Mode mode)
-	{
-		SslDomain domain = Proton.sslDomain();
-		domain.init(mode);
+        this.messagingFactory.onOpenComplete(null);
+    }
 
-		// TODO: VERIFY_PEER_NAME support
-		domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
-		return domain;
-	}
+    @Override
+    public void onConnectionRemoteClose(Event event) {
+        final Connection connection = event.getConnection();
+        final ErrorCondition error = connection.getRemoteCondition();
+
+        if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+            TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() +
+                    (error != null
+                            ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
+                            : "]"));
+        }
+
+        if (connection.getRemoteState() != EndpointState.CLOSED) {
+            connection.close();
+        }
+
+        this.messagingFactory.onConnectionError(error);
+    }
+
+    private static SslDomain makeDomain(SslDomain.Mode mode) {
+        SslDomain domain = Proton.sslDomain();
+        domain.init(mode);
+
+        // TODO: VERIFY_PEER_NAME support
+        domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
+        return domain;
+    }
 }

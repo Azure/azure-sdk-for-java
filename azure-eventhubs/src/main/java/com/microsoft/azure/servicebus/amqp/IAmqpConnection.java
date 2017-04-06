@@ -7,13 +7,12 @@ package com.microsoft.azure.servicebus.amqp;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Link;
 
-public interface IAmqpConnection
-{
-	void onOpenComplete(Exception exception);
+public interface IAmqpConnection {
+    void onOpenComplete(Exception exception);
 
-	void onConnectionError(ErrorCondition error);
+    void onConnectionError(ErrorCondition error);
 
-	void registerForConnectionError(Link link);
+    void registerForConnectionError(Link link);
 
-	void deregisterForConnectionError(Link link);
+    void deregisterForConnectionError(Link link);
 }
