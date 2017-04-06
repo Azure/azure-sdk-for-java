@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.List;
@@ -259,9 +260,19 @@ public interface WebAppBase extends
     PublishingProfile getPublishingProfile();
 
     /**
+     * @return the URL and credentials for publishing through FTP or Git
+     */
+    Observable<PublishingProfile> getPublishingProfileAsync();
+
+    /**
      * @return the source control information for the web app
      */
     WebAppSourceControl getSourceControl();
+
+    /**
+     * @return the source control information for the web app
+     */
+    Observable<WebAppSourceControl> getSourceControlAsync();
 
     /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname
@@ -276,9 +287,9 @@ public interface WebAppBase extends
      * of the domain is bound to this web app.
      * @param certificateOrderName the name of the certificate order
      * @param domainVerificationToken the domain verification token for the certificate order
-     * @return the Observable to the result
+     * @return a representation of the deferred computation of this call
      */
-    Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
+    Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**
      * Starts the web app or deployment slot.
@@ -286,14 +297,32 @@ public interface WebAppBase extends
     void start();
 
     /**
+     * Starts the web app or deployment slot.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable startAsync();
+
+    /**
      * Stops the web app or deployment slot.
      */
     void stop();
 
     /**
+     * Stops the web app or deployment slot.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable stopAsync();
+
+    /**
      * Restarts the web app or deployment slot.
      */
     void restart();
+
+    /**
+     * Restarts the web app or deployment slot.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable restartAsync();
 
     /**
      * Swaps the app running in the current web app / slot with the app
@@ -304,6 +333,15 @@ public interface WebAppBase extends
     void swap(String slotName);
 
     /**
+     * Swaps the app running in the current web app / slot with the app
+     * running in the specified slot.
+     * @param slotName the target slot to swap with. Use 'production' for
+     *                 the production slot.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable swapAsync(String slotName);
+
+    /**
      * Apply the slot (or sticky) configurations from the specified slot
      * to the current one. This is useful for "Swap with Preview".
      * @param slotName the target slot to apply configurations from
@@ -311,9 +349,23 @@ public interface WebAppBase extends
     void applySlotConfigurations(String slotName);
 
     /**
+     * Apply the slot (or sticky) configurations from the specified slot
+     * to the current one. This is useful for "Swap with Preview".
+     * @param slotName the target slot to apply configurations from
+     * @return a representation of the deferred computation of this call
+     */
+    Completable applySlotConfigurationsAsync(String slotName);
+
+    /**
      * Reset the slot to its original configurations.
      */
     void resetSlotConfigurations();
+
+    /**
+     * Reset the slot to its original configurations.
+     * @return a representation of the deferred computation of this call
+     */
+    Completable resetSlotConfigurationsAsync();
 
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot.

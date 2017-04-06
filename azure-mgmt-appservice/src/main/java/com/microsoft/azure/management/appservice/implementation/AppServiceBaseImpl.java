@@ -20,6 +20,7 @@ import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -149,28 +150,47 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public PublishingProfile getPublishingProfile() {
-        InputStream stream = this.manager().inner().webApps().listPublishingProfileXmlWithSecrets(resourceGroupName(), name());
-        try {
-            String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml, this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getPublishingProfileAsync().toBlocking().single();
+    }
+
+    public Observable<PublishingProfile> getPublishingProfileAsync() {
+        return manager().inner().webApps().listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name())
+                .map(new Func1<InputStream, PublishingProfile>() {
+                    @Override
+                    public PublishingProfile call(InputStream stream) {
+                        try {
+                            String xml = CharStreams.toString(new InputStreamReader(stream));
+                            return new PublishingProfileImpl(xml, AppServiceBaseImpl.this);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
     }
 
     @Override
     public WebAppSourceControl getSourceControl() {
-        SiteSourceControlInner siteSourceControlInner = this.manager().inner().webApps().getSourceControl(resourceGroupName(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this);
+        return getSourceControlAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<WebAppSourceControl> getSourceControlAsync() {
+        return manager().inner().webApps().getSourceControlAsync(resourceGroupName(), name())
+                .map(new Func1<SiteSourceControlInner, WebAppSourceControl>() {
+                    @Override
+                    public WebAppSourceControl call(SiteSourceControlInner siteSourceControlInner) {
+                        return new WebAppSourceControlImpl<>(siteSourceControlInner, AppServiceBaseImpl.this);
+                    }
+                });
     }
 
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
-        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+    public Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
         identifierInner.withLocation("global");
         return this.manager().inner().webApps().createOrUpdateDomainOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
@@ -179,42 +199,103 @@ abstract class AppServiceBaseImpl<
                     public Void call(IdentifierInner identifierInner) {
                         return null;
                     }
-                });
+                }).toCompletable();
     }
 
     @Override
     public void start() {
-        this.manager().inner().webApps().start(resourceGroupName(), name());
-        refresh();
+        startAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return manager().inner().webApps().startAsync(resourceGroupName(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void stop() {
-        this.manager().inner().webApps().stop(resourceGroupName(), name());
-        refresh();
+        stopAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return manager().inner().webApps().stopAsync(resourceGroupName(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void restart() {
-        this.manager().inner().webApps().restart(resourceGroupName(), name());
-        refresh();
+        restartAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable restartAsync() {
+        return manager().inner().webApps().restartAsync(resourceGroupName(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void swap(String slotName) {
-        this.manager().inner().webApps().swapSlotWithProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        swapAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable swapAsync(String slotName) {
+        return manager().inner().webApps().swapSlotWithProductionAsync(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
-        this.manager().inner().webApps().applySlotConfigToProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        applySlotConfigurationsAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable applySlotConfigurationsAsync(String slotName) {
+        return manager().inner().webApps().applySlotConfigToProductionAsync(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void resetSlotConfigurations() {
-        this.manager().inner().webApps().resetProductionSlotConfig(resourceGroupName(), name());
+        resetSlotConfigurationsAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable resetSlotConfigurationsAsync() {
+        return manager().inner().webApps().resetProductionSlotConfigAsync(resourceGroupName(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @SuppressWarnings("unchecked")

@@ -19,6 +19,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceCertif
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -138,7 +139,7 @@ public interface AppServiceCertificateOrder extends
      * @param domain the Azure managed domain
      * @return an Observable to the result
      */
-    Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain);
+    Completable verifyDomainOwnershipAsync(AppServiceDomain domain);
 
     /**************************************************************
      * Fluent interfaces to provision a App service certificate order

@@ -17,6 +17,7 @@ import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -71,31 +72,70 @@ class DeploymentSlotImpl
 
     @Override
     public PublishingProfile getPublishingProfile() {
-        InputStream stream = manager().inner().webApps().listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), this.parent().name(), name());
-        try {
-            String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml, this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getPublishingProfileAsync().toBlocking().single();
+    }
+
+    public Observable<PublishingProfile> getPublishingProfileAsync() {
+        return manager().inner().webApps().listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .map(new Func1<InputStream, PublishingProfile>() {
+                    @Override
+                    public PublishingProfile call(InputStream stream) {
+                        try {
+                            String xml = CharStreams.toString(new InputStreamReader(stream));
+                            return new PublishingProfileImpl(xml, DeploymentSlotImpl.this);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
     }
 
     @Override
     public void start() {
-        manager().inner().webApps().startSlot(resourceGroupName(), this.parent().name(), name());
-        refresh();
+        startAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable startAsync() {
+        return manager().inner().webApps().startSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void stop() {
-        manager().inner().webApps().stopSlot(resourceGroupName(), this.parent().name(), name());
-        refresh();
+        stopAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable stopAsync() {
+        return manager().inner().webApps().stopSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void restart() {
-        manager().inner().webApps().restartSlot(resourceGroupName(), this.parent().name(), name());
-        refresh();
+        restartAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable restartAsync() {
+        return manager().inner().webApps().restartSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
@@ -208,19 +248,50 @@ class DeploymentSlotImpl
 
     @Override
     public void swap(String slotName) {
-        manager().inner().webApps().swapSlotSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        swapAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable swapAsync(String slotName) {
+        return manager().inner().webApps().swapSlotSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
-        manager().inner().webApps().applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
-        refresh();
+        applySlotConfigurationsAsync(slotName).toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable applySlotConfigurationsAsync(String slotName) {
+        return manager().inner().webApps().applySlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName))
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
     public void resetSlotConfigurations() {
-        manager().inner().webApps().resetSlotConfigurationSlot(resourceGroupName(), parent().name(), name());
+        resetSlotConfigurationsAsync().toObservable().toBlocking().subscribe();
+    }
+
+    @Override
+    public Completable resetSlotConfigurationsAsync() {
+        return manager().inner().webApps().resetSlotConfigurationSlotAsync(resourceGroupName(), this.parent().name(), name())
+                .flatMap(new Func1<Void, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Void aVoid) {
+                        return refreshAsync();
+                    }
+                }).toCompletable();
     }
 
     @Override
@@ -245,17 +316,27 @@ class DeploymentSlotImpl
 
     @Override
     public WebAppSourceControl getSourceControl() {
-        SiteSourceControlInner siteSourceControlInner = manager().inner().webApps().getSourceControlSlot(resourceGroupName(), parent().name(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this);
+        return getSourceControlAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<WebAppSourceControl> getSourceControlAsync() {
+        return manager().inner().webApps().getSourceControlSlotAsync(resourceGroupName(), parent().name(), name())
+                .map(new Func1<SiteSourceControlInner, WebAppSourceControl>() {
+                    @Override
+                    public WebAppSourceControl call(SiteSourceControlInner siteSourceControlInner) {
+                        return new WebAppSourceControlImpl<>(siteSourceControlInner, DeploymentSlotImpl.this);
+                    }
+                });
     }
 
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
-        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+    public Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
         identifierInner.withLocation("global");
         return manager().inner().webApps().createOrUpdateDomainOwnershipIdentifierSlotAsync(resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
@@ -264,6 +345,6 @@ class DeploymentSlotImpl
                     public Void call(IdentifierInner identifierInner) {
                         return null;
                     }
-                });
+                }).toCompletable();
     }
 }
