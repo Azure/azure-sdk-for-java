@@ -18,6 +18,7 @@ import com.microsoft.azure.management.appservice.DomainPurchaseConsent;
 import com.microsoft.azure.management.appservice.DomainStatus;
 import com.microsoft.azure.management.appservice.HostName;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -174,11 +175,11 @@ class AppServiceDomainImpl
 
     @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
-        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+    public Completable verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         DomainOwnershipIdentifierInner identifierInner = new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
         identifierInner.withLocation("global");
         return this.manager().inner().domains().createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
@@ -187,7 +188,7 @@ class AppServiceDomainImpl
                     public Void call(DomainOwnershipIdentifierInner domainOwnershipIdentifierInner) {
                         return null;
                     }
-                });
+                }).toCompletable();
     }
 
     @Override

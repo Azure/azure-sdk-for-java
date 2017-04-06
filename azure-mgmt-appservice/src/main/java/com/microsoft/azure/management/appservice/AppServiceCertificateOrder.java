@@ -8,6 +8,7 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceCertif
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -120,11 +122,13 @@ public interface AppServiceCertificateOrder extends
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
 
     /**
      * @return the state of the Key Vault secret
      */
+    @Method
     Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**
@@ -138,7 +142,7 @@ public interface AppServiceCertificateOrder extends
      * @param domain the Azure managed domain
      * @return an Observable to the result
      */
-    Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain);
+    Completable verifyDomainOwnershipAsync(AppServiceDomain domain);
 
     /**************************************************************
      * Fluent interfaces to provision a App service certificate order
