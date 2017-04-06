@@ -111,7 +111,7 @@ public final class ManageVirtualMachineAsync {
                     }).flatMap(new Func1<Indexable, Observable<Indexable>>() {
                         @Override
                         public Observable<Indexable> call(Indexable createdResource) {
-                            if(createdResource instanceof Network) {
+                            if (createdResource instanceof Network) {
                                 // Once Network object is created we can start creation of Linux VM in the same network
                                 Network network = (Network) createdResource;
                                 System.out.println("Created Network");
@@ -139,18 +139,18 @@ public final class ManageVirtualMachineAsync {
                             if (createdResource instanceof VirtualMachine) {
                                 Date t2 = new Date();
                                 VirtualMachine virtualMachine = (VirtualMachine) createdResource;
-                                if(IsWindowsVM(virtualMachine)) {
+                                if (isWindowsVM(virtualMachine)) {
                                     createdVms.put(windowsVmKey, virtualMachine);
-                                    System.out.println("Created Windows VM: " +
-                                            virtualMachine.id());
+                                    System.out.println("Created Windows VM: "
+                                            + virtualMachine.id());
                                 } else {
                                     createdVms.put(linuxVmKey, virtualMachine);
-                                    System.out.println("Created a Linux VM (in the same virtual network): " +
-                                            virtualMachine.id());
+                                    System.out.println("Created a Linux VM (in the same virtual network): "
+                                            + virtualMachine.id());
                                 }
-                                System.out.println("Virtual machine creation took " +
-                                        ((t2.getTime() - t1.getTime()) / 1000) +
-                                        " seconds");
+                                System.out.println("Virtual machine creation took "
+                                        + ((t2.getTime() - t1.getTime()) / 1000)
+                                        + " seconds");
                                 // Print virtual machine details
                                 Utils.print(virtualMachine);
                             }
@@ -253,8 +253,8 @@ public final class ManageVirtualMachineAsync {
         return false;
     }
 
-    private static boolean IsWindowsVM(VirtualMachine vm){
-        if(vm != null && vm.osProfile() != null && vm.osProfile().windowsConfiguration() != null) {
+    private static boolean isWindowsVM(VirtualMachine vm) {
+        if (vm != null && vm.osProfile() != null && vm.osProfile().windowsConfiguration() != null) {
             return true;
         }
         return false;
