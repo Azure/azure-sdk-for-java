@@ -6,11 +6,14 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+
 import rx.Observable;
 
 /**
  * Virtual machine encryption related operations.
  */
+@Fluent
 public interface VirtualMachineEncryption {
     /**
      * Enable encryption for virtual machine disks.

@@ -140,28 +140,28 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the PFX certificate file to upload.
              * @param file the PFX certificate file
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxFile(File file);
 
             /**
              * Specifies the PFX byte array to upload.
              * @param pfxByteArray the PFX byte array
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxByteArray(byte[] pfxByteArray);
 
             /**
              * Specifies the PFX file from a URL.
              * @param url the URL pointing to the PFX file.
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithPfxFilePassword withPfxFileFromUrl(String url);
 
             /**
              * Specifies the app service certificate.
              * @param certificateOrder the app service certificate order
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
@@ -172,7 +172,7 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the password to the PFX certificate.
              * @param password the PFX certificate password
-             * @return the next stage of the app service certificate definition
+             * @return the next stage of the definition
              */
             WithCreate withPfxPassword(String password);
         }

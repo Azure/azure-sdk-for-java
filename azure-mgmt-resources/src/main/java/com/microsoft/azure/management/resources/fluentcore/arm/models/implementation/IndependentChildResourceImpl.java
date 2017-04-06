@@ -100,7 +100,7 @@ public abstract class IndependentChildResourceImpl<
     /**
      * Specifies tags for the resource as a {@link Map}.
      * @param tags a {@link Map} of tags
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
@@ -112,7 +112,7 @@ public abstract class IndependentChildResourceImpl<
      * Adds a tag to the resource.
      * @param key the key for the tag
      * @param value the value for the tag
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTag(String key, String value) {
@@ -123,7 +123,7 @@ public abstract class IndependentChildResourceImpl<
     /**
      * Removes a tag from the resource.
      * @param key the key of the tag to remove
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withoutTag(String key) {

@@ -142,7 +142,7 @@ public interface ApplicationGatewayFrontend extends
         /**
          * The stage of an application gateway frontend definition allowing to specify an existing public IP address to make
          * the application gateway available at as Internet-facing.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
         }

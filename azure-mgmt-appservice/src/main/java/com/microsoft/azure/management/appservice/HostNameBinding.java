@@ -76,53 +76,53 @@ public interface HostNameBinding
     interface DefinitionStages {
         /**
          * The first stage of a host name binding definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDomain<ParentT> {
         }
 
         /**
          * The stage of a hostname binding definition allowing domain to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDomain<ParentT> {
             /**
              * Binds to a domain purchased from Azure.
              * @param domain the domain purchased from Azure
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithSubDomain<ParentT> withAzureManagedDomain(AppServiceDomain domain);
 
             /**
              * Binds to a 3rd party domain.
              * @param domain the 3rd party domain name
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithSubDomain<ParentT> withThirdPartyDomain(String domain);
         }
 
         /**
          * The stage of a hostname binding definition allowing sub-domain to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSubDomain<ParentT> {
             /**
              * Specifies the sub-domain to bind to.
              * @param subDomain the sub-domain name excluding the top level domain, e.g., "@", "www"
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 
         /**
          * The stage of a hostname binding definition allowing DNS record type to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithHostNameDnsRecordType<ParentT> {
             /**
              * Specifies the DNS record type.
              * @param hostNameDnsRecordType the DNS record type
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
@@ -157,53 +157,53 @@ public interface HostNameBinding
     interface UpdateDefinitionStages {
         /**
          * The first stage of a host name binding definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDomain<ParentT> {
         }
 
         /**
          * The stage of a hostname binding definition allowing domain to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithDomain<ParentT> {
             /**
              * Binds to a domain purchased from Azure.
              * @param domain the domain purchased from Azure
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithSubDomain<ParentT> withAzureManagedDomain(AppServiceDomain domain);
 
             /**
              * Binds to a 3rd party domain.
              * @param domain the 3rd party domain name
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithSubDomain<ParentT> withThirdPartyDomain(String domain);
         }
 
         /**
          * The stage of a hostname binding definition allowing sub-domain to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSubDomain<ParentT> {
             /**
              * Specifies the sub-domain to bind to.
              * @param subDomain the sub-domain name excluding the top level domain, e.g., "@", "www"
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 
         /**
          * The stage of a hostname binding definition allowing DNS record type to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithHostNameDnsRecordType<ParentT> {
             /**
              * Specifies the DNS record type.
              * @param hostNameDnsRecordType the DNS record type
-             * @return the next stage of the host name binding definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }

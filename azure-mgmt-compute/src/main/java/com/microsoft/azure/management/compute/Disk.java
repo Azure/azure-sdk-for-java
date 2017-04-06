@@ -238,7 +238,7 @@ public interface Disk extends
              * Specifies the source specialized or generalized Linux OS VHD.
              *
              * @param vhdUrl the source VHD URL
-             * @return the next stage of the managed disk definition
+             * @return the next stage of the definition
              */
             WithCreateAndSize withLinuxFromVhd(String vhdUrl);
         }

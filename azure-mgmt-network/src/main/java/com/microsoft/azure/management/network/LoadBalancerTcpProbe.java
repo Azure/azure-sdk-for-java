@@ -23,7 +23,7 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
     interface DefinitionStages {
         /**
          * The first stage of the probe definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithPort<ParentT> {
         }
@@ -146,7 +146,7 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
     interface UpdateDefinitionStages {
         /**
          * The first stage of the probe definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithPort<ParentT> {
         }

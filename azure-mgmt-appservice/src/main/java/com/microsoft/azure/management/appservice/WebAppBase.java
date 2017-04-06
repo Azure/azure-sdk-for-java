@@ -421,7 +421,7 @@ public interface WebAppBase extends
              * defaulted to be CNAME except for the root level domain ("@").
              * @param domain the Azure managed domain
              * @param hostnames the list of sub-domains
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
@@ -430,7 +430,7 @@ public interface WebAppBase extends
              * must be configured before hand to point to the web app.
              * @param domain the external domain name
              * @param hostnames the list of sub-domains
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
         }
@@ -455,7 +455,7 @@ public interface WebAppBase extends
         interface WithSiteEnabled<FluentT> {
             /**
              * Disables the web app upon creation.
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withAppDisabledOnCreation();
         }
@@ -468,7 +468,7 @@ public interface WebAppBase extends
             /**
              * Specifies if SCM site is also stopped when the web app is stopped.
              * @param scmSiteAlsoStopped true if SCM site is also stopped
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
         }
@@ -481,7 +481,7 @@ public interface WebAppBase extends
             /**
              * Specifies if client affinity is enabled.
              * @param enabled true if client affinity is enabled
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withClientAffinityEnabled(boolean enabled);
         }
@@ -494,7 +494,7 @@ public interface WebAppBase extends
             /**
              * Specifies if client cert is enabled.
              * @param enabled true if client cert is enabled
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withClientCertEnabled(boolean enabled);
         }
@@ -508,7 +508,7 @@ public interface WebAppBase extends
             /**
              * Specifies the Java web container.
              * @param webContainer the Java web container
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withWebContainer(WebContainer webContainer);
         }
@@ -522,103 +522,103 @@ public interface WebAppBase extends
             /**
              * Specifies the .NET Framework version.
              * @param version the .NET Framework version
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withNetFrameworkVersion(NetFrameworkVersion version);
 
             /**
              * Specifies the PHP version.
              * @param version the PHP version
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
 
             /**
              * Turn off PHP support.
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.
              * @param version the Java version
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
              * Specifies the Python version.
              * @param version the Python version
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withPythonVersion(PythonVersion version);
 
             /**
              * Specifies the platform architecture to use.
              * @param platform the platform architecture
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withPlatformArchitecture(PlatformArchitecture platform);
 
             /**
              * Specifies if web sockets are enabled.
              * @param enabled true if web sockets are enabled
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withWebSocketsEnabled(boolean enabled);
 
             /**
              * Specifies if the VM powering the web app is always powered on.
              * @param alwaysOn true if the web app is always powered on
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withWebAppAlwaysOn(boolean alwaysOn);
 
             /**
              * Specifies the managed pipeline mode.
              * @param managedPipelineMode managed pipeline mode
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
 
             /**
              * Specifies the slot name to auto-swap when a deployment is completed in this web app / deployment slot.
              * @param slotName the name of the slot, or 'production', to auto-swap
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withAutoSwapSlotName(String slotName);
 
             /**
              * Specifies the Visual Studio version for remote debugging.
              * @param remoteVisualStudioVersion the Visual Studio version for remote debugging
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
 
             /**
              * Disables remote debugging.
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withRemoteDebuggingDisabled();
 
             /**
              * Adds a default document.
              * @param document default document
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withDefaultDocument(String document);
 
             /**
              * Adds a list of default documents.
              * @param documents list of default documents
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withDefaultDocuments(List<String> documents);
 
             /**
              * Removes a default document.
              * @param document default document to remove
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withoutDefaultDocument(String document);
         }
@@ -632,14 +632,14 @@ public interface WebAppBase extends
              * Adds an app setting to the web app.
              * @param key the key for the app setting
              * @param value the value for the app setting
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}.
              * @param settings a {@link Map} of app settings
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withAppSettings(Map<String, String> settings);
 
@@ -648,7 +648,7 @@ public interface WebAppBase extends
              * as well after a deployment slot swap.
              * @param key the key for the app setting
              * @param value the value for the app setting
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withStickyAppSetting(String key, String value);
 
@@ -656,7 +656,7 @@ public interface WebAppBase extends
              * Specifies the app settings for the web app as a {@link Map}. These app settings will be swapped
              * as well after a deployment slot swap.
              * @param settings a {@link Map} of app settings
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withStickyAppSettings(Map<String, String> settings);
         }
@@ -671,7 +671,7 @@ public interface WebAppBase extends
              * @param name the name of the connection string
              * @param value the connection string value
              * @param type the connection string type
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
 
@@ -681,7 +681,7 @@ public interface WebAppBase extends
              * @param name the name of the connection string
              * @param value the connection string value
              * @param type the connection string type
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withStickyConnectionString(String name, String value, ConnectionStringType type);
         }
@@ -700,7 +700,7 @@ public interface WebAppBase extends
 
             /**
              * Specifies the source control to be a local Git repository on the web app.
-             * @return the next stage of the web app definition
+             * @return the next stage of the definition
              */
             WithCreate<FluentT> withLocalGitSourceControl();
         }

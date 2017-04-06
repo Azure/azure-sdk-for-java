@@ -379,7 +379,7 @@ public interface VirtualMachineExtension extends
             /**
              * Specifies tags for the resource.
              * @param tags tags to associate with the resource
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTags(Map<String, String> tags);
 
@@ -387,7 +387,7 @@ public interface VirtualMachineExtension extends
              * Adds a tag to the resource.
              * @param key the key for the tag
              * @param value the value for the tag
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTag(String key, String value);
         }
