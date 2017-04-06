@@ -338,7 +338,7 @@ class RequestResponseLink extends ClientEntity{
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
-		return this.amqpSender.closeAsync().thenCompose((v) -> this.amqpReceiver.closeAsync());
+		return this.amqpSender.closeAsync().thenComposeAsync((v) -> this.amqpReceiver.closeAsync());
 	}
 	
 	private static void scheduleLinkCloseTimeout(CompletableFuture<Void> closeFuture, Duration timeout, String linkName)
@@ -385,9 +385,22 @@ class RequestResponseLink extends ClientEntity{
 			{				
 				if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
 				{
-					this.receiveLink.close();
-					this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
-					RequestResponseLink.scheduleLinkCloseTimeout(this.closeFuture, this.parent.underlyingFactory.getOperationTimeout(), this.receiveLink.getName());
+					try {
+						this.parent.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+							
+							@Override
+							public void onEvent() {
+								if (InternalReceiver.this.receiveLink != null && InternalReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
+								{
+									InternalReceiver.this.receiveLink.close();
+									InternalReceiver.this.parent.underlyingFactory.deregisterForConnectionError(InternalReceiver.this.receiveLink);
+									RequestResponseLink.scheduleLinkCloseTimeout(InternalReceiver.this.closeFuture, InternalReceiver.this.parent.underlyingFactory.getOperationTimeout(), InternalReceiver.this.receiveLink.getName());
+								}							
+							}
+						});
+					} catch (IOException e) {
+						this.closeFuture.completeExceptionally(e);
+					}					
 				}
 				else
 				{
@@ -528,13 +541,26 @@ class RequestResponseLink extends ClientEntity{
 		@Override
 		protected CompletableFuture<Void> onClose() {
 			if (!this.getIsClosed())
-			{				
+			{
 				if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
 				{
-					this.sendLink.close();
-					this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
-					RequestResponseLink.scheduleLinkCloseTimeout(this.closeFuture, this.parent.underlyingFactory.getOperationTimeout(), this.sendLink.getName());
-				}
+					try {
+						this.parent.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+							
+							@Override
+							public void onEvent() {
+								if (InternalSender.this.sendLink != null && InternalSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
+								{
+									InternalSender.this.sendLink.close();
+									InternalSender.this.parent.underlyingFactory.deregisterForConnectionError(InternalSender.this.sendLink);
+									RequestResponseLink.scheduleLinkCloseTimeout(InternalSender.this.closeFuture, InternalSender.this.parent.underlyingFactory.getOperationTimeout(), InternalSender.this.sendLink.getName());
+								}								
+							}
+						});
+					} catch (IOException e) {
+						this.closeFuture.completeExceptionally(e);
+					}
+				}				
 				else
 				{
 					this.closeFuture.complete(null);
