@@ -11,15 +11,14 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.appservice.implementation.AppServiceCertificateOrdersInner;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Observable;
 
 /**
  * Entry point for app service certificate order management API.
@@ -36,12 +35,4 @@ public interface AppServiceCertificateOrders extends
         SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
         HasInner<AppServiceCertificateOrdersInner> {
-    /**
-     * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
-     *
-     * @param resourceGroupName the name of the resource group the resource is in
-     * @param name the name of the resource. (Note, this is not the ID)
-     * @return an immutable representation of the resource
-     */
-    Observable<AppServiceCertificateOrder> getByResourceGroupAsync(String resourceGroupName, String name);
 }
