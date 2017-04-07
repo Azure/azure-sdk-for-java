@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
@@ -24,6 +25,7 @@ import java.util.TreeMap;
 /**
  * The implementation for VirtualMachineScaleSetNetworkInterface.
  */
+@LangDefinition
 class VirtualMachineScaleSetNetworkInterfaceImpl
         extends
         ResourceImpl<VirtualMachineScaleSetNetworkInterface,

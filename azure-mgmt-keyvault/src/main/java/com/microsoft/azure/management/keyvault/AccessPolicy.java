@@ -67,14 +67,14 @@ public interface AccessPolicy extends
         /**
          * The first stage of an access policy definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithIdentity<ParentT> {
         }
 
         /**
          * The access policy definition stage allowing the Active Directory identity to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithIdentity<ParentT> {
             /**
@@ -128,7 +128,7 @@ public interface AccessPolicy extends
 
         /**
          * The access policy definition stage allowing permissions to be added.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPermissions<ParentT> {
             /**
@@ -209,14 +209,14 @@ public interface AccessPolicy extends
         /**
          * The first stage of an access policy definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithIdentity<ParentT> {
         }
 
         /**
          * The access policy definition stage allowing the Active Directory identity to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithIdentity<ParentT> {
             /**
@@ -270,7 +270,7 @@ public interface AccessPolicy extends
 
         /**
          * The access policy definition stage allowing permissions to be added.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPermissions<ParentT> {
             /**

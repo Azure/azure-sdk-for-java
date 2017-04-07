@@ -35,14 +35,14 @@ public interface LoadBalancerPrivateFrontend extends
     interface DefinitionStages {
         /**
          * The first stage of a private frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }
 
         /**
          * The stage of a private frontend definition allowing to specify a subnet from the selected network.
-         * @param <ParentT> the next stage of the parent definition
+         * @param <ParentT> the next stage of the definition
          */
         interface WithSubnet<ParentT> extends HasSubnet.DefinitionStages.WithSubnet<WithAttach<ParentT>> {
             /**
@@ -109,14 +109,14 @@ public interface LoadBalancerPrivateFrontend extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a private frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }
 
         /**
          * The stage of a private frontend definition allowing to specify a subnet from the selected network.
-         * @param <ParentT> the next stage of the parent definition
+         * @param <ParentT> the next stage of the definition
          */
         interface WithSubnet<ParentT> {
             /**

@@ -314,7 +314,7 @@ public interface CdnEndpoint extends
              * Specifies the origin path.
              *
              * @param originPath an origin path
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withOriginPath(String originPath);
 
@@ -322,7 +322,7 @@ public interface CdnEndpoint extends
              * Specifies the host header.
              *
              * @param hostHeader a host header.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHostHeader(String hostHeader);
 
@@ -330,7 +330,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTP traffic is allowed.
              *
              * @param httpAllowed if true then HTTP traffic will be allowed
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             // TODO: add withHttp()/withoutHttp()
             WithStandardAttach<ParentT> withHttpAllowed(boolean httpAllowed);
@@ -339,7 +339,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTPS traffic is allowed.
              *
              * @param httpsAllowed if set to true Https traffic will be allowed.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             // TODO: add withHttps()/withoutHttps()
             WithStandardAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
@@ -348,7 +348,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTP traffic.
              *
              * @param httpPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHttpPort(int httpPort);
 
@@ -356,7 +356,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTPS traffic.
              *
              * @param httpsPort HTTPS port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHttpsPort(int httpsPort);
 
@@ -364,7 +364,7 @@ public interface CdnEndpoint extends
              * Specifies the content types to compress.
              *
              * @param contentTypesToCompress the list of content types to compress to set
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta // This should take Set<String>
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
@@ -373,7 +373,7 @@ public interface CdnEndpoint extends
              * Specifies a single content type to compress.
              *
              * @param contentTypeToCompress a content type to compress to add to the list
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
 
@@ -381,7 +381,7 @@ public interface CdnEndpoint extends
              * Sets the compression state.
              *
              * @param compressionEnabled if true then compression will be enabled
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
 
@@ -389,7 +389,7 @@ public interface CdnEndpoint extends
              * Sets the query string caching behavior.
              *
              * @param cachingBehavior the query string caching behavior value to set
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
@@ -397,7 +397,7 @@ public interface CdnEndpoint extends
              * Sets the geo filters list.
              *
              * @param geoFilters the Geo filters list to set
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta // TODO: this should take Set<String>
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
@@ -408,7 +408,7 @@ public interface CdnEndpoint extends
              * @param relativePath a relative path
              * @param action a geo filter action
              * @param countryCode an ISO 2 letter country code
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
 
@@ -418,7 +418,7 @@ public interface CdnEndpoint extends
              * @param relativePath a relative path
              * @param action an action value
              * @param countryCodes a list of the ISO 2 letter country codes.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta //TODO: contryCodes should be Set<CountryIsoCode>
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);
@@ -427,7 +427,7 @@ public interface CdnEndpoint extends
              * Adds a new CDN custom domain within an endpoint.
              *
              * @param hostName a custom domain host name
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
@@ -444,7 +444,7 @@ public interface CdnEndpoint extends
              * Specifies the origin path.
              *
              * @param originPath an origin path.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withOriginPath(String originPath);
 
@@ -452,7 +452,7 @@ public interface CdnEndpoint extends
              * Specifies the host header.
              *
              * @param hostHeader a host header.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
 
@@ -460,7 +460,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTP traffic is allowed.
              *
              * @param httpAllowed if true, then HTTP traffic will be allowed
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             // TODO: add withHttp()/withoutHttp()
             WithPremiumAttach<ParentT> withHttpAllowed(boolean httpAllowed);
@@ -469,7 +469,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTPS traffic is allowed.
              *
              * @param httpsAllowed if true then HTTPS traffic will be allowed
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
 
@@ -477,7 +477,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTP traffic.
              *
              * @param httpPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpPort(int httpPort);
 
@@ -485,7 +485,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTPS traffic.
              *
              * @param httpsPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpsPort(int httpsPort);
 
@@ -493,7 +493,7 @@ public interface CdnEndpoint extends
              * Adds a new CDN custom domain for the endpoint.
              *
              * @param hostName a custom domain host name
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withCustomDomain(String hostName);
         }
@@ -598,7 +598,7 @@ public interface CdnEndpoint extends
              * Specifies the origin path.
              *
              * @param originPath an origin path
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withOriginPath(String originPath);
 
@@ -606,7 +606,7 @@ public interface CdnEndpoint extends
              * Specifies the host header.
              *
              * @param hostHeader a host header
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHostHeader(String hostHeader);
 
@@ -614,7 +614,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTP traffic is allowed.
              *
              * @param httpAllowed if true then HTTP traffic will be allowed
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             // TODO: withHttp()/withoutHttp()
             WithStandardAttach<ParentT> withHttpAllowed(boolean httpAllowed);
@@ -623,7 +623,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTPS traffic is allowed.
              *
              * @param httpsAllowed if true then HTTPS traffic will be allowed
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
 
@@ -631,7 +631,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTP traffic.
              *
              * @param httpPort a port number
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHttpPort(int httpPort);
 
@@ -639,7 +639,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTPS traffic.
              *
              * @param httpsPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withHttpsPort(int httpsPort);
 
@@ -647,7 +647,7 @@ public interface CdnEndpoint extends
              * Specifies the content types to compress.
              *
              * @param contentTypesToCompress the list of content types to compress to set
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta // TODO: this should take Set<String>
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
@@ -656,7 +656,7 @@ public interface CdnEndpoint extends
              * Specifies a single content type to compress.
              *
              * @param contentTypeToCompress a single content type to compress to add to the list
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
 
@@ -664,7 +664,7 @@ public interface CdnEndpoint extends
              * Sets the compression state.
              *
              * @param compressionEnabled if true then compression will be enabled, else disabled
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
 
@@ -672,7 +672,7 @@ public interface CdnEndpoint extends
              * Sets the query string caching behavior.
              *
              * @param cachingBehavior a query string caching behavior
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
@@ -680,7 +680,7 @@ public interface CdnEndpoint extends
              * Sets the geo filters list.
              *
              * @param geoFilters the Geo filters list to set
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta // TODO: This should be Set<String>
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
@@ -691,7 +691,7 @@ public interface CdnEndpoint extends
              * @param relativePath a relative path
              * @param action an action
              * @param countryCode an ISO 2 letter country code
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
 
@@ -701,7 +701,7 @@ public interface CdnEndpoint extends
              * @param relativePath a relative path
              * @param action an action
              * @param countryCodes a list of ISO 2 letter country codes
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             @Beta // TODO: countryCodes should be Set<>
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);
@@ -710,7 +710,7 @@ public interface CdnEndpoint extends
              * Adds a new CDN custom domain within an endpoint.
              *
              * @param hostName a custom domain host name
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
@@ -728,7 +728,7 @@ public interface CdnEndpoint extends
              * Specifies the origin path.
              *
              * @param originPath an origin path
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withOriginPath(String originPath);
 
@@ -736,7 +736,7 @@ public interface CdnEndpoint extends
              * Specifies the host header.
              *
              * @param hostHeader a host header.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
 
@@ -744,7 +744,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTP traffic is allowed.
              *
              * @param httpAllowed if true then HTTP traffic will be allowed.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             // TODO: withHttp/withoutHttp
             WithPremiumAttach<ParentT> withHttpAllowed(boolean httpAllowed);
@@ -753,7 +753,7 @@ public interface CdnEndpoint extends
              * Specifies if HTTPS traffic is allowed.
              *
              * @param httpsAllowed if true then HTTPS traffic will be allowed.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
 
@@ -761,7 +761,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTP traffic.
              *
              * @param httpPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpPort(int httpPort);
 
@@ -769,7 +769,7 @@ public interface CdnEndpoint extends
              * Specifies the port for HTTPS traffic.
              *
              * @param httpsPort a port number.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withHttpsPort(int httpsPort);
 
@@ -777,7 +777,7 @@ public interface CdnEndpoint extends
              * Adds a new CDN custom domain within an endpoint.
              *
              * @param hostName custom domain host name.
-             * @return the next stage of the endpoint definition
+             * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withCustomDomain(String hostName);
         }
@@ -867,7 +867,7 @@ public interface CdnEndpoint extends
          * Specifies the content types to compress.
          *
          * @param contentTypesToCompress the list of content types to compress to set
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         @Beta // TODO: should take Set<String>
         UpdateStandardEndpoint withContentTypesToCompress(List<String> contentTypesToCompress);
@@ -883,7 +883,7 @@ public interface CdnEndpoint extends
          * Specifies a single content type to compress.
          *
          * @param contentTypeToCompress a single content type to compress to add to the list
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         UpdateStandardEndpoint withContentTypeToCompress(String contentTypeToCompress);
 
@@ -899,7 +899,7 @@ public interface CdnEndpoint extends
          * Sets the compression state.
          *
          * @param compressionEnabled if true then compression will be enabled
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         // TODO: withCompression/withoutCompression
         UpdateStandardEndpoint withCompressionEnabled(boolean compressionEnabled);
@@ -908,7 +908,7 @@ public interface CdnEndpoint extends
          * Sets the query string caching behavior.
          *
          * @param cachingBehavior the query string caching behavior value to set
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         UpdateStandardEndpoint withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
 
@@ -916,7 +916,7 @@ public interface CdnEndpoint extends
          * Sets the geo filters list.
          *
          * @param geoFilters a geo filters list
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         // TODO: Set<GeoFilter>?
         @Beta
@@ -935,7 +935,7 @@ public interface CdnEndpoint extends
          * @param relativePath a relative path
          * @param action an action
          * @param countryCode an ISO 2 letter country code
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode);
 
@@ -945,7 +945,7 @@ public interface CdnEndpoint extends
          * @param relativePath a relative path
          * @param action an action
          * @param countryCodes a list of ISO 2 letter country codes
-         * @return the next stage of the endpoint definition
+         * @return the next stage of the definition
          */
         @Beta // TODO: Set<CountryIsoCode>
         UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, List<CountryIsoCode> countryCodes);

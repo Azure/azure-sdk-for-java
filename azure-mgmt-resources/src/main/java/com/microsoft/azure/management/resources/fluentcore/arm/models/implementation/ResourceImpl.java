@@ -92,7 +92,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies tags for the resource as a {@link Map}.
      * @param tags a {@link Map} of tags
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
@@ -104,7 +104,7 @@ public abstract class ResourceImpl<
      * Adds a tag to the resource.
      * @param key the key for the tag
      * @param value the value for the tag
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTag(String key, String value) {
@@ -115,7 +115,7 @@ public abstract class ResourceImpl<
     /**
      * Removes a tag from the resource.
      * @param key the key of the tag to remove
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withoutTag(String key) {
@@ -130,7 +130,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies the region for the resource by name.
      * @param regionName The name of the region for the resource
-     * @return the next stage of the resource definition/update
+     * @return the next stage of the definition/update
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withRegion(String regionName) {
@@ -141,7 +141,7 @@ public abstract class ResourceImpl<
     /**
      * Specifies the region for the resource.
      * @param region The location for the resource
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());

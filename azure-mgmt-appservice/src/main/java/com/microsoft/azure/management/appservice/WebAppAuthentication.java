@@ -52,28 +52,28 @@ public interface WebAppAuthentication extends
         interface WithDefaultAuthenticationProvider<ParentT> {
             /**
              * Does not require login by default.
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAnonymousAuthentication();
 
             /**
              * Specifies the default authentication provider.
              * @param provider the default authentication provider
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withDefaultAuthenticationProvider(BuiltInAuthenticationProvider provider);
         }
 
         /**
          * A web app authentication definition allowing detailed provider information to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAuthenticationProvider<ParentT> {
             /**
              * Specifies the provider to be Active Directory and its client ID and issuer URL.
              * @param clientId the AAD app's client ID
              * @param issuerUrl the token issuer URL in the format of https://sts.windows.net/(tenantId)
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withActiveDirectory(String clientId, String issuerUrl);
 
@@ -81,7 +81,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Facebook and its app ID and app secret.
              * @param appId the Facebook app ID
              * @param appSecret the Facebook app secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withFacebook(String appId, String appSecret);
 
@@ -89,7 +89,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Google and its client ID and client secret.
              * @param clientId the Google app's client ID
              * @param clientSecret the Google app's client secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withGoogle(String clientId, String clientSecret);
 
@@ -97,7 +97,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Twitter and its API key and API secret.
              * @param apiKey the Twitter app's API key
              * @param apiSecret the Twitter app's API secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTwitter(String apiKey, String apiSecret);
 
@@ -105,33 +105,33 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Microsoft and its client ID and client secret.
              * @param clientId the Microsoft app's client ID
              * @param clientSecret the Microsoft app's client secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMicrosoft(String clientId, String clientSecret);
         }
 
         /**
          * A web app authentication definition allowing token store to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTokenStore<ParentT> {
             /**
              * Specifies if token store should be enabled.
              * @param enabled true if token store should be enabled
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTokenStore(boolean enabled);
         }
 
         /**
          * A web app authentication definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithExternalRedirectUrls<ParentT> {
             /**
              * Adds an external redirect URL.
              * @param url the external redirect URL
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAllowedExternalRedirectUrl(String url);
         }
@@ -180,28 +180,28 @@ public interface WebAppAuthentication extends
         interface WithDefaultAuthenticationProvider<ParentT> {
             /**
              * Does not require login by default.
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAnonymousAuthentication();
 
             /**
              * Specifies the default authentication provider.
              * @param provider the default authentication provider
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withDefaultAuthenticationProvider(BuiltInAuthenticationProvider provider);
         }
 
         /**
          * A web app authentication definition allowing detailed provider information to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAuthenticationProvider<ParentT> {
             /**
              * Specifies the provider to be Active Directory and its client ID and issuer URL.
              * @param clientId the AAD app's client ID
              * @param issuerUrl the token issuer URL in the format of https://sts.windows.net/(tenantId)
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withActiveDirectory(String clientId, String issuerUrl);
 
@@ -209,7 +209,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Facebook and its app ID and app secret.
              * @param appId the Facebook app ID
              * @param appSecret the Facebook app secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withFacebook(String appId, String appSecret);
 
@@ -217,7 +217,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Google and its client ID and client secret.
              * @param clientId the Google app's client ID
              * @param clientSecret the Google app's client secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withGoogle(String clientId, String clientSecret);
 
@@ -225,7 +225,7 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Twitter and its API key and API secret.
              * @param apiKey the Twitter app's API key
              * @param apiSecret the Twitter app's API secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTwitter(String apiKey, String apiSecret);
 
@@ -233,33 +233,33 @@ public interface WebAppAuthentication extends
              * Specifies the provider to be Microsoft and its client ID and client secret.
              * @param clientId the Microsoft app's client ID
              * @param clientSecret the Microsoft app's client secret
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withMicrosoft(String clientId, String clientSecret);
         }
 
         /**
          * A web app authentication definition allowing token store to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithTokenStore<ParentT> {
             /**
              * Specifies if token store should be enabled.
              * @param enabled true if token store should be enabled
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withTokenStore(boolean enabled);
         }
 
         /**
          * A web app authentication definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithExternalRedirectUrls<ParentT> {
             /**
              * Adds an external redirect URL.
              * @param url the external redirect URL
-             * @return the next stage of the web app authentication definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAllowedExternalRedirectUrl(String url);
         }

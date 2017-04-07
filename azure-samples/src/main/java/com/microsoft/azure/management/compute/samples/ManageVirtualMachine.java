@@ -28,7 +28,6 @@ import java.util.Date;
  *  - Stop a virtual machine
  *  - Restart a virtual machine
  *  - Update a virtual machine
- *    - Expand the OS drive
  *    - Tag a virtual machine (there are many possible variations here)
  *    - Attach data disks
  *    - Detach data disks
@@ -128,38 +127,6 @@ public final class ManageVirtualMachine {
                         .apply();
 
             System.out.println("Detached data disk at lun 0 from VM " + windowsVM.id());
-
-
-            //=============================================================
-            // Update - Resize (expand) the data disk
-            // First, deallocate the virtual machine and then proceed with resize
-
-            System.out.println("De-allocating VM: " + windowsVM.id());
-
-            windowsVM.deallocate();
-
-            System.out.println("De-allocated VM: " + windowsVM.id());
-
-            //=============================================================
-            // Update - Expand the OS and data disks
-
-            System.out.println("Resize OS and data disks");
-
-            windowsVM.update()
-                    .withOSDiskSizeInGB(200)
-                    .withDataDiskUpdated(1, 200)
-                    .withDataDiskUpdated(2, 200)
-                    .apply();
-
-            System.out.println("Expanded VM " + windowsVM.id() + "'s OS and data disks");
-
-            // Start the virtual machine
-
-            System.out.println("Starting VM " + windowsVM.id());
-
-            windowsVM.start();
-
-            System.out.println("Started VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
 
             //=============================================================

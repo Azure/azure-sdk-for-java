@@ -55,7 +55,7 @@ public interface FunctionApp extends
             /**
              * Uses an existing app service plan for the function app.
              * @param appServicePlan the existing app service plan
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             ExistingAppServicePlanWithGroup withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
@@ -73,14 +73,14 @@ public interface FunctionApp extends
             /**
              * Associates the resource with an existing resource group.
              * @param groupName the name of an existing resource group to put this resource in.
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
              * @param group an existing resource group to put the resource in
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingResourceGroup(ResourceGroup group);
 
@@ -89,7 +89,7 @@ public interface FunctionApp extends
              * <p>
              * The group will be created in the same location as the resource.
              * @param name the name of the new group
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withNewResourceGroup(String name);
 
@@ -98,14 +98,14 @@ public interface FunctionApp extends
              * <p>
              * The group will be created in the same location as the resource.
              * The group's name is automatically derived from the resource's name.
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
@@ -116,7 +116,7 @@ public interface FunctionApp extends
         interface WithNewAppServicePlan {
             /**
              * Creates a new consumption plan to use.
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewConsumptionPlan();
 
@@ -124,14 +124,14 @@ public interface FunctionApp extends
              * Creates a new free app service plan. This will fail if there are 10 or more
              * free plans in the current subscription.
              *
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewFreeAppServicePlan();
 
             /**
              * Creates a new shared app service plan.
              *
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewSharedAppServicePlan();
 
@@ -139,7 +139,7 @@ public interface FunctionApp extends
              * Creates a new app service plan to use.
              *
              * @param pricingTier the sku of the app service plan
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewAppServicePlan(PricingTier pricingTier);
 
@@ -147,7 +147,7 @@ public interface FunctionApp extends
              * Creates a new app service plan to use.
              *
              * @param appServicePlanCreatable the new app service plan creatable
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
@@ -162,14 +162,14 @@ public interface FunctionApp extends
              * Creates a new storage account to use for the function app.
              * @param name the name of the storage account
              * @param sku the sku of the storage account
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withNewStorageAccount(String name, com.microsoft.azure.management.storage.SkuName sku);
 
             /**
              * Specifies the storage account to use for the function app.
              * @param storageAccount the storage account to use
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withExistingStorageAccount(StorageAccount storageAccount);
         }
@@ -181,13 +181,13 @@ public interface FunctionApp extends
             /**
              * Specifies the runtime version for the function app.
              * @param version the version of the Azure Functions runtime
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withRuntimeVersion(String version);
 
             /**
              * Uses the latest runtime version for the function app.
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withLatestRuntimeVersion();
         }
@@ -199,13 +199,13 @@ public interface FunctionApp extends
             /**
              * Specifies the daily usage data cap.
              * @param quota the daily usage quota
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withDailyUsageQuota(int quota);
 
             /**
              * Specifies the daily usage data cap.
-             * @return the next stage of the function app definition
+             * @return the next stage of the definition
              */
             WithCreate withoutDailyUsageQuota();
         }
