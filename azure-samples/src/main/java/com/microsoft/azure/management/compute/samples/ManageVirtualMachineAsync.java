@@ -162,8 +162,9 @@ public final class ManageVirtualMachineAsync {
             final VirtualMachine linuxVM = createdVms.get(linuxVmKey);
 
             //=============================================================
-            // Update - Tag the virtual machine
+            // Update virtual machines
 
+            // - Tag the virtual machine on Linux VM
             Observable<VirtualMachine> updateLinuxVMChain = linuxVM.update()
                     .withTag("who-rocks-on-linux", "java")
                     .withTag("where", "on azure")
@@ -176,23 +177,20 @@ public final class ManageVirtualMachineAsync {
                         }
                     });
 
-            //=============================================================
-            // Update - Resize (expand) the data disk
-            // First, deallocate the virtual machine and then proceed with resize
-
-            Observable<Completable> windowsVmUpdateThenStart = windowsVM.update()
+            // - Resize (expand) the data disk on Windows VM.
+            Observable<Void> windowsVmUpdateThenStart = windowsVM.update()
                     .withOSDiskSizeInGB(200)
                     .withDataDiskUpdated(1, 200)
                     .withDataDiskUpdated(2, 200)
                     .applyAsync()
-                    .map(new Func1<VirtualMachine, Completable>() {
+                    .flatMap(new Func1<VirtualMachine, Observable<Void>>() {
                         @Override
-                        public Completable call(VirtualMachine virtualMachine) {
+                        public Observable<Void> call(VirtualMachine virtualMachine) {
                             System.out.println("Expanded VM " + virtualMachine.id() + "'s OS and data disks");
 
                             // Start the virtual machine
                             System.out.println("Starting VM " + virtualMachine.id());
-                            return virtualMachine.startAsync();
+                            return virtualMachine.startAsync().toObservable();
                         }
                     }).doOnCompleted(new Action0() {
                         @Override
@@ -201,7 +199,8 @@ public final class ManageVirtualMachineAsync {
                         }
                     });
 
-            Observable<Completable> updateWindowsVMChain = windowsVM.deallocateAsync()
+            // First, deallocate the virtual machine and then proceed with resize
+            Observable<Void> updateWindowsVMChain = windowsVM.deallocateAsync()
                     .doOnCompleted(new Action0() {
                         @Override
                         public void call() {
