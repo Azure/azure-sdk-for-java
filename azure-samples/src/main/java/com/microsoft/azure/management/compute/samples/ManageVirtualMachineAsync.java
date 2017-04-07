@@ -18,7 +18,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
-import rx.Completable;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
