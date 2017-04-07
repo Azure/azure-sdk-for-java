@@ -29,7 +29,7 @@ final class PollingState<T> {
     /** The link in 'Location' Header. */
     private String locationHeaderLink;
     /** The timeout interval between two polling operations. */
-    private Integer retryTimeout;
+    private int retryTimeout;
     /** The response resource object. */
     private T resource;
     /** The type of the response resource object. */
@@ -48,7 +48,7 @@ final class PollingState<T> {
      * @param serializerAdapter the adapter for the Jackson object mapper
      * @throws IOException thrown by deserialization
      */
-    PollingState(Response<ResponseBody> response, Integer retryTimeout, Type resourceType, SerializerAdapter<?> serializerAdapter) throws IOException {
+    PollingState(Response<ResponseBody> response, int retryTimeout, Type resourceType, SerializerAdapter<?> serializerAdapter) throws IOException {
         this.retryTimeout = retryTimeout;
         this.withResponse(response);
         this.resourceType = resourceType;
@@ -140,7 +140,7 @@ final class PollingState<T> {
      * @return the delay in milliseconds.
      */
     int delayInMilliseconds() {
-        if (this.retryTimeout != null) {
+        if (this.retryTimeout >= 0) {
             return this.retryTimeout * 1000;
         }
         if (this.response != null && response.headers().get("Retry-After") != null) {

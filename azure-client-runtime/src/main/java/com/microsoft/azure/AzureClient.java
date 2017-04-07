@@ -34,10 +34,10 @@ public final class AzureClient extends AzureServiceClient {
     private static final String LOGGING_HEADER = "x-ms-logging-context";
 
     /**
-     * The interval time between two long running operation polls. Default is
-     * used if null.
+     * The interval time between two long running operation polls. Default is 30 seconds.
      */
-    private Integer longRunningOperationRetryTimeout;
+    private int longRunningOperationRetryTimeout = -1;
+
     /**
      * The executor for asynchronous requests.
      */
@@ -63,16 +63,20 @@ public final class AzureClient extends AzureServiceClient {
      *
      * @return the time in seconds.
      */
-    public Integer getLongRunningOperationRetryTimeout() {
+    public Integer longRunningOperationRetryTimeout() {
         return longRunningOperationRetryTimeout;
     }
 
     /**
-     * Sets the interval time between two long running operation polls.
+     * Sets the interval time between two long running operation polls. Default is 30 seconds.
+     * Set to any negative value to let AzureClient ignore this setting.
      *
-     * @param longRunningOperationRetryTimeout the time in seconds.
+     * @param longRunningOperationRetryTimeout the time in seconds. Set to any negative value to let AzureClient ignore this setting.
      */
-    public void withLongRunningOperationRetryTimeout(Integer longRunningOperationRetryTimeout) {
+    public void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+        if (longRunningOperationRetryTimeout < 0) {
+            throw new IllegalArgumentException("Invalid timeout for long running operations : " + longRunningOperationRetryTimeout);
+        }
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
@@ -137,7 +141,7 @@ public final class AzureClient extends AzureServiceClient {
                     }
 
                     try {
-                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
+                        final PollingState<T> pollingState = new PollingState<>(response, longRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
                         final String url = response.raw().request().url().toString();
 
                         // Task runner will take it from here
@@ -294,7 +298,7 @@ public final class AzureClient extends AzureServiceClient {
                     }
 
                     try {
-                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
+                        final PollingState<T> pollingState = new PollingState<>(response, longRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
                         return Observable.just(pollingState)
                             .subscribeOn(Schedulers.io())
                             // Emit a polling task intermittently
