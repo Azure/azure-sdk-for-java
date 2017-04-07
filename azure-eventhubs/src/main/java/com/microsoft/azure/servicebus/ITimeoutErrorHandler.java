@@ -8,9 +8,8 @@ package com.microsoft.azure.servicebus;
 // https://issues.apache.org/jira/browse/PROTON-1185
 // https://issues.apache.org/jira/browse/PROTON-1171
 // This handler is built to - recover client from the underlying TransportStack-Stuck situation
-public interface ITimeoutErrorHandler
-{
-	public void reportTimeoutError();
+public interface ITimeoutErrorHandler {
+    public void reportTimeoutError();
 
-	public void resetTimeoutErrorTracking();
+    public void resetTimeoutErrorTracking();
 }

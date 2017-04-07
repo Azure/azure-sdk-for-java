@@ -17,157 +17,113 @@ import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 import com.microsoft.azure.servicebus.amqp.AmqpException;
 import com.microsoft.azure.servicebus.amqp.AmqpResponseCode;
 
-final class ExceptionUtil
-{
-	static Exception toException(ErrorCondition errorCondition)
-	{
-		if (errorCondition == null)
-		{
-			throw new IllegalArgumentException("'null' errorCondition cannot be translated to ServiceBusException");
-		}
-
-		if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR)
-		{
-			return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));
-		}
-		else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR)
-		{
-			return new ServerBusyException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.NotFound)
-		{
-			return new IllegalEntityException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR)
-		{
-			return new IllegalEntityException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen)
-		{
-			return new ReceiverDisconnectedException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess)
-		{
-			return new AuthorizationFailedException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded)
-		{
-			return new PayloadSizeExceededException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
-		{
-			return new ServiceBusException(true, new AmqpException(errorCondition));
-		}
-		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR)
-		{
-			return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
-		}
-		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_OUT_OF_RANGE_ERROR)
-		{
-			return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented)
-		{
-			return new UnsupportedOperationException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.NotAllowed)
-		{
-			return new UnsupportedOperationException(errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == ClientConstants.PARTITION_NOT_OWNED_ERROR)
-		{
-			return new ServiceBusException(false, errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == ClientConstants.STORE_LOCK_LOST_ERROR)
-		{
-			return new ServiceBusException(false, errorCondition.getDescription());
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
-		{
-			return new ServiceBusException(true, new AmqpException(errorCondition));
-		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
-		{
-			return new QuotaExceededException(new AmqpException(errorCondition));
-		}
-
-		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
-	}
-        
-        static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription)
-        {
-            final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
-            if (amqpResponseCode == null)
-                return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
-
-            switch (amqpResponseCode) {
-                case BAD_REQUEST:
-                    return new IllegalArgumentException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
-                case NOT_FOUND:
-                    return new AmqpException(new ErrorCondition(AmqpErrorCode.NotFound, statusDescription));
-                case FORBIDDEN:
-                    return new QuotaExceededException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
-                case UNAUTHORIZED:
-                    return new AuthorizationFailedException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
-                default:
-                    return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
-            }
+final class ExceptionUtil {
+    static Exception toException(ErrorCondition errorCondition) {
+        if (errorCondition == null) {
+            throw new IllegalArgumentException("'null' errorCondition cannot be translated to ServiceBusException");
         }
 
-	static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider)
-	{
-		if (exception != null && exception instanceof ServiceBusException)
-		{
-			ErrorContext errorContext = contextProvider.getContext();
-			((ServiceBusException) exception).setContext(errorContext);
-		}
+        if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR) {
+            return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));
+        } else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR) {
+            return new ServerBusyException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
+            return new IllegalEntityException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR) {
+            return new IllegalEntityException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
+            return new ReceiverDisconnectedException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess) {
+            return new AuthorizationFailedException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded) {
+            return new PayloadSizeExceededException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.InternalError) {
+            return new ServiceBusException(true, new AmqpException(errorCondition));
+        } else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR) {
+            return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
+        } else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_OUT_OF_RANGE_ERROR) {
+            return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented) {
+            return new UnsupportedOperationException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NotAllowed) {
+            return new UnsupportedOperationException(errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == ClientConstants.PARTITION_NOT_OWNED_ERROR) {
+            return new ServiceBusException(false, errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == ClientConstants.STORE_LOCK_LOST_ERROR) {
+            return new ServiceBusException(false, errorCondition.getDescription());
+        } else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced) {
+            return new ServiceBusException(true, new AmqpException(errorCondition));
+        } else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded) {
+            return new QuotaExceededException(new AmqpException(errorCondition));
+        }
 
-		future.completeExceptionally(exception);
-	}
-        
-	// not a specific message related error
-	static boolean isGeneralSendError(Symbol amqpError)
-	{
-		return (amqpError == ClientConstants.SERVER_BUSY_ERROR 
-				|| amqpError == ClientConstants.TIMEOUT_ERROR 
-				|| amqpError == AmqpErrorCode.ResourceLimitExceeded);
-	}
+        return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
+    }
 
-	static String getTrackingIDAndTimeToLog()
-	{
-		return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now()); 
-	}
-	
-	static String toStackTraceString(final Throwable exception, final String customErrorMessage)
-	{
-		final StringBuilder builder = new StringBuilder();
-		
-		if (!StringUtil.isNullOrEmpty(customErrorMessage))
-		{
-			builder.append(customErrorMessage);
-			builder.append(System.lineSeparator());
-		}
-		
-		builder.append(exception.getMessage());
-		if (exception.getStackTrace() != null)
-			for (StackTraceElement ste: exception.getStackTrace())
-			{
-				builder.append(System.lineSeparator());
-				builder.append(ste.toString());
-			}
+    static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription) {
+        final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
+        if (amqpResponseCode == null)
+            return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
 
-		Throwable innerException = exception.getCause();
-		if (innerException != null)
-		{
-			builder.append("Cause: " + innerException.getMessage());
-			if (innerException.getStackTrace() != null)
-				for (StackTraceElement ste: innerException.getStackTrace())
-				{
-					builder.append(System.lineSeparator());
-					builder.append(ste.toString());
-				}
-		}
-		
-		return builder.toString();
-	}
+        switch (amqpResponseCode) {
+            case BAD_REQUEST:
+                return new IllegalArgumentException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+            case NOT_FOUND:
+                return new AmqpException(new ErrorCondition(AmqpErrorCode.NotFound, statusDescription));
+            case FORBIDDEN:
+                return new QuotaExceededException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+            case UNAUTHORIZED:
+                return new AuthorizationFailedException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+            default:
+                return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+        }
+    }
+
+    static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider) {
+        if (exception != null && exception instanceof ServiceBusException) {
+            ErrorContext errorContext = contextProvider.getContext();
+            ((ServiceBusException) exception).setContext(errorContext);
+        }
+
+        future.completeExceptionally(exception);
+    }
+
+    // not a specific message related error
+    static boolean isGeneralSendError(Symbol amqpError) {
+        return (amqpError == ClientConstants.SERVER_BUSY_ERROR
+                || amqpError == ClientConstants.TIMEOUT_ERROR
+                || amqpError == AmqpErrorCode.ResourceLimitExceeded);
+    }
+
+    static String getTrackingIDAndTimeToLog() {
+        return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now());
+    }
+
+    static String toStackTraceString(final Throwable exception, final String customErrorMessage) {
+        final StringBuilder builder = new StringBuilder();
+
+        if (!StringUtil.isNullOrEmpty(customErrorMessage)) {
+            builder.append(customErrorMessage);
+            builder.append(System.lineSeparator());
+        }
+
+        builder.append(exception.getMessage());
+        if (exception.getStackTrace() != null)
+            for (StackTraceElement ste : exception.getStackTrace()) {
+                builder.append(System.lineSeparator());
+                builder.append(ste.toString());
+            }
+
+        Throwable innerException = exception.getCause();
+        if (innerException != null) {
+            builder.append("Cause: " + innerException.getMessage());
+            if (innerException.getStackTrace() != null)
+                for (StackTraceElement ste : innerException.getStackTrace()) {
+                    builder.append(System.lineSeparator());
+                    builder.append(ste.toString());
+                }
+        }
+
+        return builder.toString();
+    }
 }

@@ -15,7 +15,7 @@ import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 
 public class FaultTolerantObject<T extends IIOObject> {
-    
+
     final IOperation<T> openTask;
     final IOperation<Void> closeTask;
     final Queue<IOperationResult<T, Exception>> openCallbacks;
@@ -24,35 +24,35 @@ public class FaultTolerantObject<T extends IIOObject> {
     T innerObject;
     boolean creatingNewInnerObject;
     boolean closingInnerObject;
-    
+
     public FaultTolerantObject(
-        final IOperation<T> openAsync,
-        final IOperation<Void> closeAsync) {
-        
+            final IOperation<T> openAsync,
+            final IOperation<Void> closeAsync) {
+
         this.openTask = openAsync;
         this.closeTask = closeAsync;
         this.openCallbacks = new ConcurrentLinkedQueue<>();
         this.closeCallbacks = new ConcurrentLinkedQueue<>();
     }
-    
+
     // should be invoked from reactor thread
     public T unsafeGetIfOpened() {
 
         if (innerObject != null && innerObject.getState() == IIOObject.IOObjectState.OPENED)
             return innerObject;
-        
+
         return null;
     }
-    
+
     public void runOnOpenedObject(
-        final ReactorDispatcher dispatcher,
-        final IOperationResult<T, Exception> openCallback) {
-        
+            final ReactorDispatcher dispatcher,
+            final IOperationResult<T, Exception> openCallback) {
+
         try {
             dispatcher.invoke(new DispatchHandler() {
                 @Override
                 public void onEvent() {
-                    if (!creatingNewInnerObject 
+                    if (!creatingNewInnerObject
                             && (innerObject == null || innerObject.getState() == IIOObject.IOObjectState.CLOSED || innerObject.getState() == IIOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
                         openCallbacks.offer(openCallback);
@@ -61,25 +61,24 @@ public class FaultTolerantObject<T extends IIOObject> {
                             public void onComplete(T result) {
                                 creatingNewInnerObject = false;
                                 innerObject = result;
-                                for (IOperationResult<T, Exception> callback: openCallbacks)
+                                for (IOperationResult<T, Exception> callback : openCallbacks)
                                     callback.onComplete(result);
-                                
+
                                 openCallbacks.clear();
                             }
+
                             @Override
                             public void onError(Exception error) {
                                 creatingNewInnerObject = false;
-                                for (IOperationResult<T, Exception> callback: openCallbacks)
+                                for (IOperationResult<T, Exception> callback : openCallbacks)
                                     callback.onError(error);
-                                
+
                                 openCallbacks.clear();
                             }
                         });
-                    }
-                    else if (innerObject != null && innerObject.getState() == IIOObject.IOObjectState.OPENED) {
+                    } else if (innerObject != null && innerObject.getState() == IIOObject.IOObjectState.OPENED) {
                         openCallback.onComplete(innerObject);
-                    }
-                    else {
+                    } else {
                         openCallbacks.offer(openCallback);
                     }
                 }
@@ -88,42 +87,40 @@ public class FaultTolerantObject<T extends IIOObject> {
             openCallback.onError(ioException);
         }
     }
-    
+
     public void close(
             final ReactorDispatcher dispatcher,
             final IOperationResult<Void, Exception> closeCallback) {
-        
+
         try {
             dispatcher.invoke(new DispatchHandler() {
                 @Override
                 public void onEvent() {
                     if (innerObject == null || innerObject.getState() == IIOObject.IOObjectState.CLOSED) {
                         closeCallback.onComplete(null);
-                    } 
-                    else if (!closingInnerObject && (innerObject.getState() == IIOObject.IOObjectState.OPENED || innerObject.getState() == IIOObject.IOObjectState.OPENING)) {
+                    } else if (!closingInnerObject && (innerObject.getState() == IIOObject.IOObjectState.OPENED || innerObject.getState() == IIOObject.IOObjectState.OPENING)) {
                         closingInnerObject = true;
                         closeCallbacks.offer(closeCallback);
                         closeTask.run(new IOperationResult<Void, Exception>() {
                             @Override
                             public void onComplete(Void result) {
                                 closingInnerObject = false;
-                                for (IOperationResult<Void, Exception> callback: closeCallbacks)
+                                for (IOperationResult<Void, Exception> callback : closeCallbacks)
                                     callback.onComplete(result);
-                                
+
                                 closeCallbacks.clear();
                             }
 
                             @Override
                             public void onError(Exception error) {
                                 closingInnerObject = false;
-                                for (IOperationResult<Void, Exception> callback: closeCallbacks)
+                                for (IOperationResult<Void, Exception> callback : closeCallbacks)
                                     callback.onError(error);
-                                
+
                                 closeCallbacks.clear();
                             }
                         });
-                    } 
-                    else {
+                    } else {
                         closeCallbacks.offer(closeCallback);
                     }
                 }

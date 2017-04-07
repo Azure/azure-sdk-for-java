@@ -4,31 +4,26 @@
  */
 package com.microsoft.azure.eventhubs;
 
-final class EventHubRuntimeInformation
-{
+final class EventHubRuntimeInformation {
     final String path;
     final int partitionCount;
     final String[] partitionIds;
-    
-    EventHubRuntimeInformation(final String path, final int partitionCount, final String[] partitionIds)
-    {
+
+    EventHubRuntimeInformation(final String path, final int partitionCount, final String[] partitionIds) {
         this.path = path;
         this.partitionCount = partitionCount;
         this.partitionIds = partitionIds;
     }
-    
-    public String getPath()
-    {
+
+    public String getPath() {
         return this.path;
     }
-    
-    public int getPartitionCount()
-    {
+
+    public int getPartitionCount() {
         return this.partitionCount;
     }
-    
-    public String[] getPartitionIds()
-    {
+
+    public String[] getPartitionIds() {
         return this.partitionIds;
     }
 }

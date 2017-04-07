@@ -4,7 +4,6 @@
  */
 package com.microsoft.azure.servicebus;
 
-interface IErrorContextProvider
-{
-	ErrorContext getContext();
+interface IErrorContextProvider {
+    ErrorContext getContext();
 }

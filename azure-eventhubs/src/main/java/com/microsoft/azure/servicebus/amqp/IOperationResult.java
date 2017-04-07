@@ -6,8 +6,8 @@ package com.microsoft.azure.servicebus.amqp;
 
 
 public interface IOperationResult<T, E extends Throwable> {
-    
+
     void onComplete(T result);
-    
-    void onError(E error);    
+
+    void onError(E error);
 }

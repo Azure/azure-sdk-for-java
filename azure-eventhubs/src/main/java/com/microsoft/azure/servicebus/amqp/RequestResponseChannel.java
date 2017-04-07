@@ -28,7 +28,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import com.microsoft.azure.servicebus.StringUtil;
 
 public class RequestResponseChannel implements IIOObject {
-    
+
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
@@ -36,22 +36,22 @@ public class RequestResponseChannel implements IIOObject {
     private final AtomicLong requestId;
     private final AtomicInteger openRefCount;
     private final AtomicInteger closeRefCount;
-    
+
     private IOperationResult<Void, Exception> onOpen;
     private IOperationResult<Void, Exception> onClose; // handles closeLink due to failures
     private IOperationResult<Void, Exception> onGraceFullClose; // handles intentional close
-    
+
     public RequestResponseChannel(
             final String linkName,
             final String path,
             final Session session) {
-        
+
         this.replyTo = path.replace("$", "") + "-client-reply-to";
         this.openRefCount = new AtomicInteger(2);
         this.closeRefCount = new AtomicInteger(2);
         this.inflightRequests = new HashMap<>();
         this.requestId = new AtomicLong(0);
-        
+
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
         target.setAddress(path);
@@ -59,7 +59,7 @@ public class RequestResponseChannel implements IIOObject {
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         BaseHandler.setHandler(this.sendLink, new SendLinkHandler(new RequestHandler()));
-        
+
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
         source.setAddress(path);
@@ -74,13 +74,13 @@ public class RequestResponseChannel implements IIOObject {
 
     // open should be called only once - we use FaultTolerantObject for that
     public void open(final IOperationResult<Void, Exception> onOpen, final IOperationResult<Void, Exception> onClose) {
-        
+
         this.onOpen = onOpen;
         this.onClose = onClose;
         this.sendLink.open();
-        this.receiveLink.open();        
+        this.receiveLink.open();
     }
-    
+
     // close should be called exactly once - we use FaultTolerantObject for that
     public void close(final IOperationResult<Void, Exception> onGraceFullClose) {
 
@@ -88,15 +88,15 @@ public class RequestResponseChannel implements IIOObject {
         this.sendLink.close();
         this.receiveLink.close();
     }
-    
+
     public Sender getSendLink() {
         return this.sendLink;
     }
-    
+
     public Receiver getReceiveLink() {
         return this.receiveLink;
     }
-    
+
     public void request(
             final ReactorDispatcher dispatcher,
             final Message message,
@@ -107,28 +107,28 @@ public class RequestResponseChannel implements IIOObject {
 
         if (message.getMessageId() != null)
             throw new IllegalArgumentException("message.getMessageId() should be null");
-        
+
         if (message.getReplyTo() != null)
             throw new IllegalArgumentException("message.getReplyTo() should be null");
-        
+
         message.setMessageId("request" + UnsignedLong.valueOf(this.requestId.incrementAndGet()).toString());
         message.setReplyTo(this.replyTo);
-        
+
         this.inflightRequests.put(message.getMessageId(), onResponse);
-                
+
         try {
             dispatcher.invoke(new DispatchHandler() {
                 @Override
                 public void onEvent() {
-                    
+
                     final Delivery delivery = sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes());
                     final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
-                    
+
                     delivery.setContext(onResponse);
-                    
+
                     final byte[] bytes = new byte[payloadSize];
                     final int encodedSize = message.encode(bytes, 0, payloadSize);
-                    
+
                     receiveLink.flow(1);
                     sendLink.send(bytes, 0, encodedSize);
                     sendLink.advance();
@@ -138,9 +138,9 @@ public class RequestResponseChannel implements IIOObject {
             onResponse.onError(ioException);
         }
     }
-    
+
     private void onLinkOpenComplete(final Exception exception) {
-        
+
         if (openRefCount.decrementAndGet() <= 0 && onOpen != null)
             if (exception == null && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.receiveLink.getRemoteState() == EndpointState.ACTIVE)
                 onOpen.onComplete(null);
@@ -155,16 +155,15 @@ public class RequestResponseChannel implements IIOObject {
                 }
             }
     }
-    
+
     private void onLinkCloseComplete(final Exception exception) {
-        
+
         if (closeRefCount.decrementAndGet() <= 0)
             if (exception == null) {
                 onClose.onComplete(null);
                 if (onGraceFullClose != null)
                     onGraceFullClose.onComplete(null);
-            }
-            else {
+            } else {
                 onClose.onError(exception);
                 if (onGraceFullClose != null)
                     onGraceFullClose.onError(exception);
@@ -173,21 +172,21 @@ public class RequestResponseChannel implements IIOObject {
 
     @Override
     public IOObjectState getState() {
-        
+
         if (sendLink.getLocalState() == EndpointState.UNINITIALIZED || receiveLink.getLocalState() == EndpointState.UNINITIALIZED
                 || sendLink.getRemoteState() == EndpointState.UNINITIALIZED || receiveLink.getRemoteState() == EndpointState.UNINITIALIZED)
             return IOObjectState.OPENING;
-        
+
         if (sendLink.getRemoteState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE
                 && sendLink.getLocalState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE)
             return IOObjectState.OPENED;
-        
+
         if (sendLink.getRemoteState() == EndpointState.CLOSED && receiveLink.getRemoteState() == EndpointState.CLOSED)
             return IOObjectState.CLOSED;
-        
+
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
     }
-    
+
     private class RequestHandler implements IAmqpSender {
 
         @Override
@@ -200,32 +199,32 @@ public class RequestResponseChannel implements IIOObject {
 
         @Override
         public void onOpenComplete(Exception completionException) {
-            
+
             onLinkOpenComplete(completionException);
         }
 
         @Override
         public void onError(Exception exception) {
-            
+
             onLinkCloseComplete(exception);
         }
 
         @Override
         public void onClose(ErrorCondition condition) {
-            
-            if (condition == null|| condition.getCondition() == null)
+
+            if (condition == null || condition.getCondition() == null)
                 onLinkCloseComplete(null);
-            else 
+            else
                 onError(new AmqpException(condition));
-        }        
-        
+        }
+
     }
-    
+
     private class ResponseHandler implements IAmqpReceiver {
 
         @Override
         public void onReceiveComplete(Delivery delivery) {
-            
+
             final Message response = Proton.message();
             final int msgSize = delivery.pending();
             final byte[] buffer = new byte[msgSize];
@@ -234,37 +233,37 @@ public class RequestResponseChannel implements IIOObject {
 
             response.decode(buffer, 0, read);
             delivery.settle();
-            
+
             final IOperationResult<Message, Exception> responseCallback = inflightRequests.remove(response.getCorrelationId());
             if (responseCallback != null)
-                responseCallback.onComplete(response);                
+                responseCallback.onComplete(response);
         }
 
         @Override
         public void onOpenComplete(Exception completionException) {
-            
+
             onLinkOpenComplete(completionException);
         }
 
         @Override
         public void onError(Exception exception) {
-            
-            for (IOperationResult<Message, Exception> responseCallback: inflightRequests.values())
+
+            for (IOperationResult<Message, Exception> responseCallback : inflightRequests.values())
                 responseCallback.onError(exception);
-            
+
             inflightRequests.clear();
-            
+
             if (onClose != null)
                 onLinkCloseComplete(exception);
         }
 
         @Override
         public void onClose(ErrorCondition condition) {
-            
+
             if (condition == null || condition.getCondition() == null)
                 onLinkCloseComplete(null);
             else
                 onError(new AmqpException(condition));
-        }        
-    }    
+        }
+    }
 }
