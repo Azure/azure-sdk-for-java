@@ -8,6 +8,7 @@ package com.microsoft.azure.credentials;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.apigeneration.Beta;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * An instance of this class represents a subscription record in azureProfiles.json.
  */
+@Beta
 final class AzureCliSubscription {
     private String environmentName;
     private String id;

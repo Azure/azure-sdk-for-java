@@ -8,6 +8,7 @@ package com.microsoft.azure.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
 import com.microsoft.rest.serializer.JacksonAdapter;
@@ -25,6 +26,7 @@ import java.util.Date;
 /**
  * This class encloses a Retrofit client that refreshes a token from ADAL.
  */
+@Beta
 final class RefreshTokenClient {
     private final RefreshTokenService service;
 

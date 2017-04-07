@@ -9,6 +9,7 @@ package com.microsoft.azure.credentials;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.OkHttpClient;
 
@@ -25,6 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Token based credentials for use with a REST Service Client.
  */
+@Beta
 public final class AzureCliCredentials extends AzureTokenCredentials {
     private static final ObjectMapper MAPPER = new JacksonAdapter().serializer().setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ssssss"));
     /** A mapping from resource endpoint to its cached access token. */

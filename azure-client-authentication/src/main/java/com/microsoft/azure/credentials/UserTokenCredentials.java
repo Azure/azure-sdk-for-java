@@ -70,15 +70,6 @@ public class UserTokenCredentials extends AzureTokenCredentials {
         return username;
     }
 
-    /**
-     * Gets the password for the Organization Id account.
-     *
-     * @return the password.
-     */
-    public String password() {
-        return password;
-    }
-
     @Override
     public synchronized String getToken(String resource) throws IOException {
         // Find exact match for the resource
@@ -115,7 +106,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
                     resource,
                     this.clientId(),
                     this.username(),
-                    this.password(),
+                    this.password,
                     null).get();
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);

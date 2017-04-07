@@ -8,6 +8,7 @@ package com.microsoft.azure.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.azure.management.apigeneration.Beta;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 /**
  * An instance of this class represents an entry in accessTokens.json.
  */
+@Beta
 final class AzureCliToken implements Cloneable {
     @JsonProperty("_authority")
     private String authority;
