@@ -1451,19 +1451,22 @@ public final class Utils {
      * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
      * @param file the local file
-     * @throws Exception when ftp upload fails
      */
-    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
         String path = "./site/wwwroot/webapps";
-        ftpClient.connect(server);
-        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        ftpClient.changeWorkingDirectory(path);
-        ftpClient.storeFile(fileName, file);
-        ftpClient.disconnect();
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Utils() {
