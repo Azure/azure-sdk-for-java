@@ -8,7 +8,6 @@ package com.microsoft.azure.management.samples;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.keyvault.samples.ManageKeyVault;
-import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class KeyVaultSampleTests extends SamplesTestBase {
         if (!IS_MOCKED) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {
-                clientId = ApplicationTokenCredentials.fromFile(credFile).getClientId();
+                clientId = ApplicationTokenCredentials.fromFile(credFile).clientId();
             } catch (IOException e) {
                 e.printStackTrace();
             }
