@@ -179,8 +179,6 @@ public final class ManageVirtualMachineAsync {
             // - Resize (expand) the data disk on Windows VM.
             Observable<Void> windowsVmUpdateThenStart = windowsVM.update()
                     .withOSDiskSizeInGB(200)
-                    .withDataDiskUpdated(1, 200)
-                    .withDataDiskUpdated(2, 200)
                     .applyAsync()
                     .flatMap(new Func1<VirtualMachine, Observable<Void>>() {
                         @Override

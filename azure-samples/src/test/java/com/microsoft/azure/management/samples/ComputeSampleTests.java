@@ -87,12 +87,11 @@ public class ComputeSampleTests extends SamplesTestBase {
         Assert.assertTrue(ManageVirtualMachine.runSample(azure));
     }
 
-    // Recording fails due to a failure on Managed disks backend
-    // Once it will be solved we need to record this one and the above test.
-    /*@Test
+    @Test
+    @Ignore("Recording fails due to a failure on Managed disks backend")
     public void testManageVirtualMachineAsync() {
         Assert.assertTrue(ManageVirtualMachineAsync.runSample(azure));
-    }*/
+    }
 
     @Test
     public void testManageVirtualMachineExtension() {

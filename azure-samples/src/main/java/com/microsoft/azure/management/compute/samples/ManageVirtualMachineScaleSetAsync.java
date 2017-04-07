@@ -200,7 +200,7 @@ public final class ManageVirtualMachineScaleSetAsync {
             PublicIPAddress publicIPAddress = null;
             LoadBalancer loadBalancer1 = null;
 
-            for( Indexable indexable : createdResources) {
+            for (Indexable indexable : createdResources) {
                 if (indexable instanceof PublicIPAddress) {
                     publicIPAddress = (PublicIPAddress) indexable;
                     System.out.println("Created a public IP address");

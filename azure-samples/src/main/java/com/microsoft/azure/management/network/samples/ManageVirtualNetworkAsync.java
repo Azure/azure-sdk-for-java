@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Azure Network sample for managing virtual networks -
+ * Azure Network sample for managing virtual networks.
  *  - Create a virtual network with Subnets
  *  - Update a virtual network
  *  - Create virtual machines in the virtual network subnets
@@ -92,7 +92,7 @@ public final class ManageVirtualNetworkAsync {
                     .flatMap(new Func1<Indexable, Observable<Indexable>>() {
                         @Override
                         public Observable<Indexable> call(Indexable indexable) {
-                            if(indexable instanceof NetworkSecurityGroup) {
+                            if( indexable instanceof NetworkSecurityGroup) {
                                 NetworkSecurityGroup backEndNsg = (NetworkSecurityGroup) indexable;
                                 System.out.println("Creating virtual network #1...");
                                 return Observable.merge(
@@ -134,13 +134,13 @@ public final class ManageVirtualNetworkAsync {
                 ).map(new Func1<Indexable, Indexable>() {
                 @Override
                 public Indexable call(Indexable indexable) {
-                    if(indexable instanceof NetworkSecurityGroup) {
+                    if( indexable instanceof NetworkSecurityGroup) {
                         NetworkSecurityGroup nsg = (NetworkSecurityGroup) indexable;
                         System.out.println("Created network security group");
                         // Print the network security group
                         Utils.print(nsg);
                         createdResources.put(nsg.name(), nsg);
-                    } else if (indexable instanceof Network ) {
+                    } else if( indexable instanceof Network ) {
                         Network vn = (Network) indexable;
                         System.out.println("Created a virtual network");
                         // Print the virtual network details
@@ -220,7 +220,7 @@ public final class ManageVirtualNetworkAsync {
                     Date t2 = new Date();
                     long duration = ((t2.getTime() - t1.getTime()) / 1000);
 
-                    if(indexable instanceof VirtualMachine) {
+                    if( indexable instanceof VirtualMachine) {
                         VirtualMachine vm = (VirtualMachine) indexable;
                         System.out.println("Created Linux VM: (took "
                                 + duration + " seconds) " + vm.id());
