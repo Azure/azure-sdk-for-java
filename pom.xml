@@ -57,6 +57,11 @@
       <name>commicrosoftazure-1660</name>
       <url>http://oss.sonatype.org/service/local/repositories/commicrosoftazure-1660/content/</url>
     </repository>
+    <repository>
+      <id>commicrosoftrest-1022</id>
+      <name>commicrosoftrest-1022</name>
+      <url>http://oss.sonatype.org/service/local/repositories/commicrosoftrest-1022/content/</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
