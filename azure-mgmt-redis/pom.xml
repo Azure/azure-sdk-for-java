@@ -64,9 +64,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>com.microsoft.azure</groupId>
-          <artifactId>api-annotations</artifactId>
-          <version>0.0.2</version>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-annotations</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
