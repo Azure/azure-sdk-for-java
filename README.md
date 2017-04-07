@@ -196,7 +196,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td>Virtual Machines</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machines</a></li>
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines <b>asynchronously</b> </a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines asynchronously </a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
@@ -221,6 +221,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td>Virtual Machine Scale Sets</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets (behind an Internet facing load balancer)</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets-async">Manage virtual machine scale sets (behind an Internet facing load balancer) asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage virtual machine scale sets with unmanaged disks</li>
 </ul></td>
   </tr>
@@ -228,6 +229,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td>Storage</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts">Manage storage accounts</a></li>
+<li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts-async">Manage storage accounts asynchronously</a></li>
 </ul></td>
   </tr>
   <tr>
@@ -235,6 +237,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td><ul style="list-style-type:circle">
 
 <li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network">Manage virtual network</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network-async">Manage virtual network asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-interface">Manage network interface</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-security-group">Manage network security group</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
@@ -271,6 +274,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-db">Manage SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-dbs-in-elastic-pool">Manage SQL databases in elastic pools</a></li>
+<li><a href="https://github.com/Azure-Samples/sql-database-dotnet-manage-sql-dbs-in-elastic-pool-async">Manage SQL databases in elastic pools asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-firewalls-for-sql-databases">Manage firewalls for SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-databases-across-regions">Manage SQL databases across regions</a></li>
 </ul></td>
@@ -283,6 +287,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps">Manage Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-with-custom-domains">Manage Web apps with custom domains</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps">Configure deployment sources for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-async">Configure deployment sources for Web apps asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-staging-and-production-slots-for-web-apps">Manage staging and production slots for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps">Manage storage connections for Web apps</a></li>
