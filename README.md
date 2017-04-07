@@ -30,7 +30,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 - Key Vault, Redis, CDN and Batch
 - Async methods *(preview)*.
 
-We will continue to add support for more Azure services - Azure Monitor, Azure Container Service, Azure Container Registry, DocumentDB, Scheduler, Graph RBAC , etc.
+We will continue to add support for more Azure services - such as Azure Monitor, Azure Container Service, Azure Container Registry, DocumentDB, Scheduler, Graph RBAC , etc.
 
 **Azure Authentication**
 
@@ -195,7 +195,8 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
   <tr>
     <td>Virtual Machines</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machines</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines <b>asynchronously</b> </a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
@@ -274,15 +275,10 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-databases-across-regions">Manage SQL databases across regions</a></li>
 </ul></td>
   </tr>
-  <tr>
-    <td>Redis Cache</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
-</ul></td>
-</tr>
+
 
   <tr>
-    <td>App Service - Web Apps</td>
+    <td>App Service - Web Apps on <b>Windows</b></td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps">Manage Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-with-custom-domains">Manage Web apps with custom domains</a></li>
@@ -291,6 +287,31 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps">Manage storage connections for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-data-connections-for-web-apps">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-web-apps">Manage authentication for Web apps</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>App Service - Web Apps on <b>Linux</b></td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux">Manage Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux-with-custom-domains">Manage Web apps with custom domains</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-on-linux">Configure deployment sources for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-staging-and-production-slots-for-web-apps-on-linux">Manage staging and production slots for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps-on-linux">Scale Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps-on-linux">Manage storage connections for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-data-connections-for-web-apps-on-linux">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-web-apps-on-linux">Manage authentication for Web apps</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>Functions</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-functions">Manage functions</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-functions-with-custom-domains">Manage functions with custom domains</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-functions">Configure deployment sources for functions</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-functions">Manage authentication for functions</a></li>
 </ul></td>
   </tr>
 
@@ -303,6 +324,14 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
+
+  <tr>
+    <td>Redis Cache</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
+</ul></td>
+</tr>
+
   <tr>
     <td>Key Vault</td>
     <td><ul style="list-style-type:circle">
