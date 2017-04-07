@@ -213,7 +213,7 @@ public final class ManageVirtualMachine {
 
             System.out.println("Printing list of VMs =======");
 
-            for (VirtualMachine virtualMachine : azure.virtualMachines().listByGroup(resourceGroupName)) {
+            for (VirtualMachine virtualMachine : azure.virtualMachines().listByResourceGroup(resourceGroupName)) {
                 Utils.print(virtualMachine);
             }
 

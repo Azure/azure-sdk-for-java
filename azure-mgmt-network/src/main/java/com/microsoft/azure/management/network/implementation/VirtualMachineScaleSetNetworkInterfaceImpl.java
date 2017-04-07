@@ -56,7 +56,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
-    public boolean isIpForwardingEnabled() {
+    public boolean isIPForwardingEnabled() {
         return Utils.toPrimitiveBoolean(this.inner().enableIPForwarding());
     }
 
@@ -108,20 +108,20 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public String primaryPrivateIP() {
-        VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = this.primaryIPConfiguration();
-        if (primaryIpConfig == null) {
+        VirtualMachineScaleSetNicIPConfiguration primaryIPConfig = this.primaryIPConfiguration();
+        if (primaryIPConfig == null) {
             return null;
         }
-        return primaryIpConfig.privateIPAddress();
+        return primaryIPConfig.privateIPAddress();
     }
 
     @Override
     public IPAllocationMethod primaryPrivateIPAllocationMethod() {
-        VirtualMachineScaleSetNicIPConfiguration primaryIpConfig = this.primaryIPConfiguration();
-        if (primaryIpConfig == null) {
+        VirtualMachineScaleSetNicIPConfiguration primaryIPConfig = this.primaryIPConfiguration();
+        if (primaryIPConfig == null) {
             return null;
         }
-        return primaryIpConfig.privateIPAllocationMethod();
+        return primaryIPConfig.privateIPAllocationMethod();
     }
 
     @Override
@@ -130,12 +130,12 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         if (inners == null || inners.size() == 0) {
             return Collections.unmodifiableMap(new TreeMap<String, VirtualMachineScaleSetNicIPConfiguration>());
         }
-        Map<String, VirtualMachineScaleSetNicIPConfiguration> nicIpConfigurations = new TreeMap<>();
+        Map<String, VirtualMachineScaleSetNicIPConfiguration> nicIPConfigurations = new TreeMap<>();
         for (NetworkInterfaceIPConfigurationInner inner : inners) {
-            VirtualMachineScaleSetNicIpConfigurationImpl nicIpConfiguration = new VirtualMachineScaleSetNicIpConfigurationImpl(inner, this, this.networkManager);
-            nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
+            VirtualMachineScaleSetNicIPConfigurationImpl nicIPConfiguration = new VirtualMachineScaleSetNicIPConfigurationImpl(inner, this, this.networkManager);
+            nicIPConfigurations.put(nicIPConfiguration.name(), nicIPConfiguration);
         }
-        return Collections.unmodifiableMap(nicIpConfigurations);
+        return Collections.unmodifiableMap(nicIPConfigurations);
     }
 
     @Override
@@ -164,7 +164,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         }
         return this.manager()
             .networkSecurityGroups()
-            .getByGroup(ResourceUtils.groupFromResourceId(nsgId),
+            .getByResourceGroup(ResourceUtils.groupFromResourceId(nsgId),
                 ResourceUtils.nameFromResourceId(nsgId));
     }
 

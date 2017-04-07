@@ -32,7 +32,7 @@ public interface VirtualMachineCustomImage extends
     boolean isCreatedFromVirtualMachine();
 
     /**
-     * @return id of the virtual machine if this image is created by capturing that virtual machine
+     * @return ID of the virtual machine if this image is created by capturing that virtual machine
      */
     String sourceVirtualMachineId();
 
@@ -42,7 +42,7 @@ public interface VirtualMachineCustomImage extends
     ImageOSDisk osDiskImage();
 
     /**
-     * @return data disk images in this image, indexed by the disk lun
+     * @return data disk images in this image, indexed by the disk LUN
      */
     Map<Integer, ImageDataDisk> dataDiskImages();
 
@@ -91,7 +91,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Windows source native VHD for the OS disk image.
              *
-             * @param sourceVhdUrl source Windows virtual hard disk url
+             * @param sourceVhdUrl source Windows virtual hard disk URL
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -100,7 +100,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Linux source native VHD for the OS disk image.
              *
-             * @param sourceVhdUrl source Linux virtual hard disk url
+             * @param sourceVhdUrl source Linux virtual hard disk URL
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -127,7 +127,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Windows source snapshot for the OS disk image.
              *
-             * @param sourceSnapshotId source snapshot resource id
+             * @param sourceSnapshotId source snapshot resource ID
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -136,7 +136,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Linux source snapshot for the OS disk image.
              *
-             * @param sourceSnapshotId source snapshot resource id
+             * @param sourceSnapshotId source snapshot resource ID
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -145,7 +145,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Windows source managed disk for the OS disk image.
              *
-             * @param sourceManagedDiskId source managed disk resource id
+             * @param sourceManagedDiskId source managed disk resource ID
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -154,7 +154,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Specifies the Linux source managed disk for the OS disk image.
              *
-             * @param sourceManagedDiskId source managed disk resource id
+             * @param sourceManagedDiskId source managed disk resource ID
              * @param osState operating system state
              * @return the next stage of the image definition
              */
@@ -187,7 +187,7 @@ public interface VirtualMachineCustomImage extends
              * Uses the virtual machine's OS disk and data disks as the source for OS disk image and
              * data disk images of this image.
              *
-             * @param virtualMachineId source virtual machine resource id
+             * @param virtualMachineId source virtual machine resource ID
              * @return the next stage of the image definition
              */
             WithCreate fromVirtualMachine(String virtualMachineId);
@@ -239,7 +239,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Adds a data disk image with source as a virtual hard disk.
              *
-             * @param sourceVhdUrl source virtual hard disk url
+             * @param sourceVhdUrl source virtual hard disk URL
              * @return the next stage of the image definition
              */
             WithCreateAndDataDiskImageOSDiskSettings withDataDiskImageFromVhd(String sourceVhdUrl);
@@ -247,7 +247,7 @@ public interface VirtualMachineCustomImage extends
             /**
              * Adds a data disk image with source as snapshot.
              *
-             * @param sourceSnapshotId source snapshot resource id
+             * @param sourceSnapshotId source snapshot resource ID
              * @return the next stage of the image definition
              */
             WithCreateAndDataDiskImageOSDiskSettings withDataDiskImageFromSnapshot(String sourceSnapshotId);
@@ -255,15 +255,13 @@ public interface VirtualMachineCustomImage extends
             /**
              * Adds a data disk image with source as managed disk.
              *
-             * @param sourceManagedDiskId source managed disk resource id
+             * @param sourceManagedDiskId source managed disk resource ID
              * @return the next stage of the image definition
              */
             WithCreateAndDataDiskImageOSDiskSettings withDataDiskImageFromManagedDisk(String sourceManagedDiskId);
 
             /**
              * Begins the definition of a new data disk image to add to the image.
-             * <p>
-             * The definition must be completed with a call to {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
              * @return the first stage of the new data disk image definition
              */
             CustomImageDataDisk.DefinitionStages.Blank<WithCreateAndDataDiskImageOSDiskSettings> defineDataDiskImage();
@@ -271,7 +269,7 @@ public interface VirtualMachineCustomImage extends
 
         /**
          * The stage of an image definition containing all the required inputs for
-         * the resource to be created (via {@link VirtualMachineCustomImage.DefinitionStages.WithCreate#create()}), but also allowing
+         * the resource to be created, but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -292,21 +290,21 @@ public interface VirtualMachineCustomImage extends
         interface DefinitionStages {
             /**
              * The first stage of the data disk image definition.
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface Blank<ParentT> extends WithDiskLun<ParentT> {
             }
 
             /**
-             * The stage of the image definition allowing to specify the lun for the disk image.
+             * The stage of the image definition allowing to specify the LUN for the disk image.
              *
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithDiskLun<ParentT> {
                 /**
-                 * Specifies the lun for the data disk to be created from the disk image.
+                 * Specifies the LUN for the data disk to be created from the disk image.
                  *
-                 * @param lun the unique lun for the data disk
+                 * @param lun the unique LUN for the data disk
                  * @return the next stage of the data disk image definition
                  */
                 WithImageSource<ParentT> withLun(int lun);
@@ -315,13 +313,13 @@ public interface VirtualMachineCustomImage extends
             /**
              * The stage of the image definition allowing to choose the source of the data disk image.
              *
-             * @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithImageSource<ParentT> {
                 /**
                  * Specifies the source VHD for the data disk image.
                  *
-                 * @param sourceVhdUrl source virtual hard disk url
+                 * @param sourceVhdUrl source virtual hard disk URL
                  * @return the next stage of the data disk image definition
                  */
                 WithAttach<ParentT> fromVhd(String sourceVhdUrl);
@@ -329,7 +327,7 @@ public interface VirtualMachineCustomImage extends
                 /**
                  * Specifies the source snapshot for the data disk image.
                  *
-                 * @param sourceSnapshotId source snapshot resource id
+                 * @param sourceSnapshotId source snapshot resource ID
                  * @return the next stage of the data disk image definition
                  */
                 WithAttach<ParentT> fromSnapshot(String sourceSnapshotId);
@@ -337,7 +335,7 @@ public interface VirtualMachineCustomImage extends
                 /**
                  * Specifies the source managed disk for the data disk image.
                  *
-                 * @param sourceManagedDiskId source managed disk resource id
+                 * @param sourceManagedDiskId source managed disk resource ID
                  * @return the next stage of the data disk image definition
                  */
                 WithAttach<ParentT> fromManagedDisk(String sourceManagedDiskId);
@@ -355,7 +353,7 @@ public interface VirtualMachineCustomImage extends
              * The stage of data disk image definition allowing to specify configurations for the data disk when it
              * is created from the same data disk image.
              *
-             *  @param <ParentT> the return type of the final {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithDiskSettings<ParentT> {
                 /**
@@ -379,8 +377,8 @@ public interface VirtualMachineCustomImage extends
              * The final stage of the data disk image definition.
              * <p>
              * At this stage, any remaining optional settings can be specified, or the data disk definition
-             * can be attached to the parent image definition using {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}.
-             * @param <ParentT> the return type of {@link CustomImageDataDisk.DefinitionStages.WithAttach#attach()}
+             * can be attached to the parent image definition.
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAttach<ParentT> extends
                     Attachable.InDefinition<ParentT>,
@@ -389,7 +387,7 @@ public interface VirtualMachineCustomImage extends
         }
 
         /** The entirety of a data disk image definition.
-         * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Definition<ParentT> extends
                 DefinitionStages.Blank<ParentT>,

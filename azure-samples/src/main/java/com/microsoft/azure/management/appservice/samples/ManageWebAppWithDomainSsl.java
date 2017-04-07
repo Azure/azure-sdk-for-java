@@ -9,10 +9,10 @@ package com.microsoft.azure.management.appservice.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -61,10 +61,9 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Creating web app " + app1Name + "...");
 
             WebApp app1 = azure.webApps().define(app1Name)
-                    .withNewResourceGroup(rgName)
-                    .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
-                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withNewResourceGroup(rgName)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -74,10 +73,10 @@ public final class ManageWebAppWithDomainSsl {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
+            AppServicePlan plan = azure.appServices().appServicePlans().getByResourceGroup(rgName, planName);
             WebApp app2 = azure.webApps().define(app2Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withExistingAppServicePlan(plan)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -97,7 +96,7 @@ public final class ManageWebAppWithDomainSsl {
                         .withAddressLine1("123 4th Ave")
                         .withCity("Redmond")
                         .withStateOrProvince("WA")
-                        .withCountry(CountryISOCode.UNITED_STATES)
+                        .withCountry(CountryIsoCode.UNITED_STATES)
                         .withPostalCode("98052")
                         .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                         .withPhoneNumber("4258828080")

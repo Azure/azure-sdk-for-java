@@ -6,40 +6,27 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrders;
 import com.microsoft.azure.management.appservice.AppServicePlans;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import rx.Completable;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for {@link AppServicePlans}.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateOrdersImpl
-        extends GroupableResourcesImpl<
-        AppServiceCertificateOrder,
-        AppServiceCertificateOrderImpl,
-        AppServiceCertificateOrderInner,
-        AppServiceCertificateOrdersInner,
-        AppServiceManager>
+        extends TopLevelModifiableResourcesImpl<
+                AppServiceCertificateOrder,
+                AppServiceCertificateOrderImpl,
+                AppServiceCertificateOrderInner,
+                AppServiceCertificateOrdersInner,
+                AppServiceManager>
         implements AppServiceCertificateOrders {
 
     AppServiceCertificateOrdersImpl(AppServiceManager manager) {
         super(manager.inner().appServiceCertificateOrders(), manager);
-    }
-
-    @Override
-    public AppServiceCertificateOrder getByGroup(String groupName, String name) {
-        return wrapModel(this.inner().getByResourceGroup(groupName, name));
-    }
-
-    @Override
-    public PagedList<AppServiceCertificateOrder> listByGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -60,13 +47,4 @@ class AppServiceCertificateOrdersImpl
         return wrapModel(name);
     }
 
-    @Override
-    protected Observable<AppServiceCertificateOrderInner> getInnerAsync(String resourceGroupName, String name) {
-        return this.inner().getByResourceGroupAsync(resourceGroupName, name);
-    }
-
-    @Override
-    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.inner().deleteAsync(resourceGroupName, name).toCompletable();
-    }
 }

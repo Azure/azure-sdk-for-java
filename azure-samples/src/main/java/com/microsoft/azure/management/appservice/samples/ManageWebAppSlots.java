@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.WebApp;
@@ -131,17 +131,15 @@ public final class ManageWebAppSlots {
     }
 
     private static WebApp createWebApp(Azure azure, String appName, Region region, String resourceGroupName) {
-        final String planName = SdkContext.randomResourceName("jplan_", 15);
         final String appUrl = appName + SUFFIX;
 
         System.out.println("Creating web app " + appName + " with master branch...");
 
         WebApp app = azure.webApps()
                 .define(appName)
-                .withExistingResourceGroup(resourceGroupName)
-                .withNewAppServicePlan(planName)
                 .withRegion(region)
-                .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                .withExistingResourceGroup(resourceGroupName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .defineSourceControl()

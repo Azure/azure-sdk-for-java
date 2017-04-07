@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import org.junit.*;
 
@@ -31,7 +31,7 @@ public class DomainsTests extends AppServiceTest {
                     .withAddressLine1("1 Microsoft Way")
                     .withCity("Seattle")
                     .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.UNITED_STATES)
+                    .withCountry(CountryIsoCode.UNITED_STATES)
                     .withPostalCode("98101")
                     .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                     .withPhoneNumber("4258828080")

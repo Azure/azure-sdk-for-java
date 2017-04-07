@@ -87,7 +87,7 @@ public final class ManageNetworkInterface {
                     .withSubnet("Front-end")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
-                    .withIpForwarding()
+                    .withIPForwarding()
                     .create();
 
             System.out.println("Created network interface 1");
@@ -161,7 +161,7 @@ public final class ManageNetworkInterface {
             // List network interfaces
 
             System.out.println("Walking through network inter4faces in resource group: " + rgName);
-            PagedList<NetworkInterface> networkInterfaces = azure.networkInterfaces().listByGroup(rgName);
+            PagedList<NetworkInterface> networkInterfaces = azure.networkInterfaces().listByResourceGroup(rgName);
             for (NetworkInterface networkinterface : networkInterfaces) {
                 Utils.print(networkinterface);
             }
@@ -179,7 +179,7 @@ public final class ManageNetworkInterface {
 
             System.out.println("============================================================");
             System.out.println("Remaining network interfaces are ...");
-            networkInterfaces = azure.networkInterfaces().listByGroup(rgName);
+            networkInterfaces = azure.networkInterfaces().listByResourceGroup(rgName);
             for (NetworkInterface networkinterface : networkInterfaces) {
                 Utils.print(networkinterface);
             }

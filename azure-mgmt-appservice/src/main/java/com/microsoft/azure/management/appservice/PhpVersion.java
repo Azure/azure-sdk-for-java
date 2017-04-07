@@ -24,6 +24,9 @@ public final class PhpVersion {
     /** Static value 7.0 for PhpVersion. */
     public static final PhpVersion PHP7 = new PhpVersion("7.0");
 
+    /** Static value 7.1 for PhpVersion. */
+    public static final PhpVersion PHP7_1 = new PhpVersion("7.1");
+
     private String value;
 
     /**

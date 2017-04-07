@@ -24,7 +24,7 @@ public interface NetworkInterfaceBase extends
     /**
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
-    boolean isIpForwardingEnabled();
+    boolean isIPForwardingEnabled();
 
     /**
      * @return the MAC Address of the network interface

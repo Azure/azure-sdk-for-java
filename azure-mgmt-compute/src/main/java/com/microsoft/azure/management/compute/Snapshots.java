@@ -10,15 +10,15 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.SnapshotsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
@@ -27,12 +27,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent
 public interface Snapshots extends
         SupportsCreating<Snapshot.DefinitionStages.Blank>,
-        SupportsListingAsync<Snapshot>,
-        SupportsListingByGroupAsync<Snapshot>,
-        SupportsGettingByGroup<Snapshot>,
+        SupportsListing<Snapshot>,
+        SupportsListingByResourceGroup<Snapshot>,
+        SupportsGettingByResourceGroup<Snapshot>,
         SupportsGettingById<Snapshot>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Snapshot>,
         SupportsBatchDeletion,
         HasManager<ComputeManager>,
@@ -44,7 +44,7 @@ public interface Snapshots extends
      * @param snapshotName the snapshot name
      * @param accessLevel access level
      * @param accessDuration access duration
-     * @return the readonly SAS uri to the snapshot
+     * @return the read-only SAS URI to the snapshot
      */
     String grantAccess(String resourceGroupName,
                        String snapshotName,

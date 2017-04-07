@@ -11,7 +11,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import java.util.List;
 
 /**
- * The base ip configuration shared across ip configurations in regular and virtual machine scale set
+ * The base IP configuration shared across IP configurations in regular and virtual machine scale set
  * network interface.
  */
 @Fluent

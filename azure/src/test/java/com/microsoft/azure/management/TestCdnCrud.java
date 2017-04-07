@@ -11,7 +11,7 @@ import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.LogLevel;
 
@@ -67,8 +67,8 @@ public final class TestCdnCrud {
                             .attach()
                         .defineNewEndpoint(cdnEndpointName, "mylinuxapp.azurewebsites.net")
                             .withContentTypeToCompress("powershell/pain")
-                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
-                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryISOCode.BELGIUM)
+                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryIsoCode.ARGENTINA)
+                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryIsoCode.BELGIUM)
                             .withContentTypeToCompress("text/plain")
                             .withCompressionEnabled(true)
                             .withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
@@ -125,7 +125,7 @@ public final class TestCdnCrud {
                             .withNewEndpoint("www.somewebsite.com")
                             .defineNewEndpoint("somenewnamefortheendpoint")
                                 .withOrigin("www.someotherwebsite.com")
-                                .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.ESTONIA)
+                                .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryIsoCode.ESTONIA)
                                 .attach()
                             .updateEndpoint(cdnEndpointName)
                                 .withoutGeoFilters()

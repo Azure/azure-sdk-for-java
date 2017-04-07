@@ -9,7 +9,7 @@ package com.microsoft.azure.management.redis;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
- * The {@link RedisCache#keys} action result.
+ * The <code>RedisCache.keys()</code> action result.
  */
 @Fluent
 public interface RedisAccessKeys {

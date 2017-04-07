@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -18,6 +19,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure AD service principal.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Beta
 public interface ServicePrincipal extends
         Indexable,
         HasInner<ServicePrincipalInner> {

@@ -8,7 +8,7 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
@@ -40,7 +40,6 @@ public final class ManageWebAppBasic {
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
         final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
-        final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rg1Name        = SdkContext.randomResourceName("rg1NEMV_", 24);
         final String rg2Name        = SdkContext.randomResourceName("rg2NEMV_", 24);
 
@@ -54,10 +53,9 @@ public final class ManageWebAppBasic {
 
             WebApp app1 = azure.webApps()
                     .define(app1Name)
-                    .withNewResourceGroup(rg1Name)
-                    .withNewAppServicePlan(planName)
                     .withRegion(Region.US_WEST)
-                    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                    .withNewResourceGroup(rg1Name)
+                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -67,11 +65,11 @@ public final class ManageWebAppBasic {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rg1Name, planName);
+            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps()
                     .define(app2Name)
+                    .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rg1Name)
-                    .withExistingAppServicePlan(plan)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -84,8 +82,8 @@ public final class ManageWebAppBasic {
             System.out.println("Creating another web app " + app3Name + " in resource group " + rg2Name + "...");
             WebApp app3 = azure.webApps()
                     .define(app3Name)
+                    .withExistingWindowsPlan(plan)
                     .withNewResourceGroup(rg2Name)
-                    .withExistingAppServicePlan(plan)
                     .create();
 
             System.out.println("Created web app " + app3.name());
@@ -120,13 +118,13 @@ public final class ManageWebAppBasic {
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
 
             System.out.println("Printing list of web apps in resource group " + rg2Name + "...");
 
-            for (WebApp webApp : azure.webApps().listByGroup(rg2Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg2Name)) {
                 Utils.print(webApp);
             }
 
@@ -134,11 +132,11 @@ public final class ManageWebAppBasic {
             // Delete a web app
 
             System.out.println("Deleting web app " + app1Name + "...");
-            azure.webApps().deleteByGroup(rg1Name, app1Name);
+            azure.webApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted web app " + app1Name + "...");
 
             System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
-            for (WebApp webApp : azure.webApps().listByGroup(rg1Name)) {
+            for (WebApp webApp : azure.webApps().listByResourceGroup(rg1Name)) {
                 Utils.print(webApp);
             }
             return true;

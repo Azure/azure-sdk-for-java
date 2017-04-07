@@ -7,7 +7,7 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -212,7 +212,7 @@ public interface DomainContact extends
              * @param country the country of the address
              * @return the next stage of the contact definition
              */
-            WithPostalCode<ParentT> withCountry(CountryISOCode country);
+            WithPostalCode<ParentT> withCountry(CountryIsoCode country);
         }
 
         /**

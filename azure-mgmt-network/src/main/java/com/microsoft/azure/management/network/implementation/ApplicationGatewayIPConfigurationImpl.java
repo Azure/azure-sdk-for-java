@@ -8,23 +8,23 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for ApplicationGatewayIpConfiguration.
+ *  Implementation for ApplicationGatewayIPConfiguration.
  */
 @LangDefinition
 class ApplicationGatewayIPConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
-        ApplicationGatewayIpConfiguration,
-        ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayIpConfiguration.Update {
+        ApplicationGatewayIPConfiguration,
+        ApplicationGatewayIPConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+        ApplicationGatewayIPConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayIPConfiguration.Update {
 
     ApplicationGatewayIPConfigurationImpl(ApplicationGatewayIPConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);

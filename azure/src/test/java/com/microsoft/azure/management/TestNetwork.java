@@ -109,7 +109,7 @@ public class TestNetwork {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {

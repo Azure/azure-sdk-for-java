@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalsInner;
@@ -20,6 +21,7 @@ import rx.Observable;
  * Entry point to service principal management API.
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
+@Beta
 public interface ServicePrincipals extends
         SupportsListing<ServicePrincipal>,
         HasManager<GraphRbacManager>,

@@ -7,15 +7,15 @@ package com.microsoft.azure.management.trafficmanager;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.trafficmanager.implementation.ProfilesInner;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
@@ -29,12 +29,12 @@ import rx.Observable;
 @Fluent
 public interface TrafficManagerProfiles extends
         SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
-        SupportsListingAsync<TrafficManagerProfile>,
-        SupportsListingByGroupAsync<TrafficManagerProfile>,
-        SupportsGettingByGroup<TrafficManagerProfile>,
+        SupportsListing<TrafficManagerProfile>,
+        SupportsListingByResourceGroup<TrafficManagerProfile>,
+        SupportsGettingByResourceGroup<TrafficManagerProfile>,
         SupportsGettingById<TrafficManagerProfile>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<TrafficManagerProfile>,
         SupportsBatchDeletion,
         HasManager<TrafficManager>,

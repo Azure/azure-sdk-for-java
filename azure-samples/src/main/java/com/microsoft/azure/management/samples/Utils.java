@@ -17,6 +17,7 @@ import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.Contact;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.batch.Application;
@@ -50,7 +51,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -89,6 +90,8 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpo
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -262,7 +265,7 @@ public final class Utils {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
@@ -299,7 +302,7 @@ public final class Utils {
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\t IP forwarding enabled: ").append(resource.isIPForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
@@ -511,7 +514,7 @@ public final class Utils {
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
                     .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIpEnabled())
+                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                     .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
@@ -591,8 +594,8 @@ public final class Utils {
                     .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                     .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                     .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
-                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled())
+                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
+                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
         }
 
@@ -618,8 +621,8 @@ public final class Utils {
 
             // Show assigned backend NICs
             info.append("\n\t\t\tReferenced NICs: ")
-                    .append(backend.backendNicIpConfigurationNames().entrySet().size());
-            for (Map.Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
+                    .append(backend.backendNicIPConfigurationNames().entrySet().size());
+            for (Map.Entry<String, String> entry : backend.backendNicIPConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                         .append(" - IP Config: ").append(entry.getValue());
             }
@@ -1251,9 +1254,9 @@ public final class Utils {
                 .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                     .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
                     .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
@@ -1285,7 +1288,7 @@ public final class Utils {
         info.append("\n\tBackends: ").append(backends.size());
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
-                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIPConfigurationNames().keySet());
 
             // Show addresses
             List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
@@ -1441,6 +1444,26 @@ public final class Utils {
             }
         }
         System.out.println(builder.toString());
+    }
+
+    /**
+     * Uploads a file to an Azure web app.
+     * @param profile the publishing profile for the web app.
+     * @param fileName the name of the file on server
+     * @param file the local file
+     * @throws Exception when ftp upload fails
+     */
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "./site/wwwroot/webapps";
+        ftpClient.connect(server);
+        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        ftpClient.changeWorkingDirectory(path);
+        ftpClient.storeFile(fileName, file);
+        ftpClient.disconnect();
     }
 
     private Utils() {

@@ -18,7 +18,6 @@ import java.util.Map;
 
 /**
  * An immutable client-side representation of an extension associated with virtual machines in a scale set.
- * An extension associated with a virtual machine scale set will be created from a {@link VirtualMachineExtensionImage }.
  */
 @Fluent
 public interface VirtualMachineScaleSetExtension extends
@@ -63,7 +62,7 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * The entirety of a virtual machine scale set extension definition as a part of a parent definition.
      *
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
@@ -81,7 +80,7 @@ public interface VirtualMachineScaleSetExtension extends
         /**
          * The first stage of a virtual machine scale set extension definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT>
                 extends WithImageOrPublisher<ParentT> {
@@ -91,7 +90,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machines scale set extension definition allowing to specify an extension image or
          * specify name of the virtual machine scale set extension publisher.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithImageOrPublisher<ParentT>
                 extends WithPublisher<ParentT> {
@@ -108,7 +107,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the publisher of the
          * extension image this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublisher<ParentT> {
             /**
@@ -124,7 +123,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension image this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithType<ParentT> {
             /**
@@ -140,7 +139,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension version this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithVersion<ParentT> {
             /**
@@ -153,10 +152,7 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /** The final stage of a virtual machine scale set extension definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the virtual machine scale set extension definition
-         * can be attached to the parent virtual machine scale set definition using {@link VirtualMachineExtension.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link VirtualMachineExtension.DefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
@@ -168,7 +164,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
          * extension when when a new minor version of virtual machine scale set extension image gets published.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAutoUpgradeMinorVersion<ParentT> {
             /**
@@ -189,7 +185,7 @@ public interface VirtualMachineScaleSetExtension extends
         /**
          * The stage of a virtual machine scale set extension definition allowing to specify the public and private settings.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSettings<ParentT> {
             /**
@@ -235,7 +231,7 @@ public interface VirtualMachineScaleSetExtension extends
         /**
          * The first stage of a virtual machine scale set extension definition.
          *
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface Blank<ParentT>
                 extends WithImageOrPublisher<ParentT> {
@@ -245,7 +241,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension allowing to specify an extension image or the name of the
          * virtual machine extension publisher.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithImageOrPublisher<ParentT>
                 extends WithPublisher<ParentT> {
@@ -262,7 +258,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the publisher of the
          * virtual machine scale set extension image this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithPublisher<ParentT> {
             /**
@@ -278,7 +274,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension image this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithType<ParentT> {
             /**
@@ -294,7 +290,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension version this extension is based on.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithVersion<ParentT> {
             /**
@@ -307,10 +303,7 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /** The final stage of the virtual machine scale set extension definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the virtual machine scale set extension definition
-         * can be attached to the parent virtual machine scale set definition using {@link VirtualMachineExtension.UpdateDefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link VirtualMachineExtension.UpdateDefinitionStages.WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
@@ -322,7 +315,7 @@ public interface VirtualMachineScaleSetExtension extends
          * The stage of a virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
          * extension when when a new minor version of virtual machine scale set extension image gets published.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithAutoUpgradeMinorVersion<ParentT> {
             /**
@@ -343,7 +336,7 @@ public interface VirtualMachineScaleSetExtension extends
         /**
          * The stage of a virtual machine scale set extension definition allowing to specify the public and private settings.
          *
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent update to return to after attaching this definition
          */
         interface WithSettings<ParentT> {
             /**
@@ -384,7 +377,7 @@ public interface VirtualMachineScaleSetExtension extends
 
     /**
      * The entirety of a virtual machine scale set extension definition as a part of parent update.
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,

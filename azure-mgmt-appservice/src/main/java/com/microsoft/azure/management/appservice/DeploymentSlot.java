@@ -12,6 +12,8 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceManage
 import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
@@ -36,7 +38,8 @@ public interface DeploymentSlot extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithConfiguration {
+            DefinitionStages.WithConfiguration,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -57,33 +60,45 @@ public interface DeploymentSlot extends
              * Creates the deployment slot with brand new site configurations.
              * @return the next stage of the deployment slot definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withBrandNewConfiguration();
+            WithCreate withBrandNewConfiguration();
 
             /**
              * Copies the site configurations from the web app the deployment slot belongs to.
              * @return the next stage of the deployment slot definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromParent();
+            WithCreate withConfigurationFromParent();
 
             /**
              * Copies the site configurations from a given web app.
              * @param webApp the web app to copy the configurations from
              * @return the next stage of the deployment slot definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromWebApp(WebApp webApp);
+            WithCreate withConfigurationFromWebApp(WebApp webApp);
 
             /**
              * Copies the site configurations from a given deployment slot.
              * @param deploymentSlot the deployment slot to copy the configurations from
              * @return the next stage of the deployment slot definition
              */
-            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
+            WithCreate withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
+        }
+
+        /**
+         * A site definition with sufficient inputs to create a new web app /
+         * deployments slot in the cloud, but exposing additional optional
+         * inputs to specify.
+         */
+        interface WithCreate extends
+            Creatable<DeploymentSlot>,
+            WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
         }
     }
 
     /**
-     * The template for a deployment slot update operation, containing all the settings that can be modified.
+     * The template for a web app update operation, containing all the settings that can be modified.
      */
-    interface Update extends WebAppBase.Update<DeploymentSlot> {
+    interface Update extends
+        Appliable<DeploymentSlot>,
+        WebAppBase.Update<DeploymentSlot> {
     }
 }

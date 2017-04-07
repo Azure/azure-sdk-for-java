@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 @Fluent
 public interface ComputeUsage extends HasInner<UsageInner> {
     /**
-     * @return the unit of measurement.
+     * @return the unit of measurement
      */
     ComputeUsageUnit unit();
 

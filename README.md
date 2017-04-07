@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
 
-#Azure Management Libraries for Java
+# Azure Management Libraries for Java
 
 This README is based on the latest released preview version (1.0 beta 5). If you are looking for other releases, see [More Information](#more-information)
 
@@ -171,7 +171,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
     .create();
 ```
 
-#Sample Code
+# Sample Code
 
 You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
 
@@ -326,7 +326,7 @@ If you are using released builds from 1.0 beta 5, add the following to your POM 
 </dependency>
 ```
 
-#Pre-requisites
+# Pre-requisites
 
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
@@ -339,7 +339,7 @@ If you are migrating your code to 1.0 beta 5, you can use these notes for [prepa
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
-#Contribute Code
+# Contribute Code
 
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 
@@ -349,7 +349,7 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-#More Information
+# More Information
 * [Javadoc](http://azure.github.io/azure-sdk-for-java)
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)

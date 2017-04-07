@@ -10,29 +10,29 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * Entry point for image management API.
+ * Entry point to custom virtual machine image management.
  */
 @Fluent
 public interface VirtualMachineCustomImages extends
-        SupportsListingAsync<VirtualMachineCustomImage>,
+        SupportsListing<VirtualMachineCustomImage>,
         SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroup<VirtualMachineCustomImage>,
-        SupportsGettingByGroup<VirtualMachineCustomImage>,
+        SupportsListingByResourceGroup<VirtualMachineCustomImage>,
+        SupportsGettingByResourceGroup<VirtualMachineCustomImage>,
         SupportsGettingById<VirtualMachineCustomImage>,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<VirtualMachineCustomImage>,
         SupportsBatchDeletion,
         HasManager<ComputeManager>,

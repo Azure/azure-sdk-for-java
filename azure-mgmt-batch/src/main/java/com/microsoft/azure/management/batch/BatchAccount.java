@@ -20,7 +20,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import java.util.Map;
 
 /**
- * An immutable client-side representation of an Azure batch account.
+ * An immutable client-side representation of an Azure Batch account.
  */
 @Fluent
 public interface BatchAccount extends
@@ -29,66 +29,60 @@ public interface BatchAccount extends
         Updatable<BatchAccount.Update> {
 
     /**
-     * @return the provisioned state of the resource. Possible values include:
-     * 'Invalid', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Cancelled'
+     * @return the provisioned state of the resource
      */
     ProvisioningState provisioningState();
 
     /**
-     * @return Get the accountEndpoint value.
+     * @return Batch account endpoint
      */
     String accountEndpoint();
 
     /**
-     * @return the properties and status of any auto storage account associated with
-     * the account
+     * @return the properties and status of any auto storage account associated with the Batch account
      */
     AutoStorageProperties autoStorage();
 
     /**
-     * @return the core quota for this BatchAccount account
+     * @return the core quota for this Batch account
      */
     int coreQuota();
 
     /**
-     * @return the pool quota for this BatchAccount account
+     * @return the pool quota for this Batch account
      */
     int poolQuota();
 
     /**
-     * @return the active job and job schedule quota for this BatchAccount account
+     * @return the active job and job schedule quota for this Batch account
      */
     int activeJobAndJobScheduleQuota();
 
     /**
-     * @return the access keys for this batch account
+     * @return the access keys for this Batch account
      */
     BatchAccountKeys getKeys();
 
     /**
-     * Regenerates the access keys for batch account.
+     * Regenerates the access keys for the Batch account.
      *
-     * @param keyType either primary or secondary key to be regenerated
-     * @return the access keys for this batch account
+     * @param keyType the type if key to regenerate
+     * @return regenerated access keys for this Batch account
      */
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
-     * Synchronize the storage account keys for batch account.
+     * Synchronizes the storage account keys for this Batch account.
      */
     void synchronizeAutoStorageKeys();
 
     /**
-     * @return the application in this batch account.
+     * @return applications in this Batch account, indexed by name
      */
     Map<String, Application> applications();
 
-    /**************************************************************
-     * Fluent interfaces to provision a BatchAccount
-     **************************************************************/
-
     /**
-     * Container interface for all the definitions that need to be implemented.
+     * The entirety of a Batch account definition.
      */
     interface Definition extends
         DefinitionStages.Blank,
@@ -101,71 +95,71 @@ public interface BatchAccount extends
     }
 
     /**
-     * Grouping of all the storage account definition stages.
+     * Grouping of all the Batch account definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the batch account definition.
+         * The first stage of a Batch account definition.
          */
         interface Blank extends Resource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * A batch account definition allowing resource group to be set.
+         * The stage of a Batch account definition allowing the resource group to be specified.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreateAndApplication> {
         }
 
         /**
-         * A batch account definition allowing defining application and storage account.
+         * The stage of a Batch account definition allowing adding an application and a storage account.
          */
         interface WithApplicationAndStorage extends WithStorage, WithApplication {
         }
 
         /**
-         * A batch account definition to allow creation of application.
+         * The stage of a Batch account definition allowing the creation of a Batch application.
          */
         interface WithApplication {
             /**
-             * First stage to create new application in Batch account.
+             * The stage of a Batch account definition allowing to add a Batch application.
              *
-             * @param applicationId id of the application to create
-             * @return next stage to create the Batch account.
+             * @param applicationId the id of the application to create
+             * @return the next stage of the definition
              */
             Application.DefinitionStages.Blank<WithApplicationAndStorage> defineNewApplication(String applicationId);
         }
 
         /**
-         * A batch account definition to allow attaching storage accounts.
+         * The stage of a Batch account definition allowing to associate storage accounts with the Batch account.
          */
         interface WithStorage {
             /**
-             * Specifies that an existing storage account to be attached with the batch account.
+             * Specifies an existing storage account to associate with the Batch account.
              *
-             * @param storageAccount existing storage account to be used
-             * @return the stage representing creatable batch account definition
+             * @param storageAccount an existing storage account
+             * @return the next stage of the definition
              */
             DefinitionStages.WithCreate withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
-             * Specifies that a storage account to be attached with the batch account.
+             * Specifies a new storage account to associate with the Batch account.
              *
-             * @param storageAccountCreatable storage account to be created along with and used in batch
-             * @return the stage representing creatable batch account definition
+             * @param storageAccountCreatable a storage account to be created along with and used in the Batch account
+             * @return the next stage of the definition
              */
             DefinitionStages.WithCreate withNewStorageAccount(Creatable<StorageAccount> storageAccountCreatable);
 
             /**
-             * Specifies that an existing storage account to be attached with the batch account.
+             * Specifies the name of a new storage account to be created and associated with this Batch account.
              *
-             * @param storageAccountName name of new storage account to be created and used in batch account
-             * @return the stage representing creatable batch account definition
+             * @param storageAccountName the name of a new storage account
+             * @return the next stage of the definition
              */
             DefinitionStages.WithCreate withNewStorageAccount(String storageAccountName);
         }
 
         /**
-         * A batch account definition allowing creation of application and batch account.
+         * The stage of a Batch account definition allowing the adding of a Batch application or creating the Batch account.
          */
         interface WithCreateAndApplication extends
                 WithCreate,
@@ -173,17 +167,17 @@ public interface BatchAccount extends
         }
 
         /**
-         * A batch account definition with sufficient inputs to create a new
-         * batch account in the cloud, but exposing additional optional inputs to
-         * specify.
+         * A Batch account definition with sufficient inputs to create a new
+         * Batch account in the cloud, but exposing additional optional inputs to specify.
          */
         interface WithCreate extends
             Creatable<BatchAccount>,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }
+
     /**
-     * The template for a batch account update operation, containing all the settings that can be modified.
+     * The template for a Batch account update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<BatchAccount>,
@@ -193,73 +187,72 @@ public interface BatchAccount extends
     }
 
     /**
-     * Grouping of all the batch account update stages.
+     * Grouping of all Batch account update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the batch account update definition allowing to specify storage account.
+         * The stage of a Batch account update allowing to specify a storage account.
          */
         interface WithStorageAccount {
             /**
-             * Specifies that an existing storage account to be attached with the batch account.
+             * Specifies an existing storage account to associate with the Batch account.
              *
-             * @param storageAccount existing storage account to be used
-             * @return the stage representing updatable batch account definition
+             * @param storageAccount an existing storage account
+             * @return the next stage of the update
              */
             Update withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
-             * Specifies that a storage account to be attached with the batch account.
+             * Specifies a new storage account to create and associate with the Batch account.
              *
-             * @param storageAccountCreatable storage account to be created along with and used in batch
-             * @return the stage representing updatable batch account definition
+             * @param storageAccountCreatable the definition of the storage account
+             * @return the next stage of the update
              */
             Update withNewStorageAccount(Creatable<StorageAccount> storageAccountCreatable);
 
             /**
-             * Specifies that an existing storage account to be attached with the batch account.
+             * Specifies a new storage account to create and associate with the Batch account.
              *
-             * @param storageAccountName name of new storage account to be created and used in batch account
-             * @return the stage representing updatable batch account definition
+             * @param storageAccountName the name of a new storage account
+             * @return the next stage of the update
              */
             Update withNewStorageAccount(String storageAccountName);
 
             /**
-             * Specifies that storage account should be removed from the batch account.
+             * Removes the associated storage account.
              *
-             * @return the stage representing updatable batch account definition
+             * @return the next stage of the update
              */
             Update withoutStorageAccount();
         }
 
         /**
-         * A batch account definition to allow creation of application.
+         * The stage of a Batch account definition allowing the creation of a Batch application.
          */
         interface WithApplication {
             /**
-             * Specifies definition of an application to be created in a batch account.
+             * Starts a definition of an application to be created in the Batch account.
              *
-             * @param applicationId the reference name for application
-             * @return the stage representing configuration for the extension
+             * @param applicationId the reference name for the application
+             * @return the first stage of a Batch application definition
              */
             Application.UpdateDefinitionStages.Blank<Update> defineNewApplication(String applicationId);
 
             /**
-             * Begins the description of an update of an existing application of this batch account.
+             * Begins the description of an update of an existing Batch application in this Batch account.
              *
-             * @param applicationId the reference name for the application to be updated
-             * @return the stage representing updatable application.
+             * @param applicationId the reference name of the application to be updated
+             * @return the first stage of a Batch application update
              */
             Application.Update updateApplication(String applicationId);
 
             /**
-             * Deletes specified application from the batch account.
+             * Removes the specified application from the Batch account.
              *
              * @param applicationId the reference name for the application to be removed
-             * @return the stage representing updatable batch account definition.
+             * @return the next stage of the update
              */
             Update withoutApplication(String applicationId);
         }
     }
 }
-

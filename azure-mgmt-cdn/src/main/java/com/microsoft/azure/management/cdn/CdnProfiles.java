@@ -11,15 +11,15 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroupAsync;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingAsync;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -33,12 +33,12 @@ import java.util.List;
 @Fluent
 public interface CdnProfiles extends
         SupportsCreating<CdnProfile.DefinitionStages.Blank>,
-        SupportsListingAsync<CdnProfile>,
-        SupportsListingByGroupAsync<CdnProfile>,
-        SupportsGettingByGroup<CdnProfile>,
+        SupportsListing<CdnProfile>,
+        SupportsListingByResourceGroup<CdnProfile>,
+        SupportsGettingByResourceGroup<CdnProfile>,
         SupportsGettingById<CdnProfile>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<CdnProfile>,
         SupportsBatchDeletion,
         HasManager<CdnManager>,

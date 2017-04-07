@@ -274,9 +274,7 @@ public class CdnManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("Azure-SDK-For-Java/%s (%s)",
-                getClass().getPackage().getImplementationVersion(),
-                "CdnManagementClient, 2016-10-02");
+        return String.format("%s (%s, %s)", super.userAgent(), "CdnManagementClient", "2016-10-02");
     }
 
     private void initializeService() {

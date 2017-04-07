@@ -36,8 +36,14 @@ public final class JavaVersion {
     /** Static value 1.8.0_73 for JavaVersion. */
     public static final JavaVersion JAVA_1_8_0_73 = new JavaVersion("1.8.0_73");
 
-    /** Static value 1.8.0_92 for JavaVersion. */
-    public static final JavaVersion JAVA_1_8_0_92 = new JavaVersion("1.8.0_92");
+    /** Static value 1.8.0_111 for JavaVersion. */
+    public static final JavaVersion JAVA_1_8_0_111 = new JavaVersion("1.8.0_111");
+
+    /** Static value Zulu 1.8.0_92 for JavaVersion. */
+    public static final JavaVersion JAVA_ZULU_1_8_0_92 = new JavaVersion("1.8.0_92");
+
+    /** Static value Zulu 1.8.0_102 for JavaVersion. */
+    public static final JavaVersion JAVA_ZULU_1_8_0_102 = new JavaVersion("1.8.0_102");
 
     private String value;
 

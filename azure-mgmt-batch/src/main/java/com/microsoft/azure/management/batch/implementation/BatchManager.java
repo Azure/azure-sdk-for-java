@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 /**
- * Entry point to Azure Batch Account resource management.
+ * Entry point to Azure Batch service management.
  */
 public class BatchManager extends Manager<BatchManager, BatchManagementClientImpl> {
 
@@ -33,7 +33,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     }
 
     /**
-     * Get a Configurable instance that can be used to create BatchManager with optional configuration.
+     * Get a Configurable instance that can be used to create a BatchManager with optional configuration.
      *
      * @return Configurable
      */
@@ -42,7 +42,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     }
 
     /**
-     * Creates an instance of BatchManager that exposes Compute resource management API entry points.
+     * Creates an instance of a BatchManager that exposes Batch resource management API entry points.
      *
      * @param credentials the credentials to use
      * @param subscriptionId the subscription
@@ -56,7 +56,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     }
 
     /**
-     * Creates an instance of BatchManager that exposes Compute resource management API entry points.
+     * Creates an instance of a BatchManager that exposes Batch resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription

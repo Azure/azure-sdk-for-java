@@ -69,7 +69,7 @@ public class CreationSource {
     }
 
     /**
-     * @return id of the source
+     * @return ID of the source
      */
     public String sourceId() {
         if (this.type() == CreationSourceType.FROM_OS_DISK_IMAGE
@@ -97,7 +97,7 @@ public class CreationSource {
     }
 
     /**
-     * @return the lun value of the data disk image if this disk or snapshot is created from
+     * @return the LUN value of the data disk image if this disk or snapshot is created from
      * a data disk image, -1 otherwise
      */
     public int sourceDataDiskImageLun() {

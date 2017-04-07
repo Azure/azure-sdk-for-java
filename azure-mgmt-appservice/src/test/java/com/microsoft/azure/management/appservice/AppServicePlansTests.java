@@ -22,6 +22,11 @@ public class AppServicePlansTests extends AppServiceTest {
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+    }
+
     @Test
     public void canCRUDAppServicePlan() throws Exception {
         // CREATE
@@ -29,20 +34,21 @@ public class AppServicePlansTests extends AppServiceTest {
                 .define(APP_SERVICE_PLAN_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withPricingTier(AppServicePricingTier.PREMIUM_P1)
+                .withPricingTier(PricingTier.PREMIUM_P1)
+                .withOperatingSystem(OperatingSystem.WINDOWS)
                 .withPerSiteScaling(false)
                 .withCapacity(2)
                 .create();
         Assert.assertNotNull(appServicePlan);
-        Assert.assertEquals(AppServicePricingTier.PREMIUM_P1, appServicePlan.pricingTier());
+        Assert.assertEquals(PricingTier.PREMIUM_P1, appServicePlan.pricingTier());
         Assert.assertEquals(false, appServicePlan.perSiteScaling());
         Assert.assertEquals(2, appServicePlan.capacity());
         Assert.assertEquals(0, appServicePlan.numberOfWebApps());
         Assert.assertEquals(20, appServicePlan.maxInstances());
         // GET
-        Assert.assertNotNull(appServiceManager.appServicePlans().getByGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
+        Assert.assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
         // LIST
-        List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByGroup(RG_NAME);
+        List<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServicePlan asp : appServicePlans) {
             if (APP_SERVICE_PLAN_NAME.equals(asp.name())) {
@@ -53,12 +59,12 @@ public class AppServicePlansTests extends AppServiceTest {
         Assert.assertTrue(found);
         // UPDATE
         appServicePlan = appServicePlan.update()
-                .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                .withPricingTier(PricingTier.STANDARD_S1)
                 .withPerSiteScaling(true)
                 .withCapacity(3)
                 .apply();
         Assert.assertNotNull(appServicePlan);
-        Assert.assertEquals(AppServicePricingTier.STANDARD_S1, appServicePlan.pricingTier());
+        Assert.assertEquals(PricingTier.STANDARD_S1, appServicePlan.pricingTier());
         Assert.assertEquals(true, appServicePlan.perSiteScaling());
         Assert.assertEquals(3, appServicePlan.capacity());
     }

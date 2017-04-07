@@ -44,13 +44,19 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public PagedList<GenericResource> listByGroup(String groupName) {
+    public PagedList<GenericResource> listByResourceGroup(String groupName) {
         return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(groupName));
     }
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
         return wrapList(this.manager().inner().resourceGroups().listByResourceGroup(
+                resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
+    }
+
+    @Override
+    public Observable<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
+        return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(
                 resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
@@ -93,7 +99,7 @@ final class GenericResourcesImpl
             String resourceType,
             String name) {
 
-        PagedList<GenericResource> genericResources = this.listByGroup(resourceGroupName);
+        PagedList<GenericResource> genericResources = this.listByResourceGroup(resourceGroupName);
         for (GenericResource resource : genericResources) {
             if (resource.name().equalsIgnoreCase(name)
                     && resource.resourceProviderNamespace().equalsIgnoreCase(providerNamespace)
@@ -157,17 +163,17 @@ final class GenericResourcesImpl
 
     @Override
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        this.inner().delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
+        deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).await();
     }
 
     @Override
     public Completable deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return null;
+        return this.inner().deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toCompletable();
     }
 
     @Override
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, ServiceCallback<Void> callback) {
-        return null;
+        return ServiceFuture.fromBody(deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).<Void>toObservable(), callback);
     }
 
     @Override
@@ -231,7 +237,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<GenericResource> listByGroupAsync(String resourceGroupName) {
+    public Observable<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.manager().inner().resourceGroups().listByResourceGroupAsync(resourceGroupName));
     }
 }

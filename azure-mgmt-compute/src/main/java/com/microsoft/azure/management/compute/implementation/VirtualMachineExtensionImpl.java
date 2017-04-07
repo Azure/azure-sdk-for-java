@@ -12,6 +12,8 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -285,14 +287,10 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent().resourceGroupName(),
+        return RXMapper.mapToVoid(this.client.deleteAsync(
+                this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.name()).map(new Func1<OperationStatusResponseInner, Void>() {
-            @Override
-            public Void call(OperationStatusResponseInner operationStatusResponseInner) {
-                return null;
-            }
-        });
+                this.name()));
     }
 
     /**

@@ -42,7 +42,7 @@ class HostNameBindingImpl<
         implements
             Creatable<HostNameBinding>,
             HostNameBinding,
-            HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
+            HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
             HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
     private final FluentImplT parent;
     private String domainName;

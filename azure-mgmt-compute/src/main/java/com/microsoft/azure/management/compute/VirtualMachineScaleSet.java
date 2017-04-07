@@ -237,7 +237,7 @@ public interface VirtualMachineScaleSet extends
     String osDiskName();
 
     /**
-     * @return the upgradeModel
+     * @return the upgrade model
      */
     UpgradeMode upgradeModel();
 
@@ -268,7 +268,7 @@ public interface VirtualMachineScaleSet extends
     Network getPrimaryNetwork() throws IOException;
 
     /**
-     * @return the internet-facing load balancer associated with the primary network interface of
+     * @return the Internet-facing load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
      *
      * @throws IOException the IO exception
@@ -276,7 +276,7 @@ public interface VirtualMachineScaleSet extends
     LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's backends associated with the primary network interface
+     * @return the Internet-facing load balancer's backends associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -284,7 +284,7 @@ public interface VirtualMachineScaleSet extends
     Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
-     * @return the internet-facing load balancer's inbound NAT pool associated with the primary network interface
+     * @return the Internet-facing load balancer's inbound NAT pool associated with the primary network interface
      * of the virtual machines in the scale set
      *
      * @throws IOException the IO exception
@@ -345,7 +345,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * Gets a network interface associated with a virtual machine scale set instance.
      *
-     * @param instanceId the virtual machine scale set vm instance id
+     * @param instanceId the virtual machine scale set vm instance ID
      * @param name the network interface name
      * @return the network interface
      */
@@ -357,9 +357,9 @@ public interface VirtualMachineScaleSet extends
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
     /**
-     * List the network interface associated with a specific virtual machine instance in the scale set.
+     * Lists the network interface associated with a specific virtual machine instance in the scale set.
      *
-     * @param virtualMachineInstanceId the instance id
+     * @param virtualMachineInstanceId the instance ID
      * @return the network interfaces
      */
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId);
@@ -632,9 +632,9 @@ public interface VirtualMachineScaleSet extends
             WithWindowsAdminUsernameManagedOrUnmanaged withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the id of a Windows custom image to be used.
+             * Specifies the ID of a Windows custom image to be used.
              *
-             * @param customImageId the resource id of the custom image
+             * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
             WithWindowsAdminUsernameManaged withWindowsCustomImage(String customImageId);
@@ -675,9 +675,9 @@ public interface VirtualMachineScaleSet extends
             WithLinuxRootUsernameManagedOrUnmanaged withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the id of a Linux custom image to be used.
+             * Specifies the ID of a Linux custom image to be used.
              *
-             * @param customImageId the resource id of the custom image
+             * @param customImageId the resource ID of the custom image
              * @return the next stage of the definition
              */
             WithLinuxRootUsernameManaged withLinuxCustomImage(String customImageId);
@@ -685,7 +685,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
              *
-             * @param imageUrl the url the the VHD
+             * @param imageUrl the URL the the VHD
              * @return the next stage of the virtual machine scale set definition
              */
             WithLinuxRootUsernameUnmanaged withStoredLinuxImage(String imageUrl);
@@ -879,7 +879,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -902,7 +902,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -920,7 +920,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Linux virtual machine scale set definition which contains all the minimum required inputs
-         * for the resource to be created (via {@link WithCreate#create()}), but also allows for any other optional
+         * for the resource to be created, but also allows for any other optional
          * settings to be specified.
          *
          */
@@ -938,7 +938,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -948,7 +948,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -1002,7 +1002,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a Windows virtual machine scale set definition which contains all the minimum required
-         * inputs for the resource to be created (via {@link WithCreate#create()}, but also allows for any other
+         * inputs for the resource to be created, but also allows for any other
          * optional settings to be specified.
          *
          */
@@ -1070,7 +1070,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies that a managed disk needs to be created implicitly with the given settings.
              *
              * @param sizeInGB the size of the managed disk
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param cachingType the caching type
              * @return the next stage of virtual machine definition
              */
@@ -1080,7 +1080,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies that a managed disk needs to be created implicitly with the given settings.
              *
              * @param sizeInGB the size of the managed disk
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param cachingType the caching type
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine definition
@@ -1093,7 +1093,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
              *
-             * @param imageLun the lun of the source data disk image
+             * @param imageLun the LUN of the source data disk image
              * @return the next stage of virtual machine definition
              */
             WithManagedCreate withNewDataDiskFromImage(int imageLun);
@@ -1101,7 +1101,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
              *
-             * @param imageLun the lun of the source data disk image
+             * @param imageLun the LUN of the source data disk image
              * @param newSizeInGB the new size that overrides the default size specified in the data disk image
              * @param cachingType the caching type
              * @return the next stage of virtual machine definition
@@ -1113,7 +1113,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
              *
-             * @param imageLun the lun of the source data disk image
+             * @param imageLun the LUN of the source data disk image
              * @param newSizeInGB the new size that overrides the default size specified in the data disk image
              * @param cachingType the caching type
              * @param storageAccountType the storage account type
@@ -1130,7 +1130,7 @@ public interface VirtualMachineScaleSet extends
          */
         interface WithManagedDiskOptionals {
             /**
-             * Specifies the storage account type for managed Os disk.
+             * Specifies the storage account type for managed OS disk.
              *
              * @param accountType the storage account type
              * @return  the stage representing creatable VM definition
@@ -1292,7 +1292,7 @@ public interface VirtualMachineScaleSet extends
             WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
-             * Specifies an existing {@link StorageAccount} for the OS and data disk VHDs of
+             * Specifies an existing storage account for the OS and data disk VHDs of
              * the virtual machines in the scale set.
              *
              * @param storageAccount an existing storage account
@@ -1329,7 +1329,7 @@ public interface VirtualMachineScaleSet extends
 
         /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource
-         * to be created (via {@link WithCreate#create()}), but also allowing for any other optional settings
+         * to be created, but also allowing for any other optional settings
          * to be specified.
          */
         interface WithCreate extends
@@ -1359,7 +1359,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies the load balancer to be used as the Internet-facing load balancer for the virtual machines in the
              * scale set.
              * <p>
-             * This will replace the current internet-facing load balancer associated with the virtual machines in the
+             * This will replace the current Internet-facing load balancer associated with the virtual machines in the
              * scale set (if any).
              * By default all the backend and inbound NAT pool of the load balancer will be associated with the primary
              * network interface of the virtual machines unless a subset of them is selected in the next stages
@@ -1613,7 +1613,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies that a managed disk needs to be created implicitly with the given settings.
              *
              * @param sizeInGB the size of the managed disk
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param cachingType the caching type
              * @return the next stage of virtual machine scale set update
              */
@@ -1623,7 +1623,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies that a managed disk needs to be created implicitly with the given settings.
              *
              * @param sizeInGB the size of the managed disk
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param cachingType the caching type
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine scale set update
@@ -1634,26 +1634,26 @@ public interface VirtualMachineScaleSet extends
                                       StorageAccountTypes storageAccountType);
 
             /**
-             * Detaches managed data disk with the given lun from the virtual machine scale set instances.
+             * Detaches managed data disk with the given LUN from the virtual machine scale set instances.
              *
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @return the next stage of virtual machine scale set update
              */
             WithApply withoutDataDisk(int lun);
 
             /**
-             * Updates the size of a managed data disk with the given lun.
+             * Updates the size of a managed data disk with the given LUN.
              *
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param newSizeInGB the new size of the disk
              * @return the next stage of virtual machine scale set update
              */
             WithApply withDataDiskUpdated(int lun, int newSizeInGB);
 
             /**
-             * Updates the size and caching type of a managed data disk with the given lun.
+             * Updates the size and caching type of a managed data disk with the given LUN.
              *
-             * @param lun the disk lun
+             * @param lun the disk LUN
              * @param newSizeInGB the new size of the disk
              * @param cachingType the caching type
              * @return the next stage of virtual machine scale set update
@@ -1661,8 +1661,8 @@ public interface VirtualMachineScaleSet extends
             WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
 
             /**
-             * Updates the size, caching type and storage account type of a managed data disk with the given lun.
-             * @param lun the disk lun
+             * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
+             * @param lun the disk LUN
              * @param newSizeInGB the new size of the disk
              * @param cachingType the caching type
              * @param storageAccountType the storage account type
@@ -1675,8 +1675,7 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * The stage of a virtual machine scale set update containing inputs for the resource to be updated
-         * (via {@link WithApply#apply()}).
+         * The stage of a virtual machine scale set update containing inputs for the resource to be updated.
          */
         interface WithApply extends
                 Appliable<VirtualMachineScaleSet>,
@@ -1693,7 +1692,7 @@ public interface VirtualMachineScaleSet extends
     }
 
     /**
-     * The entirety of the load balancer update.
+     * The entirety of the virtual machine scale set update.
      */
     interface Update extends
             UpdateStages.WithPrimaryLoadBalancer,

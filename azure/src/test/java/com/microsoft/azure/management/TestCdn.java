@@ -15,7 +15,7 @@ import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.cdn.ResourceUsage;
 import com.microsoft.azure.management.cdn.SkuName;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
@@ -39,8 +39,8 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
                 .withStandardAkamaiSku()
                 .defineNewEndpoint(cdnEndpointName)
                     .withOrigin(cdnOriginHostName)
-                    .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
-                    .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryISOCode.BELGIUM)
+                    .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryIsoCode.ARGENTINA)
+                    .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryIsoCode.BELGIUM)
                     .withContentTypeToCompress("text/plain")
                     .withCompressionEnabled(true)
                     .withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
@@ -101,7 +101,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
                 .withNewEndpoint("www.bing.com")
                 .defineNewEndpoint("somenewnamefortheendpoint")
                     .withOrigin("www.contoso.com")
-                    .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.UNITED_STATES_OUTLYING_ISLANDS)
+                    .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryIsoCode.UNITED_STATES_OUTLYING_ISLANDS)
                     .attach()
                 .updateEndpoint(firstEndpointName)
                     .withHttpAllowed(true)

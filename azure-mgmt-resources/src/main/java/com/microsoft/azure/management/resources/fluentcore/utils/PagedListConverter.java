@@ -34,6 +34,15 @@ public abstract class PagedListConverter<U, V> {
     public abstract V typeConvert(U u);
 
     /**
+     * Override this method to define what items should be fetched.
+     * @param u an original item to test
+     * @return true if this item should be fetched
+     */
+    protected boolean filter(U u) {
+        return true;
+    }
+
+    /**
      * Converts the paged list.
      *
      * @param uList the resource list to convert from
@@ -53,7 +62,9 @@ public abstract class PagedListConverter<U, V> {
         vPage.setNextPageLink(uPage.nextPageLink());
         vPage.setItems(new ArrayList<V>());
         for (U u : uPage.items()) {
-            vPage.items().add(typeConvert(u));
+            if (filter(u)) {
+                vPage.items().add(typeConvert(u));
+            }
         }
         return new PagedList<V>(vPage) {
             @Override
@@ -63,7 +74,9 @@ public abstract class PagedListConverter<U, V> {
                 vPage.setNextPageLink(uPage.nextPageLink());
                 vPage.setItems(new ArrayList<V>());
                 for (U u : uPage.items()) {
-                    vPage.items().add(typeConvert(u));
+                    if (filter(u)) {
+                        vPage.items().add(typeConvert(u));
+                    }
                 }
                 return vPage;
             }

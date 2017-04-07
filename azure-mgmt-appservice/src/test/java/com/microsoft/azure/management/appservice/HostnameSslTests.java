@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -37,13 +38,13 @@ public class HostnameSslTests extends AppServiceTest {
     }
 
     @Test
+    @Ignore("Need a domain and a certificate")
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
         appServiceManager.webApps().define(WEBAPP_NAME)
-                .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan(APP_SERVICE_PLAN_NAME)
                 .withRegion(Region.US_WEST)
-                .withPricingTier(AppServicePricingTier.BASIC_B1)
+                .withNewResourceGroup(RG_NAME)
+                .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(WEBAPP_NAME)
@@ -51,7 +52,7 @@ public class HostnameSslTests extends AppServiceTest {
                     .attach()
                 .create();
 
-        WebApp webApp = appServiceManager.webApps().getByGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
         Assert.assertNotNull(webApp);
         if (!IS_MOCKED) {
             Response response = curl("http://" + WEBAPP_NAME + "." + DOMAIN);

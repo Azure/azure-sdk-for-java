@@ -14,8 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 
 /**
  * Provides access to listing Azure resources of a specific type in a specific parent resource.
- *
- * (Note: this interface is not intended to be implemented by user code)
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  *
  * @param <T> the type of the resources listed
  * @param <ParentT> the type of the parent resource

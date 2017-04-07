@@ -15,6 +15,8 @@ import rx.Observable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource ID.
+ * <p>
+ * (Note this interface is not intended to be implemented by user code.)
  *
  * @param <T> the type of the resource collection
  */

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.appservice;
 import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -47,7 +47,7 @@ public class AppServiceTest extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
     }
 
     private void useExistingDomainAndCertificate() {
@@ -64,8 +64,8 @@ public class AppServiceTest extends TestBase {
             certOrder = System.getenv("appservice-certificateorder");
         }
 
-        domain = appServiceManager.domains().getByGroup(rgName, domainName);
-        certificateOrder = appServiceManager.certificateOrders().getByGroup(rgName, certOrder);
+        domain = appServiceManager.domains().getByResourceGroup(rgName, domainName);
+        certificateOrder = appServiceManager.certificateOrders().getByResourceGroup(rgName, certOrder);
     }
 
     private static void createNewDomainAndCertificate() {
@@ -78,7 +78,7 @@ public class AppServiceTest extends TestBase {
                     .withAddressLine1("123 4th Ave")
                     .withCity("Redmond")
                     .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.UNITED_STATES)
+                    .withCountry(CountryIsoCode.UNITED_STATES)
                     .withPostalCode("98052")
                     .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                     .withPhoneNumber("4258828080")

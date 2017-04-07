@@ -11,11 +11,11 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * An interface representing a model's ability to have floating IP support.
  */
 @Fluent
-public interface HasFloatingIp {
+public interface HasFloatingIP {
     /**
      * @return the state of the floating IP enablement
      */
-    boolean floatingIpEnabled();
+    boolean floatingIPEnabled();
 
     /**
      * Grouping of definition stages involving enabling or disabling floating IP support.
@@ -25,25 +25,25 @@ public interface HasFloatingIp {
          * The stage of a definition allowing to control floating IP support.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFloatingIp<ReturnT> {
+        interface WithFloatingIP<ReturnT> {
             /**
              * Enables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpEnabled();
+            ReturnT withFloatingIPEnabled();
 
             /**
              * Disables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpDisabled();
+            ReturnT withFloatingIPDisabled();
 
             /**
              * Sets the floating IP enablement. 
              * @param enabled true if floating IP should be enabled
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIp(boolean enabled);
+            ReturnT withFloatingIP(boolean enabled);
         }
     }
 
@@ -55,25 +55,25 @@ public interface HasFloatingIp {
          * The stage of an update allowing to control floating IP support.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFloatingIp<ReturnT> {
+        interface WithFloatingIP<ReturnT> {
             /**
              * Enables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpEnabled();
+            ReturnT withFloatingIPEnabled();
 
             /**
              * Disables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpDisabled();
+            ReturnT withFloatingIPDisabled();
 
             /**
              * Sets the floating IP enablement. 
              * @param enabled true if floating IP should be enabled
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIp(boolean enabled);
+            ReturnT withFloatingIP(boolean enabled);
         }
     }
 
@@ -86,25 +86,25 @@ public interface HasFloatingIp {
          * The stage of a definition allowing to control floating IP support.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFloatingIp<ReturnT> {
+        interface WithFloatingIP<ReturnT> {
             /**
              * Enables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpEnabled();
+            ReturnT withFloatingIPEnabled();
 
             /**
              * Disables floating IP support.
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIpDisabled();
+            ReturnT withFloatingIPDisabled();
 
             /**
              * Sets the floating IP enablement. 
              * @param enabled true if floating IP should be enabled
              * @return the next stage of the definition
              */
-            ReturnT withFloatingIp(boolean enabled);
+            ReturnT withFloatingIP(boolean enabled);
         }
     }
 }

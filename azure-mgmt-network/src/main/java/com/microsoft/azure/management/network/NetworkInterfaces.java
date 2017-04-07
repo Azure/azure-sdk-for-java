@@ -11,10 +11,10 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfacesInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -29,11 +29,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 public interface NetworkInterfaces  extends
         SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
         SupportsListing<NetworkInterface>,
-        SupportsListingByGroup<NetworkInterface>,
-        SupportsGettingByGroup<NetworkInterface>,
+        SupportsListingByResourceGroup<NetworkInterface>,
+        SupportsGettingByResourceGroup<NetworkInterface>,
         SupportsGettingById<NetworkInterface>,
         SupportsDeletingById,
-        SupportsDeletingByGroup,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<NetworkInterface>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
