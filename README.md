@@ -15,3 +15,15 @@ Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn
 ## How to provide feedback
 
 See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
+
+## FAQ
+
+### Where can I find examples that use this library?
+
+To get started *sending* messages to Service Bus refer to [Get started sending to Service Bus queues](./azure-servicebus-samples/src/main/java/com/microsoft/azure/servicebus/samples/SendSample.java).
+
+To get started *receiving* messages with Service Bus refer to [Get started receiving from Service Bus queues](./azure-servicebus-samples/src/main/java/com/microsoft/azure/servicebus/samples/ReceiveSample.java).  
+
+### Can I manage Service Bus entities with this library?
+
+The standard way to manage Azure resources is by using [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview). In order to use functionality that previously existed in the azure-servicebus Java library, there will be a new Java specific library before this library becomes generally available. This will enable use cases that dynamically create/read/update/delete resources, and will be similar to the currently available [.NET management library](https://www.nuget.org/packages/Microsoft.WindowsAzure.Management.ServiceBus/).
