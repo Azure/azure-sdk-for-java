@@ -1648,7 +1648,8 @@ public interface VirtualMachineScaleSet extends
              * @param newSizeInGB the new size of the disk
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun, int newSizeInGB);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB);
 
             /**
              * Updates the size and caching type of a managed data disk with the given LUN.
@@ -1658,7 +1659,8 @@ public interface VirtualMachineScaleSet extends
              * @param cachingType the caching type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
@@ -1668,10 +1670,11 @@ public interface VirtualMachineScaleSet extends
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun,
-                                          int newSizeInGB,
-                                          CachingTypes cachingType,
-                                          StorageAccountTypes storageAccountType);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun,
+            //                              int newSizeInGB,
+            //                              CachingTypes cachingType,
+            //                              StorageAccountTypes storageAccountType);
         }
 
         /**

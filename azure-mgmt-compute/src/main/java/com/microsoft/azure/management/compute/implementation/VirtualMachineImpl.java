@@ -972,6 +972,7 @@ class VirtualMachineImpl
         return this;
     }
 
+    /* TODO: This has been disabled by Azure REST API
     @Override
     public VirtualMachineImpl withDataDiskUpdated(int lun, int newSizeInGB) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_NO_MANAGED_DISK_TO_UPDATE);
@@ -980,7 +981,7 @@ class VirtualMachineImpl
             throw new RuntimeException(String.format("A data disk with name '%d' not found", lun));
         }
         dataDisk.withDiskSizeGB(newSizeInGB);
-        return this;
+       return this;
     }
 
     @Override
@@ -1025,6 +1026,7 @@ class VirtualMachineImpl
         }
         return null;
     }
+    */
 
     // Virtual machine optional storage account fluent methods
     //
