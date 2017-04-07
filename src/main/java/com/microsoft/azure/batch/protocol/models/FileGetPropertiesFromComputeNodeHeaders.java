@@ -43,13 +43,13 @@ public class FileGetPropertiesFromComputeNodeHeaders {
      * particular, you can pass the ETag to one of the If-Modified-Since,
      * If-Unmodified-Since, If-Match or If-None-Match headers.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "ETag")
     private String eTag;
 
     /**
      * The time at which the resource was last modified.
      */
-    @JsonProperty(value = "last-modified")
+    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /**
@@ -79,13 +79,13 @@ public class FileGetPropertiesFromComputeNodeHeaders {
     /**
      * The content type of the file.
      */
-    @JsonProperty(value = "content-type")
+    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     /**
      * The length of the file.
      */
-    @JsonProperty(value = "content-length")
+    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /**

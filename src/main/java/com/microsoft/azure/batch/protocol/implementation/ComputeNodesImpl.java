@@ -55,8 +55,8 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
-import java.io.InputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import okhttp3.ResponseBody;
@@ -73,6 +73,8 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.exceptions.Exceptions;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -2031,13 +2033,28 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getRemoteDesktop(String poolId, String nodeId) {
-        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId).toBlocking().single().body();
+    public void getRemoteDesktop(String poolId, String nodeId, final OutputStream outputStream) {
+        getRemoteDesktopAsync(poolId, nodeId).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**
@@ -2121,13 +2138,28 @@ public class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions) {
-        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteDesktopOptions).toBlocking().single().body();
+    public void getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final OutputStream outputStream) {
+        getRemoteDesktopAsync(poolId, nodeId, computeNodeGetRemoteDesktopOptions).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**

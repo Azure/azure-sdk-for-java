@@ -20,8 +20,6 @@ import com.microsoft.azure.batch.protocol.models.FileListFromTaskOptions;
 import com.microsoft.azure.batch.protocol.models.FileProperties;
 import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import rx.exceptions.Exceptions;
-import rx.functions.Func1;
 
 import java.io.*;
 import java.util.Collection;
@@ -261,12 +259,12 @@ public class FileOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param fileName The name of the file to download.
-     * @return A stream into which the file contents will be written.
+     * @param outputStream A stream into which the file contents will be written.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public InputStream getFileFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException {
-        return getFileFromTask(jobId, taskId, fileName, null);
+    public void getFileFromTask(String jobId, String taskId, String fileName, OutputStream outputStream) throws BatchErrorException, IOException {
+        getFileFromTask(jobId, taskId, fileName, null, outputStream);
     }
 
     /**
@@ -276,36 +274,16 @@ public class FileOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param fileName The name of the file to download.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A stream into which the file contents will be written.
+     * @param outputStream A stream into which the file contents will be written.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public InputStream getFileFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void getFileFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors, OutputStream outputStream) throws BatchErrorException, IOException {
         FileGetFromTaskOptions options = new FileGetFromTaskOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        // Duplicate the stream due to AutoRest issue https://github.com/Azure/autorest/issues/1385
-        ByteArrayOutputStream output = this._parentBatchClient.protocolLayer().files().getFromTaskAsync(jobId, taskId, fileName, options)
-                .map(new Func1<InputStream, ByteArrayOutputStream>() {
-            @Override
-            public ByteArrayOutputStream call(InputStream input) {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                byte[] data = new byte[16384];
-                int nRead;
-                try {
-                    while ((nRead = input.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    return buffer;
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-            }
-        }).toBlocking().single();
-
-        return new ByteArrayInputStream(output.toByteArray());
+        this._parentBatchClient.protocolLayer().files().getFromTask(jobId, taskId, fileName, options, outputStream);
     }
 
     /**
@@ -314,12 +292,12 @@ public class FileOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node.
      * @param fileName The name of the file to download.
-     * @return A stream into which the file contents will be written.
+     * @param outputStream A stream into which the file contents will be written.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public InputStream getFileFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException {
-        return getFileFromComputeNode(poolId, nodeId, fileName, null);
+    public void getFileFromComputeNode(String poolId, String nodeId, String fileName, OutputStream outputStream) throws BatchErrorException, IOException {
+        getFileFromComputeNode(poolId, nodeId, fileName, null, outputStream);
     }
 
     /**
@@ -329,36 +307,16 @@ public class FileOperations implements IInheritedBehaviors {
      * @param nodeId The ID of the compute node.
      * @param fileName The name of the file to download.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A stream into which the file contents will be written.
+     * @param outputStream A stream into which the file contents will be written.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public InputStream getFileFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void getFileFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors, OutputStream outputStream) throws BatchErrorException, IOException {
         FileGetFromComputeNodeOptions options = new FileGetFromComputeNodeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        // Duplicate the stream due to AutoRest issue https://github.com/Azure/autorest/issues/1385
-        ByteArrayOutputStream output = this._parentBatchClient.protocolLayer().files().getFromComputeNodeAsync(poolId, nodeId, fileName, options)
-                .map(new Func1<InputStream, ByteArrayOutputStream>() {
-            @Override
-            public ByteArrayOutputStream call(InputStream input) {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                byte[] data = new byte[16384];
-                int nRead;
-                try {
-                    while ((nRead = input.read(data, 0, data.length)) != -1) {
-                        buffer.write(data, 0, nRead);
-                    }
-                    buffer.flush();
-                    return buffer;
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-            }
-        }).toBlocking().single();
-
-        return new ByteArrayInputStream(output.toByteArray());
+        this._parentBatchClient.protocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options, outputStream);
     }
 
     /**

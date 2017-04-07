@@ -36,6 +36,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import rx.Observable;
 
@@ -149,12 +150,12 @@ public interface Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    InputStream getFromTask(String jobId, String taskId, String filePath);
+    void getFromTask(String jobId, String taskId, String filePath, OutputStream outputStream);
 
     /**
      * Returns the content of the specified task file.
@@ -196,12 +197,12 @@ public interface Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    InputStream getFromTask(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions);
+    void getFromTask(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions, OutputStream outputStream);
 
     /**
      * Returns the content of the specified task file.
@@ -440,12 +441,12 @@ public interface Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    InputStream getFromComputeNode(String poolId, String nodeId, String filePath);
+    void getFromComputeNode(String poolId, String nodeId, String filePath, OutputStream outputStream);
 
     /**
      * Returns the content of the specified task file.
@@ -487,12 +488,12 @@ public interface Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    InputStream getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions);
+    void getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, OutputStream outputStream);
 
     /**
      * Returns the content of the specified task file.

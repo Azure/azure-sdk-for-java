@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.time.Duration;
 import java.util.*;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -174,11 +173,11 @@ abstract class BatchTestBase {
      * @throws IOException
      * @throws InterruptedException
      */
-    static boolean waitForTasksToComplete(BatchClient client, String jobId, Duration expiryTime) throws BatchErrorException, IOException, InterruptedException {
+    static boolean waitForTasksToComplete(BatchClient client, String jobId, int expiryTimeInSeconds) throws BatchErrorException, IOException, InterruptedException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
-        while (elapsedTime < expiryTime.toMillis()) {
+        while (elapsedTime < expiryTimeInSeconds * 1000) {
             List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId, new DetailLevel.Builder().withSelectClause("id, state").build());
 
             boolean allComplete = true;

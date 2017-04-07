@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import java.util.*;
 import com.microsoft.azure.batch.protocol.models.*;
-import org.omg.CORBA.portable.ApplicationException;
 
 public class PoolTests extends BatchTestBase {
     private static CloudPool livePool;
@@ -57,9 +56,6 @@ public class PoolTests extends BatchTestBase {
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "Small";
         int POOL_VM_COUNT = 3;
-
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT = 5 * 60 * 1000;
 
         // Use IaaS VM with Linux
         List<String> uris = new ArrayList<>();

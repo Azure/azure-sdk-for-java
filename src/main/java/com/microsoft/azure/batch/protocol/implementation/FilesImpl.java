@@ -41,8 +41,8 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
-import java.io.InputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.List;
 import java.util.UUID;
 import okhttp3.ResponseBody;
@@ -57,6 +57,8 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.exceptions.Exceptions;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -346,13 +348,28 @@ public class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getFromTask(String jobId, String taskId, String filePath) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, filePath).toBlocking().single().body();
+    public void getFromTask(String jobId, String taskId, String filePath, final OutputStream outputStream) {
+        getFromTaskAsync(jobId, taskId, filePath).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**
@@ -450,13 +467,28 @@ public class FilesImpl implements Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getFromTask(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, filePath, fileGetFromTaskOptions).toBlocking().single().body();
+    public void getFromTask(String jobId, String taskId, String filePath, FileGetFromTaskOptions fileGetFromTaskOptions, final OutputStream outputStream) {
+        getFromTaskAsync(jobId, taskId, filePath, fileGetFromTaskOptions).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**
@@ -1025,13 +1057,28 @@ public class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getFromComputeNode(String poolId, String nodeId, String filePath) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, filePath).toBlocking().single().body();
+    public void getFromComputeNode(String poolId, String nodeId, String filePath, final OutputStream outputStream) {
+        getFromComputeNodeAsync(poolId, nodeId, filePath).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**
@@ -1129,13 +1176,28 @@ public class FilesImpl implements Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param filePath The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
      */
-    public InputStream getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, filePath, fileGetFromComputeNodeOptions).toBlocking().single().body();
+    public void getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final OutputStream outputStream) {
+        getFromComputeNodeAsync(poolId, nodeId, filePath, fileGetFromComputeNodeOptions).doOnNext(
+                new Action1<InputStream>() {
+                    @Override
+                    public void call(InputStream input) {
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        try {
+                            while ((nRead = input.read(data, 0, data.length)) != -1) {
+                                outputStream.write(data, 0, nRead);
+                            }
+                            outputStream.flush();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }
+                }).toBlocking().single();
     }
 
     /**

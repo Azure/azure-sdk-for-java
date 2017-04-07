@@ -6,13 +6,11 @@
 
 package com.microsoft.azure.batch;
 
-import com.google.common.io.CharStreams;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 
@@ -441,14 +439,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        InputStream response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
-
-        if (response != null) {
-            return CharStreams.toString(new InputStreamReader(response, "UTF-8"));
-        }
-        else {
-            return null;
-        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options, outputStream);
+        String rdpContent = outputStream.toString("UTF-8");
+        outputStream.close();
+        return rdpContent;
     }
 
     /**

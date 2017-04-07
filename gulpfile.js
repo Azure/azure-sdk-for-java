@@ -24,7 +24,7 @@ gulp.task('default', function() {
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = 'batchService'; // default
-var autoRestVersion = '1.0.0-Nightly20170129'; // default
+var autoRestVersion = '1.0.1-20170329-2300-nightly'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -36,14 +36,10 @@ var autoRestArgs = args['autorest-args'];
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
-    var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
-    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
-        autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        exec('tools\\nuget.exe install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
-            console.log(stdout);
-            console.error(stderr);
-            handleInput(projects, cb);
-        });
+    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
+        autoRestVersion == 'latest') {
+        autoRestExe = 'autorest ---version=' + autoRestVersion;
+        handleInput(projects, cb);
     } else {
         autoRestExe = autoRestVersion + "/src/core/AutoRest/bin/Debug/netcoreapp1.0/AutoRest.dll";
         autoRestExe = "dotnet " + autoRestExe;

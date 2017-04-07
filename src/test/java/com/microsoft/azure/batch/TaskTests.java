@@ -6,11 +6,9 @@
 
 package com.microsoft.azure.batch;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import org.joda.time.Period;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -20,7 +18,7 @@ import java.io.*;
 import java.util.*;
 
 public class TaskTests  extends BatchTestBase {
-    static CloudPool livePool;
+    private static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -39,40 +37,9 @@ public class TaskTests  extends BatchTestBase {
         }
     }
 
-    private static boolean waitForTasksToComplete(BatchClient client, String jobId, Period expiryTime) throws BatchErrorException, InterruptedException, IOException {
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = 0L;
-
-        while (elapsedTime < expiryTime.getMillis()) {
-            List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId, new DetailLevel.Builder().withSelectClause("id, state").build());
-
-            boolean allComplete = true;
-            for (CloudTask task : taskCollection) {
-                if (task.state() != TaskState.COMPLETED) {
-                    allComplete = false;
-                    break;
-                }
-            }
-
-            if (allComplete) {
-                // All tasks completed
-                return true;
-            }
-
-            System.out.println("wait 10 seconds for tasks to complete...");
-
-            // Check again after 10 seconds
-            Thread.sleep(10 * 1000);
-            elapsedTime = (new Date()).getTime() - startTime;
-        }
-
-        // Timeout, return false
-        return false;
-    }
-
     @Test
     public void canCRUDTest() throws Exception {
-        Period TASK_COMPLETE_TIMEOUT = Period.minutes(1);
+        int TASK_COMPLETE_TIMEOUT = 60; // 60 seconds timeout
         String STANDARD_CONSOLE_OUTPUT_FILENAME = "stdout.txt";
         String BLOB_FILE_NAME = "test.txt";
         String taskId = "mytask";
@@ -81,7 +48,6 @@ public class TaskTests  extends BatchTestBase {
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String RESOURCE_FILE_NAME = "mytest.txt";
         String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
@@ -100,12 +66,12 @@ public class TaskTests  extends BatchTestBase {
             ResourceFile file = new ResourceFile();
             file.withFilePath(BLOB_FILE_NAME);
             file.withBlobSource(sas);
-            List<ResourceFile> files = new ArrayList<ResourceFile>();
+            List<ResourceFile> files = new ArrayList<>();
             files.add(file);
 
             // CREATE
             TaskAddParameter taskToAdd = new TaskAddParameter();
-            taskToAdd.withId(taskId).withCommandLine(String.format("type %s", BLOB_FILE_NAME)).withResourceFiles(files);
+            taskToAdd.withId(taskId).withCommandLine(String.format("cmd /c type %s", BLOB_FILE_NAME)).withResourceFiles(files);
 
             batchClient.taskOperations().createTask(jobId, taskToAdd);
 
@@ -113,6 +79,13 @@ public class TaskTests  extends BatchTestBase {
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
             Assert.assertNotNull(task);
             Assert.assertEquals(task.id(), taskId);
+
+            // UPDATE
+            TaskConstraints contraint = new TaskConstraints();
+            contraint.withMaxTaskRetryCount(5);
+            batchClient.taskOperations().updateTask(jobId, taskId, contraint);
+            task = batchClient.taskOperations().getTask(jobId, taskId);
+            Assert.assertEquals(task.constraints().maxTaskRetryCount(), (Integer)5);
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
@@ -129,21 +102,13 @@ public class TaskTests  extends BatchTestBase {
 
             Assert.assertTrue(found);
 
-
-            // UPDATE
-            TaskConstraints contraint = new TaskConstraints();
-            contraint.withMaxTaskRetryCount(5);
-            batchClient.taskOperations().updateTask(jobId, taskId, contraint);
-            task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertEquals(task.constraints().maxTaskRetryCount(), (Integer)5);
-
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT)) {
                 // Get the task command output file
                 task = batchClient.taskOperations().getTask(jobId, taskId);
 
-                InputStream stream = batchClient.fileOperations().getFileFromTask(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
-                Scanner s = new Scanner(stream, "UTF-8").useDelimiter("\\A");
-                String fileContent = s.hasNext() ? s.next() : "";
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                batchClient.fileOperations().getFileFromTask(jobId, task.id(), STANDARD_CONSOLE_OUTPUT_FILENAME, stream);
+                String fileContent = stream.toString("UTF-8");
                 Assert.assertEquals(fileContent, "This is an example");
             }
 
@@ -151,7 +116,7 @@ public class TaskTests  extends BatchTestBase {
             // DELETE
             batchClient.taskOperations().deleteTask(jobId, taskId);
             try {
-                task = batchClient.taskOperations().getTask(jobId, taskId);
+                batchClient.taskOperations().getTask(jobId, taskId);
                 Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.TaskNotFound)) {

@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 public class JobTests extends BatchTestBase {
-    static CloudPool livePool;
+    private static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -76,7 +76,7 @@ public class JobTests extends BatchTestBase {
             // DELETE
             batchClient.jobOperations().deleteJob(jobId);
             try {
-                job = batchClient.jobOperations().getJob(jobId);
+                batchClient.jobOperations().getJob(jobId);
                 Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.JobNotFound)) {
