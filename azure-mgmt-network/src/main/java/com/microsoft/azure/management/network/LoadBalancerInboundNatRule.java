@@ -53,7 +53,7 @@ public interface LoadBalancerInboundNatRule extends
     interface DefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
@@ -205,7 +205,7 @@ public interface LoadBalancerInboundNatRule extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }

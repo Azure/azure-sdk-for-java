@@ -518,7 +518,7 @@ public interface VirtualMachineScaleSet extends
              * virtual machines in the scale set.
              *
              * @param backendNames names of existing backends in the selected load balancer
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String ...backendNames);
          }
@@ -534,7 +534,7 @@ public interface VirtualMachineScaleSet extends
              *
              *
              * @param natPoolNames inbound NAT pool names
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithOS withPrimaryInternalLoadBalancerInboundNatPools(String ...natPoolNames);
         }
@@ -582,7 +582,7 @@ public interface VirtualMachineScaleSet extends
              * scale set.
              * 
              * @param imageUrl the URL of the VHD
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithWindowsAdminUsernameUnmanaged withStoredWindowsImage(String imageUrl);
 
@@ -624,7 +624,7 @@ public interface VirtualMachineScaleSet extends
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
              *
              * @param imageUrl the URL the the VHD
-             * @return the next stage of the virtual machine scale set definition
+             * @return the next stage of the definition
              */
             WithLinuxRootUsernameUnmanaged withStoredLinuxImage(String imageUrl);
         }
@@ -636,8 +636,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootUserName a root user name following the required naming convention for Linux user names
+             * @return the next stage of the definition
              */
             WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged withRootUsername(String rootUserName);
         }
@@ -649,8 +649,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootUserName a root user name following the required naming conventions for Linux user names
+             * @return the next stage of the definition
              */
             WithLinuxRootPasswordOrPublicKeyManaged withRootUsername(String rootUserName);
         }
@@ -662,8 +662,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootUserName a root user name following the required naming convention for Linux user names
+             * @return the next stage of the definition
              */
             WithLinuxRootPasswordOrPublicKeyUnmanaged withRootUsername(String rootUserName);
         }
@@ -675,8 +675,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
-             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withRootPassword(String rootPassword);
 
@@ -686,7 +686,7 @@ public interface VirtualMachineScaleSet extends
              * Each call to this method adds the given public key to the list of VM's public keys.
              *
              * @param publicKey the SSH public key in PEM format.
-             * @return the next stage of the Linux virtual machine definition
+             * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
         }
@@ -698,8 +698,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
-             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
              */
             WithLinuxCreateManaged withRootPassword(String rootPassword);
 
@@ -709,7 +709,7 @@ public interface VirtualMachineScaleSet extends
              * Each call to this method adds the given public key to the list of VM's public keys.
              *
              * @param publicKey the SSH public key in PEM format.
-             * @return the next stage of the Linux virtual machine definition
+             * @return the next stage of the definition
              */
             WithLinuxCreateManaged withSsh(String publicKey);
         }
@@ -721,8 +721,8 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the SSH root password for the Linux virtual machine.
              *
-             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
-             * @return the next stage of the Linux virtual machine definition
+             * @param rootPassword a password following the complexity criteria for Azure Linux VM passwords
+             * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withRootPassword(String rootPassword);
 
@@ -732,7 +732,7 @@ public interface VirtualMachineScaleSet extends
              * Each call to this method adds the given public key to the list of VM's public keys.
              *
              * @param publicKey the SSH public key in PEM format.
-             * @return the next stage of the Linux virtual machine definition
+             * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);
         }
@@ -1138,7 +1138,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the maximum number of virtual machines in the scale set.
              *
-             * @param capacity the virtual machine capacity
+             * @param capacity number of virtual machines
              * @return the next stage of the definition
              */
             WithCreate withCapacity(int capacity);
@@ -1586,7 +1586,8 @@ public interface VirtualMachineScaleSet extends
              * @param newSizeInGB the new size of the disk
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun, int newSizeInGB);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB);
 
             /**
              * Updates the size and caching type of a managed data disk with the given LUN.
@@ -1596,7 +1597,8 @@ public interface VirtualMachineScaleSet extends
              * @param cachingType the caching type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
 
             /**
              * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
@@ -1606,10 +1608,11 @@ public interface VirtualMachineScaleSet extends
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withDataDiskUpdated(int lun,
-                                          int newSizeInGB,
-                                          CachingTypes cachingType,
-                                          StorageAccountTypes storageAccountType);
+            // TODO: Broken by Azure REST API
+            // WithApply withDataDiskUpdated(int lun,
+            //                              int newSizeInGB,
+            //                              CachingTypes cachingType,
+            //                              StorageAccountTypes storageAccountType);
         }
 
         /**

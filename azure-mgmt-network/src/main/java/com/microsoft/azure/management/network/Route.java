@@ -43,7 +43,7 @@ public interface Route extends
     interface DefinitionStages {
         /**
          * The first stage of a route definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDestinationAddressPrefix<ParentT> {
         }
@@ -157,7 +157,7 @@ public interface Route extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a route definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithDestinationAddressPrefix<ParentT> {
         }

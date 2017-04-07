@@ -71,7 +71,7 @@ public interface Subnet extends
     interface DefinitionStages {
         /**
          * The first stage of the subnet definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
         }
@@ -84,7 +84,7 @@ public interface Subnet extends
             /**
              * Specifies the IP address space of the subnet, within the address space of the network.
              * @param cidr the IP address space prefix using the CIDR notation
-             * @return the next stage of the subnet definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }
@@ -229,7 +229,7 @@ public interface Subnet extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the subnet definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
         }
@@ -242,7 +242,7 @@ public interface Subnet extends
             /**
              * Specifies the IP address space of the subnet, within the address space of the network.
              * @param cidr the IP address space prefix using the CIDR notation
-             * @return the next stage of the subnet definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }

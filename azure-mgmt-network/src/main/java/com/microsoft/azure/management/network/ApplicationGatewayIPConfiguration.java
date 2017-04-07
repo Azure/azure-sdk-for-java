@@ -46,7 +46,7 @@ public interface ApplicationGatewayIPConfiguration extends
     interface DefinitionStages {
         /**
          * The first stage of an application gateway IP configuration definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }
@@ -131,7 +131,7 @@ public interface ApplicationGatewayIPConfiguration extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of an application gateway IP configuration definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }

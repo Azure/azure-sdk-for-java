@@ -1037,6 +1037,7 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
+    /* TODO: Broken by change in Azure API behavior
     @Override
     public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
@@ -1094,6 +1095,7 @@ public class VirtualMachineScaleSetImpl
         }
         return null;
     }
+    */
 
     @Override
     public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun) {
@@ -1872,11 +1874,12 @@ public class VirtualMachineScaleSetImpl
                 && osDisk.image().uri() != null;
     }
 
-    private void throwIfManagedDiskEnabled(String message) {
+    /* TODO Unused
+      private void throwIfManagedDiskEnabled(String message) {
         if (this.isManagedDiskEnabled()) {
             throw new UnsupportedOperationException(message);
         }
-    }
+    }*/
 
     private void throwIfManagedDiskDisabled(String message) {
         if (!this.isManagedDiskEnabled()) {

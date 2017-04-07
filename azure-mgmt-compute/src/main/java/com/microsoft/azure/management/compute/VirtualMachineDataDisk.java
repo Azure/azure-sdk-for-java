@@ -30,11 +30,7 @@ public interface VirtualMachineDataDisk extends
     int lun();
 
     /**
-     * Gets the disk caching type.
-     * <p>
-     * possible values are: 'None', 'ReadOnly', 'ReadWrite'
-     *
-     * @return the caching type
+     * @return the disk caching type
      */
     CachingTypes cachingType();
 

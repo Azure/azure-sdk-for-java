@@ -23,6 +23,7 @@ import com.microsoft.azure.management.appservice.CertificateOrderStatus;
 import com.microsoft.azure.management.appservice.CertificateProductType;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -83,11 +84,11 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public void verifyDomainOwnership(AppServiceDomain domain) {
-        verifyDomainOwnershipAsync(domain).toBlocking().subscribe();
+        verifyDomainOwnershipAsync(domain).toObservable().toBlocking().subscribe();
     }
 
     @Override
-    public Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain) {
+    public Completable verifyDomainOwnershipAsync(AppServiceDomain domain) {
         return domain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
     }
 
@@ -217,9 +218,9 @@ class AppServiceCertificateOrderImpl
                     @Override
                     public Observable<Void> call(AppServiceCertificateOrder certificateOrder) {
                         if (domainVerifyWebApp != null) {
-                            return domainVerifyWebApp.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                            return domainVerifyWebApp.verifyDomainOwnershipAsync(name(), domainVerificationToken()).toObservable();
                         } else if (domainVerifyDomain != null) {
-                            return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                            return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken()).toObservable();
                         } else {
                             throw new IllegalArgumentException(
                                     "Please specify a non-null web app or domain to verify the domain ownership "

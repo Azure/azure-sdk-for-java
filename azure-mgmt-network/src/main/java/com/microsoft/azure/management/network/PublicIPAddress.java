@@ -118,14 +118,14 @@ public interface PublicIPAddress extends
              * Use {@link PublicIPAddress#ipAddress()} after the public IP address is created to obtain the
              * actual IP address allocated for this resource by Azure
              *
-             * @return the next stage of the public IP address definition
+             * @return the next stage of the definition
              */
             WithCreate withStaticIP();
 
             /**
              * Enables dynamic IP address allocation.
              *
-             * @return the next stage of the public IP address definition
+             * @return the next stage of the definition
              */
             WithCreate withDynamicIP();
         }
@@ -140,7 +140,7 @@ public interface PublicIPAddress extends
              * The fully qualified domain name (FQDN)
              * will be constructed automatically by appending the rest of the domain to this label.
              * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
-             * @return the next stage of the public IP address definition
+             * @return the next stage of the definition
              */
             WithCreate withLeafDomainLabel(String dnsName);
 
@@ -148,7 +148,7 @@ public interface PublicIPAddress extends
              * Ensures that no leaf domain label will be used.
              * <p>
              * This means that this public IP address will not be associated with a domain name.
-             * @return the next stage of the public IP address definition
+             * @return the next stage of the definition
              */
             WithCreate withoutLeafDomainLabel();
         }
@@ -162,13 +162,13 @@ public interface PublicIPAddress extends
              * <p>
              *
              * @param reverseFQDN the reverse FQDN to assign
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withReverseFqdn(String reverseFQDN);
 
             /**
              * Ensures that no reverse FQDN will be used.
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withoutReverseFqdn();
         }
@@ -181,7 +181,7 @@ public interface PublicIPAddress extends
              * Specifies the timeout (in minutes) for an idle connection.
              *
              * @param minutes the length of the time out in minutes
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withIdleTimeoutInMinutes(int minutes);
         }

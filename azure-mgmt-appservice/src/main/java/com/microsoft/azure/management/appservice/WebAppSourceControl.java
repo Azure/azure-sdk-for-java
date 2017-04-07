@@ -71,14 +71,14 @@ public interface WebAppSourceControl extends
 
         /**
          * A web app source control definition allowing repository type to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRepositoryType<ParentT> {
             /**
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
              * @param url the url of the Git repository
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithBranch<ParentT> withPublicGitRepository(String url);
 
@@ -86,7 +86,7 @@ public interface WebAppSourceControl extends
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
              * @param url the url of the Mercurial repository
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithBranch<ParentT> withPublicMercurialRepository(String url);
 
@@ -97,7 +97,7 @@ public interface WebAppSourceControl extends
              * must have enough privileges to add a webhook to the repository.
              * @param organization the user name or organization name the GitHub repository belongs to, e.g. Azure
              * @param repository the name of the repository, e.g. azure-sdk-for-java
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization, String repository);
 
@@ -107,47 +107,47 @@ public interface WebAppSourceControl extends
              * This repository can be either public or private, but your GitHub access token
              * must have enough privileges to add a webhook to the repository.
              * @param url the URL pointing to the repository, e.g. https://github.com/Azure/azure-sdk-for-java
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String url);
         }
 
         /**
          * A web app source control definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBranch<ParentT> {
             /**
              * Specifies the branch in the repository to use.
              * @param branch the branch to use
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withBranch(String branch);
         }
 
         /**
          * A web app source control definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithGitHubBranch<ParentT> {
             /**
              * Specifies the branch in the repository to use.
              * @param branch the branch to use
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             GitHubWithAttach<ParentT> withBranch(String branch);
         }
 
         /**
          * A web app source control definition allowing GitHub access token to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithGitHubAccessToken<ParentT> {
             /**
              * Specifies the GitHub personal access token. You can acquire one from
              * https://github.com/settings/tokens.
              * @param personalAccessToken the personal access token from GitHub.
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             GitHubWithAttach<ParentT> withGitHubAccessToken(String personalAccessToken);
         }
@@ -199,14 +199,14 @@ public interface WebAppSourceControl extends
 
         /**
          * A web app source control definition allowing repository type to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRepositoryType<ParentT> {
             /**
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
              * @param url the url of the Git repository
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithBranch<ParentT> withPublicGitRepository(String url);
 
@@ -214,7 +214,7 @@ public interface WebAppSourceControl extends
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
              * @param url the url of the Mercurial repository
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithBranch<ParentT> withPublicMercurialRepository(String url);
 
@@ -225,7 +225,7 @@ public interface WebAppSourceControl extends
              * must have enough privileges to add a webhook to the repository.
              * @param organization the user name or organization name the GitHub repository belongs to, e.g. Azure
              * @param repository the name of the repository, e.g. azure-sdk-for-java
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization, String repository);
 
@@ -235,47 +235,47 @@ public interface WebAppSourceControl extends
              * This repository can be either public or private, but your GitHub access token
              * must have enough privileges to add a webhook to the repository.
              * @param url the URL pointing to the repository, e.g. https://github.com/Azure/azure-sdk-for-java
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String url);
         }
 
         /**
          * A web app source control definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBranch<ParentT> {
             /**
              * Specifies the branch in the repository to use.
              * @param branch the branch to use
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withBranch(String branch);
         }
 
         /**
          * A web app source control definition allowing branch to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithGitHubBranch<ParentT> {
             /**
              * Specifies the branch in the repository to use.
              * @param branch the branch to use
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             GitHubWithAttach<ParentT> withBranch(String branch);
         }
 
         /**
          * A web app source control definition allowing GitHub access token to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithGitHubAccessToken<ParentT> {
             /**
              * Specifies the GitHub personal access token. You can acquire one from
              * https://github.com/settings/tokens.
              * @param personalAccessToken the personal access token from GitHub.
-             * @return the next stage of the web app source control definition
+             * @return the next stage of the definition
              */
             GitHubWithAttach<ParentT> withGitHubAccessToken(String personalAccessToken);
         }

@@ -26,14 +26,14 @@ public interface LoadBalancerPublicFrontend extends
     interface DefinitionStages {
         /**
          * The first stage of a public frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithPublicIPAddress<ParentT> {
         }
 
         /**
          * The stage of a public frontend definition allowing to specify an existing public IP address.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
         }
@@ -84,14 +84,14 @@ public interface LoadBalancerPublicFrontend extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a public frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithPublicIPAddress<ParentT> {
         }
 
         /**
          * The stage of a public frontend definition allowing to specify an existing public IP address.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithExistingPublicIPAddress<WithAttach<ParentT>> {
         }

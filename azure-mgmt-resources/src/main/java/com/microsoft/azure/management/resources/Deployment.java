@@ -185,14 +185,14 @@ public interface Deployment extends
              * Creates a new resource group to put the deployment in.
              * @param name the name of the new group
              * @param region the region to create the resource group in
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithTemplate withNewResourceGroup(String name, Region region);
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithTemplate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
@@ -205,7 +205,7 @@ public interface Deployment extends
              * Specifies the template as a Java object.
              *
              * @param template the Java object
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithParameters withTemplate(Object template);
 
@@ -213,7 +213,7 @@ public interface Deployment extends
              * Specifies the template as a JSON string.
              *
              * @param templateJson the JSON string
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              * @throws IOException exception thrown from serialization/deserialization
              */
             WithParameters withTemplate(String templateJson) throws IOException;
@@ -223,7 +223,7 @@ public interface Deployment extends
              *
              * @param uri the location of the remote template file
              * @param contentVersion the version of the template file
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithParameters withTemplateLink(String uri, String contentVersion);
         }
@@ -236,14 +236,14 @@ public interface Deployment extends
              * Specifies the parameters as a Java object.
              *
              * @param parameters the Java object
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithMode withParameters(Object parameters);
 
             /**
              * Specifies the parameters as a JSON string.
              * @param parametersJson the JSON string
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              * @throws IOException exception thrown from serialization/deserialization
              */
             WithMode withParameters(String parametersJson) throws IOException;
@@ -253,7 +253,7 @@ public interface Deployment extends
              *
              * @param uri the location of the remote parameters file
              * @param contentVersion the version of the parameters file
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithMode withParametersLink(String uri, String contentVersion);
         }
@@ -266,7 +266,7 @@ public interface Deployment extends
              * Specifies the deployment mode.
              *
              * @param mode the mode of the deployment
-             * @return the next stage of the deployment definition
+             * @return the next stage of the definition
              */
             WithCreate withMode(DeploymentMode mode);
         }

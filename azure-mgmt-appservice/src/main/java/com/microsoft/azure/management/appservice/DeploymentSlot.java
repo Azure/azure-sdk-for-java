@@ -58,27 +58,27 @@ public interface DeploymentSlot extends
         interface WithConfiguration {
             /**
              * Creates the deployment slot with brand new site configurations.
-             * @return the next stage of the deployment slot definition
+             * @return the next stage of the definition
              */
             WithCreate withBrandNewConfiguration();
 
             /**
              * Copies the site configurations from the web app the deployment slot belongs to.
-             * @return the next stage of the deployment slot definition
+             * @return the next stage of the definition
              */
             WithCreate withConfigurationFromParent();
 
             /**
              * Copies the site configurations from a given web app.
              * @param webApp the web app to copy the configurations from
-             * @return the next stage of the deployment slot definition
+             * @return the next stage of the definition
              */
             WithCreate withConfigurationFromWebApp(WebApp webApp);
 
             /**
              * Copies the site configurations from a given deployment slot.
              * @param deploymentSlot the deployment slot to copy the configurations from
-             * @return the next stage of the deployment slot definition
+             * @return the next stage of the definition
              */
             WithCreate withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
         }

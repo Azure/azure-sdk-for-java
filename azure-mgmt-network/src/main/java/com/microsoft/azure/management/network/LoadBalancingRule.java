@@ -58,14 +58,14 @@ public interface LoadBalancingRule extends
     interface DefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> extends
             HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
@@ -73,7 +73,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFrontendPort<ParentT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
@@ -115,7 +115,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBackendPort<ParentT> extends
             HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>>,
@@ -266,14 +266,14 @@ public interface LoadBalancingRule extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of the load balancing rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT> extends
             HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
@@ -281,7 +281,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithFrontendPort<ParentT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
@@ -323,7 +323,7 @@ public interface LoadBalancingRule extends
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBackendPort<ParentT> extends
             HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>>,

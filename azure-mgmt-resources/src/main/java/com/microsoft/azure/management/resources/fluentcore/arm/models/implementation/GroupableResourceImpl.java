@@ -81,7 +81,7 @@ public abstract class GroupableResourceImpl<
      * <p>
      * The group will be created in the same location as the resource.
      * @param groupName the name of the new group
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withNewResourceGroup(String groupName) {
         return this.withNewResourceGroup(
@@ -95,7 +95,7 @@ public abstract class GroupableResourceImpl<
      *
      * @param groupName the name of the new group
      * @param region the region where resource group needs to be created
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withNewResourceGroup(String groupName, Region region) {
         return this.withNewResourceGroup(
@@ -107,7 +107,7 @@ public abstract class GroupableResourceImpl<
      * <p>
      * The group will be created in the same location as the resource.
      * The group's name is automatically derived from the resource's name.
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withNewResourceGroup() {
         return this.withNewResourceGroup(this.name() + "group");
@@ -120,7 +120,7 @@ public abstract class GroupableResourceImpl<
      * The group's name is automatically derived from the resource's name.
      *
      * @param region the region where resource group needs to be created
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withNewResourceGroup(Region region) {
         return this.withNewResourceGroup(this.name() + "group", region);
@@ -129,7 +129,7 @@ public abstract class GroupableResourceImpl<
     /**
      * Creates a new resource group to put the resource in, based on the definition specified.
      * @param creatable a creatable definition for a new resource group
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewResourceGroup(Creatable<ResourceGroup> creatable) {
@@ -142,7 +142,7 @@ public abstract class GroupableResourceImpl<
     /**
      * Associates the resources with an existing resource group.
      * @param groupName the name of an existing resource group to put this resource in.
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withExistingResourceGroup(String groupName) {
@@ -153,7 +153,7 @@ public abstract class GroupableResourceImpl<
     /**
      * Associates the resources with an existing resource group.
      * @param group an existing resource group to put the resource in
-     * @return the next stage of the resource definition
+     * @return the next stage of the definition
      */
     public final FluentModelImplT withExistingResourceGroup(ResourceGroup group) {
         return this.withExistingResourceGroup(group.name());
