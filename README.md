@@ -185,7 +185,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios (80+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (75+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -274,7 +274,6 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-db">Manage SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-dbs-in-elastic-pool">Manage SQL databases in elastic pools</a></li>
-<li><a href="https://github.com/Azure-Samples/sql-database-dotnet-manage-sql-dbs-in-elastic-pool-async">Manage SQL databases in elastic pools asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-firewalls-for-sql-databases">Manage firewalls for SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-databases-across-regions">Manage SQL databases across regions</a></li>
 </ul></td>
@@ -317,6 +316,17 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-functions-with-custom-domains">Manage functions with custom domains</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-functions">Configure deployment sources for functions</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-functions">Manage authentication for functions</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>Service Bus</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-basic-features">Manage queues with basic features</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-publish-subscribe-with-basic-features">Manage publish-subscribe with basic features</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-with-claims-based-authorization">Manage queues and publish-subcribe with cliams based authorization</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-publish-subscribe-with-advanced-features">Manage publish-subscribe with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-advanced-features">Manage queues with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
 </ul></td>
   </tr>
 
