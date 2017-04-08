@@ -192,7 +192,11 @@ class VirtualMachineImpl
 
     @Override
     public Completable deallocateAsync() {
-        return this.manager().inner().virtualMachines().deallocateAsync(this.resourceGroupName(), this.name()).toCompletable();
+        Observable<OperationStatusResponseInner> o = this.manager().inner().virtualMachines().deallocateAsync(this.resourceGroupName(), this.name());
+        Observable<VirtualMachine> r = this.refreshAsync();
+
+        // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
+        return Observable.concat(o, r).toCompletable();
     }
 
     @Override
@@ -1835,6 +1839,7 @@ class VirtualMachineImpl
                     .storageProfile()
                     .withDataDisks(new ArrayList<DataDisk>());
         }
+
         this.isUnmanagedDiskSelected = false;
         this.managedDataDisks.clear();
         this.unmanagedDataDisks = new ArrayList<>();
