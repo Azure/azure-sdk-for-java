@@ -67,8 +67,8 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>api-annotations</artifactId>
-      <version>0.0.2</version>
+      <artifactId>azure-annotations</artifactId>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
   <build>
