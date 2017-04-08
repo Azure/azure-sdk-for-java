@@ -10,7 +10,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 
 <table>
   <tr>
-    <th>Service | feature</th>
+    <th align="left">Service | feature</th>
     <th align="left">Available as GA</th>
     <th align="left">Available as Preview</th>
     <th align="left">Coming soon</th>
