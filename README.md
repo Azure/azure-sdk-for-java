@@ -37,12 +37,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">Service bus</td>
-  </tr>
-  <tr>
-    <td>App Service</td>
-    <td></td>
-    <td>Web apps (including Linux)<br>Functions</td>
+    <td valign="top">App service - Web apps (including Linux)<br>Functions<br>Service bus</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
