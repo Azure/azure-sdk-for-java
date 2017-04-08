@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.Snapshots;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImages;
@@ -41,6 +42,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private VirtualMachineCustomImages virtualMachineCustomImages;
     private Disks disks;
     private Snapshots snapshots;
+    private ContainerServices containerServices;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -117,6 +119,16 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             availabilitySets = new AvailabilitySetsImpl(this);
         }
         return availabilitySets;
+    }
+
+    /**
+     * @return the availability set resource management API entry point
+     */
+    public ContainerServices containerServices() {
+        if (containerServices == null) {
+            containerServices = new ContainerServicesImpl(this);
+        }
+        return containerServices;
     }
 
     /**

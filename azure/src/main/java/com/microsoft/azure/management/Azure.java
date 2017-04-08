@@ -26,6 +26,7 @@ import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
@@ -571,6 +572,13 @@ public final class Azure {
         return sqlServerManager.sqlServers();
     }
 
+    /**
+     * @return entry point to container services.
+     */
+    public ContainerServices containerServices() {
+        return computeManager.containerServices();
+    }
+  
     /**
      * @return entry point to managing Service Bus.
      */
