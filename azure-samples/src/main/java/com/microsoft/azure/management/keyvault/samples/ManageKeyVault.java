@@ -165,7 +165,7 @@ public final class ManageKeyVault {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredentials.fromFile(credFile).getClientId());
+            runSample(azure, ApplicationTokenCredentials.fromFile(credFile).clientId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
