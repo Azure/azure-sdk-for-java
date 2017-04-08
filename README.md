@@ -21,7 +21,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
   </tr>
   <tr>
     <td>Storage</td>
-    <td>Storage</td>
+    <td>Storage accounts</td>
     <td></td>
   </tr>
   <tr>
