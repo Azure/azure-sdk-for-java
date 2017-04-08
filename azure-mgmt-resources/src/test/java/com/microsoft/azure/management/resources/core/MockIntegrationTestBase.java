@@ -345,6 +345,7 @@ public class MockIntegrationTestBase {
             }
         }
 
+        // Return false to record.
         return true;
     }
 }
