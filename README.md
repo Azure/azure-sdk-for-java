@@ -6,34 +6,55 @@ This README is based on the released stable version (1.0 GA). If you are looking
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0 GA** supports: 
+**1.0** supports: 
 
-- Azure Virtual Machines and VM Extensions
-- Virtual Machine Scale Sets
-- Managed Disks
-- Storage
-- Networking
-	- Virtual networks
-	- Network interfaces
-	- IP addresses
-	- Routing table
-	- Network security groups
-	- Load balancers *(preview)*
-	- DNS
-	- Traffic managers and 
-	- Application gateways *(preview)*
-- Resource Manager
-- SQL Database (databases, firewalls and elastic pools)
-- App Service - Web Apps in Windows and Linux *(preview)*
-- Functions *(preview)*
-- Service Bus *(preview)*
-- Key Vault, Redis, CDN and Batch
-- Async methods *(preview)*.
+<table>
+  <tr>
+    <th>Service | feature</th>
+    <th>GA</th>
+    <th>Preview</th>
+  </tr>
+  <tr>
+    <td>Compute</td>
+    <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>Storage</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Networking</td>
+    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>DNS<br>Traffic managers</td>
+    <td>Load balancers<br>Application gateways</td>
+  </tr>
+  <tr>
+    <td>SQL Database</td>
+    <td>Databases<br>Firewalls<br>Elastic pools</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>App Service</td>
+    <td></td>
+    <td>Web apps on Windows<br>Web apps on Linux<br>App service plans<br>Deployment slots<br>Deployment sources<br>Domains and certificates<br>Authentication and authorization<br>Functions</td>
+  </tr>
+  <tr>
+    <td>More services</td>
+    <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
+    <td>Service bus</td>
+  </tr>
+  <tr>
+    <td>Fundamentals</td>
+    <td>Authentication - core</td>
+    <td>Async methods</td>
+  </tr>
+</table>
 
 
-> *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, at any time. You should not use or rely on them in any production code. They are purely to allow broad testing and feedback.
+> *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, in the future.
 
-We will continue to add support for more Azure services in the following order - Azure Monitor, Azure Container Service, Azure Container Registry, Graph RBAC, DocumentDB, Scheduler, etc.
+We will continue to add support for more Azure services in *roughly* the following order - Azure Monitor, Azure Container Service, Azure Container Registry, Graph RBAC, DocumentDB, Scheduler, etc.
 
 **Azure Authentication**
 
