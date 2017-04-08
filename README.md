@@ -30,7 +30,10 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 - Key Vault, Redis, CDN and Batch
 - Async methods *(preview)*.
 
-We will continue to add support for more Azure services - such as Azure Monitor, Azure Container Service, Azure Container Registry, DocumentDB, Scheduler, Graph RBAC , etc.
+
+> *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, at any time. You should not use or rely on them in any production code. They are purely to allow broad testing and feedback.
+
+We will continue to add support for more Azure services in the following order - Azure Monitor, Azure Container Service, Azure Container Registry, Graph RBAC, DocumentDB, Scheduler, etc.
 
 **Azure Authentication**
 
