@@ -20,4 +20,6 @@ topic.sessionful.entitypath=yourentitypath
 subscription.sessionful.entitypath=yoursubscriptionpath
 topic.sessionful.sharedaccesskeyname=yoursharedaccesskey
 topic.sessionful.sharedaccesskey=yoursharedaccesskey
+#namespace suffix
+namespace.suffix=servicebus.windows.net
 

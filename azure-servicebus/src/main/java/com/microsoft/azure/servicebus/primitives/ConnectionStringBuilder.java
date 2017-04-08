@@ -35,25 +35,24 @@ import java.util.regex.*;
  */
 public class ConnectionStringBuilder
 {	
-	final static String endpointFormat = "amqps://%s.servicebus.windows.net";
-	final static String endpointRawFormat = "amqps://%s";
+	final static String END_POINT_FORMAT = "amqps://%s.servicebus.windows.net";
+	final static String END_POINT_RAW_FORMAT = "amqps://%s";
 
-	final static String HostnameConfigName = "Hostname";
-	final static String EndpointConfigName = "Endpoint";
-	final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
-	final static String SharedAccessKeyConfigName = "SharedAccessKey";
-	final static String EntityPathConfigName = "EntityPath";
-	final static String OperationTimeoutConfigName = "OperationTimeout";
-	final static String RetryPolicyConfigName = "RetryPolicy";
-	final static String KeyValueSeparator = "=";
-	final static String KeyValuePairDelimiter = ";";
+	final static String HOSTNAME_CONFIG_NAME = "Hostname";	
+	final static String ENDPOINT_CONFIG_NAME = "Endpoint";
+	final static String SHARED_ACCESS_KEY_NAME_CONFIG_NAME = "SharedAccessKeyName";
+	final static String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
+	final static String ENTITY_PATH_CONFIG_NAME = "EntityPath";
+	final static String OPERATION_TIMEOUT_CONFIG_NAME = "OperationTimeout";
+	final static String RETRY_POLICY_CONFIG_NAME = "RetryPolicy";
+	final static String KEY_VALUE_SEPARATOR = "=";
+	final static String KEY_VALUE_PAIR_DELIMITER = ";";
 
-	private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" +  EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
-			+ "|" + RetryPolicyConfigName + ")";
+	private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOSTNAME_CONFIG_NAME + "|" +  ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NAME_CONFIG_NAME
+			+ "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
+			+ "|" + RETRY_POLICY_CONFIG_NAME + ")";
 
-	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
-			+ KeyValueSeparator;
+	private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX	+ KEY_VALUE_SEPARATOR;
 
 	private String connectionString;
 	private URI endpoint;
@@ -89,7 +88,7 @@ public class ConnectionStringBuilder
 	{
 		try
 		{
-			this.endpoint = new URI(String.format(Locale.US, this.getEndPointFormat(), namespaceName));
+			this.endpoint = new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName));
 		} 
 		catch(URISyntaxException exception)
 		{
@@ -236,38 +235,38 @@ public class ConnectionStringBuilder
 			StringBuilder connectionStringBuilder = new StringBuilder();
 			if (this.endpoint != null)
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
-						this.endpoint.toString(), KeyValuePairDelimiter));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENDPOINT_CONFIG_NAME, KEY_VALUE_SEPARATOR,
+						this.endpoint.toString(), KEY_VALUE_PAIR_DELIMITER));
 			}
 
 			if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
-						KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", ENTITY_PATH_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.entityPath, KEY_VALUE_PAIR_DELIMITER));
 			}
 
 			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName))
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
-						KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SHARED_ACCESS_KEY_NAME_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.sharedAccessKeyName, KEY_VALUE_PAIR_DELIMITER));
 			}
 
 			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
-						KeyValueSeparator, this.sharedAccessKey));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SHARED_ACCESS_KEY_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.sharedAccessKey));
 			}
 
 			if (this.operationTimeout != null)
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
-						KeyValueSeparator, this.operationTimeout.toString()));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, OPERATION_TIMEOUT_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.operationTimeout.toString()));
 			}
 
 			if (this.retryPolicy != null)
 			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, RetryPolicyConfigName,
-						KeyValueSeparator, this.retryPolicy.toString()));
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KEY_VALUE_PAIR_DELIMITER, RETRY_POLICY_CONFIG_NAME,
+						KEY_VALUE_SEPARATOR, this.retryPolicy.toString()));
 			}
 
 			this.connectionString = connectionStringBuilder.toString();
@@ -284,9 +283,9 @@ public class ConnectionStringBuilder
 			throw new IllegalConnectionStringFormatException(String.format("connectionString cannot be empty"));
 		}
 
-		String connection = KeyValuePairDelimiter + connectionString;
+		String connection = KEY_VALUE_PAIR_DELIMITER + connectionString;
 
-		Pattern keyValuePattern = Pattern.compile(KeysWithDelimitersRegex, Pattern.CASE_INSENSITIVE);
+		Pattern keyValuePattern = Pattern.compile(KEYS_WITH_DELIMITERS_REGEX, Pattern.CASE_INSENSITIVE);
 		String[] values = keyValuePattern.split(connection);
 		Matcher keys = keyValuePattern.matcher(connection);
 
@@ -315,13 +314,13 @@ public class ConnectionStringBuilder
 						String.format(Locale.US, "Value for the connection string parameter name: %s, not found", key));
 			}
 
-			if (key.equalsIgnoreCase(EndpointConfigName))
+			if (key.equalsIgnoreCase(ENDPOINT_CONFIG_NAME))
 			{
 				if (this.endpoint != null)
 				{
 					// we have parsed the endpoint once, which means we have multiple config which is not allowed
 					throw new IllegalConnectionStringFormatException(
-							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOSTNAME_CONFIG_NAME));
 				}
 				
 				try
@@ -331,43 +330,43 @@ public class ConnectionStringBuilder
 				catch(URISyntaxException exception)
 				{
 					throw new IllegalConnectionStringFormatException(
-							String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", EndpointConfigName),
+							String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", ENDPOINT_CONFIG_NAME),
 							exception);
 				}
 			}
-			else if (key.equalsIgnoreCase(HostnameConfigName))
+			else if (key.equalsIgnoreCase(HOSTNAME_CONFIG_NAME))
 			{
 				if (this.endpoint != null)
 				{
 					// we have parsed the endpoint once, which means we have multiple config which is not allowed
 					throw new IllegalConnectionStringFormatException(
-							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", ENDPOINT_CONFIG_NAME, HOSTNAME_CONFIG_NAME));
 				}
 				
 				try
 				{
-					this.endpoint = new URI(String.format(Locale.US, endpointRawFormat, values[valueIndex])); 
+					this.endpoint = new URI(String.format(Locale.US, END_POINT_RAW_FORMAT, values[valueIndex]));
 				}
 				catch(URISyntaxException exception)
 				{
 					throw new IllegalConnectionStringFormatException(
-							String.format(Locale.US, "%s should be a fully quantified host name address", HostnameConfigName),
+							String.format(Locale.US, "%s should be a fully quantified host name address", HOSTNAME_CONFIG_NAME),
 							exception);
 				}
 			}
-			else if(key.equalsIgnoreCase(SharedAccessKeyNameConfigName))
+			else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME_CONFIG_NAME))
 			{
 				this.sharedAccessKeyName = values[valueIndex];
 			}
-			else if(key.equalsIgnoreCase(SharedAccessKeyConfigName))
+			else if(key.equalsIgnoreCase(SHARED_ACCESS_KEY_CONFIG_NAME))
 			{
 				this.sharedAccessKey = values[valueIndex];
 			}
-			else if (key.equalsIgnoreCase(EntityPathConfigName))
+			else if (key.equalsIgnoreCase(ENTITY_PATH_CONFIG_NAME))
 			{
 				this.entityPath = values[valueIndex];
 			}
-			else if (key.equalsIgnoreCase(OperationTimeoutConfigName))
+			else if (key.equalsIgnoreCase(OPERATION_TIMEOUT_CONFIG_NAME))
 			{
 				try
 				{
@@ -378,7 +377,7 @@ public class ConnectionStringBuilder
 					throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
 				}
 			}
-			else if (key.equalsIgnoreCase(RetryPolicyConfigName))
+			else if (key.equalsIgnoreCase(RETRY_POLICY_CONFIG_NAME))
 			{
 				this.retryPolicy = values[valueIndex].equals(ClientConstants.DEFAULT_RETRY)
 						? RetryPolicy.getDefault()
@@ -387,7 +386,7 @@ public class ConnectionStringBuilder
 						if (this.retryPolicy == null)
 							throw new IllegalConnectionStringFormatException(
 									String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
-											RetryPolicyConfigName, values[valueIndex]));
+											RETRY_POLICY_CONFIG_NAME, values[valueIndex]));
 			}
 			else
 			{
@@ -395,11 +394,5 @@ public class ConnectionStringBuilder
 						String.format(Locale.US, "Illegal connection string parameter name: %s", key));
 			}
 		}
-	}
-	
-	// Just to override in onebox tests
-	String getEndPointFormat()
-	{
-		return this.endpointFormat;
 	}
 }
