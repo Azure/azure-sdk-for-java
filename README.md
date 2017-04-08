@@ -6,50 +6,56 @@ This README is based on the released stable version (1.0 GA). If you are looking
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0** supports: 
+## Feature Availability and Road Map as of Version 1.0 ##
 
 <table>
   <tr>
     <th>Service | feature</th>
-    <th>GA</th>
-    <th>Preview</th>
+    <th>Available as GA</th>
+    <th>Available as Preview</th>
+    <th>Coming soon</th>
   </tr>
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
     <td></td>
+    <td valign="top">Azure container services<br>Azure container registry</td>
   </tr>
   <tr>
     <td>Storage</td>
     <td>Storage accounts</td>
     <td></td>
+    <td>Encryption</td>
   </tr>
   <tr>
     <td>SQL Database</td>
     <td>Databases<br>Firewalls<br>Elastic pools</td>
     <td></td>
+    <td valign="top"></td>
   </tr>
   <tr>
     <td>Networking</td>
     <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>DNS<br>Traffic managers</td>
     <td valign="top">Load balancers<br>Application gateways</td>
+    <td valign="top"></td>
   </tr>
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
     <td valign="top">App service - Web apps (including Linux)<br>Functions<br>Service bus</td>
+    <td valign="top">Monitor<br>Graph RBAC<br>DocumentDB<br>Scheduler</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
     <td>Authentication - core</td>
     <td>Async methods</td>
+    <td valign="top"></td>
   </tr>
 </table>
 
 
 > *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, in the future.
 
-We will continue to add support for more Azure services in *roughly* the following order - Azure Monitor, Azure Container Service, Azure Container Registry, Graph RBAC, DocumentDB, Scheduler, etc.
 
 **Azure Authentication**
 
