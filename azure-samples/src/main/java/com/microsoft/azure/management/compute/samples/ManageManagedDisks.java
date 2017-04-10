@@ -138,13 +138,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Created VM [with new managed data disks and disk attached]");
 
-            // Upate a VM
-
-            System.out.println("De-allocating VM");
-
-            linuxVM2.deallocate();
-
-            System.out.println("De-allocated VM");
+            // Update a VM
 
             System.out.println("Updating VM [by detaching a disk and adding empty disk]");
 
@@ -213,7 +207,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Created VM [by attaching un-managed disk]");
 
-            // Create a Snapshot (Create Virtual Machine Using Specilaized Disks from Snapshot)
+            // Create a Snapshot (Create Virtual Machine using specialized disks from snapshot)
 
             System.out.println("Preparing specialized virtual machine with managed disks");
 

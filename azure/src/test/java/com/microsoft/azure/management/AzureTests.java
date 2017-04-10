@@ -7,9 +7,13 @@ package com.microsoft.azure.management;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
@@ -187,6 +191,35 @@ public class AzureTests extends TestBase {
     public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway.PrivateComplex()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testManagedDiskVMUpdate() throws Exception {
+        final String rgName = SdkContext.randomResourceName("rg", 13);
+        final String linuxVM2Name = SdkContext.randomResourceName("vm" + "-", 10);
+        final String linuxVM2Pip = SdkContext.randomResourceName("pip" + "-", 18);
+        VirtualMachine linuxVM2 = azure.virtualMachines().define(linuxVM2Name)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(linuxVM2Pip)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("tester")
+                .withRootPassword("Abcdef.123456!")
+                // Begin: Managed data disks
+                .withNewDataDisk(100)
+                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+                // End: Managed data disks
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .create();
+
+        linuxVM2.deallocate();
+        linuxVM2.update()
+                .withoutDataDisk(2)
+                .withNewDataDisk(200)
+                .apply();
+        azure.resourceGroups().beginDeleteByName(rgName);
     }
 
     /**

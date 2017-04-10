@@ -107,12 +107,12 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>1.0.0-beta7-SNAPSHOT</version>
+        <version>1.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -201,7 +201,7 @@
         <version>2.5.3</version>
       </plugin>
 
-     <plugin> 
+     <plugin>
        <groupId>com.googlecode.addjars-maven-plugin</groupId>
        <artifactId>addjars-maven-plugin</artifactId>
        <version>1.0.5</version>
@@ -352,7 +352,7 @@
     <module>./azure-mgmt-dns</module>
     <module>./azure-mgmt-sql</module>
     <module>./azure-mgmt-cdn</module>
-    <module>./azure-mgmt-monitor</module>  
+    <module>./azure-mgmt-monitor</module>
     <module>./azure-mgmt-redis</module>
   </modules>
 </project>
