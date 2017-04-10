@@ -6,15 +6,21 @@
 
 package com.microsoft.azure.management.sql.samples;
 
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Azure Storage sample for managing SQL Database -
@@ -131,10 +137,16 @@ public final class ManageSqlFirewallRules {
         try {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+
+            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
+            RestClient restClient = new RestClient.Builder()
+                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                    .withReadTimeout(150, TimeUnit.SECONDS)
+                    .withLogLevel(LogLevel.BODY)
+                    .withCredentials(credentials).build();
+            Azure azure = Azure.authenticate(restClient, credentials.domain(), credentials.defaultSubscriptionId()).withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
