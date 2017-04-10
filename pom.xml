@@ -138,7 +138,11 @@
         <version>2.4</version>
         <scope>test</scope>
       </dependency>
-
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-annotations</artifactId>
+        <version>1.0.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
