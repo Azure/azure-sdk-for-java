@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -54,6 +55,7 @@ public interface StorageAccounts extends
      * @param name the account name to check
      * @return whether the name is available and other info if not
      */
+    @Beta
     Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 
     /**
@@ -63,5 +65,6 @@ public interface StorageAccounts extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 }

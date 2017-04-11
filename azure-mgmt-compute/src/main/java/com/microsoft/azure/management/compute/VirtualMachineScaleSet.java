@@ -8,6 +8,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
@@ -73,6 +74,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     Completable deallocateAsync() throws CloudException, IOException, InterruptedException;
 
     /**
@@ -85,6 +87,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
@@ -104,6 +107,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     Completable powerOffAsync() throws CloudException, IOException, InterruptedException;
 
     /**
@@ -116,6 +120,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
@@ -136,6 +141,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     Completable restartAsync() throws CloudException, IOException, InterruptedException;
 
     /**
@@ -148,6 +154,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
@@ -167,6 +174,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     Completable startAsync() throws CloudException, IOException, InterruptedException;
 
     /**
@@ -179,6 +187,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     /**
@@ -199,6 +208,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     Completable reimageAsync() throws CloudException, IOException, InterruptedException;
 
     /**
@@ -211,6 +221,7 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException exception thrown from serialization/deserialization
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
+    @Beta
     ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException;
 
     // Getters
