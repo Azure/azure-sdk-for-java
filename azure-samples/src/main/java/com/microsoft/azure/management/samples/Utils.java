@@ -1669,7 +1669,7 @@ public final class Utils {
                 .append("\n\tName: ").append(topicAuthorizationRule.name())
                 .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
                 .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
-                .append("\n\tQueue Name: ").append(topicAuthorizationRule.topicName());
+                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
 
         List<AccessRights> rights = topicAuthorizationRule.rights();
         builder.append("\n\tNumber of access rights in queue: ").append(rights.size());
