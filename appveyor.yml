@@ -1,4 +1,8 @@
 version: 1.0.{build}
+branches:
+  only:
+  - master
+  - dev
 environment:
   ClientSecret:
     secure: /8H7C81iNS+gVi7LhJCEOPUlNaa30y4KcY4nw/g2C4HGxOv6SrcroyDvMnqD+5GN
@@ -18,6 +22,6 @@ before_test:
 test_script:
 - ps: >-
     Run-UnitTests
-after_test:
+on_finish:
 - ps: >-
     Delete-AzureResources
