@@ -1756,24 +1756,6 @@ public interface VirtualMachine extends
         Update withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
 
         /**
-         * Specifies the caching type for the OS disk.
-         *
-         * @param cachingType a caching type.
-         * @return the next stage of the update
-         */
-        Update withOSDiskCaching(CachingTypes cachingType);
-
-        /**
-         * Specifies the size of the OS disk in GB.
-         * <p>
-         * Only unmanaged disks may be resized as part of a VM update. Managed disks must be resized separately, using managed disk API.
-         *
-         * @param size a disk size.
-         * @return the next stage of the update
-         */
-        Update withOSDiskSizeInGB(Integer size);
-
-        /**
          * Specifies a new size for the virtual machine.
          *
          * @param sizeName the name of a size for the virtual machine as text
