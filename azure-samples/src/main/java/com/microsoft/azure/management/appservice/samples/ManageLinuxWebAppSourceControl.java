@@ -8,11 +8,9 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -36,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  *    - Deploy to 3 using a publicly available Git repository
  *    - Deploy to 4 using a GitHub repository with continuous integration
  */
-public final class ManageWebAppSourceControl {
+public final class ManageLinuxWebAppSourceControl {
 
     private static OkHttpClient httpClient;
 
@@ -69,9 +67,10 @@ public final class ManageWebAppSourceControl {
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                    .withPublicDockerHubImage("tomcat:8-jre8")
+                    .withStartUpCommand("/bin/bash -c \"sed -ie 's/appBase=\\\"webapps\\\"/appBase=\\\"\\\\/home\\\\/site\\\\/wwwroot\\\\/webapps\\\"/g' conf/server.xml && catalina.sh run\"")
+                    .withAppSetting("PORT", "8080")
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -82,7 +81,7 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+            Utils.uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageLinuxWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
 
             System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
             Utils.print(app1);
@@ -100,11 +99,12 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
-                    .withExistingWindowsPlan(plan)
+                    .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
+                    .withPublicDockerHubImage("tomcat:8-jre8")
+                    .withStartUpCommand("/bin/bash -c \"sed -ie 's/appBase=\\\"webapps\\\"/appBase=\\\"\\\\/home\\\\/site\\\\/wwwroot\\\\/webapps\\\"/g' conf/server.xml && catalina.sh run\"")
+                    .withAppSetting("PORT", "8080")
                     .withLocalGitSourceControl()
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -118,7 +118,7 @@ public final class ManageWebAppSourceControl {
             PublishingProfile profile = app2.getPublishingProfile();
             Git git = Git
                     .init()
-                    .setDirectory(new File(ManageWebAppSourceControl.class.getResource("/azure-samples-appservice-helloworld/").getPath()))
+                    .setDirectory(new File(ManageLinuxWebAppSourceControl.class.getResource("/azure-samples-appservice-helloworld/").getPath()))
                     .call();
             git.add().addFilepattern(".").call();
             git.commit().setMessage("Initial commit").call();
@@ -144,10 +144,13 @@ public final class ManageWebAppSourceControl {
 
             System.out.println("Creating another web app " + app3Name + "...");
             WebApp app3 = azure.webApps().define(app3Name)
-                    .withExistingWindowsPlan(plan)
+                    .withExistingLinuxPlan(plan)
                     .withNewResourceGroup(rgName)
-                    .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
+                    .withPublicDockerHubImage("tomcat:8-jre8")
+                    .withStartUpCommand("/bin/bash -c \"sed -ie 's/appBase=\\\"webapps\\\"/appBase=\\\"\\\\/home\\\\/site\\\\/wwwroot\\\\/webapps\\\"/g' conf/server.xml && catalina.sh run\"")
+                    .withAppSetting("PORT", "8080")
+                        .defineSourceControl()
+                        .withPublicGitRepository("https://github.com/azure-appservice-samples/java-get-started")
                         .withBranch("master")
                         .attach()
                     .create();
@@ -168,8 +171,11 @@ public final class ManageWebAppSourceControl {
             System.out.println("Creating another web app " + app4Name + "...");
             WebApp app4 = azure.webApps()
                     .define(app4Name)
-                    .withExistingWindowsPlan(plan)
+                    .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
+                    .withPublicDockerHubImage("tomcat:8-jre8")
+                    .withStartUpCommand("/bin/bash -c \"sed -ie 's/appBase=\\\"webapps\\\"/appBase=\\\"\\\\/home\\\\/site\\\\/wwwroot\\\\/webapps\\\"/g' conf/server.xml && catalina.sh run\"")
+                    .withAppSetting("PORT", "8080")
                     // Uncomment the following lines to turn on 4th scenario
                     //.defineSourceControl()
                     //    .withContinuouslyIntegratedGitHubRepository("username", "reponame")

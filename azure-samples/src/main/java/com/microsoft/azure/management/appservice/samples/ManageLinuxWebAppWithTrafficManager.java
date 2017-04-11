@@ -8,9 +8,10 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.AppServicePlan;
+import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.PricingTier;
+import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -37,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  *  - Create a traffic manager in front of the web apps
  *  - Scale up the app service plans to twice the capacity
  */
-public final class ManageWebAppWithTrafficManager {
+public final class ManageLinuxWebAppWithTrafficManager {
     private static final String RG_NAME = SdkContext.randomResourceName("rgNEMV_", 24);
     private static final String CERT_PASSWORD = "StrongPass!12";
 
@@ -52,8 +53,8 @@ public final class ManageWebAppWithTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        if (ManageWebAppWithTrafficManager.azure == null) {
-            ManageWebAppWithTrafficManager.azure = azure;
+        if (ManageLinuxWebAppWithTrafficManager.azure == null) {
+            ManageLinuxWebAppWithTrafficManager.azure = azure;
         }
 
         // New resources
@@ -102,8 +103,8 @@ public final class ManageWebAppWithTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
-            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
+            pfxPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
+            String cerPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -128,7 +129,7 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Creating app service plan " + plan3Name + " in Asia East...");
 
-            AppServicePlan plan3 = createAppServicePlan(plan3Name, Region.ASIA_EAST);
+            AppServicePlan plan3 = createAppServicePlan(plan3Name, Region.ASIA_SOUTHEAST);
 
             System.out.println("Created app service plan " + plan2.name());
             Utils.print(plan1);
@@ -273,15 +274,16 @@ public final class ManageWebAppWithTrafficManager {
         return azure.appServices().appServicePlans().define(name)
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
-                .withPricingTier(PricingTier.BASIC_B1)
-                .withOperatingSystem(OperatingSystem.WINDOWS)
+                .withPricingTier(PricingTier.STANDARD_S2)
+                .withOperatingSystem(OperatingSystem.LINUX)
                 .create();
     }
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azure.webApps().define(name)
-                .withExistingWindowsPlan(plan)
+                .withExistingLinuxPlan(plan)
                 .withExistingResourceGroup(RG_NAME)
+                .withBuiltInImage(RuntimeStack.NODEJS_4_5_0)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())

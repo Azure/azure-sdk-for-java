@@ -11,6 +11,7 @@ import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.PricingTier;
+import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -33,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  *    - Upload a self-signed wildcard certificate
  *    - update both web apps to use the domain and the created wildcard SSL certificate
  */
-public final class ManageWebAppWithDomainSsl {
+public final class ManageLinuxWebAppWithDomainSsl {
 
     private static OkHttpClient httpClient;
 
@@ -59,7 +60,8 @@ public final class ManageWebAppWithDomainSsl {
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -71,8 +73,9 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Creating another web app " + app2Name + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
-                    .withExistingWindowsPlan(plan)
+                    .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
+                    .withBuiltInImage(RuntimeStack.NODEJS_6_9_3)
                     .create();
 
             System.out.println("Created web app " + app2.name());
@@ -122,8 +125,8 @@ public final class ManageWebAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
-            String cerPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
+            String pfxPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
+            String cerPath = ManageLinuxWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 

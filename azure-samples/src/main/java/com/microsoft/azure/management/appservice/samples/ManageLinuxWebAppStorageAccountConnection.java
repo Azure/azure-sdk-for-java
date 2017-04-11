@@ -8,10 +8,8 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.ConnectionStringType;
-import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
@@ -40,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  *  - Deploy a Tomcat application that reads from the storage account
  *  - Clean up
  */
-public final class ManageWebAppStorageAccountConnection {
+public final class ManageLinuxWebAppStorageAccountConnection {
 
     private static OkHttpClient httpClient;
 
@@ -83,8 +81,8 @@ public final class ManageWebAppStorageAccountConnection {
             System.out.println("Uploading 2 blobs to container " + containerName + "...");
 
             CloudBlobContainer container = setUpStorageAccount(connectionString, containerName);
-            uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
-            uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
+            uploadFileToContainer(container, "helloworld.war", ManageLinuxWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
+            uploadFileToContainer(container, "install_apache.sh", ManageLinuxWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
 
             System.out.println("Uploaded 2 blobs to container " + container.getName());
 
@@ -96,11 +94,12 @@ public final class ManageWebAppStorageAccountConnection {
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                    .withPublicDockerHubImage("tomcat:8-jre8")
+                    .withStartUpCommand("/bin/bash -c \"sed -ie 's/appBase=\\\"webapps\\\"/appBase=\\\"\\\\/home\\\\/site\\\\/wwwroot\\\\/webapps\\\"/g' conf/server.xml && catalina.sh run\"")
                     .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
                     .withAppSetting("storage.containerName", containerName)
+                    .withAppSetting("PORT", "8080")
                     .create();
 
             System.out.println("Created web app " + app1.name());
@@ -112,7 +111,7 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
+            Utils.uploadFileToFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageLinuxWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
 
             System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
             Utils.print(app1);
