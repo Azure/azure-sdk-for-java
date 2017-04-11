@@ -80,6 +80,16 @@ class AppServicePlanImpl
     }
 
     @Override
+    public AppServicePlanImpl withFreePricingTier() {
+        return withPricingTier(PricingTier.FREE_F1);
+    }
+
+    @Override
+    public AppServicePlanImpl withSharedPricingTier() {
+        return withPricingTier(PricingTier.SHARED_D1);
+    }
+
+    @Override
     public AppServicePlanImpl withPricingTier(PricingTier pricingTier) {
         if (pricingTier == null) {
             throw new IllegalArgumentException("pricingTier == null");
