@@ -332,11 +332,11 @@ abstract class AppServiceBaseImpl<
     }
 
     public FluentImplT withNewFreeAppServicePlan() {
-        return withNewAppServicePlan(OperatingSystem.WINDOWS, new PricingTier("Free", "F1"));
+        return withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.FREE_F1);
     }
 
     public FluentImplT withNewSharedAppServicePlan() {
-        return withNewAppServicePlan(OperatingSystem.WINDOWS, new PricingTier("Shared", "D1"));
+        return withNewAppServicePlan(OperatingSystem.WINDOWS, PricingTier.SHARED_D1);
     }
 
     @SuppressWarnings("unchecked")

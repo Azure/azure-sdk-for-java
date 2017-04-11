@@ -41,6 +41,12 @@ public class PricingTier {
     /** Premium pricing tier with a large size. */
     public static final PricingTier PREMIUM_P3 = new PricingTier("Premium", "P3");
 
+    /** Free pricing tier. This does not work with Linux web apps, host name bindings, and SSL bindings. */
+    public static final PricingTier FREE_F1 = new PricingTier("Free", "F1");
+
+    /** Shared pricing tier. This does not work with Linux web apps, host name bindings, and SSL bindings. */
+    public static final PricingTier SHARED_D1 = new PricingTier("Shared", "D1");
+
     /** The actual serialized value for a SiteAvailabilityState instance. */
     private SkuDescription skuDescription;
 

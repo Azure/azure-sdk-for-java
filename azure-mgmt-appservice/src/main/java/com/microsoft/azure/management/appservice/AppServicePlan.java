@@ -93,6 +93,20 @@ public interface AppServicePlan extends
          */
         interface WithPricingTier {
             /**
+             * Specifies free pricing tier for the app service plan.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreePricingTier();
+
+            /**
+             * Specifies shared pricing tier for the app service plan.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSharedPricingTier();
+
+            /**
              * Specifies the pricing tier for the app service plan.
              *
              * @param pricingTier the pricing tier enum
