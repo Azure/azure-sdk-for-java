@@ -35,9 +35,7 @@ import java.util.TreeMap;
  *    - for Linux based:
  *      - add Tag
  *    - for Windows based:
- *      - deallocate the virtual machine
- *      - resize (expand) the data disks
- *      - start the virtual machine
+ *      - add a data disk
  *  - List virtual machines and print details
  *  - Delete all virtual machines.
  */
@@ -155,7 +153,7 @@ public final class ManageVirtualMachineAsync {
                             }
                             return createdResource;
                         }
-                    }).toBlocking().last();
+                    }).toBlocking().subscribe();
 
             final VirtualMachine windowsVM = createdVms.get(windowsVmKey);
             final VirtualMachine linuxVM = createdVms.get(linuxVmKey);
@@ -176,38 +174,13 @@ public final class ManageVirtualMachineAsync {
                         }
                     });
 
-            // - Resize (expand) the data disk on Windows VM.
-            Observable<Void> windowsVmUpdateThenStart = windowsVM.update()
-                    .withOSDiskSizeInGB(200)
-                    .applyAsync()
-                    .flatMap(new Func1<VirtualMachine, Observable<Void>>() {
-                        @Override
-                        public Observable<Void> call(VirtualMachine virtualMachine) {
-                            System.out.println("Expanded VM " + virtualMachine.id() + "'s OS and data disks");
-
-                            // Start the virtual machine
-                            System.out.println("Starting VM " + virtualMachine.id());
-                            return virtualMachine.startAsync().toObservable();
-                        }
-                    }).doOnCompleted(new Action0() {
-                        @Override
-                        public void call() {
-                            System.out.println("Started VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
-                        }
-                    });
-
-            // First, deallocate the virtual machine and then proceed with resize
-            Observable<Void> updateWindowsVMChain = windowsVM.deallocateAsync()
-                    .doOnCompleted(new Action0() {
-                        @Override
-                        public void call() {
-                            System.out.println("De-allocated VM: " + windowsVM.id());
-                        }
-                    })
-                    .andThen(windowsVmUpdateThenStart);
+            // - Add a data disk on Windows VM.
+            Observable<VirtualMachine> updateWindowsVMChain = windowsVM.update()
+                    .withNewDataDisk(200)
+                    .applyAsync();
 
             Observable.merge(updateLinuxVMChain, updateWindowsVMChain)
-                    .toBlocking().last();
+                    .toBlocking().subscribe();
 
             //=============================================================
             // List virtual machines and print details
@@ -219,14 +192,14 @@ public final class ManageVirtualMachineAsync {
                             Utils.print(virtualMachine);
                             return virtualMachine;
                         }
-                    }).toBlocking().last();
+                    }).toBlocking().subscribe();
 
             //=============================================================
             // Delete the virtual machines in parallel
             Observable.merge(
                     azure.virtualMachines().deleteByIdAsync(windowsVM.id()).toObservable(),
                     azure.virtualMachines().deleteByIdAsync(linuxVM.id()).toObservable())
-                    .toBlocking().last();
+                    .toBlocking().subscribe();
 
             return true;
         } catch (Exception f) {
