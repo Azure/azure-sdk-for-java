@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.batch;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.batch.implementation.ApplicationPackageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -54,6 +55,7 @@ public interface ApplicationPackage extends
      * @param format the format of the uploaded Batch application package, either "zip" or "tar"
      */
     // TODO: this should take an enum
+    @Beta
     void activate(String format);
 
     /**
@@ -63,6 +65,7 @@ public interface ApplicationPackage extends
      * @return a representation of the deferred computation of this call
      */
     // TODO: this should take an enum
+    @Beta
     Completable activateAsync(String format);
 
     /**
@@ -72,6 +75,7 @@ public interface ApplicationPackage extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Void> activateAsync(String format, ServiceCallback<Void> callback);
 
     /**

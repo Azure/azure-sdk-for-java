@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.microsoft.azure.management.servicebus.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
@@ -18,6 +19,7 @@ import rx.functions.Func1;
 /**
  * Implementation for ServiceBusNamespaces.
  */
+@LangDefinition
 class ServiceBusNamespacesImpl extends TopLevelModifiableResourcesImpl<
         ServiceBusNamespace,
         ServiceBusNamespaceImpl,

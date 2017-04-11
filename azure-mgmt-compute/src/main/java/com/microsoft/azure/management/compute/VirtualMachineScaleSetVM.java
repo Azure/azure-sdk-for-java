@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetVMInner;
@@ -220,6 +221,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the reimage action
      */
     @Method
+    @Beta
     Completable reimageAsync();
 
     /**
@@ -233,6 +235,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the deallocate action
      */
     @Method
+    @Beta
     Completable deallocateAsync();
 
     /**
@@ -246,6 +249,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the poweroff action
      */
     @Method
+    @Beta
     Completable powerOffAsync();
 
     /**
@@ -259,6 +263,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the start action
      */
     @Method
+    @Beta
     Completable startAsync();
 
     /**
@@ -272,6 +277,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the restart action
      */
     @Method
+    @Beta
     Completable restartAsync();
 
     /**
@@ -285,6 +291,7 @@ public interface VirtualMachineScaleSetVM extends
      * @return the observable to the delete action
      */
     @Method
+    @Beta
     Completable deleteAsync();
 
     /**

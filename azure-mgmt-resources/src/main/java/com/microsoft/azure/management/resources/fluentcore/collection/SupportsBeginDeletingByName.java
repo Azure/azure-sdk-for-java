@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
@@ -34,6 +35,7 @@ public interface SupportsBeginDeletingByName {
      * @param callback the callback on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback);
 
     /**
@@ -43,5 +45,6 @@ public interface SupportsBeginDeletingByName {
      * @param name the name the resource to delete
      * @return an observable of the request
      */
+    @Beta
     Observable<Void> beginDeleteByNameAsync(String name);
 }

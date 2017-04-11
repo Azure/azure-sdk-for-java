@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import rx.Observable;
@@ -36,5 +37,6 @@ public interface SupportsListingByTag<T> {
      * @param tagValue tag's value
      * @return list of resources
      */
+    @Beta
     Observable<T> listByTagAsync(String tagName, String tagValue);
 }

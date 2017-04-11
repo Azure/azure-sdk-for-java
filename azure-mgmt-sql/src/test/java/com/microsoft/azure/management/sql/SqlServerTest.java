@@ -24,7 +24,7 @@ public abstract class SqlServerTest extends TestBase {
         if (!isMocked) {
             return super.buildRestClient(builder, isMocked);
         }
-        return super.buildRestClient(builder.withReadTimeout(100, TimeUnit.SECONDS), isMocked);
+        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS), isMocked);
     }
 
     @Override

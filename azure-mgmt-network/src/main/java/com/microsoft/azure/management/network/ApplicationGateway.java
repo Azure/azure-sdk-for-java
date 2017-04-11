@@ -54,6 +54,7 @@ public interface ApplicationGateway extends
      * @return a representation of the deferred computation of this call
      */
     @Method
+    @Beta
     Completable startAsync();
 
     /**
@@ -61,6 +62,7 @@ public interface ApplicationGateway extends
      * @return a representation of the deferred computation of this call
      */
     @Method
+    @Beta
     Completable stopAsync();
 
     // Getters

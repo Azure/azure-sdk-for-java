@@ -162,7 +162,7 @@ public interface ServiceBusNamespace extends
          */
         interface WithCreate extends
                 Creatable<ServiceBusNamespace>,
-                Resource.DefinitionWithTags<Update>,
+                Resource.DefinitionWithTags<WithCreate>,
                 ServiceBusNamespace.DefinitionStages.WithSku,
                 ServiceBusNamespace.DefinitionStages.WithQueue,
                 ServiceBusNamespace.DefinitionStages.WithTopic,
