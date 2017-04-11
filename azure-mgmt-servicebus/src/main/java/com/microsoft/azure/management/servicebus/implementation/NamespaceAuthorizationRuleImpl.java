@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.servicebus.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.servicebus.Policykey;
@@ -15,6 +16,7 @@ import rx.functions.Func1;
 /**
  * Implementation for NamespaceAuthorizationRule.
  */
+@LangDefinition
 class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<NamespaceAuthorizationRule,
         ServiceBusNamespaceImpl,
         SharedAccessAuthorizationRuleInner,

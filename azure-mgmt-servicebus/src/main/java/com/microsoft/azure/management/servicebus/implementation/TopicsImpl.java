@@ -8,6 +8,7 @@ package com.microsoft.azure.management.servicebus.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.management.servicebus.Topic;
@@ -21,6 +22,7 @@ import rx.Observable;
 /**
  * Implementation for Topics.
  */
+@LangDefinition
 class TopicsImpl
         extends ServiceBusChildResourcesImpl<
         Topic,
