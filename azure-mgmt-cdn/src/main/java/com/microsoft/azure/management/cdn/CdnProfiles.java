@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.cdn.implementation.ProfilesInner;
@@ -71,6 +72,7 @@ public interface CdnProfiles extends
      * @param name the endpoint resource name to validate.
      * @return the Observable to CheckNameAvailabilityResult object if successful.
      */
+    @Beta
     Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
 
     /**
@@ -80,6 +82,7 @@ public interface CdnProfiles extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 
     /**

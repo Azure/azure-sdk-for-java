@@ -64,6 +64,7 @@ public interface CdnProfile extends
      * @return Observable to URI used to login to third party web portal
      */
     @Method
+    @Beta
     Observable<String> generateSsoUriAsync();
 
     /**
@@ -73,6 +74,7 @@ public interface CdnProfile extends
      * @return a handle to cancel the request
      */
     @Method
+    @Beta
     ServiceFuture<String> generateSsoUriAsync(ServiceCallback<String> callback);
 
     /**
@@ -88,6 +90,7 @@ public interface CdnProfile extends
      * @param endpointName a name of an endpoint under the profile
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     Completable startEndpointAsync(String endpointName);
 
     /**
@@ -97,6 +100,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback);
 
     /**
@@ -112,6 +116,7 @@ public interface CdnProfile extends
      * @param endpointName a name of an endpoint under the profile
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     Completable stopEndpointAsync(String endpointName);
 
     /**
@@ -121,6 +126,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback);
 
     /**
@@ -205,6 +211,7 @@ public interface CdnProfile extends
      * @param hostName the host name of the custom domain, which must be a domain name
      * @return the Observable to CustomDomainValidationResult object if successful
      */
+    @Beta
     Observable<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName);
 
 
@@ -216,6 +223,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     ServiceFuture<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName, ServiceCallback<CustomDomainValidationResult> callback);
 
     /**
@@ -232,6 +240,7 @@ public interface CdnProfile extends
      * @param name the endpoint resource name to validate.
      * @return the Observable of the result if successful
      */
+    @Beta
     Observable<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name);
 
     /**
@@ -241,6 +250,7 @@ public interface CdnProfile extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     ServiceFuture<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name, ServiceCallback<CheckNameAvailabilityResult> callback);
 
     /**

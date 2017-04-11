@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -52,6 +53,7 @@ public interface ResourceGroup extends
      * @param options the export options
      * @return observable to the exported template result
      */
+    @Beta
     Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
 
     /**
@@ -62,6 +64,7 @@ public interface ResourceGroup extends
      *
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options, ServiceCallback<ResourceGroupExportResult> callback);
 
     /**************************************************************

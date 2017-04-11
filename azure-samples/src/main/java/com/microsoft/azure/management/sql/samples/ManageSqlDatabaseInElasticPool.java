@@ -6,6 +6,9 @@
 
 package com.microsoft.azure.management.sql.samples;
 
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
@@ -16,9 +19,12 @@ import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Azure Storage sample for managing SQL Database -
@@ -80,6 +86,7 @@ public final class ManageSqlDatabaseInElasticPool {
             // Change DTUs in the elastic pools.
             elasticPool = elasticPool.update()
                     .withDtu(200)
+                    .withStorageCapacity(204800)
                     .withDatabaseDtuMin(10)
                     .withDatabaseDtuMax(50)
                     .apply();
@@ -217,10 +224,16 @@ public final class ManageSqlDatabaseInElasticPool {
         try {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            Azure azure = Azure.configure()
+
+            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
+            RestClient restClient = new RestClient.Builder()
+                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                    .withSerializerAdapter(new AzureJacksonAdapter())
+                    .withReadTimeout(150, TimeUnit.SECONDS)
                     .withLogLevel(LogLevel.BODY)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                    .withCredentials(credentials).build();
+            Azure azure = Azure.authenticate(restClient, credentials.domain(), credentials.defaultSubscriptionId()).withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

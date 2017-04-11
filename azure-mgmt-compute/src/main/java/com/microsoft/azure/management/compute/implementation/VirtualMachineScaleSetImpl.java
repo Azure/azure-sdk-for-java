@@ -174,7 +174,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Completable deallocateAsync() {
-        return this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name()).toCompletable();
+        Observable<OperationStatusResponseInner> d = this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name());
+        Observable<VirtualMachineScaleSet> r = this.refreshAsync();
+        return Observable.concat(d, r).toCompletable();
     }
 
     @Override

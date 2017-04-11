@@ -119,7 +119,6 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Ignore("Server bug: disk size cannot be resized down [This sample will not be published]")
     public void testManageVirtualMachineWithDisk() {
         Assert.assertTrue(ManageVirtualMachineWithDisk.runSample(azure));
     }

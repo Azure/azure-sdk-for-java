@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 import rx.Observable;
@@ -24,6 +25,7 @@ public interface VirtualMachineEncryption {
      *
      * @return observable that emits current volume encryption status
      */
+    @Beta
     Observable<DiskVolumeEncryptionMonitor> enableAsync(String keyVaultId, String aadClientId, String aadSecret);
 
     /**
@@ -33,6 +35,7 @@ public interface VirtualMachineEncryption {
 
      * @return observable that emits current volume encryption status
      */
+    @Beta
     Observable<DiskVolumeEncryptionMonitor> enableAsync(WindowsVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
@@ -42,6 +45,7 @@ public interface VirtualMachineEncryption {
      *
      * @return observable that emits current volume encryption status
      */
+    @Beta
     Observable<DiskVolumeEncryptionMonitor> enableAsync(LinuxVMDiskEncryptionConfiguration encryptionSettings);
 
     /**
@@ -49,11 +53,13 @@ public interface VirtualMachineEncryption {
      * @param volumeType volume type to disable encryption
      * @return observable that emits current volume decryption status
      */
+    @Beta
     Observable<DiskVolumeEncryptionMonitor> disableAsync(final DiskVolumeType volumeType);
 
     /**
      * @return observable that emits current volume decryption status
      */
+    @Beta
     Observable<DiskVolumeEncryptionMonitor> getMonitorAsync();
 
     /**
