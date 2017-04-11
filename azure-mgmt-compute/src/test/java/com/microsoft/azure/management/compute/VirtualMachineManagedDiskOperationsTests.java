@@ -510,7 +510,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
+                .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

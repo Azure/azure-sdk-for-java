@@ -670,7 +670,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the definition
              */
-            WithUnmanagedCreate withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithUnmanagedCreate withSpecializedOSUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
 
             /**
              * Specifies a specialized operating system managed disk to be attached to the virtual machine.
@@ -679,7 +679,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the definition
              */
-            WithManagedCreate withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType);
+            WithManagedCreate withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType);
         }
 
         /**
@@ -1050,7 +1050,7 @@ public interface VirtualMachine extends
         /**
          * The stage of a virtual machine definition allowing to specify OS disk configurations.
          */
-        interface WithOsDiskSettings {
+        interface WithOSDiskSettings {
             /**
              * Specifies the caching type for the OS disk.
              *
@@ -1065,7 +1065,7 @@ public interface VirtualMachine extends
              * @param settings the encryption settings
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
+            WithCreate withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
             /**
              * Specifies the size of the OSDisk in GB.
@@ -1081,7 +1081,7 @@ public interface VirtualMachine extends
              * @param name an OS disk name
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskName(String name);
+            WithCreate withOSDiskName(String name);
         }
 
         /**
@@ -1406,7 +1406,7 @@ public interface VirtualMachine extends
              * @param accountType storage account type
              * @return  the next stage of the definition
              */
-            WithManagedCreate withOsDiskStorageAccountType(StorageAccountTypes accountType);
+            WithManagedCreate withOSDiskStorageAccountType(StorageAccountTypes accountType);
 
             /**
              * Specifies the default caching type for the managed data disks.
@@ -1440,7 +1440,7 @@ public interface VirtualMachine extends
              * @param vhdName the name for the OS disk VHD.
              * @return the next stage of the definition
              */
-            WithUnmanagedCreate withOsDiskVhdLocation(String containerName, String vhdName);
+            WithUnmanagedCreate withOSDiskVhdLocation(String containerName, String vhdName);
         }
 
         /**
@@ -1451,7 +1451,7 @@ public interface VirtualMachine extends
         interface WithCreate extends
                 Creatable<VirtualMachine>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithOsDiskSettings,
+                DefinitionStages.WithOSDiskSettings,
                 DefinitionStages.WithVMSize,
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithAvailabilitySet,
@@ -1737,7 +1737,7 @@ public interface VirtualMachine extends
          * @param settings the encryption settings.
          * @return the stage representing creatable VM update
          */
-        Update withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
+        Update withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
          * Specifies the default caching type for the managed data disks.

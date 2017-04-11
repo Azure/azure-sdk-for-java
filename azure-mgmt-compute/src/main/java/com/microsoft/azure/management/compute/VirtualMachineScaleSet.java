@@ -1084,7 +1084,7 @@ public interface VirtualMachineScaleSet extends
              * @param accountType the storage account type
              * @return  the stage representing creatable VM definition
              */
-            WithManagedCreate withOsDiskStorageAccountType(StorageAccountTypes accountType);
+            WithManagedCreate withOSDiskStorageAccountType(StorageAccountTypes accountType);
 
             /**
              * Specifies the default caching type for the managed data disks.
@@ -1200,14 +1200,14 @@ public interface VirtualMachineScaleSet extends
         /**
          * The stage of a virtual machine scale set definition allowing to specify OS disk configurations.
          */
-        interface WithOsDiskSettings {
+        interface WithOSDiskSettings {
             /**
              * Specifies the caching type for the operating system disk.
              *
              * @param cachingType the caching type
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskCaching(CachingTypes cachingType);
+            WithCreate withOSDiskCaching(CachingTypes cachingType);
 
             /**
              * Specifies the name for the OS disk.
@@ -1215,7 +1215,7 @@ public interface VirtualMachineScaleSet extends
              * @param name the OS disk name
              * @return the next stage of the definition
              */
-            WithCreate withOsDiskName(String name);
+            WithCreate withOSDiskName(String name);
         }
 
         /**
@@ -1283,7 +1283,7 @@ public interface VirtualMachineScaleSet extends
          */
         interface WithCreate extends
                 Creatable<VirtualMachineScaleSet>,
-                DefinitionStages.WithOsDiskSettings,
+                DefinitionStages.WithOSDiskSettings,
                 DefinitionStages.WithComputerNamePrefix,
                 DefinitionStages.WithCapacity,
                 DefinitionStages.WithUpgradePolicy,
