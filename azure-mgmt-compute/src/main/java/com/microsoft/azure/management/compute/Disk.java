@@ -334,7 +334,7 @@ public interface Disk extends
         /**
          * The stage of the managed disk definition allowing to choose source operating system image.
          */
-        interface WithOsDiskFromImage {
+        interface WithOSDiskFromImage {
             /**
              * Specifies the ID of an image containing the operating system.
              *
@@ -465,7 +465,7 @@ public interface Disk extends
         /**
          * The stage of the managed disk update allowing to specify OS settings.
          */
-        interface WithOsSettings {
+        interface WithOSSettings {
             /**
              * Specifies the operating system.
              *
@@ -485,6 +485,6 @@ public interface Disk extends
             Resource.UpdateWithTags<Disk.Update>,
             UpdateStages.WithSku,
             UpdateStages.WithSize,
-            UpdateStages.WithOsSettings {
+            UpdateStages.WithOSSettings {
     }
 }

@@ -302,7 +302,7 @@ public interface Snapshot extends
         /**
          * The stage of the managed disk definition allowing to choose a source operating system image.
          */
-        interface WithOsSnapshotFromImage {
+        interface WithOSSnapshotFromImage {
             /**
              * Specifies an image containing an operating system.
              *
@@ -419,7 +419,7 @@ public interface Snapshot extends
         /**
          * The stage of the managed snapshot update allowing to specify OS settings.
          */
-        interface WithOsSettings {
+        interface WithOSSettings {
             /**
              * Specifies the operating system type.
              *
@@ -438,6 +438,6 @@ public interface Snapshot extends
             Appliable<Snapshot>,
             Resource.UpdateWithTags<Snapshot.Update>,
             UpdateStages.WithSku,
-            UpdateStages.WithOsSettings {
+            UpdateStages.WithOSSettings {
     }
 }

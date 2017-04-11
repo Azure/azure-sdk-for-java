@@ -553,7 +553,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOSUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -564,7 +564,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType) {
         ManagedDiskParametersInner diskParametersInner = new ManagedDiskParametersInner();
         diskParametersInner.withId(disk.id());
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);

@@ -670,7 +670,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the definition
              */
-            WithUnmanagedCreate withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
+            WithUnmanagedCreate withSpecializedOSUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
 
             /**
              * Specifies a specialized operating system managed disk to be attached to the virtual machine.
@@ -679,7 +679,7 @@ public interface VirtualMachine extends
              * @param osType the OS type
              * @return the next stage of the definition
              */
-            WithManagedCreate withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType);
+            WithManagedCreate withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType);
         }
 
         /**

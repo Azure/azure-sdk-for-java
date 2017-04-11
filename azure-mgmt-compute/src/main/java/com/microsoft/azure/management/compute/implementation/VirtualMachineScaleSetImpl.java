@@ -848,7 +848,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineScaleSetImpl withOSDiskCaching(CachingTypes cachingType) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withCaching(cachingType);
@@ -856,7 +856,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskName(String name) {
+    public VirtualMachineScaleSetImpl withOSDiskName(String name) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withName(name);
@@ -1134,7 +1134,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskStorageAccountType(StorageAccountTypes accountType) {
+    public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
         this.managedDataDisks.setDefaultStorageAccountType(accountType);
         return this;
     }
@@ -1301,14 +1301,14 @@ public class VirtualMachineScaleSetImpl
                 //
                 osDisk.withManagedDisk(null);
                 if (osDisk.name() == null) {
-                    withOsDiskName(this.name() + "-os-disk");
+                    withOSDiskName(this.name() + "-os-disk");
                 }
             }
         } else {
             // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
         }
         if (this.osDiskCachingType() == null) {
-            withOsDiskCaching(CachingTypes.READ_WRITE);
+            withOSDiskCaching(CachingTypes.READ_WRITE);
         }
     }
 
