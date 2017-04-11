@@ -1497,6 +1497,15 @@ public final class CloudFileShare {
     }
 
     /**
+     * Returns the snapshotID for this share.
+     * 
+     * @return The snapshotID as a string for this share.
+     */
+    public final String getSnapshot() {
+        return this.snapshotID;
+    }
+
+    /**
      * Indicates whether this share is a snapshot.
      *
      * @return <code>true</code> if the share is a snapshot, otherwise <code>false</code>.
