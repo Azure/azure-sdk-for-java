@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -94,6 +95,7 @@ public interface ReplicationLink extends
      * Fails over the Azure SQL Database Replication Link.
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     Completable failoverAsync();
 
     /**
@@ -101,6 +103,7 @@ public interface ReplicationLink extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Void> failoverAsync(ServiceCallback<Void> callback);
 
     /**
@@ -112,6 +115,7 @@ public interface ReplicationLink extends
      * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     Completable forceFailoverAllowDataLossAsync();
 
     /**
@@ -119,6 +123,7 @@ public interface ReplicationLink extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Void> forceFailoverAllowDataLossAsync(ServiceCallback<Void> callback);
 }
 
