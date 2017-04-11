@@ -26,7 +26,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     }
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
     }
 
     @Test
