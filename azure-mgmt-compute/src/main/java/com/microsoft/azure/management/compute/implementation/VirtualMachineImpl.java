@@ -335,7 +335,11 @@ class VirtualMachineImpl
                 .map(new Func1<VirtualMachineInner, VirtualMachineInstanceView>() {
                     @Override
                     public VirtualMachineInstanceView call(VirtualMachineInner virtualMachineInner) {
-                        virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        if (virtualMachineInner != null) {
+                            virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        } else {
+                            virtualMachineInstanceView = null;
+                        }
                         return virtualMachineInstanceView;
                     }
                 });
