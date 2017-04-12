@@ -70,7 +70,11 @@ class ResourceGroupImpl extends
 
     @Override
     public Map<String, String> tags() {
-        return Collections.unmodifiableMap(this.inner().tags());
+        Map<String, String> tags = this.inner().tags();
+        if (tags == null) {
+            tags = new HashMap<>();
+        }
+        return Collections.unmodifiableMap(tags);
     }
 
     @Override
