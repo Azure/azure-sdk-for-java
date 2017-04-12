@@ -7,22 +7,23 @@
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
-import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
-import com.microsoft.rest.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
+import com.microsoft.azure.management.compute.Disks;
+import com.microsoft.azure.management.compute.Snapshots;
+import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -56,6 +57,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.servicebus.ServiceBusNamespaces;
+import com.microsoft.azure.management.servicebus.implementation.ServiceBusManager;
 import com.microsoft.azure.management.sql.SqlServers;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
@@ -63,9 +66,8 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.appservice.WebApps;
-import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,6 +102,8 @@ public final class Azure {
         return new AuthenticatedImpl(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), credentials.domain());
     }
 
@@ -124,6 +128,8 @@ public final class Azure {
         return new AuthenticatedImpl(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), credentials.domain()).withDefaultSubscription(credentials.defaultSubscriptionId());
     }
 
