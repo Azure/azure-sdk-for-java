@@ -725,6 +725,45 @@ public class CloudFileTests {
     }
 
     @Test
+    public void testFileContentMD5NewFileTest() throws URISyntaxException, StorageException, IOException {
+        final String fileName = FileTestHelper.generateRandomFileName();
+        final CloudFile file = this.share.getRootDirectoryReference().getFileReference(fileName);
+
+        FileRequestOptions options = new FileRequestOptions();
+        options.setStoreFileContentMD5(true);
+        options.setDisableContentMD5Validation(false);
+
+        File tempFile = File.createTempFile("sourceFile", ".tmp");
+        file.uploadFromFile(tempFile.getAbsolutePath(), null, options, null);
+    }
+
+    /**
+     * Test requesting stored content MD5 with OpenWriteExisting().
+     * 
+     * @throws URISyntaxException
+     * @throws StorageException
+     */
+    @Test
+    public void testCloudFileOpenWriteExistingWithMD5() throws URISyntaxException, StorageException, IOException {
+        String fileName = FileTestHelper.generateRandomFileName();
+        final CloudFile fileRef = this.share.getRootDirectoryReference().getFileReference(fileName);
+        fileRef.create(512);
+
+        FileRequestOptions options = new FileRequestOptions();
+        options.setStoreFileContentMD5(true);
+        options.setDisableContentMD5Validation(false);
+
+        try
+        {
+            fileRef.openWriteExisting(null, options, null);
+            fail("Expect failure due to requesting MD5 calculation");
+        }
+        catch (IllegalArgumentException e)
+        {
+        }
+    }
+
+    @Test
     public void testFileEmptyHeaderSigningTest() throws URISyntaxException, StorageException, IOException {
         final String fileName = FileTestHelper.generateRandomFileName();
         final CloudFile fileRef = this.share.getRootDirectoryReference().getFileReference(fileName);
