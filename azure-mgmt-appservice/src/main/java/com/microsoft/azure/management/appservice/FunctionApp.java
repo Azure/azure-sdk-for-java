@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
+import rx.Observable;
 
 /**
  * An immutable client-side representation of an Azure Function App.
@@ -29,6 +30,16 @@ public interface FunctionApp extends
      * @return the storage account associated with the function app
      */
     StorageAccount storageAccount();
+
+    /**
+     * @return the master key for the function app
+     */
+    String getMasterKey();
+
+    /**
+     * @return the master key for the function app
+     */
+    Observable<String> getMasterKeyAsync();
 
     /**************************************************************
      * Fluent interfaces to provision a Function App
