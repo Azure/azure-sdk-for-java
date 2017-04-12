@@ -339,13 +339,6 @@ public interface StorageAccount extends
              * @return the next stage of storage account update
              */
             Update withCustomDomain(String name, boolean useSubDomain);
-
-            /**
-             * Clears the existing user domain assigned to the storage account.
-             *
-             * @return the next stage of storage account update
-             */
-            Update withoutCustomDomain();
         }
 
         /**

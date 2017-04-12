@@ -212,6 +212,7 @@ class StorageAccountImpl
 
     @Override
     public Observable<StorageAccount> updateResourceAsync() {
+        updateParameters.withTags(this.inner().getTags());
         return this.manager().inner().storageAccounts().updateAsync(
                 resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
@@ -235,11 +236,6 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withCustomDomain(String name, boolean useSubDomain) {
         return withCustomDomain(new CustomDomain().withName(name).withUseSubDomain(useSubDomain));
-    }
-
-    @Override
-    public StorageAccountImpl withoutCustomDomain() {
-        return withCustomDomain(new CustomDomain().withName(""));
     }
 
     @Override
