@@ -189,7 +189,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOsDisk(newOSDisk, OperatingSystemTypes.LINUX)
+                    .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisks.get(0))
                     .withExistingDataDisk(newDataDisks.get(1), 1, CachingTypes.READ_WRITE)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)

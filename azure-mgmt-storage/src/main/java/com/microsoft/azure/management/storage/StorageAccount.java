@@ -111,6 +111,7 @@ public interface StorageAccount extends
      *
      * @return observable to the access keys for this storage account
      */
+    @Beta
     Observable<List<StorageAccountKey>> getKeysAsync();
 
     /**
@@ -119,6 +120,7 @@ public interface StorageAccount extends
      * @param callback the callback to call on success or failure, with access keys as parameter.
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<List<StorageAccountKey>> getKeysAsync(ServiceCallback<List<StorageAccountKey>> callback);
 
     /**
@@ -135,6 +137,7 @@ public interface StorageAccount extends
      * @param keyName if the key name
      * @return observable to the access keys for this storage account
      */
+    @Beta
     Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
 
     /**
@@ -144,6 +147,7 @@ public interface StorageAccount extends
      * @param callback the callback to call on success or failure, with access keys as parameter.
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<List<StorageAccountKey>> regenerateKeyAsync(String keyName, ServiceCallback<List<StorageAccountKey>> callback);
 
     /**
@@ -335,13 +339,6 @@ public interface StorageAccount extends
              * @return the next stage of storage account update
              */
             Update withCustomDomain(String name, boolean useSubDomain);
-
-            /**
-             * Clears the existing user domain assigned to the storage account.
-             *
-             * @return the next stage of storage account update
-             */
-            Update withoutCustomDomain();
         }
 
         /**

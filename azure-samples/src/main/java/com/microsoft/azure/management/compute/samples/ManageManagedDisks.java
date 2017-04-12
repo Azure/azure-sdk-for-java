@@ -138,13 +138,7 @@ public final class ManageManagedDisks {
 
             System.out.println("Created VM [with new managed data disks and disk attached]");
 
-            // Upate a VM
-
-            System.out.println("De-allocating VM");
-
-            linuxVM2.deallocate();
-
-            System.out.println("De-allocated VM");
+            // Update a VM
 
             System.out.println("Updating VM [by detaching a disk and adding empty disk]");
 
@@ -207,13 +201,13 @@ public final class ManageManagedDisks {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOsUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX)
+                    .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
             System.out.println("Created VM [by attaching un-managed disk]");
 
-            // Create a Snapshot (Create Virtual Machine Using Specilaized Disks from Snapshot)
+            // Create a Snapshot (Create Virtual Machine using specialized disks from snapshot)
 
             System.out.println("Preparing specialized virtual machine with managed disks");
 
@@ -291,7 +285,7 @@ public final class ManageManagedDisks {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOsDisk(newOSDisk, OperatingSystemTypes.LINUX)
+                    .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisk)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();

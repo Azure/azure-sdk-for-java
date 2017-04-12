@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -164,82 +163,84 @@ public class VirtualMachineScaleSetImpl
    }
 
    @Override
-   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
+   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() {
         return this.skuConverter.convert(this.manager().inner().virtualMachineScaleSets().listSkus(this.resourceGroupName(), this.name()));
    }
 
     @Override
-    public void deallocate() throws CloudException, IOException, InterruptedException {
+    public void deallocate() {
         this.deallocateAsync().await();
     }
 
     @Override
-    public Completable deallocateAsync() throws CloudException, IOException, InterruptedException {
-        return this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name()).toCompletable();
+    public Completable deallocateAsync() {
+        Observable<OperationStatusResponseInner> d = this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name());
+        Observable<VirtualMachineScaleSet> r = this.refreshAsync();
+        return Observable.concat(d, r).toCompletable();
     }
 
     @Override
-    public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+    public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.deallocateAsync().<Void>toObservable(), callback);
     }
 
     @Override
-    public void powerOff() throws CloudException, IOException, InterruptedException {
+    public void powerOff() {
         this.powerOffAsync().await();
     }
 
     @Override
-    public Completable powerOffAsync() throws CloudException, IOException, InterruptedException {
+    public Completable powerOffAsync() {
         return this.manager().inner().virtualMachineScaleSets().powerOffAsync(this.resourceGroupName(), this.name()).toCompletable();
     }
 
     @Override
-    public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+    public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.powerOffAsync().<Void>toObservable(), callback);
     }
 
     @Override
-    public void restart() throws CloudException, IOException, InterruptedException {
+    public void restart() {
         this.restartAsync().await();
     }
 
     @Override
-    public Completable restartAsync() throws CloudException, IOException, InterruptedException {
+    public Completable restartAsync() {
         return this.manager().inner().virtualMachineScaleSets().restartAsync(this.resourceGroupName(), this.name()).toCompletable();
     }
 
     @Override
-    public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+    public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.restartAsync().<Void>toObservable(), callback);
     }
 
     @Override
-    public void start() throws CloudException, IOException, InterruptedException {
+    public void start() {
         this.startAsync().await();
     }
 
     @Override
-    public Completable startAsync() throws CloudException, IOException, InterruptedException {
+    public Completable startAsync() {
         return this.manager().inner().virtualMachineScaleSets().startAsync(this.resourceGroupName(), this.name()).toCompletable();
     }
 
     @Override
-    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+    public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
     }
 
     @Override
-    public void reimage() throws CloudException, IOException, InterruptedException {
+    public void reimage() {
         this.reimageAsync().await();
     }
 
     @Override
-    public Completable reimageAsync() throws CloudException, IOException, InterruptedException {
+    public Completable reimageAsync() {
         return this.manager().inner().virtualMachineScaleSets().reimageAsync(this.resourceGroupName(), this.name()).toCompletable();
     }
 
     @Override
-    public ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) throws CloudException, IOException, InterruptedException {
+    public ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) {
         return ServiceFuture.fromBody(this.reimageAsync().<Void>toObservable(), callback);
     }
 
@@ -846,7 +847,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineScaleSetImpl withOSDiskCaching(CachingTypes cachingType) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withCaching(cachingType);
@@ -854,7 +855,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskName(String name) {
+    public VirtualMachineScaleSetImpl withOSDiskName(String name) {
         this.inner()
                 .virtualMachineProfile()
                 .storageProfile().osDisk().withName(name);
@@ -1132,7 +1133,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOsDiskStorageAccountType(StorageAccountTypes accountType) {
+    public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
         this.managedDataDisks.setDefaultStorageAccountType(accountType);
         return this;
     }
@@ -1299,14 +1300,14 @@ public class VirtualMachineScaleSetImpl
                 //
                 osDisk.withManagedDisk(null);
                 if (osDisk.name() == null) {
-                    withOsDiskName(this.name() + "-os-disk");
+                    withOSDiskName(this.name() + "-os-disk");
                 }
             }
         } else {
             // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
         }
         if (this.osDiskCachingType() == null) {
-            withOsDiskCaching(CachingTypes.READ_WRITE);
+            withOSDiskCaching(CachingTypes.READ_WRITE);
         }
     }
 

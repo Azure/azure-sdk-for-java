@@ -266,7 +266,7 @@ public final class Utils {
      * @throws IOException IO errors
      * @throws CloudException Cloud errors
      */
-    public static void print(Network resource) throws CloudException, IOException {
+    public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -1460,9 +1460,8 @@ public final class Utils {
      * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
      * @param file the local file
-     * @throws Exception when ftp upload fails
      */
-    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
@@ -1472,12 +1471,16 @@ public final class Utils {
             path = path + "/" + fileName.substring(0, lastslash);
             fileName = fileName.substring(lastslash);
         }
-        ftpClient.connect(server);
-        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        ftpClient.changeWorkingDirectory(path);
-        ftpClient.storeFile(fileName, file);
-        ftpClient.disconnect();
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Utils() {
@@ -1674,7 +1677,7 @@ public final class Utils {
                 .append("\n\tName: ").append(topicAuthorizationRule.name())
                 .append("\n\tResourceGroupName: ").append(topicAuthorizationRule.resourceGroupName())
                 .append("\n\tNamespace Name: ").append(topicAuthorizationRule.namespaceName())
-                .append("\n\tQueue Name: ").append(topicAuthorizationRule.topicName());
+                .append("\n\tTopic Name: ").append(topicAuthorizationRule.topicName());
 
         List<AccessRights> rights = topicAuthorizationRule.rights();
         builder.append("\n\tNumber of access rights in queue: ").append(rights.size());

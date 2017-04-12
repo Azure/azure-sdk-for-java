@@ -61,6 +61,7 @@ public interface ApplicationGateways extends
      * @param ids application gateway resource id
      * @return an Observable emitting the resource ID for each successfully started application gateway
      */
+    @Beta
     Observable<String> startAsync(String... ids);
 
     /**
@@ -68,6 +69,7 @@ public interface ApplicationGateways extends
      * @param ids application gateway resource id
      * @return an Observable emitting the resource ID for each successfully started application gateway
      */
+    @Beta
     Observable<String> startAsync(Collection<String> ids);
 
     /**
@@ -87,6 +89,7 @@ public interface ApplicationGateways extends
      * @param ids application gateway resource ids
      * @return an Observable emitting the resource ID for each successfully stopped application gateway
      */
+    @Beta
     Observable<String> stopAsync(String...ids);
 
     /**
@@ -94,5 +97,6 @@ public interface ApplicationGateways extends
      * @param ids application gateway resource id
      * @return an Observable emitting the resource ID for each successfully stopped application gateway
      */
+    @Beta
     Observable<String> stopAsync(Collection<String> ids);
 }

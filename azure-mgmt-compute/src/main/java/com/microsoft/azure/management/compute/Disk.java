@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.DiskInner;
@@ -78,6 +79,7 @@ public interface Disk extends
      * @param accessDurationInSeconds the access duration in seconds
      * @return the observable to a read-only SAS URI to the disk
      */
+    @Beta
     Observable<String> grantAccessAsync(int accessDurationInSeconds);
 
     /**
@@ -87,6 +89,7 @@ public interface Disk extends
      * @param callback the callback to call on success or failure, containing a read-only SAS URI to the disk, if successful
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<String> grantAccessAsync(int accessDurationInSeconds, ServiceCallback<String> callback);
 
     /**
@@ -99,6 +102,7 @@ public interface Disk extends
      *
      * @return a representation of the deferred computation of this call
      */
+    @Beta
     Completable revokeAccessAsync();
 
     /**
@@ -107,6 +111,7 @@ public interface Disk extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Void> revokeAccessAsync(ServiceCallback<Void> callback);
 
     /**
@@ -329,7 +334,7 @@ public interface Disk extends
         /**
          * The stage of the managed disk definition allowing to choose source operating system image.
          */
-        interface WithOsDiskFromImage {
+        interface WithOSDiskFromImage {
             /**
              * Specifies the ID of an image containing the operating system.
              *
@@ -460,7 +465,7 @@ public interface Disk extends
         /**
          * The stage of the managed disk update allowing to specify OS settings.
          */
-        interface WithOsSettings {
+        interface WithOSSettings {
             /**
              * Specifies the operating system.
              *
@@ -480,6 +485,6 @@ public interface Disk extends
             Resource.UpdateWithTags<Disk.Update>,
             UpdateStages.WithSku,
             UpdateStages.WithSize,
-            UpdateStages.WithOsSettings {
+            UpdateStages.WithOSSettings {
     }
 }

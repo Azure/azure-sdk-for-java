@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -42,6 +43,7 @@ public interface SupportsListingByRegion<T> {
      * @param region the selected Azure region
      * @return list of resources
      */
+    @Beta
     Observable<T> listByRegionAsync(Region region);
 
     /**
@@ -49,5 +51,6 @@ public interface SupportsListingByRegion<T> {
      * @param regionName the name of an Azure region
      * @return list of resources
      */
+    @Beta
     Observable<T> listByRegionAsync(String regionName);
 }

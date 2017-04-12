@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCallback;
@@ -35,6 +37,7 @@ public interface Providers extends
      * @param resourceProviderNamespace Namespace of the resource provider
      * @return observable to the ProviderInner object wrapped in {@link ServiceResponse} if successful
      */
+    @Beta
     Observable<Provider> unregisterAsync(String resourceProviderNamespace);
 
     /**
@@ -44,6 +47,8 @@ public interface Providers extends
      * @param callback the callback to call on success or failure with the ProviderInner object wrapped as parameter if successful
      * @return a handle to cancel the request
      */
+    @Beta
+    @Method
     ServiceFuture<Provider> unregisterAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback);
 
     /**
@@ -60,6 +65,7 @@ public interface Providers extends
      * @param resourceProviderNamespace Namespace of the resource provider
      * @return observable to the ProviderInner object wrapped in {@link ServiceResponse} if successful
      */
+    @Beta
     Observable<Provider> registerAsync(String resourceProviderNamespace);
 
     /**
@@ -69,6 +75,7 @@ public interface Providers extends
      * @param callback the callback to call on success or failure with the ProviderInner object wrapped as parameter if successful
      * @return a handle to cancel the request
      */
+    @Beta
     ServiceFuture<Provider> registerAsync(String resourceProviderNamespace, ServiceCallback<Provider> callback);
 
     /**
@@ -77,5 +84,6 @@ public interface Providers extends
      * @param name the name of the provider
      * @return an observable of the immutable representation of the Provider
      */
+    @Beta
     Observable<Provider> getByNameAsync(String name);
 }

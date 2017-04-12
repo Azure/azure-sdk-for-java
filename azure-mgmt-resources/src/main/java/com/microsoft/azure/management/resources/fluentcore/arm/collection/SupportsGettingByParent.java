@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -48,6 +49,7 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * @param name the name of resource.
      * @return Observable to an immutable representation of the resource
      */
+    @Beta
     Observable<T> getByParentAsync(String resourceGroup, String parentName, String name);
 
     /**
@@ -57,5 +59,6 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * @param name the name of resource.
      * @return Observable to an immutable representation of the resource
      */
+    @Beta
     Observable<T> getByParentAsync(ParentT parentResource, String name);
 }

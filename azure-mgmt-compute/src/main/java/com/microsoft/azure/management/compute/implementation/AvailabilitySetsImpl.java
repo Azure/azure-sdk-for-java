@@ -8,6 +8,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -74,7 +75,7 @@ class AvailabilitySetsImpl
 
     @Override
     public AvailabilitySetImpl define(String name) {
-        return wrapModel(name);
+        return wrapModel(name).withSku(AvailabilitySetSkuTypes.MANAGED);
     }
 
     @Override
