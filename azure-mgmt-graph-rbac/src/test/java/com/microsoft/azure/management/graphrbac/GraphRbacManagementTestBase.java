@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.rest.LogLevel;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
