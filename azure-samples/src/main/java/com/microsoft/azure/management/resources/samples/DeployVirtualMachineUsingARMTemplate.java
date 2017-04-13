@@ -126,7 +126,7 @@ public class DeployVirtualMachineUsingARMTemplate {
         final String osDiskName = SdkContext.randomResourceName("osdisk-", 24);
 
         final InputStream embeddedTemplate;
-        embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json");
+        embeddedTemplate = DeployVirtualMachineUsingARMTemplate.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json");
 
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode tmp = mapper.readTree(embeddedTemplate);
