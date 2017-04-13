@@ -27,7 +27,6 @@ import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUn
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.ConvertVirtualMachineToManagedDisks;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ComputeSampleTests extends SamplesTestBase {
