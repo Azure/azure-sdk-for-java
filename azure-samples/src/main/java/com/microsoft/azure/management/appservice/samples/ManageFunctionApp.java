@@ -138,7 +138,6 @@ public final class ManageFunctionApp {
             try {
                 System.out.println("Deleting Resource Group: " + rg1Name);
                 azure.resourceGroups().beginDeleteByName(rg1Name);
-                System.out.println("Deleted Resource Group: " + rg1Name);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
