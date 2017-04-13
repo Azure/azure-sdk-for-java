@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ScheduledFuture;
 
 import com.microsoft.azure.servicebus.primitives.MessageLockLostException;
@@ -103,6 +104,11 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 			receiveMessageFuture.handleAsync((message, receiveEx) -> {
 				if(receiveEx != null)
 				{
+					if(receiveEx instanceof CompletionException)
+					{
+						receiveEx = receiveEx.getCause();
+					}
+					
 					this.messageHandler.notifyException(receiveEx, ExceptionPhase.RECEIVE);
 					this.receiveAndPumpMessage();
 				}
@@ -205,6 +211,11 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 			acceptSessionFuture.handleAsync((session, acceptSessionEx) -> {
 				if(acceptSessionEx != null)
 				{
+					if(acceptSessionEx instanceof CompletionException)
+					{
+						acceptSessionEx = acceptSessionEx.getCause();
+					}
+					
 					if(!(acceptSessionEx instanceof TimeoutException))
 					{
 						// Timeout exception means no session available.. it is expected so no need to notify client
@@ -245,6 +256,11 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 			receiverFuture.handleAsync((message, receiveEx) -> {
 				if(receiveEx != null)
 				{
+					if(receiveEx instanceof CompletionException)
+					{
+						receiveEx = receiveEx.getCause();
+					}
+					
 					this.sessionHandler.notifyException(receiveEx, ExceptionPhase.RECEIVE);
 					sessionTracker.shouldRetryOnNoMessageOrException().thenAcceptAsync((shouldRetry) -> {
 						if(shouldRetry)
