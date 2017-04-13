@@ -38,7 +38,7 @@ public final class ManageVirtualMachinesInParallel {
      */
     public static boolean runSample(Azure azure) {
         final int vmCount = 10;
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_EAST;
         final String rgName = SdkContext.randomResourceName("rgCOPP", 24);
         final String networkName = SdkContext.randomResourceName("vnetCOMV", 24);
         final String storageAccountName = SdkContext.randomResourceName("stgCOMV", 20);
@@ -104,8 +104,7 @@ public final class ManageVirtualMachinesInParallel {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
-                System.out.println("Deleted Resource Group: " + rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {

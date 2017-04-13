@@ -511,7 +511,7 @@ public class AzureTests extends TestBase {
 
         Assert.assertEquals(storageAccount.name(), storageAccountName);
 
-        azure.resourceGroups().deleteByName(storageAccount.resourceGroupName());
+        azure.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
     }
 
     @Test
