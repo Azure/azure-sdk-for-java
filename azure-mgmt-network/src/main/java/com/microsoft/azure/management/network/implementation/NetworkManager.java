@@ -5,14 +5,8 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -30,6 +24,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.RestClient;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Entry point to Azure network management.
@@ -67,6 +69,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         return new NetworkManager(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build(), subscriptionId);
     }
 

@@ -470,7 +470,7 @@ public class ServiceBusOperationsTests extends TestBase {
     }
 
     @Test
-    public void CanPerformCRUDOnSubscriptions() {
+    public void canPerformCRUDOnSubscriptions() {
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
                 .define(RG_NAME)
