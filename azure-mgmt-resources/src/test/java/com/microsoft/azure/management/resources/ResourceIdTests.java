@@ -17,7 +17,7 @@ public class ResourceIdTests {
 
 
     @Test
-    public void ResourceIdForTopLevelResourceWorksFine() {
+    public void resourceIdForTopLevelResourceWorksFine() {
         ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something");
 
         Assert.assertEquals(resourceId.name(), "something");
@@ -30,7 +30,7 @@ public class ResourceIdTests {
     }
 
     @Test
-    public void ResourceIdForChildLevelResourceWorksFine() {
+    public void resourceIdForChildLevelResourceWorksFine() {
         ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName");
         
         Assert.assertEquals(resourceId.name(), "childName");
@@ -50,7 +50,7 @@ public class ResourceIdTests {
     }
 
     @Test
-    public void ResourceIdForGrandChildLevelResourceWorksFine() {
+    public void resourceIdForGrandChildLevelResourceWorksFine() {
         ResourceId resourceId = ResourceId.fromString("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/resourceGroupName/providers/Microsoft.Network/applicationGateways/something/someChildType/childName/grandChildType/grandChild");
 
         Assert.assertEquals(resourceId.name(), "grandChild");
