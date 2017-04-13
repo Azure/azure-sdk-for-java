@@ -1,102 +1,326 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "http://localhost:7240/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/resources?api-version=2016-09-01",
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/nsg9df426581group?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "200",
+      "StatusCode" : "201",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/providers/Microsoft.Storage/storageAccounts/sdkpriv\",\"name\":\"sdkpriv\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"westus\",\"tags\":{}}]}",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14999",
-      "x-ms-routing-request-id" : "WESTUS2:20170120T194629Z:915314fc-be62-4090-8ae8-06b90875346a",
-      "date" : "Fri, 20 Jan 2017 19:46:28 GMT",
-      "vary" : "Accept-Encoding",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group\",\"name\":\"nsg9df426581group\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1188",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212137Z:f442da18-d823-4601-adcb-19dfa1debe04",
+      "date" : "Thu, 13 Apr 2017 21:21:37 GMT",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "915314fc-be62-4090-8ae8-06b90875346a",
-      "content-length" : "237",
+      "x-ms-request-id" : "f442da18-d823-4601-adcb-19dfa1debe04",
+      "content-length" : "187",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "915314fc-be62-4090-8ae8-06b90875346a"
+      "x-ms-correlation-request-id" : "f442da18-d823-4601-adcb-19dfa1debe04"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"name\": \"nsg9df426581\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581\",\r\n  \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"8a91f0c9-eb4e-4b7c-b2fd-691957cab48d\",\r\n    \"securityRules\": [],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"29957962-97a7-46c2-a293-4e751fd6046b\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1187",
+      "azure-asyncoperation" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/3e48236d-5595-4613-9f1b-310ac49dd67f?api-version=2016-12-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212138Z:2ead2b38-eb98-4459-927d-15b3a1543358",
+      "date" : "Thu, 13 Apr 2017 21:21:38 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "3e48236d-5595-4613-9f1b-310ac49dd67f",
+      "content-length" : "5152",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2ead2b38-eb98-4459-927d-15b3a1543358"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:7240/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage?api-version=2016-09-01",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/3e48236d-5595-4613-9f1b-310ac49dd67f?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)"
     },
     "Response" : {
       "StatusCode" : "200",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage\",\"namespace\":\"Microsoft.Storage\",\"resourceTypes\":[{\"resourceType\":\"storageAccounts\",\"locations\":[\"East US\",\"East US 2\",\"East US 2 (Stage)\",\"West US\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"Japan East\",\"Japan West\",\"North Central US\",\"South Central US\",\"Central US\",\"North Europe\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"South India\",\"Central India\",\"West India\",\"Canada East\",\"Canada Central\",\"West US 2\",\"West Central US\",\"UK South\",\"UK West\"],\"apiVersions\":[\"2016-12-01\",\"2016-05-01\",\"2016-01-01\",\"2015-06-15\",\"2015-05-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"operations\",\"locations\":[],\"apiVersions\":[\"2016-12-01\",\"2016-05-01\",\"2016-01-01\",\"2015-06-15\",\"2015-05-01-preview\"]},{\"resourceType\":\"storageAccounts/listAccountSas\",\"locations\":[],\"apiVersions\":[\"2016-12-01\",\"2016-05-01\"]},{\"resourceType\":\"usages\",\"locations\":[],\"apiVersions\":[\"2016-12-01\",\"2016-05-01\",\"2016-01-01\",\"2015-06-15\",\"2015-05-01-preview\"]},{\"resourceType\":\"checkNameAvailability\",\"locations\":[],\"apiVersions\":[\"2016-12-01\",\"2016-05-01\",\"2016-01-01\",\"2015-06-15\",\"2015-05-01-preview\"]},{\"resourceType\":\"storageAccounts/services\",\"locations\":[\"East US\",\"West US\",\"East US 2 (Stage)\",\"West Europe\",\"North Europe\",\"East Asia\",\"Southeast Asia\",\"Japan East\",\"Japan West\",\"North Central US\",\"South Central US\",\"East US 2\",\"Central US\",\"Australia East\",\"Australia Southeast\",\"Brazil South\",\"South India\",\"Central India\",\"West India\",\"Canada East\",\"Canada Central\",\"West US 2\",\"West Central US\",\"UK South\",\"UK West\"],\"apiVersions\":[\"2014-04-01\"]},{\"resourceType\":\"storageAccounts/services/metricDefinitions\",\"locations\":[\"East US\",\"West US\",\"East US 2 (Stage)\",\"West Europe\",\"North Europe\",\"East Asia\",\"Southeast Asia\",\"Japan East\",\"Japan West\",\"North Central US\",\"South Central US\",\"East US 2\",\"Central US\",\"Australia East\",\"Australia Southeast\",\"Brazil South\",\"South India\",\"Central India\",\"West India\",\"Canada East\",\"Canada Central\",\"West US 2\",\"West Central US\",\"UK South\",\"UK West\"],\"apiVersions\":[\"2014-04-01\"]}],\"registrationState\":\"Registered\"}",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
-      "x-ms-routing-request-id" : "WESTUS2:20170120T194629Z:e34fa0e4-b768-4235-848c-b8d4bc70fb95",
-      "date" : "Fri, 20 Jan 2017 19:46:28 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "e34fa0e4-b768-4235-848c-b8d4bc70fb95",
-      "content-length" : "2194",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "e34fa0e4-b768-4235-848c-b8d4bc70fb95"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:7240/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/providers/Microsoft.Storage/storageAccounts/sdkpriv?api-version=2016-12-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/providers/Microsoft.Storage/storageAccounts/sdkpriv\",\"kind\":\"Storage\",\"location\":\"westus\",\"name\":\"sdkpriv\",\"properties\":{\"creationTime\":\"2016-03-14T22:51:31.1156154Z\",\"primaryEndpoints\":{\"blob\":\"https://sdkpriv.blob.core.windows.net/\",\"file\":\"https://sdkpriv.file.core.windows.net/\",\"queue\":\"https://sdkpriv.queue.core.windows.net/\",\"table\":\"https://sdkpriv.table.core.windows.net/\"},\"primaryLocation\":\"westus\",\"provisioningState\":\"Succeeded\",\"secondaryEndpoints\":{\"blob\":\"https://sdkpriv-secondary.blob.core.windows.net/\",\"queue\":\"https://sdkpriv-secondary.queue.core.windows.net/\",\"table\":\"https://sdkpriv-secondary.table.core.windows.net/\"},\"secondaryLocation\":\"eastus\",\"statusOfPrimary\":\"available\",\"statusOfSecondary\":\"available\",\"supportsHttpsTrafficOnly\":false},\"sku\":{\"name\":\"Standard_RAGRS\",\"tier\":\"Standard\"},\"tags\":{},\"type\":\"Microsoft.Storage/storageAccounts\"}\n",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS2:20170120T194629Z:21c83f7b-6dd8-42a3-8c7c-9b55ca850893",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
-      "date" : "Fri, 20 Jan 2017 19:46:28 GMT",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212139Z:d3c36ab3-cd7f-4507-8b69-df3f95f54ece",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14829",
+      "date" : "Thu, 13 Apr 2017 21:21:39 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "ace90354-c2ec-40dd-8adb-000a395b9255",
+      "content-length" : "30",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "d3c36ab3-cd7f-4507-8b69-df3f95f54ece"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/3e48236d-5595-4613-9f1b-310ac49dd67f?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212149Z:a6953cf3-9f17-4c70-8948-0a5a084dfbaf",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14827",
+      "date" : "Thu, 13 Apr 2017 21:21:49 GMT",
       "vary" : "Accept-Encoding",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "21c83f7b-6dd8-42a3-8c7c-9b55ca850893",
-      "content-length" : "955",
-      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0",
+      "x-ms-request-id" : "cad0c925-c3d3-46f1-bde8-e6dab751d928",
+      "content-length" : "29",
+      "server" : "Microsoft-HTTPAPI/2.0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "21c83f7b-6dd8-42a3-8c7c-9b55ca850893"
+      "x-ms-correlation-request-id" : "a6953cf3-9f17-4c70-8948-0a5a084dfbaf"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:7240/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/resources?api-version=2016-09-01",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581?api-version=2016-12-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"name\": \"nsg9df426581\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581\",\r\n  \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"8a91f0c9-eb4e-4b7c-b2fd-691957cab48d\",\r\n    \"securityRules\": [],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "etag" : "W/\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\"",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212149Z:9cb6994e-4643-4e94-959d-d94912310769",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14826",
+      "date" : "Thu, 13 Apr 2017 21:21:49 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "61118376-5a60-44dd-9f2b-b9553b9ef24b",
+      "content-length" : "5159",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "9cb6994e-4643-4e94-959d-d94912310769"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "201",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"name\": \"pipb4f402103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103\",\r\n  \"etag\": \"W/\\\"47728faf-4795-411b-8f84-6dce83f23aaa\\\"\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"d973e984-d675-4140-a543-c4df71f22c3c\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 4\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\"\r\n}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1186",
+      "azure-asyncoperation" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/025534c7-8cf6-4564-b751-614b03f97a10?api-version=2016-12-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212151Z:442e3601-4012-4039-bea7-4a3edb55a771",
+      "date" : "Thu, 13 Apr 2017 21:21:51 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "025534c7-8cf6-4564-b751-614b03f97a10",
+      "content-length" : "571",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "442e3601-4012-4039-bea7-4a3edb55a771"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/operations/025534c7-8cf6-4564-b751-614b03f97a10?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212151Z:90c334b9-d17b-4abb-a7a7-644bda965214",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14825",
+      "date" : "Thu, 13 Apr 2017 21:21:51 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "03ab9d92-d47d-49e8-bb3d-cf67b26ce920",
+      "content-length" : "29",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "90c334b9-d17b-4abb-a7a7-644bda965214"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (NetworkManagementClient)"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"name\": \"pipb4f402103\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103\",\r\n  \"etag\": \"W/\\\"16c35217-35d2-4a90-a871-f00cd2f1bd12\\\"\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"d973e984-d675-4140-a543-c4df71f22c3c\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 4\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\"\r\n}",
+      "etag" : "W/\"16c35217-35d2-4a90-a871-f00cd2f1bd12\"",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212151Z:992910d8-66da-4cf0-acaf-29769dcc7716",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14824",
+      "date" : "Thu, 13 Apr 2017 21:21:51 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "c242bad1-36ef-45fa-832c-66e9a76fc528",
+      "content-length" : "572",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "992910d8-66da-4cf0-acaf-29769dcc7716"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/resources?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "200",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sdkpriv/providers/Microsoft.Storage/storageAccounts/sdkpriv\",\"name\":\"sdkpriv\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"westus\",\"tags\":{}}]}",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
-      "x-ms-routing-request-id" : "WESTUS2:20170120T194629Z:f4e573c6-ffb5-44b0-be4c-87e5effac00e",
-      "date" : "Fri, 20 Jan 2017 19:46:28 GMT",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581\",\"name\":\"nsg9df426581\",\"type\":\"Microsoft.Network/networkSecurityGroups\",\"location\":\"eastus\",\"tags\":{}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103\",\"name\":\"pipb4f402103\",\"type\":\"Microsoft.Network/publicIPAddresses\",\"location\":\"eastus\",\"tags\":{}}]}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14823",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212155Z:8b49c1a4-fa35-41fd-8eab-fb0ead71b1c2",
+      "date" : "Thu, 13 Apr 2017 21:21:55 GMT",
       "vary" : "Accept-Encoding",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "f4e573c6-ffb5-44b0-be4c-87e5effac00e",
-      "content-length" : "237",
+      "x-ms-request-id" : "8b49c1a4-fa35-41fd-8eab-fb0ead71b1c2",
+      "content-length" : "519",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "f4e573c6-ffb5-44b0-be4c-87e5effac00e"
+      "x-ms-correlation-request-id" : "8b49c1a4-fa35-41fd-8eab-fb0ead71b1c2"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network\",\"namespace\":\"Microsoft.Network\",\"authorization\":{\"applicationId\":\"2cf9eb86-36b5-49dc-86ae-9a63135dfa8c\",\"roleDefinitionId\":\"13ba9ab4-19f0-4804-adc4-14ece36cc7a1\"},\"resourceTypes\":[{\"resourceType\":\"virtualNetworks\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"publicIPAddresses\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"networkInterfaces\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"loadBalancers\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"networkSecurityGroups\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"routeTables\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"networkWatchers\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"virtualNetworkGateways\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"localNetworkGateways\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"connections\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"applicationGateways\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"None\"},{\"resourceType\":\"locations\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"locations/operations\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"locations/operationResults\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"locations/CheckDnsNameAvailability\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"locations/usages\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"operations\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"dnszones\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"dnsOperationResults\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\"]},{\"resourceType\":\"dnsOperationStatuses\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\"]},{\"resourceType\":\"dnszones/A\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/AAAA\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/CNAME\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/PTR\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/MX\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/TXT\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"dnszones/SRV\",\"locations\":[\"global\"],\"apiVersions\":[\"2016-04-01\",\"2015-05-04-preview\"]},{\"resourceType\":\"trafficmanagerprofiles\",\"locations\":[\"global\"],\"apiVersions\":[\"2017-03-01\",\"2015-11-01\",\"2015-04-28-preview\"],\"capabilities\":\"CrossResourceGroupResourceMove, CrossSubscriptionResourceMove\"},{\"resourceType\":\"checkTrafficManagerNameAvailability\",\"locations\":[\"global\"],\"apiVersions\":[\"2017-03-01\",\"2015-11-01\",\"2015-04-28-preview\"]},{\"resourceType\":\"trafficManagerGeographicHierarchies\",\"locations\":[\"global\"],\"apiVersions\":[\"2017-03-01\"]},{\"resourceType\":\"expressRouteCircuits\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"],\"capabilities\":\"None\"},{\"resourceType\":\"expressRouteServiceProviders\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\",\"2016-11-01\",\"2016-10-01\",\"2016-09-01\",\"2016-08-01\",\"2016-07-01\",\"2016-06-01\",\"2016-03-30\",\"2015-06-15\",\"2015-05-01-preview\",\"2014-12-01-preview\"]},{\"resourceType\":\"applicationGatewayAvailableWafRuleSets\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\"]},{\"resourceType\":\"routeFilters\",\"locations\":[\"West US\",\"East US\",\"North Europe\",\"West Europe\",\"East Asia\",\"Southeast Asia\",\"North Central US\",\"South Central US\",\"Central US\",\"East US 2\",\"Japan East\",\"Japan West\",\"Brazil South\",\"Australia East\",\"Australia Southeast\",\"Central India\",\"South India\",\"West India\",\"Canada Central\",\"Canada East\",\"West Central US\",\"West US 2\",\"UK West\",\"UK South\",\"Korea Central\",\"Korea South\"],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\"],\"capabilities\":\"None\"},{\"resourceType\":\"bgpServiceCommunities\",\"locations\":[],\"apiVersions\":[\"2017-04-01\",\"2017-03-01\",\"2016-12-01\"]}],\"registrationState\":\"Registered\"}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14822",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212158Z:ddb118ce-3f5f-4d34-9797-09ee2caba17f",
+      "date" : "Thu, 13 Apr 2017 21:21:58 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "ddb118ce-3f5f-4d34-9797-09ee2caba17f",
+      "content-length" : "13437",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "ddb118ce-3f5f-4d34-9797-09ee2caba17f"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\r\n  \"name\": \"nsg9df426581\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581\",\r\n  \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n  \"type\": \"Microsoft.Network/networkSecurityGroups\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"8a91f0c9-eb4e-4b7c-b2fd-691957cab48d\",\r\n    \"securityRules\": [],\r\n    \"defaultSecurityRules\": [\r\n      {\r\n        \"name\": \"AllowVnetInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowAzureLoadBalancerInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowAzureLoadBalancerInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow inbound traffic from azure load balancer\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"AzureLoadBalancer\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllInBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllInBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all inbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Inbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowVnetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowVnetOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to all VMs in VNET\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"VirtualNetwork\",\r\n          \"destinationAddressPrefix\": \"VirtualNetwork\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65000,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"AllowInternetOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/AllowInternetOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Allow outbound traffic from all VMs to Internet\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"Internet\",\r\n          \"access\": \"Allow\",\r\n          \"priority\": 65001,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      },\r\n      {\r\n        \"name\": \"DenyAllOutBound\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581/defaultSecurityRules/DenyAllOutBound\",\r\n        \"etag\": \"W/\\\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"description\": \"Deny all outbound traffic\",\r\n          \"protocol\": \"*\",\r\n          \"sourcePortRange\": \"*\",\r\n          \"destinationPortRange\": \"*\",\r\n          \"sourceAddressPrefix\": \"*\",\r\n          \"destinationAddressPrefix\": \"*\",\r\n          \"access\": \"Deny\",\r\n          \"priority\": 65500,\r\n          \"direction\": \"Outbound\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "etag" : "W/\"268727c2-bb89-4481-92dc-d8fb90f7e5c4\"",
+      "transfer-encoding" : "chunked",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212159Z:6b9a3eea-0842-4178-94ed-cab427c00959",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14820",
+      "date" : "Thu, 13 Apr 2017 21:21:59 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "5993f106-5a26-4e44-a516-a25899bd98bd",
+      "content-length" : "5159",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6b9a3eea-0842-4178-94ed-cab427c00959"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/resources?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "200",
+      "content-type" : "application/json; charset=utf-8",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/networkSecurityGroups/nsg9df426581\",\"name\":\"nsg9df426581\",\"type\":\"Microsoft.Network/networkSecurityGroups\",\"location\":\"eastus\",\"tags\":{}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg9df426581group/providers/Microsoft.Network/publicIPAddresses/pipb4f402103\",\"name\":\"pipb4f402103\",\"type\":\"Microsoft.Network/publicIPAddresses\",\"location\":\"eastus\",\"tags\":{}}]}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14819",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212202Z:dd86a538-4741-414b-8974-359af807e426",
+      "date" : "Thu, 13 Apr 2017 21:22:02 GMT",
+      "vary" : "Accept-Encoding",
+      "pragma" : "no-cache",
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "expires" : "-1",
+      "x-ms-request-id" : "dd86a538-4741-414b-8974-359af807e426",
+      "content-length" : "519",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "dd86a538-4741-414b-8974-359af807e426"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/nsg9df426581group?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "StatusCode" : "202",
+      "Body" : "",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1185",
+      "location" : "http://localhost:3316/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1OU0c5REY0MjY1ODFHUk9VUC1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T212207Z:2bfaa2e5-61d1-4a35-b847-5d5e5239bee6",
+      "date" : "Thu, 13 Apr 2017 21:22:07 GMT",
+      "pragma" : "no-cache",
+      "cache-control" : "no-cache",
+      "retry-after" : "0",
+      "expires" : "-1",
+      "x-ms-request-id" : "2bfaa2e5-61d1-4a35-b847-5d5e5239bee6",
+      "content-length" : "0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2bfaa2e5-61d1-4a35-b847-5d5e5239bee6"
     }
   } ],
-  "variables" : [ ]
+  "variables" : [ "nsg9df426581", "pipb4f402103" ]
 }
