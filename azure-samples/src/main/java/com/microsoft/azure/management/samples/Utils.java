@@ -1022,7 +1022,9 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-
+        if (new File(pfxPath).exists()) {
+            return;
+        }
         String validityInDays = "3650";
         String keyAlg = "RSA";
         String sigAlg = "SHA1withRSA";
