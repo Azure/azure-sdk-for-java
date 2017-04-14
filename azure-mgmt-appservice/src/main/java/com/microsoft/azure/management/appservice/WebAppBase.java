@@ -714,6 +714,8 @@ public interface WebAppBase extends
              * Specifies the definition of a new authentication configuration.
              * @return the first stage of an authentication definition
              */
+
+            @Method
             WebAppAuthentication.DefinitionStages.Blank<WithCreate<FluentT>> defineAuthentication();
         }
 
@@ -1110,6 +1112,7 @@ public interface WebAppBase extends
              * Specifies the definition of a new authentication configuration.
              * @return the first stage of an authentication definition
              */
+            @Method
             WebAppAuthentication.UpdateDefinitionStages.Blank<Update<FluentT>> defineAuthentication();
 
             /**
