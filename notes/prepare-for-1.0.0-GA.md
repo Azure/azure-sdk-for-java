@@ -44,6 +44,79 @@ You can convert a virtual machine with unmanaged disks (Storage Account based) t
     }
 
 
+## App service plan add new required parameter: operating system
+
+To create an `AppServicePlan` in beta5:
+
+```java
+appServiceManager.appServicePlans().define(APP_SERVICE_PLAN_NAME)
+    .withRegion(Region.US_WEST)
+    .withNewResourceGroup(RG_NAME)
+    .withPricingTier(PricingTier.PREMIUM_P1)
+    .create();
+```
+
+To create an `AppServicePlan` in 1.0.0:
+
+```java
+appServiceManager.appServicePlans().define(APP_SERVICE_PLAN_NAME)
+    .withRegion(Region.US_WEST)
+    .withNewResourceGroup(RG_NAME)
+    .withPricingTier(PricingTier.PREMIUM_P1)
+    .withOperatingSystem(OperatingSystem.WINDOWS)
+    .create();
+```
+
+## Parameters for `WebApp` creation are re-ordered
+
+In beta5, we create a `WebApp` with a new plan as following:
+
+```java
+azure.webApps().define(app1Name)
+    .withNewResourceGroup(rg1Name)
+    .withNewAppServicePlan(planName)
+    .withRegion(Region.US_WEST)
+    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+    .create();
+```
+
+or with an existing plan as following:
+
+```java
+azure.webApps().define(app2Name)
+    .withExistingResourceGroup(rg1Name)
+    .withExistingAppServicePlan(plan)
+    .create();
+```
+
+In 1.0, there are a few breaking changes:
+
+- region is the first required parameter for a new app service plan
+- the app service plan is the first required parameter for an existing app service plan
+- the app service plan parameter doesn't require a name (if its name is important, define an app service plan separately in its own `define()` flow)
+- `withNewAppServicePlan()` is separated into `withNewWindowsPlan()` and `withNewLinuxPlan()` depending on the operating system of the plan. Same applies for `withExistingAppServicePlan()`.
+
+To create one with a new app service plan
+
+```java
+WebApp app1 = azure.webApps()
+    .define(app1Name)
+    .withRegion(Region.US_WEST)
+    .withNewResourceGroup(rg1Name)
+    .withNewWindowsPlan(PricingTier.STANDARD_S1)
+    .create();
+```
+
+To create one with an existing app service plan
+
+```java
+azure.webApps()
+    .define(app2Name)
+    .withExistingWindowsPlan(plan)
+    .withExistingResourceGroup(rg1Name)
+    .create();
+```
+
 # Change Method Names #
 
 <table>
