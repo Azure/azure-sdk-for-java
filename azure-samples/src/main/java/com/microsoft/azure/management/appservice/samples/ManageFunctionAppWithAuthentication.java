@@ -146,7 +146,7 @@ public final class ManageFunctionAppWithAuthentication {
             Map<String, String> functionsHeader = new HashMap<>();
             functionsHeader.put("x-functions-key", masterKey);
             String response = curl("http://" + app2Url + "/admin/functions/square/keys", functionsHeader);
-            Pattern pattern = Pattern.compile("\"name\":\"default\",\"value\":\"([\\w=]+)\"");
+            Pattern pattern = Pattern.compile("\"name\":\"default\",\"value\":\"([\\w=/]+)\"");
             Matcher matcher = pattern.matcher(response);
             matcher.find();
             String functionKey = matcher.group(1);
