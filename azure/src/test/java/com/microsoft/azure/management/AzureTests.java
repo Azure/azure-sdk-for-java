@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -84,7 +85,18 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testGenericResources() throws Exception {
-        PagedList<GenericResource> resources = azure.genericResources().listByResourceGroup("sdkpriv");
+        // Create some resources
+        NetworkSecurityGroup nsg = azure.networkSecurityGroups().define(SdkContext.randomResourceName("nsg", 13))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .create();
+        azure.publicIPAddresses().define(SdkContext.randomResourceName("pip", 13))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(nsg.resourceGroupName())
+            .create();
+
+        PagedList<GenericResource> resources = azure.genericResources().listByResourceGroup(nsg.resourceGroupName());
+        Assert.assertEquals(2, resources.size());
         GenericResource firstResource = resources.get(0);
 
         GenericResource resourceById = azure.genericResources().getById(firstResource.id());
@@ -94,6 +106,7 @@ public class AzureTests extends TestBase {
                 firstResource.resourceType(),
                 firstResource.name());
         Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByDetails.id()));
+        azure.resourceGroups().beginDeleteByName(nsg.resourceGroupName());
     }
 
     /**
@@ -511,7 +524,7 @@ public class AzureTests extends TestBase {
 
         Assert.assertEquals(storageAccount.name(), storageAccountName);
 
-        azure.resourceGroups().deleteByName(storageAccount.resourceGroupName());
+        azure.resourceGroups().beginDeleteByName(storageAccount.resourceGroupName());
     }
 
     @Test

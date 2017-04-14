@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTestBase {
     }
 
     @Test
+    @Ignore("Doesn't work when logged as a service principal")
     public void getServicePrincipal() throws Exception {
         List<ServicePrincipal> servicePrincipals = graphRbacManager.servicePrincipals().list();
         Assert.assertNotNull(servicePrincipals);
