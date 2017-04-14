@@ -52,85 +52,10 @@ You can convert a virtual machine with unmanaged disks (Storage Account based) t
     <th>To</th>
     <th>Ref</th>
   </tr>
-    <tr>
-    <td><code>VirtualMachineScaleSetVM.isOsBasedOnPlatformImage()</code></td>
-    <td><code>VirtualMachineScaleSetVM.isOSBasedOnPlatformImage()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
   <tr>
-    <td><code>VirtualMachineScaleSetVM.getPlatformImage()</code></td>
-    <td><code>VirtualMachineScaleSetVM.getOSPlatformImage()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachineScaleSetVM.customImageVhdUri()</code></td>
-    <td><code>VirtualMachineScaleSetVM.storedImageUnmanagedVhdUri()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachineScaleSetVM.osDiskVhdUri()</code></td>
-    <td><code>VirtualMachineScaleSetVM.osUnmanagedDiskVhdUri()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withOsDisk()</code></td>
-    <td><code>VirtualMachine.withSpecializedOsUnmanagedDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withOsDiskCaching()</code></td>
-    <td><code>VirtualMachine.withOSDiskCaching()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withOsDiskSizeInGb()</code></td>
-    <td><code>VirtualMachine.withOSDiskSizeInGB()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.osDiskVhdUri()</code></td>
-    <td><code>VirtualMachine.osUnmanagedDiskVhdUri()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-    <tr>
-    <td><code>VirtualMachine.getPlatformImage()</code></td>
-    <td><code>VirtualMachine.getOSPlatformImage()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.defineNewDataDisk()</code></td>
-    <td><code>VirtualMachine.defineUnmanagedDataDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withNewDataDisk()</code></td>
-    <td><code>VirtualMachine.withNewUnmanagedDataDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withExistingDataDisk()</code></td>
-    <td><code>VirtualMachine.withExistingUnmanagedDataDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.withoutDataDisk()</code></td>
-    <td><code>VirtualMachine.withoutUnmanagedDataDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.updateDataDisk()</code></td>
-    <td><code>VirtualMachine.updateUnmanagedDataDisk()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>VirtualMachine.dataDisks()</code></td>
-    <td><code>VirtualMachine.unmanagedDataDisks()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
-  </tr>
-  <tr>
-    <td><code>Subscriptions.getByName()</code></td>
-    <td><code>Subscriptions..getById()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1396">#1396</a></td>
+      <td><code>VirtualMachine.extensions()</code></td>
+      <td><code>VirtualMachine.getExtensions()</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1466">#1466</a></td>
   </tr>
 </table>
 
