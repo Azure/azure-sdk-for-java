@@ -179,10 +179,9 @@ You can create a Web App instance by using another `define() … create()` metho
 ```java
 WebApp webApp = azure.webApps()
     .define(appName)
-    .withNewResourceGroup(rgName)
-    .withNewAppServicePlan(planName)
     .withRegion(Region.US_WEST)
-    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+    .withNewResourceGroup(rgName)
+    .withNewWindowsPlan(PricingTier.STANDARD_S1)
     .create();
 ```
 
