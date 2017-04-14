@@ -8,9 +8,9 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
+import com.microsoft.azure.management.appservice.BuiltInAuthenticationProvider;
 import com.microsoft.azure.management.appservice.JavaVersion;
 import com.microsoft.azure.management.appservice.PricingTier;
-import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -19,24 +19,21 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PushCommand;
-import org.eclipse.jgit.transport.RefSpec;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Azure App Service basic sample for managing web apps.
- *  - Create 4 web apps under the same new app service plan:
- *    - Deploy to 1 using FTP
- *    - Deploy to 2 using local Git repository
- *    - Deploy to 3 using a publicly available Git repository
- *    - Deploy to 4 using a GitHub repository with continuous integration
+ * Azure App Service sample for managing authentication for web apps.
+ *  - Create 4 web apps under the same new app service plan with:
+ *    - Active Directory login for 1
+ *    - Facebook login for 2
+ *    - Google login for 3
+ *    - Microsoft login for 4
  */
-public final class ManageWebAppSourceControl {
+public final class ManageWebAppWithAuthentication {
 
     private static OkHttpClient httpClient;
 
@@ -78,31 +75,35 @@ public final class ManageWebAppSourceControl {
             Utils.print(app1);
 
             //============================================================
-            // Deploy to app 1 through FTP
+            // Set up active directory authentication
 
-            System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
+            System.out.println("Please create an AD application with redirect URL " + app1Url);
+            System.out.print("Application ID is:");
+            Console console = System.console();
+            String applicationId = console.readLine();
+            System.out.print("Tenant ID is:");
+            String tenantId = console.readLine();
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+            System.out.println("Updating web app " + app1Name + " to use active directory login...");
 
-            System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
+            app1.update()
+                    .defineAuthentication()
+                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.AZURE_ACTIVE_DIRECTORY)
+                        .withActiveDirectory(applicationId, "https://sts.windows.net/" + tenantId)
+                        .attach()
+                    .apply();
+
+            System.out.println("Added active directory login to " + app1.name());
             Utils.print(app1);
 
-            // warm up
-            System.out.println("Warming up " + app1Url + "/helloworld...");
-            curl("http://" + app1Url + "/helloworld");
-            Thread.sleep(5000);
-            System.out.println("CURLing " + app1Url + "/helloworld...");
-            System.out.println(curl("http://" + app1Url + "/helloworld"));
-
             //============================================================
-            // Create a second web app with local git source control
+            // Create a second web app
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    .withLocalGitSourceControl()
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
@@ -111,33 +112,25 @@ public final class ManageWebAppSourceControl {
             Utils.print(app2);
 
             //============================================================
-            // Deploy to app 2 through local Git
+            // Set up Facebook authentication
 
-            System.out.println("Deploying a local Tomcat source to " + app2Name + " through Git...");
+            System.out.println("Please create a Facebook developer application with whitelisted URL " + app2Url);
+            System.out.print("App ID is:");
+            String fbAppId = console.readLine();
+            System.out.print("App secret is:");
+            String fbAppSecret = console.readLine();
 
-            PublishingProfile profile = app2.getPublishingProfile();
-            Git git = Git
-                    .init()
-                    .setDirectory(new File(ManageWebAppSourceControl.class.getResource("/azure-samples-appservice-helloworld/").getPath()))
-                    .call();
-            git.add().addFilepattern(".").call();
-            git.commit().setMessage("Initial commit").call();
-            PushCommand command = git.push();
-            command.setRemote(profile.gitUrl());
-            command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(profile.gitUsername(), profile.gitPassword()));
-            command.setRefSpecs(new RefSpec("master:master"));
-            command.setForce(true);
-            command.call();
+            System.out.println("Updating web app " + app2Name + " to use Facebook login...");
 
-            System.out.println("Deployment to web app " + app2.name() + " completed");
+            app2.update()
+                    .defineAuthentication()
+                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
+                        .withFacebook(fbAppId, fbAppSecret)
+                        .attach()
+                    .apply();
+
+            System.out.println("Added Facebook login to " + app2.name());
             Utils.print(app2);
-
-            // warm up
-            System.out.println("Warming up " + app2Url + "/helloworld...");
-            curl("http://" + app2Url + "/helloworld");
-            Thread.sleep(5000);
-            System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(curl("http://" + app2Url + "/helloworld"));
 
             //============================================================
             // Create a 3rd web app with a public GitHub repo in Azure-Samples
@@ -155,38 +148,60 @@ public final class ManageWebAppSourceControl {
             System.out.println("Created web app " + app3.name());
             Utils.print(app3);
 
-            // warm up
-            System.out.println("Warming up " + app3Url + "...");
-            curl("http://" + app3Url);
-            Thread.sleep(5000);
-            System.out.println("CURLing " + app3Url + "...");
-            System.out.println(curl("http://" + app3Url));
+            //============================================================
+            // Set up Google authentication
+
+            System.out.println("Please create a Google developer application with redirect URL " + app3Url);
+            System.out.print("Client ID is:");
+            String gClientId = console.readLine();
+            System.out.print("Client secret is:");
+            String gClientSecret = console.readLine();
+
+            System.out.println("Updating web app " + app3Name + " to use Google login...");
+
+            app3.update()
+                    .defineAuthentication()
+                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.GOOGLE)
+                        .withGoogle(gClientId, gClientSecret)
+                        .attach()
+                    .apply();
+
+            System.out.println("Added Google login to " + app3.name());
+            Utils.print(app3);
 
             //============================================================
-            // Create a 4th web app with a personal GitHub repo and turn on continuous integration
+            // Create a 4th web app
 
             System.out.println("Creating another web app " + app4Name + "...");
             WebApp app4 = azure.webApps()
                     .define(app4Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
-                    // Uncomment the following lines to turn on 4th scenario
-                    //.defineSourceControl()
-                    //    .withContinuouslyIntegratedGitHubRepository("username", "reponame")
-                    //    .withBranch("master")
-                    //    .withGitHubAccessToken("YOUR GITHUB PERSONAL TOKEN")
-                    //    .attach()
                     .create();
 
             System.out.println("Created web app " + app4.name());
             Utils.print(app4);
 
-            // warm up
-            System.out.println("Warming up " + app4Url + "...");
-            curl("http://" + app4Url);
-            Thread.sleep(5000);
-            System.out.println("CURLing " + app4Url + "...");
-            System.out.println(curl("http://" + app4Url));
+            //============================================================
+            // Set up Google authentication
+
+            System.out.println("Please create a Microsoft developer application with redirect URL " + app4Url);
+            System.out.print("Client ID is:");
+            String clientId = console.readLine();
+            System.out.print("Client secret is:");
+            String clientSecret = console.readLine();
+
+            System.out.println("Updating web app " + app3Name + " to use Microsoft login...");
+
+            app4.update()
+                    .defineAuthentication()
+                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.MICROSOFT_ACCOUNT)
+                        .withMicrosoft(clientId, clientSecret)
+                        .attach()
+                    .apply();
+
+            System.out.println("Added Microsoft login to " + app4.name());
+            Utils.print(app4);
 
             return true;
         } catch (Exception e) {

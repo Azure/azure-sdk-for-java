@@ -8,17 +8,16 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.JavaVersion;
-import com.microsoft.azure.management.appservice.PricingTier;
+import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.management.appservice.PublishingProfile;
-import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.transport.RefSpec;
@@ -29,14 +28,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Azure App Service basic sample for managing web apps.
- *  - Create 4 web apps under the same new app service plan:
+ * Azure App Service basic sample for managing function apps.
+ *  - Create 4 function apps under the same new app service plan:
  *    - Deploy to 1 using FTP
  *    - Deploy to 2 using local Git repository
  *    - Deploy to 3 using a publicly available Git repository
  *    - Deploy to 4 using a GitHub repository with continuous integration
  */
-public final class ManageWebAppSourceControl {
+public final class ManageFunctionAppSourceControl {
 
     private static OkHttpClient httpClient;
 
@@ -62,52 +61,50 @@ public final class ManageWebAppSourceControl {
 
 
             //============================================================
-            // Create a web app with a new app service plan
+            // Create a function app with a new app service plan
 
-            System.out.println("Creating web app " + app1Name + " in resource group " + rgName + "...");
+            System.out.println("Creating function app " + app1Name + " in resource group " + rgName + "...");
 
-            WebApp app1 = azure.webApps().define(app1Name)
+            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
 
-            System.out.println("Created web app " + app1.name());
+            System.out.println("Created function app " + app1.name());
             Utils.print(app1);
 
             //============================================================
             // Deploy to app 1 through FTP
 
-            System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
+            System.out.println("Deploying a function app to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+            Utils.uploadFileToFtp(app1.getPublishingProfile(), "host.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/function.json", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileToFtp(app1.getPublishingProfile(), "square/index.js", ManageFunctionAppSourceControl.class.getResourceAsStream("/square-function-app/square/index.js"));
 
-            System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
+            System.out.println("Deployment square app to function app " + app1.name() + " completed");
             Utils.print(app1);
 
             // warm up
-            System.out.println("Warming up " + app1Url + "/helloworld...");
-            curl("http://" + app1Url + "/helloworld");
+            System.out.println("Warming up " + app1Url + "/api/square...");
+            post("http://" + app1Url + "/api/square", "625");
             Thread.sleep(5000);
-            System.out.println("CURLing " + app1Url + "/helloworld...");
-            System.out.println(curl("http://" + app1Url + "/helloworld"));
+            System.out.println("CURLing " + app1Url + "/api/square...");
+            System.out.println("Square of 625 is " + post("http://" + app1Url + "/api/square", "625"));
 
             //============================================================
-            // Create a second web app with local git source control
+            // Create a second function app with local git source control
 
-            System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
+            System.out.println("Creating another function app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            WebApp app2 = azure.webApps().define(app2Name)
-                    .withExistingWindowsPlan(plan)
+            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+                    .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
+                    .withExistingStorageAccount(app1.storageAccount())
                     .withLocalGitSourceControl()
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                     .create();
 
-            System.out.println("Created web app " + app2.name());
+            System.out.println("Created function app " + app2.name());
             Utils.print(app2);
 
             //============================================================
@@ -118,7 +115,7 @@ public final class ManageWebAppSourceControl {
             PublishingProfile profile = app2.getPublishingProfile();
             Git git = Git
                     .init()
-                    .setDirectory(new File(ManageWebAppSourceControl.class.getResource("/azure-samples-appservice-helloworld/").getPath()))
+                    .setDirectory(new File(ManageFunctionAppSourceControl.class.getResource("/square-function-app/").getPath()))
                     .call();
             git.add().addFilepattern(".").call();
             git.commit().setMessage("Initial commit").call();
@@ -129,47 +126,49 @@ public final class ManageWebAppSourceControl {
             command.setForce(true);
             command.call();
 
-            System.out.println("Deployment to web app " + app2.name() + " completed");
+            System.out.println("Deployment to function app " + app2.name() + " completed");
             Utils.print(app2);
 
             // warm up
-            System.out.println("Warming up " + app2Url + "/helloworld...");
-            curl("http://" + app2Url + "/helloworld");
+            System.out.println("Warming up " + app2Url + "/api/square...");
+            post("http://" + app2Url + "/api/square", "725");
             Thread.sleep(5000);
-            System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(curl("http://" + app2Url + "/helloworld"));
+            System.out.println("CURLing " + app2Url + "/api/square...");
+            System.out.println("Square of 725 is " + post("http://" + app2Url + "/api/square", "725"));
 
             //============================================================
-            // Create a 3rd web app with a public GitHub repo in Azure-Samples
+            // Create a 3rd function app with a public GitHub repo in Azure-Samples
 
-            System.out.println("Creating another web app " + app3Name + "...");
-            WebApp app3 = azure.webApps().define(app3Name)
-                    .withExistingWindowsPlan(plan)
+            System.out.println("Creating another function app " + app3Name + "...");
+            FunctionApp app3 = azure.appServices().functionApps().define(app3Name)
+                    .withExistingAppServicePlan(plan)
                     .withNewResourceGroup(rgName)
+                    .withExistingStorageAccount(app2.storageAccount())
                     .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
+                        .withPublicGitRepository("https://github.com/jianghaolu/square-function-app-sample")
                         .withBranch("master")
                         .attach()
                     .create();
 
-            System.out.println("Created web app " + app3.name());
+            System.out.println("Created function app " + app3.name());
             Utils.print(app3);
 
             // warm up
-            System.out.println("Warming up " + app3Url + "...");
-            curl("http://" + app3Url);
+            System.out.println("Warming up " + app3Url + "/api/square...");
+            post("http://" + app3Url + "/api/square", "825");
             Thread.sleep(5000);
-            System.out.println("CURLing " + app3Url + "...");
-            System.out.println(curl("http://" + app3Url));
+            System.out.println("CURLing " + app3Url + "/api/square...");
+            System.out.println("Square of 825 is " + post("http://" + app3Url + "/api/square", "825"));
 
             //============================================================
-            // Create a 4th web app with a personal GitHub repo and turn on continuous integration
+            // Create a 4th function app with a personal GitHub repo and turn on continuous integration
 
-            System.out.println("Creating another web app " + app4Name + "...");
-            WebApp app4 = azure.webApps()
+            System.out.println("Creating another function app " + app4Name + "...");
+            FunctionApp app4 = azure.appServices().functionApps()
                     .define(app4Name)
-                    .withExistingWindowsPlan(plan)
+                    .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
+                    .withExistingStorageAccount(app3.storageAccount())
                     // Uncomment the following lines to turn on 4th scenario
                     //.defineSourceControl()
                     //    .withContinuouslyIntegratedGitHubRepository("username", "reponame")
@@ -178,7 +177,7 @@ public final class ManageWebAppSourceControl {
                     //    .attach()
                     .create();
 
-            System.out.println("Created web app " + app4.name());
+            System.out.println("Created function app " + app4.name());
             Utils.print(app4);
 
             // warm up
@@ -235,6 +234,15 @@ public final class ManageWebAppSourceControl {
 
     private static String curl(String url) {
         Request request = new Request.Builder().url(url).get().build();
+        try {
+            return httpClient.newCall(request).execute().body().string();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static String post(String url, String body) {
+        Request request = new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("text/plain"), body)).build();
         try {
             return httpClient.newCall(request).execute().body().string();
         } catch (IOException e) {

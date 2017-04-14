@@ -8,7 +8,7 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.PricingTier;
-import com.microsoft.azure.management.appservice.PhpVersion;
+import com.microsoft.azure.management.appservice.RuntimeStack;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  *  - Update the SQL server's firewall rules to allow the web app to access
  *  - Clean up
  */
-public final class ManageWebAppSqlConnection {
+public final class ManageLinuxWebAppSqlConnection {
 
     private static OkHttpClient httpClient;
 
@@ -83,8 +83,8 @@ public final class ManageWebAppSqlConnection {
             WebApp app = azure.webApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withPhpVersion(PhpVersion.PHP5_6)
+                    .withNewLinuxPlan(PricingTier.STANDARD_S1)
+                    .withBuiltInImage(RuntimeStack.PHP_5_6_23)
                     .defineSourceControl()
                         .withPublicGitRepository("https://github.com/ProjectNami/projectnami")
                         .withBranch("master")

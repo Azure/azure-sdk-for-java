@@ -8,10 +8,8 @@ package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
-import com.microsoft.azure.management.appservice.PricingTier;
-import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.appservice.FunctionApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -24,16 +22,16 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Azure App Service sample for managing web apps.
- *  - app service plan, web app
- *    - Create 2 web apps under the same new app service plan
+ * Azure App Service sample for managing function apps.
+ *  - app service plan, function app
+ *    - Create 2 function apps under the same new app service plan
  *  - domain
  *    - Create a domain
  *  - certificate
  *    - Upload a self-signed wildcard certificate
- *    - update both web apps to use the domain and the created wildcard SSL certificate
+ *    - update both function apps to use the domain and the created wildcard SSL certificate
  */
-public final class ManageWebAppWithDomainSsl {
+public final class ManageFunctionAppWithDomainSsl {
 
     private static OkHttpClient httpClient;
 
@@ -52,30 +50,28 @@ public final class ManageWebAppWithDomainSsl {
 
         try {
             //============================================================
-            // Create a web app with a new app service plan
+            // Create a function app with a new app service plan
 
-            System.out.println("Creating web app " + app1Name + "...");
+            System.out.println("Creating function app " + app1Name + "...");
 
-            WebApp app1 = azure.webApps().define(app1Name)
+            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .create();
 
-            System.out.println("Created web app " + app1.name());
+            System.out.println("Created function app " + app1.name());
             Utils.print(app1);
 
             //============================================================
-            // Create a second web app with the same app service plan
+            // Create a second function app with the same app service plan
 
-            System.out.println("Creating another web app " + app2Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            WebApp app2 = azure.webApps().define(app2Name)
-                    .withExistingWindowsPlan(plan)
+            System.out.println("Creating another function app " + app2Name + "...");
+            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+                    .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
                     .create();
 
-            System.out.println("Created web app " + app2.name());
+            System.out.println("Created function app " + app2.name());
             Utils.print(app2);
 
             //============================================================
@@ -104,9 +100,9 @@ public final class ManageWebAppWithDomainSsl {
             Utils.print(domain);
 
             //============================================================
-            // Bind domain to web app 1
+            // Bind domain to function app 1
 
-            System.out.println("Binding http://" + app1Name + "." + domainName + " to web app " + app1Name + "...");
+            System.out.println("Binding http://" + app1Name + "." + domainName + " to function app " + app1Name + "...");
 
             app1 = app1.update()
                     .defineHostnameBinding()
@@ -116,14 +112,14 @@ public final class ManageWebAppWithDomainSsl {
                         .attach()
                     .apply();
 
-            System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
+            System.out.println("Finished binding http://" + app1Name + "." + domainName + " to function app " + app1Name);
             Utils.print(app1);
 
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
-            String cerPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
+            String pfxPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".pfx";
+            String cerPath = ManageFunctionAppWithDomainSsl.class.getResource("/").getPath() + app2Name + "." + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -132,9 +128,9 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println("Created self-signed certificate " + pfxPath);
 
             //============================================================
-            // Bind domain to web app 2 and turn on wild card SSL for both
+            // Bind domain to function app 2 and turn on wild card SSL for both
 
-            System.out.println("Binding https://" + app1Name + "." + domainName + " to web app " + app1Name + "...");
+            System.out.println("Binding https://" + app1Name + "." + domainName + " to function app " + app1Name + "...");
 
             app1 = app1.update()
                     .withManagedHostnameBindings(domain, app1Name)
@@ -145,10 +141,10 @@ public final class ManageWebAppWithDomainSsl {
                         .attach()
                     .apply();
 
-            System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
+            System.out.println("Finished binding http://" + app1Name + "." + domainName + " to function app " + app1Name);
             Utils.print(app1);
 
-            System.out.println("Binding https://" + app2Name + "." + domainName + " to web app " + app2Name + "...");
+            System.out.println("Binding https://" + app2Name + "." + domainName + " to function app " + app2Name + "...");
 
             app2 = app2.update()
                     .withManagedHostnameBindings(domain, app2Name)
@@ -159,7 +155,7 @@ public final class ManageWebAppWithDomainSsl {
                         .attach()
                     .apply();
 
-            System.out.println("Finished binding http://" + app2Name + "." + domainName + " to web app " + app2Name);
+            System.out.println("Finished binding http://" + app2Name + "." + domainName + " to function app " + app2Name);
             Utils.print(app2);
 
             return true;

@@ -34,8 +34,8 @@ import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.MXRecordSet;
+import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.SoaRecord;
@@ -1022,7 +1022,9 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-
+        if (new File(pfxPath).exists()) {
+            return;
+        }
         String validityInDays = "3650";
         String keyAlg = "RSA";
         String sigAlg = "SHA1withRSA";
@@ -1466,6 +1468,11 @@ public final class Utils {
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
         String path = "./site/wwwroot/webapps";
+        if (fileName.contains("/")) {
+            int lastslash = fileName.lastIndexOf('/');
+            path = path + "/" + fileName.substring(0, lastslash);
+            fileName = fileName.substring(lastslash);
+        }
         try {
             ftpClient.connect(server);
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
