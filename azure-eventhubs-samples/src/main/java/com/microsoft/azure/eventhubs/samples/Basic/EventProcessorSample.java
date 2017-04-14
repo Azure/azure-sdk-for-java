@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
-package com.microsoft.azure.eventhubs.samples;
+package com.microsoft.azure.eventhubs.samples.Basic;
 
 /*
  * Until the official release, there is no package distributed for EventProcessorHost, and hence no good
@@ -12,7 +12,12 @@ package com.microsoft.azure.eventhubs.samples;
  */
 
 import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventprocessorhost.*;
+import com.microsoft.azure.eventprocessorhost.CloseReason;
+import com.microsoft.azure.eventprocessorhost.EventProcessorHost;
+import com.microsoft.azure.eventprocessorhost.EventProcessorOptions;
+import com.microsoft.azure.eventprocessorhost.ExceptionReceivedEventArgs;
+import com.microsoft.azure.eventprocessorhost.IEventProcessor;
+import com.microsoft.azure.eventprocessorhost.PartitionContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 
 import java.util.concurrent.ExecutionException;
