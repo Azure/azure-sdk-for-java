@@ -1,128 +1,150 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg583873?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "201",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg583873\",\"name\":\"rg583873\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052547Z:074ed19a-93a0-4926-a8b9-418481400216",
-      "date" : "Thu, 09 Feb 2017 05:25:46 GMT",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69523f\",\"name\":\"rg69523f\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212852Z:48f30649-da87-44cf-9b6c-f12daff86b4d",
+      "date" : "Fri, 14 Apr 2017 21:28:51 GMT",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "074ed19a-93a0-4926-a8b9-418481400216",
+      "x-ms-request-id" : "48f30649-da87-44cf-9b6c-f12daff86b4d",
       "content-length" : "230",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "074ed19a-93a0-4926-a8b9-418481400216"
+      "x-ms-correlation-request-id" : "48f30649-da87-44cf-9b6c-f12daff86b4d"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?$filter=tagname%20eq%20%27department%27%20and%20tagvalue%20eq%20%27finance%27&api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?$filter=tagname%20eq%20%27department%27%20and%20tagvalue%20eq%20%27finance%27&api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "200",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg583873\",\"name\":\"rg583873\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}]}",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14999",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052547Z:58aaa605-2c00-4291-a84e-2bd00d127201",
-      "date" : "Thu, 09 Feb 2017 05:25:47 GMT",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg30856c\",\"name\":\"rg30856c\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg38682c\",\"name\":\"rg38682c\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg640238\",\"name\":\"rg640238\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69523f\",\"name\":\"rg69523f\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg74160e\",\"name\":\"rg74160e\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}]}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14707",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212852Z:e3780d2e-7166-4da8-9a0b-2c02921127bc",
+      "date" : "Fri, 14 Apr 2017 21:28:51 GMT",
       "vary" : "Accept-Encoding",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "58aaa605-2c00-4291-a84e-2bd00d127201",
-      "content-length" : "242",
+      "x-ms-request-id" : "e3780d2e-7166-4da8-9a0b-2c02921127bc",
+      "content-length" : "1166",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "58aaa605-2c00-4291-a84e-2bd00d127201"
+      "x-ms-correlation-request-id" : "e3780d2e-7166-4da8-9a0b-2c02921127bc"
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "cache-control" : "no-cache",
+      "StatusCode" : "204",
+      "Body" : "",
+      "expires" : "-1",
+      "x-ms-request-id" : "23a0f22d-aa91-4e9d-9057-1907c3fd5b42",
+      "content-length" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212855Z:23a0f22d-aa91-4e9d-9057-1907c3fd5b42",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14706",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "date" : "Fri, 14 Apr 2017 21:28:54 GMT",
+      "x-ms-correlation-request-id" : "23a0f22d-aa91-4e9d-9057-1907c3fd5b42",
+      "pragma" : "no-cache"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg583873?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "200",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg583873\",\"name\":\"rg583873\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14998",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052547Z:8f88536e-6362-4f58-91cd-842a3159ce0e",
-      "date" : "Thu, 09 Feb 2017 05:25:47 GMT",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69523f\",\"name\":\"rg69523f\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14695",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212930Z:36fe3993-30d2-4b8c-89b5-e74dbdb66f04",
+      "date" : "Fri, 14 Apr 2017 21:29:29 GMT",
       "vary" : "Accept-Encoding",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "8f88536e-6362-4f58-91cd-842a3159ce0e",
+      "x-ms-request-id" : "36fe3993-30d2-4b8c-89b5-e74dbdb66f04",
       "content-length" : "230",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "8f88536e-6362-4f58-91cd-842a3159ce0e"
+      "x-ms-correlation-request-id" : "36fe3993-30d2-4b8c-89b5-e74dbdb66f04"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg583873?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "200",
       "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg583873\",\"name\":\"rg583873\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg69523f\",\"name\":\"rg69523f\",\"location\":\"southcentralus\",\"tags\":{\"department\":\"finance\",\"tagname\":\"tagvalue\",\"tag1\":\"value1\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
       "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052547Z:cbeb7e1e-83cd-4cfb-8f75-812e8f0768c2",
-      "date" : "Thu, 09 Feb 2017 05:25:47 GMT",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212930Z:30d32727-14b9-4e99-89ac-7964c82efd3a",
+      "date" : "Fri, 14 Apr 2017 21:29:29 GMT",
       "vary" : "Accept-Encoding",
       "pragma" : "no-cache",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "cbeb7e1e-83cd-4cfb-8f75-812e8f0768c2",
+      "x-ms-request-id" : "30d32727-14b9-4e99-89ac-7964c82efd3a",
       "content-length" : "246",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "cbeb7e1e-83cd-4cfb-8f75-812e8f0768c2"
+      "x-ms-correlation-request-id" : "30d32727-14b9-4e99-89ac-7964c82efd3a"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg583873?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "202",
       "Body" : "",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
-      "location" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052548Z:83f41832-d9f3-4c4d-a214-8d5fb07e137a",
-      "date" : "Thu, 09 Feb 2017 05:25:48 GMT",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "location" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212931Z:f8591123-b9b8-4ac9-b7f3-bb0e6b0de698",
+      "date" : "Fri, 14 Apr 2017 21:29:31 GMT",
       "pragma" : "no-cache",
       "cache-control" : "no-cache",
       "retry-after" : "0",
       "expires" : "-1",
-      "x-ms-request-id" : "83f41832-d9f3-4c4d-a214-8d5fb07e137a",
+      "x-ms-request-id" : "f8591123-b9b8-4ac9-b7f3-bb0e6b0de698",
       "content-length" : "0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "83f41832-d9f3-4c4d-a214-8d5fb07e137a"
+      "x-ms-correlation-request-id" : "f8591123-b9b8-4ac9-b7f3-bb0e6b0de698"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
     },
     "Response" : {
       "retry-after" : "0",
@@ -130,21 +152,21 @@
       "StatusCode" : "202",
       "Body" : "",
       "expires" : "-1",
-      "x-ms-request-id" : "2d58f142-e283-4423-b647-20c363827cb9",
-      "location" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+      "x-ms-request-id" : "734afafd-d029-47d8-899a-86d3d3b4d2b1",
+      "location" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
       "content-length" : "0",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052548Z:2d58f142-e283-4423-b647-20c363827cb9",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14997",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212932Z:734afafd-d029-47d8-899a-86d3d3b4d2b1",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14694",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "date" : "Thu, 09 Feb 2017 05:25:48 GMT",
-      "x-ms-correlation-request-id" : "2d58f142-e283-4423-b647-20c363827cb9",
+      "date" : "Fri, 14 Apr 2017 21:29:31 GMT",
+      "x-ms-correlation-request-id" : "734afafd-d029-47d8-899a-86d3d3b4d2b1",
       "pragma" : "no-cache"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
     },
     "Response" : {
       "retry-after" : "0",
@@ -152,21 +174,21 @@
       "StatusCode" : "202",
       "Body" : "",
       "expires" : "-1",
-      "x-ms-request-id" : "ebab477e-7c9f-4037-86b6-a5af0e3fe252",
-      "location" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+      "x-ms-request-id" : "b6f269e5-71a3-48be-a1dd-12db61e6c7bb",
+      "location" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
       "content-length" : "0",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052604Z:ebab477e-7c9f-4037-86b6-a5af0e3fe252",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14996",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T212947Z:b6f269e5-71a3-48be-a1dd-12db61e6c7bb",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14692",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "date" : "Thu, 09 Feb 2017 05:26:03 GMT",
-      "x-ms-correlation-request-id" : "ebab477e-7c9f-4037-86b6-a5af0e3fe252",
+      "date" : "Fri, 14 Apr 2017 21:29:46 GMT",
+      "x-ms-correlation-request-id" : "b6f269e5-71a3-48be-a1dd-12db61e6c7bb",
       "pragma" : "no-cache"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
     },
     "Response" : {
       "retry-after" : "0",
@@ -174,21 +196,21 @@
       "StatusCode" : "202",
       "Body" : "",
       "expires" : "-1",
-      "x-ms-request-id" : "d662b1a8-830f-4818-a630-12e00364e6d0",
-      "location" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+      "x-ms-request-id" : "cf840d2d-7d08-4cfe-a6ab-8b700382ded9",
+      "location" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
       "content-length" : "0",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052619Z:d662b1a8-830f-4818-a630-12e00364e6d0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14995",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T213002Z:cf840d2d-7d08-4cfe-a6ab-8b700382ded9",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14693",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "date" : "Thu, 09 Feb 2017 05:26:18 GMT",
-      "x-ms-correlation-request-id" : "d662b1a8-830f-4818-a630-12e00364e6d0",
+      "date" : "Fri, 14 Apr 2017 21:30:02 GMT",
+      "x-ms-correlation-request-id" : "cf840d2d-7d08-4cfe-a6ab-8b700382ded9",
       "pragma" : "no-cache"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzU4Mzg3My1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY5NTIzRi1TT1VUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoic291dGhjZW50cmFsdXMifQ?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)"
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)"
     },
     "Response" : {
       "retry-after" : "0",
@@ -196,39 +218,39 @@
       "StatusCode" : "200",
       "Body" : "",
       "expires" : "-1",
-      "x-ms-request-id" : "1f0e5122-fb6d-4504-b219-bf17b27e3e2b",
+      "x-ms-request-id" : "966dc841-86a1-4468-9e62-72e9e629e1d8",
       "content-length" : "0",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052634Z:1f0e5122-fb6d-4504-b219-bf17b27e3e2b",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14994",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T213017Z:966dc841-86a1-4468-9e62-72e9e629e1d8",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14692",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "date" : "Thu, 09 Feb 2017 05:26:33 GMT",
-      "x-ms-correlation-request-id" : "1f0e5122-fb6d-4504-b219-bf17b27e3e2b",
+      "date" : "Fri, 14 Apr 2017 21:30:17 GMT",
+      "x-ms-correlation-request-id" : "966dc841-86a1-4468-9e62-72e9e629e1d8",
       "pragma" : "no-cache"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "http://localhost:2714/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg583873?api-version=2016-09-01",
+    "Uri" : "http://localhost:3675/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg69523f?api-version=2016-09-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (ResourceManagementClient, 2016-09-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (ResourceManagementClient, 2016-09-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "StatusCode" : "404",
       "content-type" : "application/json; charset=utf-8",
       "Body" : "",
-      "x-ms-ratelimit-remaining-subscription-reads" : "14993",
-      "x-ms-routing-request-id" : "WESTUS:20170209T052634Z:0b4ffda4-9a30-4a99-aed0-005e76a2956c",
-      "date" : "Thu, 09 Feb 2017 05:26:33 GMT",
+      "x-ms-ratelimit-remaining-subscription-reads" : "14691",
+      "x-ms-routing-request-id" : "WESTUS2:20170414T213017Z:24c1045f-8f10-4b57-a1e1-af51c5394e59",
+      "date" : "Fri, 14 Apr 2017 21:30:17 GMT",
       "pragma" : "no-cache",
       "x-ms-failure-cause" : "gateway",
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "expires" : "-1",
-      "x-ms-request-id" : "0b4ffda4-9a30-4a99-aed0-005e76a2956c",
+      "x-ms-request-id" : "24c1045f-8f10-4b57-a1e1-af51c5394e59",
       "content-length" : "100",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "0b4ffda4-9a30-4a99-aed0-005e76a2956c"
+      "x-ms-correlation-request-id" : "24c1045f-8f10-4b57-a1e1-af51c5394e59"
     }
   } ],
-  "variables" : [ "rg583873" ]
+  "variables" : [ "rg69523f" ]
 }
