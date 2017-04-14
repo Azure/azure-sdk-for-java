@@ -107,12 +107,12 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.1</version>
+        <version>[1.0.1,1.1.0)</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>1.0.0</version>
+        <version>[1.0.0,1.1.0)</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -333,12 +333,12 @@
   </profiles>
   <modules>
     <module>./azure</module>
-    <!--<module>./azure-batch</module>-->
+    <!--<module>./azure-batch</module>
     <module>./azure-keyvault</module>
     <module>./azure-keyvault-core</module>
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>
-    <module>./azure-keyvault-webkey</module>
+    <module>./azure-keyvault-webkey</module>-->
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-keyvault</module>
@@ -346,17 +346,17 @@
     <module>./azure-mgmt-storage</module>
     <module>./azure-mgmt-network</module>
     <module>./azure-mgmt-appservice</module>
-    <module>./azure-mgmt-datalake-analytics</module>
+    <!--<module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
     <module>./azure-samples</module>
-    <module>./azure-mgmt-search</module>
+    <module>./azure-mgmt-search</module>-->
     <module>./azure-mgmt-servicebus</module>
     <module>./azure-mgmt-batch</module>
     <module>./azure-mgmt-trafficmanager</module>
     <module>./azure-mgmt-dns</module>
     <module>./azure-mgmt-sql</module>
     <module>./azure-mgmt-cdn</module>
-    <module>./azure-mgmt-monitor</module>
+    <!--<module>./azure-mgmt-monitor</module>-->
     <module>./azure-mgmt-redis</module>
   </modules>
 </project>
