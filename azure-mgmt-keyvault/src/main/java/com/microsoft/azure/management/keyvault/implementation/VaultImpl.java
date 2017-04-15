@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
@@ -206,6 +207,10 @@ class VaultImpl
                             .doOnNext(new Action1<User>() {
                                 @Override
                                 public void call(User user) {
+                                    if (user == null) {
+                                        throw new CloudException(String.format("User principal name %s is not found in tenant %s",
+                                                accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
+                                    }
                                     accessPolicy.forObjectId(user.objectId());
                                 }
                             }));
@@ -215,6 +220,10 @@ class VaultImpl
                             .doOnNext(new Action1<ServicePrincipal>() {
                                 @Override
                                 public void call(ServicePrincipal sp) {
+                                    if (sp == null) {
+                                        throw new CloudException(String.format("User principal name %s is not found in tenant %s",
+                                                accessPolicy.userPrincipalName(), graphRbacManager.tenantId()), null);
+                                    }
                                     accessPolicy.forObjectId(sp.objectId());
                                 }
                             }));
