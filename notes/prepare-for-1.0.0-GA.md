@@ -19,8 +19,8 @@ The following sample statement creates a virtual machine with an unmanaged opera
        .withRegion(Region.US_EAST)
        .withNewResourceGroup(rgName)
        .withNewPrimaryNetwork("10.0.0.0/28")
-       .withPrimaryPrivateIpAddressDynamic()
-       .withNewPrimaryPublicIpAddress("mylinuxvmdns")
+       .withPrimaryPrivateIPAddressDynamic()
+       .withNewPrimaryPublicIPAddress("mylinuxvmdns")
        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
        .withRootUsername("tirekicker")
        .withSsh(sshKey)
@@ -162,7 +162,7 @@ azure.webApps()
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1388">#1388</a></td>
   </tr>
     <tr>
-    <td><code> List&lt;DataDiskImage&gt;</code></td>
+    <td><code>List&lt;DataDiskImage&gt;</code></td>
     <td><code>Map&lt;Integer, DataDiskImage&gt;</code></td>
     <td><code>VirtualMachineImage.dataDiskImages()</code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1409">#1409</a></td>
