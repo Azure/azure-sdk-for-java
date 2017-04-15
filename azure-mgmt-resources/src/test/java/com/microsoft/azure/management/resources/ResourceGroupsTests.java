@@ -43,6 +43,10 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertEquals("finance", groupResult.tags().get("department"));
         Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
         Assert.assertTrue(region.name().equalsIgnoreCase(groupResult.regionName()));
+
+        // Check existence
+        Assert.assertTrue(resourceGroups.checkExistence(rgName));
+
         // Get
         ResourceGroup getGroup = resourceGroups.getByName(rgName);
         Assert.assertNotNull(getGroup);
