@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:2468/tenants?api-version=2016-06-01",
+    "Uri" : "http://localhost:3251/tenants?api-version=2016-06-01",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (SubscriptionClient, 2016-06-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bc6bbe6f340c6a21e215ca50c26fb109d1a15109103fbef250b01e8bb30bdae6 (SubscriptionClient, 2016-06-01)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "StatusCode" : "200",
-      "content-type" : "application/json; charset=utf-8",
-      "Body" : "{\"value\":[{\"id\":\"/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\"}]}",
-      "x-ms-ratelimit-remaining-tenant-reads" : "14999",
-      "transfer-encoding" : "chunked",
-      "x-ms-routing-request-id" : "CENTRALUS:20170121T013139Z:86bd9c72-d987-4444-bd95-e78811dc82b7",
-      "date" : "Sat, 21 Jan 2017 01:31:38 GMT",
-      "vary" : "Accept-Encoding",
-      "pragma" : "no-cache",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "expires" : "-1",
-      "x-ms-request-id" : "86bd9c72-d987-4444-bd95-e78811dc82b7",
+      "date" : "Thu, 13 Apr 2017 22:50:01 GMT",
       "content-length" : "116",
+      "expires" : "-1",
+      "transfer-encoding" : "chunked",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "457b29fc-bcff-4378-acf0-769819de97ba",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-correlation-request-id" : "86bd9c72-d987-4444-bd95-e78811dc82b7"
+      "x-ms-ratelimit-remaining-tenant-reads" : "14998",
+      "x-ms-routing-request-id" : "WESTUS2:20170413T225001Z:457b29fc-bcff-4378-acf0-769819de97ba",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "457b29fc-bcff-4378-acf0-769819de97ba",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/72f988bf-86f1-41af-91ab-2d7cd011db47\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\"}]}"
     }
   } ],
   "variables" : [ ]
