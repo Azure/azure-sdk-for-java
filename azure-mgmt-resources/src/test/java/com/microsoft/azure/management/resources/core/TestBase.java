@@ -31,7 +31,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @Before
     public void setup() throws Exception {
-        addTextReplacementRule("https://management.azure.com", MOCK_URI);
+        addTextReplacementRule("https://management.azure.com/", MOCK_URI + "/");
         setupTest(name.getMethodName());
         ApplicationTokenCredentials credentials;
         RestClient restClient;
