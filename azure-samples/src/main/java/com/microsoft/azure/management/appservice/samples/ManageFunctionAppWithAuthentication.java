@@ -98,7 +98,7 @@ public final class ManageFunctionAppWithAuthentication {
             PublishingProfile profile = app1.getPublishingProfile();
             Git git = Git
                     .init()
-                    .setDirectory(new File(ManageFunctionAppSourceControl.class.getResource("/square-function-app-admin-auth/").getPath()))
+                    .setDirectory(new File(ManageFunctionAppWithAuthentication.class.getResource("/square-function-app-admin-auth/").getPath()))
                     .call();
             git.add().addFilepattern(".").call();
             git.commit().setMessage("Initial commit").call();
@@ -127,7 +127,7 @@ public final class ManageFunctionAppWithAuthentication {
             profile = app2.getPublishingProfile();
             git = Git
                     .init()
-                    .setDirectory(new File(ManageFunctionAppSourceControl.class.getResource("/square-function-app-function-auth/").getPath()))
+                    .setDirectory(new File(ManageFunctionAppWithAuthentication.class.getResource("/square-function-app-function-auth/").getPath()))
                     .call();
             git.add().addFilepattern(".").call();
             git.commit().setMessage("Initial commit").call();
