@@ -27,6 +27,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.network.ApplicationGatewaySslProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayTier;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
@@ -663,6 +664,7 @@ public class TestApplicationGateway {
                                 .withTimeBetweenProbesInSeconds(9)
                                 .withRetriesBeforeUnhealthy(5)
                                 .attach()
+                            .withDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
                             .create();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -781,6 +783,12 @@ public class TestApplicationGateway {
             Assert.assertEquals(10, probe.timeoutInSeconds());
             creationThread.join();
 
+            // Verify SSL policy - disabled protocols
+            Assert.assertEquals(2, appGateway.disabledSslProtocols().size());
+            Assert.assertTrue(appGateway.disabledSslProtocols().contains(ApplicationGatewaySslProtocol.TLSV1_0));
+            Assert.assertTrue(appGateway.disabledSslProtocols().contains(ApplicationGatewaySslProtocol.TLSV1_1));
+            Assert.assertTrue(!appGateway.disabledSslProtocols().contains(ApplicationGatewaySslProtocol.TLSV1_2));
+
             return appGateway;
         }
 
@@ -799,6 +807,7 @@ public class TestApplicationGateway {
                     .parent()
                 .withoutRequestRoutingRule("rule9000")
                 .withoutProbe("probe1")
+                .withoutDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -824,6 +833,8 @@ public class TestApplicationGateway {
             // Verify probes
             Assert.assertTrue(resource.probes().isEmpty());
 
+            // Verify SSL policy - disabled protocols
+            Assert.assertEquals(0, resource.disabledSslProtocols().size());
             return resource;
         }
     }
@@ -1032,7 +1043,8 @@ public class TestApplicationGateway {
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
                 .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod());
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod())
+                .append("\n\tDisabled SSL protocols: ").append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
         Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
