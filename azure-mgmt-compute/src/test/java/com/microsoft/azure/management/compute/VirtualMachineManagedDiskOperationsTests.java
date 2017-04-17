@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static Region region = Region.US_WEST_CENTRAL;
+    private static Region region = Region.US_EAST;
     private static KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
