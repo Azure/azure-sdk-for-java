@@ -1327,7 +1327,7 @@ class ApplicationGatewayImpl
         }
 
         List<ApplicationGatewaySslProtocol> protocols = policy.disabledSslProtocols();
-        if(protocols == null) {
+        if (protocols == null) {
             protocols = new ArrayList<>();
             policy.withDisabledSslProtocols(protocols);
         }
