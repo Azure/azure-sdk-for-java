@@ -1,6 +1,6 @@
-# Prepare for Azure Management Libraries for Java 1.0.0-GA #
+# Prepare for Azure Management Libraries for Java 1.0.0 #
 
-Steps to migrate code that uses Azure Management Libraries for Java from beta 5 to GA …
+Steps to migrate code that uses Azure Management Libraries for Java from beta 5 to 1.0.0 …
 
 > If this note missed any breaking changes, please open a pull request.
 
@@ -11,7 +11,7 @@ In `VirtualMachine, VirtualMachineScaleSet` and `VirtualMachineScaleSetVM` the O
 The withers and getters for storage account based (unmanaged) OS and data disks are **renamed** to include the term `unmanaged`.
 
 ## `Create()` creates unmanaged disks on explicit requests ##
-Starting in 1.0.0-GA, if you like to continue to use the storage account based (unmanaged) operating system and data disks, you may use `withUnmanagedDisks()` in the `define() ... create()` method chain. 
+Starting in 1.0.0, if you like to continue to use the storage account based (unmanaged) operating system and data disks, you may use `withUnmanagedDisks()` in the `define() ... create()` method chain. 
 
 The following sample statement creates a virtual machine with an unmanaged operating system disk:
     
