@@ -22,12 +22,12 @@ public class QueueClientTests {
 		if(this.queueClient != null)
 		{
 			this.queueClient.close();
-			TestCommons.drainAllMessages(TestUtils.getQueueConnectionStringBuilder());
+			TestCommons.drainAllMessages(TestUtils.getNonPartitionedQueueConnectionStringBuilder());
 		}
 			
 		if(this.sessionfulQueueClient != null)
 		{
-			TestCommons.drainAllSessions(this.sessionfulQueueClient, TestUtils.getSessionfulQueueConnectionStringBuilder());
+			TestCommons.drainAllSessions(this.sessionfulQueueClient, TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder());
 			this.sessionfulQueueClient.close();			
 		}			
 	}
@@ -44,12 +44,12 @@ public class QueueClientTests {
 	
 	private void createQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.queueClient = new QueueClient(TestUtils.getQueueConnectionStringBuilder().toString(), receiveMode);
+		this.queueClient = new QueueClient(TestUtils.getNonPartitionedQueueConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	private void createSessionfulQueueClient(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{
-		this.sessionfulQueueClient = new QueueClient(TestUtils.getSessionfulQueueConnectionStringBuilder().toString(), receiveMode);
+		this.sessionfulQueueClient = new QueueClient(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder().toString(), receiveMode);
 	}
 	
 	@Test

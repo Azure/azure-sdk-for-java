@@ -6,11 +6,11 @@ public class TopicSessionTests extends SessionTests {
 
 	@Override
 	public ConnectionStringBuilder getSenderConnectionStringBuilder() {
-		return TestUtils.getSessionfulTopicConnectionStringBuilder();
+		return TestUtils.getNonPartitionedSessionfulTopicConnectionStringBuilder();
 	}
 
 	@Override
 	public ConnectionStringBuilder getReceiverConnectionStringBuilder() {
-		return TestUtils.getSessionfulSubscriptionConnectionStringBuilder();
+		return TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder();
 	}
 }

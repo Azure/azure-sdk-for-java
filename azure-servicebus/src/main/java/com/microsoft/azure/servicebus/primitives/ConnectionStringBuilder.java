@@ -145,8 +145,19 @@ public class ConnectionStringBuilder
 	 */
 	public ConnectionStringBuilder(String connectionString)
 	{
-		this.parseConnectionString(connectionString);
-		this.connectionString = connectionString;
+		this.parseConnectionString(connectionString);	
+	}
+	
+	/**
+	 * ConnectionString format:
+	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * @param namespaceConnectionString connections string of the ServiceBus namespace. This doesn't include the entity path.
+	 * @param entityPath path to the entity within the namespace
+	 */
+	public ConnectionStringBuilder(String namespaceConnectionString, String entityPath)
+	{
+		this(namespaceConnectionString);
+		this.entityPath = entityPath;
 	}
 
 	/**

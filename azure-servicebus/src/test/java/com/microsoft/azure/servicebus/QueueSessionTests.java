@@ -6,11 +6,11 @@ public class QueueSessionTests extends SessionTests
 {
 	@Override
 	public ConnectionStringBuilder getSenderConnectionStringBuilder() {
-		return TestUtils.getSessionfulQueueConnectionStringBuilder();
+		return TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder();
 	}
 
 	@Override
 	public ConnectionStringBuilder getReceiverConnectionStringBuilder() {
-		return TestUtils.getSessionfulQueueConnectionStringBuilder();
+		return TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder();
 	}
 }
