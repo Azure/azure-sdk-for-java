@@ -2,7 +2,7 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.0.0. If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.0.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
@@ -133,7 +133,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(22)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(100)
         .withDescription("Allow SSH")
         .attach()
@@ -143,7 +143,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(80)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(101)
         .withDescription("Allow HTTP")
         .attach()
