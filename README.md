@@ -2,11 +2,11 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.0 GA). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.0.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-## Feature Availability and Road Map as of Version 1.0 ##
+## Feature Availability and Road Map as of Version 1.0.0 ##
 
 <table>
   <tr>
@@ -133,7 +133,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(22)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(100)
         .withDescription("Allow SSH")
         .attach()
@@ -143,7 +143,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(80)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(101)
         .withDescription("Allow HTTP")
         .attach()
@@ -179,10 +179,9 @@ You can create a Web App instance by using another `define() … create()` metho
 ```java
 WebApp webApp = azure.webApps()
     .define(appName)
-    .withNewResourceGroup(rgName)
-    .withNewAppServicePlan(planName)
     .withRegion(Region.US_WEST)
-    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+    .withNewResourceGroup(rgName)
+    .withNewWindowsPlan(PricingTier.STANDARD_S1)
     .create();
 ```
 
@@ -210,7 +209,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios (75+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (69+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -237,9 +236,9 @@ You can find plenty of sample code that illustrates management scenarios (75+ en
   <tr>
     <td>Virtual Machines - parallel execution</td>
     <td><ul style="list-style-type:circle">
-<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
-<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel">Create multiple virtual machines with network in parallel</li>
-<li><a href="http://github.com/azure-samples/compute-java-create-virtual-machines-across-regions-in-parallel">Create multiple virtual machines across regions in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel">Create multiple virtual machines with network in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-create-virtual-machines-across-regions-in-parallel">Create multiple virtual machines across regions in parallel</li>
 </ul></td>
   </tr>
   <tr>
@@ -326,11 +325,9 @@ You can find plenty of sample code that illustrates management scenarios (75+ en
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux">Manage Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux-with-custom-domains">Manage Web apps with custom domains</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-on-linux">Configure deployment sources for Web apps</a></li>
-<li><a href="https://github.com/Azure-Samples/app-service-java-manage-staging-and-production-slots-for-web-apps-on-linux">Manage staging and production slots for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps-on-linux">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps-on-linux">Manage storage connections for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-data-connections-for-web-apps-on-linux">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
-<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-web-apps-on-linux">Manage authentication for Web apps</a></li>
 </ul></td>
   </tr>
 
@@ -395,15 +392,15 @@ You can find plenty of sample code that illustrates management scenarios (75+ en
 # Download
 
 
-**1.0 GA**
+**1.0.0**
 
-If you are using released builds from 1.0 GA, add the following to your POM file:
+If you are using released builds from 1.0.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-GA</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -416,7 +413,7 @@ If you are using released builds from 1.0 GA, add the following to your POM file
 
 ## Help
 
-If you are migrating your code to 1.0 GA, you can use these notes for [preparing your code for 1.0 GA from 1.0 beta 5](./notes/prepare-for-1.0.0-GA.md).
+If you are migrating your code to 1.0.0, you can use these notes for [preparing your code for 1.0 from 1.0 beta 5](./notes/prepare-for-1.0.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
