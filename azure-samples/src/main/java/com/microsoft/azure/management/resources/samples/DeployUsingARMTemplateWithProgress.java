@@ -85,7 +85,7 @@ public final class DeployUsingARMTemplateWithProgress {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -126,7 +126,7 @@ public final class DeployUsingARMTemplateWithProgress {
         final String hostingPlanName = SdkContext.randomResourceName("hpRSAT", 24);
         final String webappName = SdkContext.randomResourceName("wnRSAT", 24);
         final InputStream embeddedTemplate;
-        embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
+        embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/templateValue.json");
 
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode tmp = mapper.readTree(embeddedTemplate);

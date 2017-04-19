@@ -47,7 +47,6 @@ public final class ManageWebAppSqlConnection {
         final String sqlDbName      = SdkContext.randomResourceName("jsdkdb", 20);
         final String admin          = "jsdkadmin";
         final String password       = "StrongPass!123";
-        final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {

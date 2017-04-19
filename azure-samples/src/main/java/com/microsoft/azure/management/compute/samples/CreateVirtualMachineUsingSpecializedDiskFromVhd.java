@@ -155,7 +155,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
+                    .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(dataDisks.get(0))
                     .withExistingDataDisk(dataDisks.get(1), 1, CachingTypes.READ_WRITE)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -197,7 +197,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");

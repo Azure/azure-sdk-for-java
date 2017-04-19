@@ -306,7 +306,7 @@ class VirtualMachineEncryptionHelper {
         diskEncryptionSettings.diskEncryptionKey()
                 .withSecretUrl(encryptionSecretKeyVaultUrl);
         return virtualMachine.update()
-                .withOsDiskEncryptionSettings(diskEncryptionSettings)
+                .withOSDiskEncryptionSettings(diskEncryptionSettings)
                 .applyAsync();
     }
 
@@ -319,7 +319,7 @@ class VirtualMachineEncryptionHelper {
     private Observable<VirtualMachine> updateVMStorageProfileAsync(final EnableDisableEncryptConfig encryptConfig) {
         DiskEncryptionSettings diskEncryptionSettings = encryptConfig.storageProfileEncryptionSettings();
         return virtualMachine.update()
-                .withOsDiskEncryptionSettings(diskEncryptionSettings)
+                .withOSDiskEncryptionSettings(diskEncryptionSettings)
                 .applyAsync();
     }
 

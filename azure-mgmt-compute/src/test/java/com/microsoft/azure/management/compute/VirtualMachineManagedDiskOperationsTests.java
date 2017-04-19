@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static Region region = Region.US_WEST_CENTRAL;
+    private static Region region = Region.US_EAST;
     private static KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
@@ -510,7 +510,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withSpecializedOsDisk(osDisk, OperatingSystemTypes.LINUX)
+                .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

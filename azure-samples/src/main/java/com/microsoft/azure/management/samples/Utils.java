@@ -34,8 +34,8 @@ import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.CNameRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.MXRecordSet;
+import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.NSRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.SoaRecord;
@@ -266,7 +266,7 @@ public final class Utils {
      * @throws IOException IO errors
      * @throws CloudException Cloud errors
      */
-    public static void print(Network resource) throws CloudException, IOException {
+    public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -1022,7 +1022,9 @@ public final class Utils {
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
-
+        if (new File(pfxPath).exists()) {
+            return;
+        }
         String validityInDays = "3650";
         String keyAlg = "RSA";
         String sigAlg = "SHA1withRSA";
@@ -1460,19 +1462,27 @@ public final class Utils {
      * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
      * @param file the local file
-     * @throws Exception when ftp upload fails
      */
-    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+    public static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
         String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
         String server = ftpUrlSegments[0];
         String path = "./site/wwwroot/webapps";
-        ftpClient.connect(server);
-        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        ftpClient.changeWorkingDirectory(path);
-        ftpClient.storeFile(fileName, file);
-        ftpClient.disconnect();
+        if (fileName.contains("/")) {
+            int lastslash = fileName.lastIndexOf('/');
+            path = path + "/" + fileName.substring(0, lastslash);
+            fileName = fileName.substring(lastslash);
+        }
+        try {
+            ftpClient.connect(server);
+            ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpClient.changeWorkingDirectory(path);
+            ftpClient.storeFile(fileName, file);
+            ftpClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Utils() {

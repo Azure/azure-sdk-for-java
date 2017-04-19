@@ -56,7 +56,6 @@ public final class ManageWebAppSourceControl {
         final String app2Url        = app2Name + suffix;
         final String app3Url        = app3Name + suffix;
         final String app4Url        = app4Name + suffix;
-        final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rgName         = SdkContext.randomResourceName("rg1NEMV_", 24);
 
         try {
@@ -99,7 +98,7 @@ public final class ManageWebAppSourceControl {
             // Create a second web app with local git source control
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getByResourceGroup(rgName, planName);
+            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)

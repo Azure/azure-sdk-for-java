@@ -58,7 +58,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withUnmanagedDisks()
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withOsDiskName("javatest")
+                .withOSDiskName("javatest")
                 .create();
 
         VirtualMachine foundVM = null;

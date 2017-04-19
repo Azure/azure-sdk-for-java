@@ -9,8 +9,8 @@ package com.microsoft.azure.management.appservice.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
@@ -19,11 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,7 +46,6 @@ public final class ManageWebAppWithDomainSsl {
         // New resources
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
-        final String planName       = SdkContext.randomResourceName("jplan_", 15);
         final String rgName         = SdkContext.randomResourceName("rgNEMV_", 24);
         final String domainName     = SdkContext.randomResourceName("jsdkdemo-", 20) + ".com";
         final String certPassword   = "StrongPass!12";
@@ -73,7 +69,7 @@ public final class ManageWebAppWithDomainSsl {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getByResourceGroup(rgName, planName);
+            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -122,9 +118,6 @@ public final class ManageWebAppWithDomainSsl {
 
             System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
             Utils.print(app1);
-
-            System.out.println("CURLing http://" + app1Name + "." + domainName + "...");
-            System.out.println(curl("http://" + app1Name + "." + domainName));
 
             //============================================================
             // Create a self-singed SSL certificate
@@ -215,11 +208,6 @@ public final class ManageWebAppWithDomainSsl {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private static Response curl(String url) throws IOException {
-        Request request = new Request.Builder().url(url).get().build();
-        return httpClient.newCall(request).execute();
     }
 
     static {

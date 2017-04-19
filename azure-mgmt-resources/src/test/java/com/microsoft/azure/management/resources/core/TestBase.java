@@ -20,6 +20,7 @@ import org.junit.Before;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
 
 public abstract class TestBase extends MockIntegrationTestBase {
     private PrintStream out;
@@ -30,7 +31,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
 
     @Before
     public void setup() throws Exception {
-        addTextReplacementRule("https://management.azure.com", MOCK_URI);
+        addTextReplacementRule("https://management.azure.com/", MOCK_URI + "/");
         setupTest(name.getMethodName());
         ApplicationTokenCredentials credentials;
         RestClient restClient;
@@ -65,6 +66,7 @@ public abstract class TestBase extends MockIntegrationTestBase {
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
+                    .withReadTimeout(3, TimeUnit.MINUTES)
                     .withNetworkInterceptor(interceptor), false);
 
             defaultSubscription = credentials.defaultSubscriptionId();

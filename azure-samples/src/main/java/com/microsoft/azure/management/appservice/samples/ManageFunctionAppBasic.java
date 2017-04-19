@@ -19,15 +19,13 @@ import java.io.File;
 
 /**
  * Azure App Service basic sample for managing function apps.
- * - Create 3 function apps in the same resource group
- * - 1 & 2 are under the same consumption plan
- * - 3 is in a basic app service plan
- * - 2 is created with a sample function (in C#)
- * - 1 is updated to have a daily quota and latest runtime
- * - List function apps
- * - Delete a function app
+ *  - Create 3 function apps under the same new app service plan:
+ *    - 1, 2 are in the same resource group, 3 in a different one
+ *    - 1, 3 are under the same consumption plan, 2 under a basic app service plan
+ *  - List function apps
+ *  - Delete a function app
  */
-public final class ManageFunctionApp {
+public final class ManageFunctionAppBasic {
 
     /**
      * Main function which runs the actual sample.
@@ -36,16 +34,17 @@ public final class ManageFunctionApp {
      */
     public static boolean runSample(Azure azure) {
         // New resources
-        final String app1Name       = SdkContext.randomResourceName("funcapp-", 20);
-        final String app2Name       = SdkContext.randomResourceName("funcapp-", 20);
-        final String app3Name       = SdkContext.randomResourceName("funcapp-", 20);
+        final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
+        final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
+        final String app3Name       = SdkContext.randomResourceName("webapp3-", 20);
         final String rg1Name        = SdkContext.randomResourceName("rg1NEMV_", 24);
+        final String rg2Name        = SdkContext.randomResourceName("rg2NEMV_", 24);
 
         try {
 
 
             //============================================================
-            // Create a function app with a new consumption plan
+            // Create a function app with a new app service plan
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rg1Name + "...");
 
@@ -53,62 +52,54 @@ public final class ManageFunctionApp {
                     .define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rg1Name)
-                    .withNewConsumptionPlan()
-                    .withRuntimeVersion("1")
                     .create();
 
             System.out.println("Created function app " + app1.name());
             Utils.print(app1);
 
             //============================================================
-            // Create a second function app with the same consumption plan
+            // Create a second function app with the same app service plan
 
-            System.out.println("Creating function app " + app2Name + " in resource group " + rg1Name + "...");
-
-            AppServicePlan consumptionPlan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-
+            System.out.println("Creating another function app " + app2Name + " in resource group " + rg1Name + "...");
+            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
             FunctionApp app2 = azure.appServices().functionApps()
                     .define(app2Name)
-                    .withExistingAppServicePlan(consumptionPlan)
+                    .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rg1Name)
-                    .withExistingStorageAccount(app1.storageAccount())
-                    .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/azure-appservice-samples/AzureFunctions-Samples.git")
-                        .withBranch("master")
-                        .attach()
+                    .withNewAppServicePlan(PricingTier.BASIC_B1)
                     .create();
 
             System.out.println("Created function app " + app2.name());
             Utils.print(app2);
 
             //============================================================
-            // Create a third function app with the a new app service plan
+            // Create a third function app with the same app service plan, but
+            // in a different resource group
 
-            System.out.println("Creating function app " + app3Name + " in resource group " + rg1Name + "...");
-
+            System.out.println("Creating another function app " + app3Name + " in resource group " + rg2Name + "...");
             FunctionApp app3 = azure.appServices().functionApps()
                     .define(app3Name)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rg1Name)
-                    .withNewAppServicePlan(PricingTier.BASIC_B1)
-                    .withExistingStorageAccount(app1.storageAccount())
+                    .withExistingAppServicePlan(plan)
+                    .withNewResourceGroup(rg2Name)
                     .create();
 
             System.out.println("Created function app " + app3.name());
             Utils.print(app3);
 
             //============================================================
-            // Update the first function app with latest runtime and 1GB-sec quota
-
-            System.out.println("Updating function app " + "...");
-
-            app1.update()
-                    .withDailyUsageQuota(1)
-                    .withRuntimeVersion("latest")
-                    .apply();
-
-            System.out.println("Updated function app " + app1.name());
+            // stop and start app1, restart app 2
+            System.out.println("Stopping function app " + app1.name());
+            app1.stop();
+            System.out.println("Stopped function app " + app1.name());
             Utils.print(app1);
+            System.out.println("Starting function app " + app1.name());
+            app1.start();
+            System.out.println("Started function app " + app1.name());
+            Utils.print(app1);
+            System.out.println("Restarting function app " + app2.name());
+            app2.restart();
+            System.out.println("Restarted function app " + app2.name());
+            Utils.print(app2);
 
             //=============================================================
             // List function apps
@@ -119,14 +110,20 @@ public final class ManageFunctionApp {
                 Utils.print(functionApp);
             }
 
+            System.out.println("Printing list of function apps in resource group " + rg2Name + "...");
+
+            for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg2Name)) {
+                Utils.print(functionApp);
+            }
+
             //=============================================================
             // Delete a function app
 
             System.out.println("Deleting function app " + app1Name + "...");
-            azure.webApps().deleteByResourceGroup(rg1Name, app1Name);
+            azure.appServices().functionApps().deleteByResourceGroup(rg1Name, app1Name);
             System.out.println("Deleted function app " + app1Name + "...");
 
-            System.out.println("Printing list of web apps in resource group " + rg1Name + " again...");
+            System.out.println("Printing list of function apps in resource group " + rg1Name + " again...");
             for (FunctionApp functionApp : azure.appServices().functionApps().listByResourceGroup(rg1Name)) {
                 Utils.print(functionApp);
             }
@@ -139,6 +136,9 @@ public final class ManageFunctionApp {
                 System.out.println("Deleting Resource Group: " + rg1Name);
                 azure.resourceGroups().beginDeleteByName(rg1Name);
                 System.out.println("Deleted Resource Group: " + rg1Name);
+                System.out.println("Deleting Resource Group: " + rg2Name);
+                azure.resourceGroups().beginDeleteByName(rg2Name);
+                System.out.println("Deleted Resource Group: " + rg2Name);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {

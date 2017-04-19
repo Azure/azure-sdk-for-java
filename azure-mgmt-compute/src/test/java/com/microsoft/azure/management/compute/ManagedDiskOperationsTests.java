@@ -28,7 +28,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    public void CanOperateOnEmptyManagedDisk() {
+    public void canOperateOnEmptyManagedDisk() {
         final String diskName = generateRandomResourceName("md-empty-", 20);
         final DiskSkuTypes updateTo = DiskSkuTypes.STANDARD_LRS;
 

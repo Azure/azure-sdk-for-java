@@ -335,7 +335,11 @@ class VirtualMachineImpl
                 .map(new Func1<VirtualMachineInner, VirtualMachineInstanceView>() {
                     @Override
                     public VirtualMachineInstanceView call(VirtualMachineInner virtualMachineInner) {
-                        virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        if (virtualMachineInner != null) {
+                            virtualMachineInstanceView = virtualMachineInner.instanceView();
+                        } else {
+                            virtualMachineInstanceView = null;
+                        }
                         return virtualMachineInstanceView;
                     }
                 });
@@ -553,7 +557,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withSpecializedOsUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOSUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -564,7 +568,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withSpecializedOsDisk(Disk disk, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType) {
         ManagedDiskParametersInner diskParametersInner = new ManagedDiskParametersInner();
         diskParametersInner.withId(disk.id());
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -681,7 +685,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
+    public VirtualMachineImpl withOSDiskVhdLocation(String containerName, String vhdName) {
         // Sets the native (un-managed) disk backing virtual machine OS disk
         //
         if (isManagedDiskEnabled()) {
@@ -730,7 +734,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskStorageAccountType(StorageAccountTypes accountType) {
+    public VirtualMachineImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
         if (this.inner().storageProfile().osDisk().managedDisk() == null) {
             this.inner()
                     .storageProfile()
@@ -758,7 +762,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskEncryptionSettings(DiskEncryptionSettings settings) {
+    public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
@@ -770,7 +774,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOsDiskName(String name) {
+    public VirtualMachineImpl withOSDiskName(String name) {
         this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
@@ -1502,12 +1506,12 @@ class VirtualMachineImpl
                     if (osDisk.vhd() == null) {
                         String osDiskVhdContainerName = "vhds";
                         String osDiskVhdName = this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd";
-                        withOsDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
+                        withOSDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
                     }
                     osDisk.withManagedDisk(null);
                 }
                 if (osDisk.name() == null) {
-                    withOsDiskName(this.vmName + "-os-disk");
+                    withOSDiskName(this.vmName + "-os-disk");
                 }
             }
         } else {
@@ -1524,7 +1528,7 @@ class VirtualMachineImpl
             } else {
                 osDisk.withManagedDisk(null);
                 if (osDisk.name() == null) {
-                    withOsDiskName(this.vmName + "-os-disk");
+                    withOSDiskName(this.vmName + "-os-disk");
                 }
             }
         }

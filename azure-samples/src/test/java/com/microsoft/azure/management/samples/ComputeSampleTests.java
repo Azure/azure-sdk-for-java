@@ -17,15 +17,16 @@ import com.microsoft.azure.management.compute.samples.ListVirtualMachineImages;
 import com.microsoft.azure.management.compute.samples.ManageAvailabilitySet;
 import com.microsoft.azure.management.compute.samples.ManageManagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachine;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineAsync;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineExtension;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSetAsync;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineScaleSetWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDisk;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.ConvertVirtualMachineToManagedDisks;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ComputeSampleTests extends SamplesTestBase {
@@ -86,6 +87,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    public void testManageVirtualMachineAsync() {
+        Assert.assertTrue(ManageVirtualMachineAsync.runSample(azure));
+    }
+
+    @Test
     public void testManageVirtualMachineExtension() {
         Assert.assertTrue(ManageVirtualMachineExtension.runSample(azure));
     }
@@ -93,6 +99,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testManageVirtualMachineScaleSet() {
         Assert.assertTrue(ManageVirtualMachineScaleSet.runSample(azure));
+    }
+
+    @Test
+    public void testManageVirtualMachineScaleSetAsync() {
+        Assert.assertTrue(ManageVirtualMachineScaleSetAsync.runSample(azure));
     }
 
     @Test

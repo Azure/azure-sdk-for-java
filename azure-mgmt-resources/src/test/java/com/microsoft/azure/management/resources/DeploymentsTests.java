@@ -44,11 +44,11 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
     @Test
     public void canDeployVirtualNetwork() throws Exception {
-        final String dp = "dpA" + testId;
+        final String dpName = "dpA" + testId;
 
         // Create
         resourceClient.deployments()
-                .define(dp)
+                .define(dpName)
                 .withExistingResourceGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
@@ -58,13 +58,16 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         PagedList<Deployment> deployments = resourceClient.deployments().listByResourceGroup(rgName);
         boolean found = false;
         for (Deployment deployment : deployments) {
-            if (deployment.name().equals(dp)) {
+            if (deployment.name().equals(dpName)) {
                 found = true;
             }
         }
         Assert.assertTrue(found);
+        // Check existence
+        Assert.assertTrue(resourceClient.deployments().checkExistence(rgName, dpName));
+
         // Get
-        Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+        Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");

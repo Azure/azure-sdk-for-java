@@ -18,11 +18,17 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The implementation for FunctionApp.
@@ -39,10 +45,12 @@ class FunctionAppImpl
     private Creatable<StorageAccount> storageAccountCreatable;
     private StorageAccount storageAccountToSet;
     private StorageAccount currentStorageAccount;
+    private final FunctionAppKeyService functionAppKeyService;
 
     FunctionAppImpl(String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
         innerObject.withKind("functionapp");
+        functionAppKeyService = manager.restClient().retrofit().create(FunctionAppKeyService.class);
     }
 
     @Override
@@ -161,6 +169,22 @@ class FunctionAppImpl
     }
 
     @Override
+    public String getMasterKey() {
+        return getMasterKeyAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<String> getMasterKeyAsync() {
+        return functionAppKeyService.getMasterKey(resourceGroupName(), name(), manager().subscriptionId(), "2016-08-01", manager().inner().userAgent())
+                .map(new Func1<Map<String, String>, String>() {
+                    @Override
+                    public String call(Map<String, String> stringStringMap) {
+                        return stringStringMap.get("masterKey");
+                    }
+                });
+    }
+
+    @Override
     public Observable<Indexable> createAsync() {
         if (inner().serverFarmId() == null) {
             withNewConsumptionPlan();
@@ -169,5 +193,12 @@ class FunctionAppImpl
             withNewStorageAccount(SdkContext.randomResourceName(name(), 20), SkuName.STANDARD_GRS);
         }
         return super.createAsync();
+    }
+
+    private interface FunctionAppKeyService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/masterkey")
+        Observable<Map<String, String>> getMasterKey(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("User-Agent") String userAgent);
+
     }
 }

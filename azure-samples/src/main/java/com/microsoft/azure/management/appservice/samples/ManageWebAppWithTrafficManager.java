@@ -52,6 +52,10 @@ public final class ManageWebAppWithTrafficManager {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        if (ManageWebAppWithTrafficManager.azure == null) {
+            ManageWebAppWithTrafficManager.azure = azure;
+        }
+
         // New resources
         final String app1Name       = SdkContext.randomResourceName("webapp1-", 20);
         final String app2Name       = SdkContext.randomResourceName("webapp2-", 20);
