@@ -657,10 +657,10 @@ final class FileRequest {
             final StringBuilder sb = new StringBuilder();
             boolean started = false;
 
-            if (detailsIncluded.contains(ShareListingDetails.SNAPSHOTS)) {
-                started = true;
-                sb.append(SNAPSHOTS_QUERY_ELEMENT_NAME);
-            }
+//            if (detailsIncluded.contains(ShareListingDetails.SNAPSHOTS)) {
+//                started = true;
+//                sb.append(SNAPSHOTS_QUERY_ELEMENT_NAME);
+//            }
     
             if (detailsIncluded.contains(ShareListingDetails.METADATA)) {
                 if (started)

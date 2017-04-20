@@ -480,7 +480,7 @@ public class CloudFileDirectoryTests {
         directory.getMetadata().remove(key);
     }
 
-    @Test
+    //@Test
     public void testUnsupportedDirectoryApisWithinShareSnapshot() throws StorageException, URISyntaxException {
         CloudFileShare snapshot = this.share.createSnapshot();
         CloudFileDirectory rootDir = snapshot.getRootDirectoryReference();
@@ -509,7 +509,7 @@ public class CloudFileDirectoryTests {
         snapshot.delete();
     }
 
-    @Test
+    //@Test
     public void testSupportedDirectoryApisInShareSnapshot() throws StorageException, URISyntaxException {
         CloudFileDirectory dir = this.share.getRootDirectoryReference().getDirectoryReference("dir1");
         dir.deleteIfExists();

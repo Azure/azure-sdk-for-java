@@ -2800,7 +2800,7 @@ public final class CloudFile implements ListFileItem {
             final StorageUri shareUri = PathUtility.getShareURI(this.getStorageUri(),
                     this.fileServiceClient.isUsePathStyleUris());
 
-            this.share = new CloudFileShare(shareUri, this.fileServiceClient.getCredentials(), null);
+            this.share = new CloudFileShare(shareUri, this.fileServiceClient.getCredentials()/*, null*/);
         }
 
         return this.share;

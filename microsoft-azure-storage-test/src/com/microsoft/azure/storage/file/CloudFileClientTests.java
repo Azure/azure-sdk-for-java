@@ -115,7 +115,7 @@ public class CloudFileClientTests {
         assertNotNull(fileClient.listSharesSegmented("thereshouldntbeanyshareswiththisprefix"));
     }
 
-    @Test
+    //@Test
     public void testListSharesWithSnapshot() throws StorageException, URISyntaxException {
         CloudFileClient fileClient = FileTestHelper.createCloudFileClient();
         CloudFileShare share = fileClient.getShareReference(UUID.randomUUID().toString());

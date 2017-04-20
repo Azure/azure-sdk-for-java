@@ -22,12 +22,12 @@ public enum ShareListingDetails {
     /**
      * Specifies including share metadata.
      */
-    METADATA(1),
+    METADATA(1);
 
     /**
      * Specifies listing share snapshots.
      */
-    SNAPSHOTS(2);
+    //SNAPSHOTS(2);
 
     /**
      * Returns the value of this enum.

@@ -2,7 +2,6 @@ Changes in 6.0.0
 
 FILE
  * Exists() calls on Shares and Directories now populates metadata. This was already being done for Files.
- * CloudFileShare constructor now takes a snapshotID String which can be null.
  * FileRequest get methods now takes a snapshotID String which can be null.
  * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
  * In CloudFileShareProperties, setShareQuota() no longer asserts in bounds. This check has been moved to create() and uploadProperties() in CloudFileShare.
