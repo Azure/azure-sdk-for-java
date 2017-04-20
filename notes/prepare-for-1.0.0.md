@@ -4,47 +4,7 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 5 
 
 > If this note missed any breaking changes, please open a pull request.
 
-# `Create()` defaults to Managed Disks #
-
-In `VirtualMachine, VirtualMachineScaleSet` and `VirtualMachineScaleSetVM` the OS and data disks getters and withers **default** to managed disks.
-
-The withers and getters for storage account based (unmanaged) OS and data disks are **renamed** to include the term `unmanaged`.
-
-## `Create()` creates unmanaged disks on explicit requests ##
-Starting in 1.0.0, if you like to continue to use the storage account based (unmanaged) operating system and data disks, you may use `withUnmanagedDisks()` in the `define() ... create()` method chain. 
-
-The following sample statement creates a virtual machine with an unmanaged operating system disk:
-    
-    azure.virtualMachines().define("myLinuxVM")
-       .withRegion(Region.US_EAST)
-       .withNewResourceGroup(rgName)
-       .withNewPrimaryNetwork("10.0.0.0/28")
-       .withPrimaryPrivateIPAddressDynamic()
-       .withNewPrimaryPublicIPAddress("mylinuxvmdns")
-       .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-       .withRootUsername("tirekicker")
-       .withSsh(sshKey)
-       // Unmanaged disks - uses Storage Account
-       .withUnmanagedDisks()
-       .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-       .create();
-
-For additional sample code, please see <a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage Virtual Machine With Unmanaged Disks</a> ready-to-run sample. 
-
-## Converting virtual machines with storage account based disks to use managed disks
- ##
-You can convert a virtual machine with unmanaged disks (Storage Account based) to managed disks with a single reboot.
-
-    PagedList<VirtualMachine> virtualMachines = azure.virtualMachines().list();
-    for (VirtualMachine virtualMachine : virtualMachines) {
-        if (!virtualMachine.isManagedDiskEnabled()) {
-            virtualMachine.deallocate();
-            virtualMachine.convertToManaged();
-        }
-    }
-
-
-## App service plan add new required parameter: operating system
+## App service plan adds new required parameter: operating system
 
 To create an `AppServicePlan` in beta5:
 
@@ -117,7 +77,7 @@ azure.webApps()
     .create();
 ```
 
-# Change Method Names #
+## Change Method Names ##
 
 <table>
   <tr>
@@ -134,7 +94,7 @@ azure.webApps()
 
 
 
-# Change Receiving Variable Type #
+## Change Receiving Variable Type ##
 
 <table>
   <tr>
@@ -177,19 +137,3 @@ azure.webApps()
   </tr>
 </table>
 
-# Change visibility #
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Visibility</th>
-    <th>Note</th>
-    <th>Ref</th>
-  </tr>
-  <tr>
-    <td><code>setInner(T)</code></td>
-    <td><code>internal</code></td>
-    <td>we already documented setInner as "internal use only", making it really internal</td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1381">#1381</a></td>
-  </tr>
-</table>
