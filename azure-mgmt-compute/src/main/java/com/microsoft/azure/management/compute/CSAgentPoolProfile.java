@@ -51,7 +51,7 @@ public interface CSAgentPoolProfile extends
     interface Definition<ParentT> extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithVmSize<ParentT>,
+            DefinitionStages.WithVMSize<ParentT>,
         DefinitionStages.WithDnsLabel<ParentT> {
     }
 
@@ -83,7 +83,7 @@ public interface CSAgentPoolProfile extends
              * @param count the count
              * @return the next stage of the definition
              */
-            WithVmSize<ParentT> withCount(int count);
+            WithVMSize<ParentT> withCount(int count);
         }
 
         /**
@@ -91,7 +91,7 @@ public interface CSAgentPoolProfile extends
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithVmSize<ParentT> {
+        interface WithVMSize<ParentT> {
             /**
              * Specify the size of the agents VMs.
              * @param vmSize the size of the VM.
