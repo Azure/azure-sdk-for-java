@@ -199,7 +199,7 @@ public class ContainerServiceImpl
             this.inner().withDiagnosticsProfile(new ContainerServiceDiagnosticsProfile());
         }
 
-        if(this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+        if (this.inner().diagnosticsProfile().vmDiagnostics() == null) {
             this.inner().diagnosticsProfile().withVmDiagnostics(new ContainerServiceVMDiagnostics());
         }
 
