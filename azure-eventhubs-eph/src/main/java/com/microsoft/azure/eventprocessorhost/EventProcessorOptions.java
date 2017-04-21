@@ -146,7 +146,35 @@ public final class EventProcessorOptions
     {
     	this.initialOffsetProvider = initialOffsetProvider;
     }
-    
+
+    /***
+     * A prefab initial offset provider that starts from the first event available.
+     *
+     * How to use this initial offset provider: setInitialOffsetProvider(new EventProcessorOptions.StartOfStreamInitialOffsetProvider());
+     */
+    public class StartOfStreamInitialOffsetProvider implements Function<String, Object>
+    {
+		@Override
+		public Object apply(String t)
+		{
+			return PartitionReceiver.START_OF_STREAM;
+		}
+    }
+
+    /***
+     * A prefab initial offset provider that starts from the next event that becomes available.
+     *
+     * How to use this initial offset provider: setInitialOffsetProvider(new EventProcessorOptions.EndOfStreamInitialOffsetProvider());
+     */
+    public class EndOfStreamInitialOffsetProvider implements Function<String, Object>
+    {
+		@Override
+		public Object apply(String t)
+		{
+			return PartitionReceiver.END_OF_STREAM;
+		}
+    }
+
     /***
      * Returns whether the EventProcessorHost will call IEventProcessor.onEvents() with an empty iterable
      * when a receive timeout occurs (true) or not (false).
