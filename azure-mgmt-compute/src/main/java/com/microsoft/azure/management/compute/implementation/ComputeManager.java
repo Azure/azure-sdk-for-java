@@ -9,15 +9,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.compute.ComputeUsages;
-import com.microsoft.azure.management.compute.Disks;
-import com.microsoft.azure.management.compute.Snapshots;
-import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
-import com.microsoft.azure.management.compute.VirtualMachineExtensionImages;
-import com.microsoft.azure.management.compute.VirtualMachineImages;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
-import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.*;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -43,6 +35,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private VirtualMachineCustomImages virtualMachineCustomImages;
     private Disks disks;
     private Snapshots snapshots;
+    private ContainerServices containerServices;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -121,6 +114,16 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             availabilitySets = new AvailabilitySetsImpl(this);
         }
         return availabilitySets;
+    }
+
+    /**
+     * @return the availability set resource management API entry point
+     */
+    public ContainerServices containerServices() {
+        if (containerServices == null) {
+            containerServices = new ContainerServicesImpl(this);
+        }
+        return containerServices;
     }
 
     /**
