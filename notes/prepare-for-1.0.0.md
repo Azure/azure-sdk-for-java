@@ -77,7 +77,7 @@ azure.webApps()
     .create();
 ```
 
-## Change Method Names ##
+## Change Method or Interface Names ##
 
 <table>
   <tr>
@@ -89,6 +89,116 @@ azure.webApps()
       <td><code>VirtualMachine.extensions()</code></td>
       <td><code>VirtualMachine.getExtensions()</code></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1466">#1466</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskCaching()</code></td>
+    <td><code>VirtualMachine.withOSDiskCaching()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskSizeInGB()</code></td>
+    <td><code>VirtualMachine.withOSDiskSizeInGB()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withSpecializedOsUnmanagedDisk()</code></td>
+    <td><code>VirtualMachine.withSpecializedOSUnmanagedDisk()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskName()</code></td>
+    <td><code>VirtualMachine.withOSDiskName()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskEncryptionSettings()</code></td>
+    <td><code>VirtualMachine.withOSDiskEncryptionSettings()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskStorageAccountType()</code></td>
+    <td><code>VirtualMachine.withOSDiskStorageAccountType()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withOsDiskVhdLocation()</code></td>
+    <td><code>VirtualMachine.withOSDiskVhdLocation()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withoutVmAgent()</code></td>
+    <td><code>VirtualMachine.withoutVMAgent()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1549">#1549</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withWinRm()</code></td>
+    <td><code>VirtualMachine.withWinRM()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1549">#1549</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withWinRm()</code></td>
+    <td><code>VirtualMachineScaleSet.withWinRM()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1549">#1549</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withoutVmAgent()</code></td>
+    <td><code>VirtualMachineScaleSet.withoutVMAgent()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1549">#1549</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withVmAgent()</code></td>
+    <td><code>VirtualMachineScaleSet.withVMAgent()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1549">#1549</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withOsDiskStorageAccountType()</code></td>
+    <td><code>VirtualMachineScaleSet.withOSDiskStorageAccountType()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withOsDiskCaching()</code></td>
+    <td><code>VirtualMachineScaleSet.withOSDiskCaching()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withOsDiskName()</code></td>
+    <td><code>VirtualMachineScaleSet.withOSDiskName()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1598">#1598</a></td>
+  </tr>
+  <tr>
+    <td>All <code>*ByGroup*</code> in names</td>
+    <td>All <code>*ByResourceGroup*</code> in names</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1566">#1566</a></td>
+  </tr>
+  <tr>
+    <td>Enumeration <code>CountryISOCode</code></td>
+    <td>Enumeration <code>CountryIsoCode</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1558">#1558</a></td>
+  </tr>
+  <tr>
+    <td>Interface <code>Wrapper&lt;T&gt;</code></td>
+    <td>Interface <code>HasInner&lt;T&gt;</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">#1439</a></td>
+  </tr>
+  <tr>
+    <td>Any types or methods <code>*Ip*</code> in names</td>
+    <td>Any types or methods <code>*IP*</code> in names</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">#1439</a></td>
+  </tr>
+  <tr>
+    <td>Any types or methods <code>*Mx*</code> in names</td>
+    <td>Any types or methods <code>*MX*</code> in names</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">#1439</a></td>
+  </tr>
+  <tr>
+    <td>Any types or methods <code>*Ns*</code> in names</td>
+    <td>Any types or methods <code>*NS*</code> in names</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">#1439</a></td>
+  </tr>
+  <tr>
+    <td>Any types or methods <code>*Vm*</code> in names</td>
+    <td>Any types or methods <code>*VM*</code> in names</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">#1439</a></td>
   </tr>
 </table>
 
@@ -134,6 +244,46 @@ azure.webApps()
     <code>e.g. 
         VirtualMachines.create(List&lt;Creatable&lt;VirtualMachine&gt;&gt;) </code></td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1381">#1381</a></td>
+  </tr>
+
+  <tr>
+    <td><code>List&lt;String&gt;></code></td>
+    <td><code>Set&lt;String&gt;</code></td>
+    <td><code>AvailabilitySet.virtualMachineIds()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1558">1558</a></td>
+  </tr>
+  <tr>
+    <td><code>List&lt;String&gt;></code></td>
+    <td><code>Set&lt;String&gt;</code></td>
+    <td><code>NetworkSecurityGroup.networkInterfaceIds()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1439">1439</a></td>
+  </tr>
+
+</table>
+
+
+## Drop Method Usage or Use Alternate ##
+
+<table>
+  <tr>
+    <th>Drop Method</th>
+    <th>Use Alternate</th>
+    <th>Ref</th>
+  </tr>
+  <tr>
+    <td><code>StorageAccount.withoutCustomDomain()</code></td>
+    <td></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1600/commits/58eb1a5326e2491f90e04c27d8b4e4aaef1caa87">58eb1a5</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachine.withDataDiskUpdated()</code></td>
+    <td>Disks can not longer be updated as part of virtual machine update. They should be updated directly via Disks API.</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1579">1579</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withDataDiskUpdated()</code></td>
+    <td>Disks can not longer be updated as part of virtual machine scale set update. They should be updated directly via Disks API.</td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1579">1579</a></td>
   </tr>
 </table>
 
