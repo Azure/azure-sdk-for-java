@@ -197,8 +197,10 @@ public class ContainerServiceImpl
     private ContainerServiceImpl withDiagnosticsProfile(boolean enabled) {
         if (this.inner().diagnosticsProfile() == null) {
             this.inner().withDiagnosticsProfile(new ContainerServiceDiagnosticsProfile());
-            this.inner().diagnosticsProfile().withVmDiagnostics(new ContainerServiceVMDiagnostics());
+        }
 
+        if(this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+            this.inner().diagnosticsProfile().withVmDiagnostics(new ContainerServiceVMDiagnostics());
         }
 
         this.inner().diagnosticsProfile().vmDiagnostics().withEnabled(enabled);

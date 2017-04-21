@@ -97,7 +97,7 @@ public interface CSAgentPoolProfile extends
              * @param vmSize the size of the VM.
              * @return the next stage of the definition
              */
-            WithDnsLabel<ParentT> withVmSize(ContainerServiceVMSizeTypes vmSize);
+            WithDnsLabel<ParentT> withVMSize(ContainerServiceVMSizeTypes vmSize);
         }
 
         /**

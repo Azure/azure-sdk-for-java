@@ -64,7 +64,7 @@ class CSAgentPoolProfileImpl
     }
 
     @Override
-    public CSAgentPoolProfileImpl withVmSize(ContainerServiceVMSizeTypes param0) {
+    public CSAgentPoolProfileImpl withVMSize(ContainerServiceVMSizeTypes param0) {
         this.inner().withVmSize(param0);
         return this;        
     }
