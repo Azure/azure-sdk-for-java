@@ -7,7 +7,6 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.resources.ResourceGroup;
