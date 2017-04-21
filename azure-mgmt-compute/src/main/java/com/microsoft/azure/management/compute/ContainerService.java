@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ContainerServiceInner;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * An client-side representation for a container service.
  */
 @Fluent
+@Beta
 public interface ContainerService extends
         GroupableResource<ComputeManager, ContainerServiceInner>,
         Refreshable<ContainerService>,

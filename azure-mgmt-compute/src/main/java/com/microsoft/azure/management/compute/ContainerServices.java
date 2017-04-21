@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.ContainerServicesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  *  Entry point to container service management API.
  */
 @Fluent()
+@Beta()
 public interface ContainerServices extends
     SupportsCreating<ContainerService.DefinitionStages.Blank>,
     HasManager<ComputeManager>,
