@@ -6,6 +6,7 @@ package com.microsoft.azure.eventhubs.sendrecv;
 
 import java.time.Instant;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import org.junit.After;
@@ -69,6 +70,18 @@ public class ReceiveTest extends ApiTestBase
 		}
 	}
 	
+	@Test()
+	public void testReceiverLatestFilter() throws ServiceBusException, ExecutionException, InterruptedException
+	{
+		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.END_OF_STREAM, false);
+		Iterable<EventData> events = offsetReceiver.receiveSync(100);
+		Assert.assertTrue(events == null);
+
+		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
+		events = offsetReceiver.receiveSync(100);
+		Assert.assertTrue(events != null && events.iterator().hasNext());
+	}
+
 	@Test()
 	public void testReceiverOffsetInclusiveFilter() throws ServiceBusException
 	{
