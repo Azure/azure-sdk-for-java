@@ -576,4 +576,12 @@ public class AzureTests extends TestBase {
                     .runTest(azure.containerServices(), azure.resourceGroups());
         }
     }
+
+    @Test
+    public void testContainerRegistry() throws Exception {
+        if (!MockIntegrationTestBase.IS_MOCKED) {
+            new TestContainerRegistry()
+                    .runTest(azure.containerRegistries(), azure.resourceGroups());
+        }
+    }
 }

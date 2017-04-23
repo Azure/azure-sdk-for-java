@@ -11,6 +11,8 @@ import com.microsoft.azure.management.containerregistry.implementation.Container
 import com.microsoft.azure.management.containerregistry.implementation.RegistryInner;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentialsResultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -71,21 +73,11 @@ public interface Registry extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithSku,
         DefinitionStages.WithStorageAccount,
         DefinitionStages.WithCreate {
     }
 
     interface DefinitionStages {
-
-        interface WithSku {
-            /**
-             * The SKU of a container registry.
-             *
-             * @return the next stage
-             */
-            WithStorageAccount withSku(Sku sku);
-        }
 
         interface WithAdminUserEnabled {
             Definition withAdminUserEnabled();
@@ -98,7 +90,7 @@ public interface Registry extends
              *
              * @return the next stage
              */
-            WithCreate withStorageAccount(String name, String accessKey);
+            WithCreate withExistingStorageAccount(String name, String accessKey);
         }
 
         interface WithCreate extends
@@ -117,11 +109,13 @@ public interface Registry extends
          * The stage of the container service definition allowing to specify the resource group.
          */
         interface WithGroup extends
-                GroupableResource.DefinitionStages.WithGroup<WithSku> {
+                GroupableResource.DefinitionStages.WithGroup<WithStorageAccount> {
         }
     }
 
     interface Update extends
+            Resource.UpdateWithTags<Update>,
+            Appliable<Registry>,
         UpdateStages.WithAdminUserEnabled{
     }
 

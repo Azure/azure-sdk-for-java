@@ -30,6 +30,9 @@ public class RegistryImpl
     protected RegistryImpl(String name, RegistryInner innerObject, ContainerRegistryManager manager) {
         super(name, innerObject, manager);
         this.createParameters = new RegistryCreateParametersInner();
+        Sku sku = new Sku();
+        sku.withName("Basic");
+        this.createParameters.withSku(sku);
     }
 
     public Sku sku() {
@@ -50,11 +53,6 @@ public class RegistryImpl
 
     public StorageAccountProperties storageAccount() {
         return this.inner().storageAccount();
-    }
-
-    public RegistryImpl withSku(Sku sku) {
-        this.createParameters.withSku(sku);
-        return this;
     }
 
     public RegistryImpl withAdminUserEnabled() {
@@ -82,12 +80,11 @@ public class RegistryImpl
      *
      * @return the next stage
      */
-    public RegistryImpl withStorageAccount(String name, String accessKey) {
+    public RegistryImpl withExistingStorageAccount(String name, String accessKey) {
         StorageAccountParameters storageAccountParameters = new StorageAccountParameters();
         storageAccountParameters.withName(name);
         storageAccountParameters.withAccessKey(accessKey);
         this.createParameters.withStorageAccount(storageAccountParameters);
-        
         return this;
     }
 
@@ -105,15 +102,28 @@ public class RegistryImpl
     @Override
     public Observable<Registry> createResourceAsync() {
         final RegistryImpl self = this;
-        RegistryCreateParametersInner inner = new RegistryCreateParametersInner();
-        return this.manager().inner().registries().createAsync(resourceGroupName(), name(), this.createParameters)
-                .map(new Func1<RegistryInner, Registry>() {
-                    @Override
-                    public Registry call(RegistryInner containerServiceInner) {
-                        self.setInner(containerServiceInner);
-                        return self;
-                    }
-                });
+        if(this.isInCreateMode()) {
+            createParameters.withLocation(this.regionName().toLowerCase());
+            createParameters.withTags(this.inner().getTags());
+            return this.manager().inner().registries().createAsync(resourceGroupName(), name(), this.createParameters)
+                    .map(new Func1<RegistryInner, Registry>() {
+                        @Override
+                        public Registry call(RegistryInner containerServiceInner) {
+                            self.setInner(containerServiceInner);
+                            return self;
+                        }
+                    });
+        }else {
+            this.updateParameters.withTags(this.inner().getTags());
+            return this.manager().inner().registries().updateAsync(resourceGroupName(), name(), this.updateParameters)
+                    .map(new Func1<RegistryInner, Registry>() {
+                        @Override
+                        public Registry call(RegistryInner containerServiceInner) {
+                            self.setInner(containerServiceInner);
+                            return self;
+                        }
+                    });
+        }
     }
 
     @Override
