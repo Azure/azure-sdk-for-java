@@ -9,7 +9,6 @@ package com.microsoft.azure.management.containerregistry.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.containerregistry.Registries;
-import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;

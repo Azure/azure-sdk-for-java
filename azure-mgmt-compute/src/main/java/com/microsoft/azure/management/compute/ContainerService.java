@@ -27,42 +27,42 @@ public interface ContainerService extends
         Updatable<ContainerService.Update> {
 
     /**
-     * @return the properties of the orchestrator.
+     * @return the properties of the orchestrator
      */
     ContainerServiceOrchestratorProfile orchestratorProfile();
 
     /**
-     * @return the properties for custom clusters.
+     * @return the properties for custom clusters
      */
     ContainerServiceCustomProfile customProfile();
 
     /**
-     * @return the properties for cluster service principals.
+     * @return the properties for cluster service principals
      */
     ContainerServiceServicePrincipalProfile servicePrincipalProfile();
 
     /**
-     * @return the properties for the master agent.
+     * @return the properties for the master agent
      */
     ContainerServiceMasterProfile masterProfile();
 
     /**
-     * @return current set of agent pool profiles for this container service.
+     * @return current set of agent pool profiles for this container service
      */
     ContainerServiceAgentPoolProfile agentPoolProfile();
 
     /**
-     * @return the properties for the Windows VMs.
+     * @return the properties for the Windows VMs
      */
     ContainerServiceWindowsProfile windowsProfile();
 
     /**
-     * @return the properties for the Linux VMs.
+     * @return the properties for the Linux VMs
      */
     ContainerServiceLinuxProfile linuxProfile();
 
     /**
-     * @return the properties for the diagnostic agent.
+     * @return the properties for the diagnostic agent
      */
     ContainerServiceDiagnosticsProfile diagnosticsProfile();
 
@@ -74,7 +74,8 @@ public interface ContainerService extends
     interface Definition extends
             ContainerService.DefinitionStages.Blank,
             ContainerService.DefinitionStages.WithGroup,
-            ContainerService.DefinitionStages.WithMasterProfile,
+            DefinitionStages.WithMasterNodeCount,
+            DefinitionStages.WithMasterDnsLabel,
             ContainerService.DefinitionStages.WithLinuxProfile,
             ContainerService.DefinitionStages.WithLinuxProfileRootUsername,
             ContainerService.DefinitionStages.WithLinuxProfileSshKey,
@@ -97,7 +98,7 @@ public interface ContainerService extends
          * The stage of the container service definition allowing to specify the resource group.
          */
         interface WithGroup extends
-                GroupableResource.DefinitionStages.WithGroup<WithMasterProfile> {
+                GroupableResource.DefinitionStages.WithGroup<WithMasterNodeCount> {
         }
 
         /**
@@ -114,7 +115,7 @@ public interface ContainerService extends
              * Specifies the DCOS orchestration type for the container service.
              * @return the next stage of the definition
              */
-            WithCreate withDCOSOrchestration();
+            WithCreate withDcosOrchestration();
 
             /**
              * Specifies the Kubernetes orchestration type for the container service.
@@ -124,16 +125,27 @@ public interface ContainerService extends
         }
 
         /**
-         * The stage of the container service definition allowing to specify the master profile.
+         * The stage of the container service definition allowing to specify the master node count.
          */
-        interface WithMasterProfile {
+        interface WithMasterNodeCount {
             /**
-             * The properties for master agents.
+             * Specifies the master node count.
              * @param count master profile count (1, 3, 5)
-             * @param dnsLabel the dns prefix
              * @return the next stage of the definition
              */
-            WithLinuxProfile withMasterProfile(ContainerServiceMasterProfileCount count, String dnsLabel);
+            WithMasterDnsLabel withMasterNodeCount(ContainerServiceMasterProfileCount count);
+        }
+
+        /**
+         * The stage of the container service definition allowing to specify the master Dns label.
+         */
+        interface WithMasterDnsLabel {
+            /**
+             * Specifies the master node Dns label.
+             * @param dnsLabel the Dns prefix
+             * @return the next stage of the definition
+             */
+            WithLinuxProfile withMasterDnsLabel(String dnsLabel);
         }
 
         /**
@@ -146,7 +158,7 @@ public interface ContainerService extends
              * @param name the name for the agent pool profile
              * @return the stage representing configuration for the agent pool profile
              */
-            CSAgentPoolProfile.DefinitionStages.Blank<WithCreate> defineContainerServiceAgentPoolProfile(String name);
+            ContainerServiceAgentPool.DefinitionStages.Blank<WithCreate> defineAgentPool(String name);
         }
 
         /**
@@ -155,7 +167,7 @@ public interface ContainerService extends
         interface WithLinuxProfile {
             /**
              * Begins the definition to specify Linux settings.
-             * @return the stage representing configuration of Linux specific settings.
+             * @return the stage representing configuration of Linux specific settings
              */
             WithLinuxProfileRootUsername withLinuxProfile();
         }
@@ -173,12 +185,12 @@ public interface ContainerService extends
         }
 
         /**
-         * The stage of the container service definition allowing to specific the Linux ssh key.
+         * The stage of the container service definition allowing to specific the Linux SSH key.
          */
         interface WithLinuxProfileSshKey {
             /**
              * Begins the definition to specify Linux ssh key.
-             * @param sshKeyData the ssh key data.
+             * @param sshKeyData the SSH key data
              * @return the next stage of the definition
              */
             DefineAgentPoolProfiles withSshKey(String sshKeyData);
@@ -203,8 +215,8 @@ public interface ContainerService extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
+         * the resource to be created, but also allows for any other optional settings to
+         * be specified.
          */
         interface WithCreate extends
                 Creatable<ContainerService>,
@@ -217,8 +229,6 @@ public interface ContainerService extends
     /**
      * The template for an update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Resource.UpdateWithTags<Update>,
@@ -236,13 +246,13 @@ public interface ContainerService extends
          */
         interface WithDiagnosticsProfile {
             /**
-             * Enable diagnostics.
+             * Enables diagnostics.
              * @return the next stage of the update
              */
             Update withDiagnostics();
 
             /**
-             * Disable diagnostics.
+             * Disables diagnostics.
              * @return the next stage of the update
              */
             Update withoutDiagnostics();
@@ -253,13 +263,13 @@ public interface ContainerService extends
          */
         interface WithUpdateAgentPoolCount {
             /**
-             * Enable diagnostics.
-             * @param agentPoolCount the number of agents (VMs) to host docker containers.
+             * Enables diagnostics.
+             * @param agentCount the number of agents (VMs) to host docker containers.
              *                       Allowed values must be in the range of 1 to 100 (inclusive).
              *                       The default value is 1.
              * @return the next stage of the update
              */
-            Update withAgentPoolCount(int agentPoolCount);
+            Update withAgentCount(int agentCount);
         }
     }
 }

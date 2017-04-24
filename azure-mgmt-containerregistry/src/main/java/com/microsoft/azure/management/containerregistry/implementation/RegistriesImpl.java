@@ -1,8 +1,13 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.containerregistry.PasswordName;
-import com.microsoft.azure.management.containerregistry.RegenerateCredentialParameters;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -15,7 +20,7 @@ import rx.functions.Func1;
 import java.util.List;
 
 /**
- * Created by alvab on 4/21/17.
+ * Implementation for Registries.
  */
 public class RegistriesImpl
         extends

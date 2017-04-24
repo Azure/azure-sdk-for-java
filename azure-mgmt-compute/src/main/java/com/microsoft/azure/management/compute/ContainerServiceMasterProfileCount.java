@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.compute;
 
 /**
- * Defines values for ContainerServiceOchestratorTypes.
+ * The minimum valid number of master nodes.
  */
 public enum ContainerServiceMasterProfileCount {
     /** Enum value Min. */

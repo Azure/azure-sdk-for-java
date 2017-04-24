@@ -15,7 +15,7 @@ import com.microsoft.azure.management.compute.ContainerServiceLinuxProfile;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfile;
 import com.microsoft.azure.management.compute.ContainerServiceServicePrincipalProfile;
 import com.microsoft.azure.management.compute.ContainerServiceDiagnosticsProfile;
-import com.microsoft.azure.management.compute.CSAgentPoolProfile;
+import com.microsoft.azure.management.compute.ContainerServiceAgentPool;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
 import com.microsoft.azure.management.compute.ContainerServiceSshConfiguration;
 import com.microsoft.azure.management.compute.ContainerServiceSshPublicKey;
@@ -28,7 +28,7 @@ import rx.functions.Func1;
 import java.util.ArrayList;
 
 /**
- * The implementation for {@link ContainerService} and its create and update interfaces.
+ * The implementation for ContainerService and its create and update interfaces.
  */
 @LangDefinition
 public class ContainerServiceImpl
@@ -94,19 +94,24 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withMasterProfile(ContainerServiceMasterProfileCount profileCount, String dnsPrefix) {
+    public ContainerServiceImpl withMasterNodeCount(ContainerServiceMasterProfileCount profileCount) {
         ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile();
         masterProfile.withCount(profileCount.count());
-        masterProfile.withDnsPrefix(dnsPrefix);
         this.inner().withMasterProfile(masterProfile);
         return this;
     }
 
     @Override
-    public CSAgentPoolProfileImpl defineContainerServiceAgentPoolProfile(String name) {
+    public ContainerServiceImpl withMasterDnsLabel(String dnsPrefix) {
+        this.inner().masterProfile().withDnsPrefix(dnsPrefix);
+        return this;
+    }
+
+    @Override
+    public ContainerServiceAgentPoolImpl defineAgentPool(String name) {
         ContainerServiceAgentPoolProfile innerPoolProfile = new ContainerServiceAgentPoolProfile();
         innerPoolProfile.withName(name);
-        return new CSAgentPoolProfileImpl(innerPoolProfile, this);
+        return new ContainerServiceAgentPoolImpl(innerPoolProfile, this);
     }
 
     @Override
@@ -172,7 +177,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceImpl withDCOSOrchestration() {
+    public ContainerServiceImpl withDcosOrchestration() {
         this.withOrchestratorProfile(ContainerServiceOchestratorTypes.DCOS);
         return this;
     }
@@ -183,7 +188,7 @@ public class ContainerServiceImpl
         return this;
     }
 
-    void attachAgentPoolProfile(CSAgentPoolProfile agentPoolProfile) {
+    void attachAgentPoolProfile(ContainerServiceAgentPool agentPoolProfile) {
         this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
     }
 
@@ -208,12 +213,12 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public Update withAgentPoolCount(int agentPoolCount) {
-        if (agentPoolCount < 0 || agentPoolCount > 100) {
+    public Update withAgentCount(int agentCount) {
+        if (agentCount < 0 || agentCount > 100) {
             throw new RuntimeException("Agent pool count  must be in the range of 1 to 100 (inclusive)");
         }
 
-        this.inner().agentPoolProfiles().get(0).withCount(agentPoolCount);
+        this.inner().agentPoolProfiles().get(0).withCount(agentCount);
         return this;
     }
 }

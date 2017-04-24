@@ -22,6 +22,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import rx.Observable;
 
+/**
+ * Entry point to the registry management API.
+ */
 @Fluent()
 @Beta()
 public interface Registries extends
@@ -38,21 +41,35 @@ public interface Registries extends
 
     /**
      * Lists the login credentials for the specified container registry.
+     * @param groupName the group name
+     * @param registryName the registry name
+     * @return the list of credentials
      */
     RegistryListCredentialsResultInner listCredentials(String groupName, String registryName);
 
     /**
      * Lists the login credentials for the specified container registry.
+     * @param groupName the group name
+     * @param registryName the registry name
+     * @return the list of credentials
      */
     Observable<RegistryListCredentialsResultInner> listCredentialsAsync(String groupName, String registryName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
+     * @param groupName the group name
+     * @param registryName the registry name
+     * @param passwordName the password name to regenerate login credentials for
+     * @return the list of credentials
      */
     RegistryListCredentialsResultInner regenerateCredential(String groupName, String registryName, PasswordName passwordName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
+     * @param groupName the group name
+     * @param registryName the registry name
+     * @param passwordName the password name to regenerate login credentials for
+     * @return the list of credentials
      */
     Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(String groupName, String registryName, PasswordName passwordName);
 }

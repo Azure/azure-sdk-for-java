@@ -20,27 +20,39 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
 
     @Override
     public ContainerService createResource(ContainerServices containerServices) throws Exception {
-        final String sshKeyData =  this.getSSHKey();
+        final String sshKeyData =  this.getSshKey();
 
         final String newName = "as" + this.testId;
         final String dnsPrefix = "dns" + newName;
-        ContainerService containerService = containerServices.define(newName)
+        ContainerService resource = containerServices.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withMasterProfile(ContainerServiceMasterProfileCount.MIN, "mp1" + dnsPrefix)
+                .withMasterNodeCount(ContainerServiceMasterProfileCount.MIN)
+                .withMasterDnsLabel("mp1" + dnsPrefix)
                 .withLinuxProfile()
                 .withRootUsername("testUserName")
                 .withSshKey(sshKeyData)
-                .defineContainerServiceAgentPoolProfile("agentPool0" + newName)
+                .defineAgentPool("agentPool0" + newName)
                 .withCount(1)
                 .withVMSize(ContainerServiceVMSizeTypes.STANDARD_A1)
                 .withDnsLabel("ap0" + dnsPrefix)
                 .attach()
-                .withDCOSOrchestration()
+                .withDcosOrchestration()
                 .withDiagnostics()
                 .withTag("tag1", "value1")
                 .create();
-        return containerService;
+        Assert.assertTrue("Container service not found.", resource.id() != null);
+        Assert.assertTrue(resource.region().equals(Region.US_EAST));
+        Assert.assertTrue(resource.masterProfile().count() == ContainerServiceMasterProfileCount.MIN.count());
+        Assert.assertTrue(resource.linuxProfile().adminUsername().equals("testUserName"));
+        Assert.assertTrue(resource.agentPoolProfile().count() == 1);
+        Assert.assertTrue(resource.agentPoolProfile().name().equals("agentPool0" + newName));
+        Assert.assertTrue(resource.agentPoolProfile().dnsPrefix().equals("ap0" + dnsPrefix));
+        Assert.assertTrue(resource.agentPoolProfile().vmSize().equals(ContainerServiceVMSizeTypes.STANDARD_A1));
+        Assert.assertTrue(resource.orchestratorProfile().orchestratorType().equals(ContainerServiceOchestratorTypes.DCOS));
+        Assert.assertTrue(resource.diagnosticsProfile().vmDiagnostics().enabled());
+        Assert.assertTrue(resource.tags().containsKey("tag1"));
+        return resource;
     }
 
     @Override
@@ -48,7 +60,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         // Modify existing container service
         final String newName = "as" + this.testId;
         resource =  resource.update()
-                .withAgentPoolCount(5)
+                .withAgentCount(5)
                 .withoutDiagnostics()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
@@ -57,6 +69,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         Assert.assertTrue("Agent pool count was not updated.", resource.agentPoolProfile().count() == 5);
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
+        Assert.assertTrue(!resource.diagnosticsProfile().vmDiagnostics().enabled());
         return resource;
     }
 
@@ -70,7 +83,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
                 .toString());
     }
 
-    private String getSSHKey() throws Exception {
+    private String getSshKey() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
         KeyPair keyPair=keyPairGenerator.generateKeyPair();

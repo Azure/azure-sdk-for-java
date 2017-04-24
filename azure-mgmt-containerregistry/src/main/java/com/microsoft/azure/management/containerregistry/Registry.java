@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import rx.Observable;
 
 /**
+ * An immutable client-side representation of an Azure registry.
  */
 @Fluent
 @Beta()
@@ -29,47 +30,57 @@ public interface Registry extends
     Updatable<Registry.Update> {
 
     /**
-     * The SKU of the container registry.
+     * @return the SKU of the container registry.
      */
     Sku sku();
 
     /**
-     * The URL that can be used to log into the container registry.
+     * @return the URL that can be used to log into the container registry.
      */
     String loginServer();
+
     /**
-     * The creation date of the container registry in ISO8601 format.
+     * @return the creation date of the container registry in ISO8601 format.
      */
     DateTime creationDate();
+
     /**
-     * The value that indicates whether the admin user is enabled. This value is false by default.
+     * @return the value that indicates whether the admin user is enabled. This value is false by default.
      */
     boolean adminUserEnabled();
+
     /**
-     * The properties of the storage account for the container registry.
+     * @return the properties of the storage account for the container registry.
      */
     StorageAccountProperties storageAccount();
 
     /**
-     * Lists the login credentials for the specified container registry.
+     * @return the login credentials for the specified container registry.
      */
     RegistryListCredentialsResultInner listCredentials();
 
     /**
-     * Lists the login credentials for the specified container registry.
+     * @return the login credentials for the specified container registry.
      */
     Observable<RegistryListCredentialsResultInner> listCredentialsAsync();
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
+     * @param passwordName the password name
+     * @return the result of the regeneration
      */
     RegistryListCredentialsResultInner regenerateCredential(PasswordName passwordName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
+     * @param passwordName the password name
+     * @return the result of the regeneration
      */
     Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(PasswordName passwordName);
 
+    /**
+     * Container interface for all the definitions related to a registry.
+     */
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -77,27 +88,10 @@ public interface Registry extends
         DefinitionStages.WithCreate {
     }
 
+    /**
+     * Grouping of registry definition stages.
+     */
     interface DefinitionStages {
-
-        interface WithAdminUserEnabled {
-            Definition withAdminUserEnabled();
-            Definition withoutAdminUserEnabled();
-        }
-
-        interface WithStorageAccount {
-            /**
-             * The parameters of a storage account for the container registry. If specified, the storage account must be in the same physical location as the container registry.
-             *
-             * @return the next stage
-             */
-            WithCreate withExistingStorageAccount(String name, String accessKey);
-        }
-
-        interface WithCreate extends
-            Creatable<Registry>,
-            WithAdminUserEnabled {
-        }
-
         /**
          * The first stage of a container service definition.
          */
@@ -111,18 +105,78 @@ public interface Registry extends
         interface WithGroup extends
                 GroupableResource.DefinitionStages.WithGroup<WithStorageAccount> {
         }
+
+        /**
+         * The stage of the registry definition allowing to enable admin user.
+         */
+        interface WithAdminUserEnabled {
+            /**
+             * Enable admin user.
+             * @return the next stage of the definition
+             */
+            Definition withAdminUserEnabled();
+
+            /**
+             * Disable admin user.
+             * @return the next stage of the definition
+             */
+            Definition withoutAdminUserEnabled();
+        }
+
+        /**
+         * The stage of the registry definition allowing to specify the storage account.
+         */
+        interface WithStorageAccount {
+            /**
+             * The parameters of a storage account for the container registry.
+             * If specified, the storage account must be in the same physical location as the container registry.
+             * @param name the name of the storage account
+             * @param accessKey the access key for the storage account
+             * @return the next stage
+             */
+            WithCreate withExistingStorageAccount(String name, String accessKey);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends
+                Creatable<Registry>,
+                Resource.DefinitionWithTags<WithCreate>,
+                WithAdminUserEnabled {
+        }
     }
 
+    /**
+     * The template for an update operation, containing all the settings that
+     * can be modified.
+     */
     interface Update extends
             Resource.UpdateWithTags<Update>,
             Appliable<Registry>,
-        UpdateStages.WithAdminUserEnabled{
+            UpdateStages.WithAdminUserEnabled {
     }
 
+    /**
+     * Grouping of container service update stages.
+     */
     interface UpdateStages {
-
+        /**
+         * The stage of the registry update allowing to enable admin user.
+         */
         interface WithAdminUserEnabled {
+            /**
+             * Enable admin user.
+             * @return the next stage of the definition
+             */
             Update withAdminUserEnabled();
+
+            /**
+             * Disable admin user.
+             * @return the next stage of the definition
+             */
             Update withoutAdminUserEnabled();
         }
     }

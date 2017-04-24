@@ -3,15 +3,23 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
+
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.containerregistry.*;
+import com.microsoft.azure.management.containerregistry.Registry;
+import com.microsoft.azure.management.containerregistry.Sku;
+import com.microsoft.azure.management.containerregistry.StorageAccountParameters;
+import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
+import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
 
+/**
+ * Implementation for Registry and its create and update interfaces.
+ */
 @LangDefinition
 public class RegistryImpl
         extends
@@ -35,51 +43,54 @@ public class RegistryImpl
         this.createParameters.withSku(sku);
     }
 
+    @Override
     public Sku sku() {
         return this.inner().sku();
     }
 
+    @Override
     public String loginServer() {
         return this.inner().loginServer();
     }
 
+    @Override
     public DateTime creationDate() {
         return this.inner().creationDate();
     }
 
+    @Override
     public boolean adminUserEnabled() {
         return this.inner().adminUserEnabled();
     }
 
+    @Override
     public StorageAccountProperties storageAccount() {
         return this.inner().storageAccount();
     }
 
+    @Override
     public RegistryImpl withAdminUserEnabled() {
-        if(this.isInCreateMode()) {
+        if (this.isInCreateMode()) {
             this.createParameters.withAdminUserEnabled(true);
-        }else {
+        } else {
             this.updateParameters.withAdminUserEnabled(true);
         }
 
         return this;
     }
 
+    @Override
     public RegistryImpl withoutAdminUserEnabled() {
-        if(this.isInCreateMode()) {
+        if (this.isInCreateMode()) {
             this.createParameters.withAdminUserEnabled(false);
-        }else {
+        } else {
             this.updateParameters.withAdminUserEnabled(false);
         }
 
         return this;
     }
 
-    /**
-     * The parameters of a storage account for the container registry. If specified, the storage account must be in the same physical location as the container registry.
-     *
-     * @return the next stage
-     */
+    @Override
     public RegistryImpl withExistingStorageAccount(String name, String accessKey) {
         StorageAccountParameters storageAccountParameters = new StorageAccountParameters();
         storageAccountParameters.withName(name);
@@ -102,7 +113,7 @@ public class RegistryImpl
     @Override
     public Observable<Registry> createResourceAsync() {
         final RegistryImpl self = this;
-        if(this.isInCreateMode()) {
+        if (this.isInCreateMode()) {
             createParameters.withLocation(this.regionName().toLowerCase());
             createParameters.withTags(this.inner().getTags());
             return this.manager().inner().registries().createAsync(resourceGroupName(), name(), this.createParameters)
@@ -113,7 +124,7 @@ public class RegistryImpl
                             return self;
                         }
                     });
-        }else {
+        } else {
             this.updateParameters.withTags(this.inner().getTags());
             return this.manager().inner().registries().updateAsync(resourceGroupName(), name(), this.updateParameters)
                     .map(new Func1<RegistryInner, Registry>() {
