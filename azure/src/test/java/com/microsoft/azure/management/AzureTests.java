@@ -571,17 +571,13 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testContainerService() throws Exception {
-        if (!MockIntegrationTestBase.IS_MOCKED) {
-            new TestContainerService()
-                    .runTest(azure.containerServices(), azure.resourceGroups());
-        }
+        new TestContainerService()
+                .runTest(azure.containerServices(), azure.resourceGroups());
     }
 
     @Test
     public void testContainerRegistry() throws Exception {
-        if (!MockIntegrationTestBase.IS_MOCKED) {
-            new TestContainerRegistry()
-                    .runTest(azure.containerRegistries(), azure.resourceGroups());
-        }
+        new TestContainerRegistry()
+                .runTest(azure.containerRegistries(), azure.resourceGroups());
     }
 }
