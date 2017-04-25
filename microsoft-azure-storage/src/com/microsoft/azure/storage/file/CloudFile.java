@@ -1881,9 +1881,8 @@ public final class CloudFile implements ListFileItem {
      */
     @DoesServiceRequest
     public FileOutputStream openWriteExisting(AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException, URISyntaxException {
-        return this
-                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+            OperationContext opContext) throws StorageException {
+        return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
     }
 
     /**
@@ -1978,13 +1977,13 @@ public final class CloudFile implements ListFileItem {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient, false /* setStartTime */);
 
         if (length != null) {
+            this.create(length, accessCondition, options, opContext);
+        }
+        else {
             if (options.getStoreFileContentMD5()) {
                 throw new IllegalArgumentException(SR.FILE_MD5_NOT_POSSIBLE);
             }
 
-            this.create(length, accessCondition, options, opContext);
-        }
-        else {
             this.downloadAttributes(accessCondition, options, opContext);
             length = this.getProperties().getLength();
         }
@@ -2612,8 +2611,8 @@ public final class CloudFile implements ListFileItem {
      * @param sourceStream
      *            An {@link InputStream} object to read from.
      * @param length
-     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be great than
-     *            zero.
+     *            A <code>long</code> which represents the length, in bytes, of the stream data. This must be greater than
+     *            or equal to zero.
      * @param accessCondition
      *            An {@link AccessCondition} object which represents the access conditions for the file.
      * @param options
@@ -2642,7 +2641,7 @@ public final class CloudFile implements ListFileItem {
 
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
-        if (length <= 0) {
+        if (length < 0) {
             throw new IllegalArgumentException(SR.INVALID_FILE_LENGTH);
         }
 

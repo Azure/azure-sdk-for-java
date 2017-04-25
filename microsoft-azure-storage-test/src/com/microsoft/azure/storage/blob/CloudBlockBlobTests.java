@@ -1018,6 +1018,44 @@ public class CloudBlockBlobTests {
         blockBlobRef.download(dstStream);
         BlobTestHelper.assertStreamsAreEqual(srcStream, new ByteArrayInputStream(dstStream.toByteArray()));
     }
+    
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, SlowTests.class })
+    public void testLargeSinglePutBlobTest() throws URISyntaxException, StorageException, IOException {
+        final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final String blockBlobName2 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final String blockBlobName3 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final CloudBlockBlob blob = this.container.getBlockBlobReference(blockBlobName);
+        final CloudBlockBlob blob2 = this.container.getBlockBlobReference(blockBlobName2);
+        final CloudBlockBlob blob3 = this.container.getBlockBlobReference(blockBlobName3);
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setStoreBlobContentMD5(false);
+        options.setEncryptionPolicy(null);
+        try
+        {
+            byte[] buffer = BlobTestHelper.getRandomBuffer(256 * Constants.MB);
+
+            OperationContext operationContext = new OperationContext();
+
+            blob.uploadFromByteArray(buffer, 0, 128 * Constants.MB, null, null, operationContext);
+            assertEquals(1, operationContext.getRequestResults().size());
+
+            options.setSingleBlobPutThresholdInBytes(256 * Constants.MB);
+            blob2.uploadFromByteArray(buffer, 0, 256 * Constants.MB, null, options, operationContext);
+            assertEquals(1, operationContext.getRequestResults().size());
+
+            // Reduce threshold and upload data greater than the single put blob upload threshold
+            options.setSingleBlobPutThresholdInBytes(Constants.MB);
+            blob3.uploadFromByteArray(buffer, 0, 3 * Constants.MB, null, options, operationContext);
+            assertTrue(operationContext.getRequestResults().size() > 1);
+        }
+        finally
+        {
+            blob.delete();
+            blob2.delete();
+            blob3.delete();
+        }
+    }
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
@@ -1198,7 +1236,7 @@ public class CloudBlockBlobTests {
             }
         };
 
-        length = 33 * Constants.MB;
+        length = BlobConstants.DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES + 1;
         srcStream = BlobTestHelper.getRandomDataStream(length);
 
         sendingRequestEventContext.getSendingRequestEventHandler().addListener(event);
