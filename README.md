@@ -22,9 +22,9 @@ See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
 ### Where can I find examples that use this library?
 
-To get started *sending* messages to Service Bus refer to [Get started sending to Service Bus queues](./azure-servicebus-samples/src/main/java/com/microsoft/azure/servicebus/samples/SendSample.java).
+To get started *sending* messages to Service Bus refer to [Get started sending to Service Bus queues](https://github.com/Azure/azure-service-bus/blob/master/samples/Java/src/main/java/com/microsoft/azure/servicebus/samples/SendSample.java).
 
-To get started *receiving* messages with Service Bus refer to [Get started receiving from Service Bus queues](./azure-servicebus-samples/src/main/java/com/microsoft/azure/servicebus/samples/ReceiveSample.java).  
+To get started *receiving* messages with Service Bus refer to [Get started receiving from Service Bus queues](https://github.com/Azure/azure-service-bus/blob/master/samples/Java/src/main/java/com/microsoft/azure/servicebus/samples/ReceiveSample.java).  
 
 ### Can I manage Service Bus entities with this library?
 
