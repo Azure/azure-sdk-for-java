@@ -152,11 +152,6 @@ final class BlobConstants {
     public static final int DEFAULT_POLLING_INTERVAL_IN_SECONDS = 30;
 
     /**
-     * The default maximum size, in bytes, of a blob before it must be separated into blocks.
-     */
-    public static final int DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES = 32 * Constants.MB;
-
-    /**
      * XML element for the latest.
      */
     public static final String LATEST_ELEMENT = "Latest";
