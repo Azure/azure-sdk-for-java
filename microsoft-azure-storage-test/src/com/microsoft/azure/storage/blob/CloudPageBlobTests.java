@@ -211,6 +211,32 @@ public class CloudPageBlobTests {
         assertEquals(100, downloadLength);
     }
 
+    /**
+     * Test requesting stored content MD5 with OpenWriteExisting().
+     * 
+     * @throws URISyntaxException
+     * @throws StorageException
+     */
+    @Test
+    public void testPageOpenWriteExistingWithMD5() throws URISyntaxException, StorageException, IOException {
+        final String pageBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testPageBlob");
+        final CloudPageBlob pageBlobRef = this.container.getPageBlobReference(pageBlobName);
+        pageBlobRef.create(512);
+
+        BlobRequestOptions options = new BlobRequestOptions();
+        options.setStoreBlobContentMD5(true);
+        options.setDisableContentMD5Validation(false);
+
+        try
+        {
+            pageBlobRef.openWriteExisting(null, options, null);
+            fail("Expect failure due to requesting MD5 calculation");
+        }
+        catch (IllegalArgumentException e)
+        {
+        }
+    }
+
     @Test
     public void testPageBlobUploadFromStreamTest() throws URISyntaxException, StorageException, IOException {
         final String pageBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testPageBlob");

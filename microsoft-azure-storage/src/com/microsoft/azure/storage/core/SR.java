@@ -92,7 +92,7 @@ public class SR {
     public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     public static final String INVALID_EDMTYPE_VALUE = "Invalid value '%s' for EdmType.";
     public static final String INVALID_ENCRYPTION_ALGORITHM = "Invalid Encryption Algorithm found on the resource. This version of the client library does not support the specified encryption algorithm.";
-    public static final String INVALID_FILE_LENGTH = "File length must be greater than 0 bytes.";
+    public static final String INVALID_FILE_LENGTH = "File length must be greater than or equal to 0 bytes.";
     public static final String INVALID_GEO_REPLICATION_STATUS = "Null or Invalid geo-replication status in response: %s.";
     public static final String INVALID_IP_ADDRESS = "Error when parsing IPv4 address: IP address '%s' is invalid.";
     public static final String INVALID_KEY = "Storage Key is not a valid base64 encoded string.";
