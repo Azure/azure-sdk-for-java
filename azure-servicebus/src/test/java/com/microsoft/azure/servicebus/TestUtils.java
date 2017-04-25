@@ -11,7 +11,7 @@ public class TestUtils {
 	private static final String TEST_DIR_NAME = "resources";
 	private static final String TEST_PROPERTIES_FILE_NAME = "test.properties";
 	
-	private static final String NAMESPACE_CONNECTION_STRING_PROPERTY_NAME = "azure.servicebus.java.unit.test.connection.string";
+	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING";
 	
 	//Queue	
 	private static final String NON_PARTITIONED_QUEUE_NAME_PROPERTY = "non.partitioned.queue.name";	
@@ -24,7 +24,7 @@ public class TestUtils {
 	private static final String SUBSCRIPTION_NAME_PROPERTY = "subscription.name";
 		
 	//Sessionful Topic and Subscription	
-	private static final String NON_PARTITIONED_SESSIONFUL_TOPIC_NAME_PROPERTY = "non.partitioned.topic.name";
+	private static final String NON_PARTITIONED_SESSIONFUL_TOPIC_NAME_PROPERTY = "session.non.partitioned.topic.name";
 	private static final String SESSIONFUL_SUBSCRIPTION_NAME_PROPERTY = "session.subscription.name";	
 	
 	private static Properties accessProperties;
@@ -45,10 +45,10 @@ public class TestUtils {
 		}
 		
 		// Read connection string
-		namespaceConnectionString = System.getProperty(NAMESPACE_CONNECTION_STRING_PROPERTY_NAME);
+		namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
 		if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
 		{			
-			System.err.println(NAMESPACE_CONNECTION_STRING_PROPERTY_NAME + " system property not set. Tests will not be able to connecto to any service bus entity.");
+			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connecto to any service bus entity.");
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class TestUtils {
 	{
 		String defaultValue = "";		
 		return accessProperties.getProperty(propertyName, defaultValue);
-	}	
+	}
 	
 	public static ConnectionStringBuilder getNonPartitionedQueueConnectionStringBuilder()
 	{

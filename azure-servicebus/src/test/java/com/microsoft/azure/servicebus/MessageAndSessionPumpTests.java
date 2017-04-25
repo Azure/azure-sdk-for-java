@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -412,7 +413,7 @@ public class MessageAndSessionPumpTests {
 			CompletableFuture<Void> countingFuture = CompletableFuture.runAsync(() -> {
 				this.maxConcurrencyCounter.incrementCount();
 				this.receivedSeesions.add(session.getSessionId());
-				//System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread());				
+				//System.out.println("SessionID:" + session.getSessionId() + " - Message Received - " + message.getMessageId() + " - delivery count:" + message.getDeliveryCount() + " - Thread:" + Thread.currentThread() + ":" + Instant.now());				
 				if(this.firstThrowException && message.getDeliveryCount() == 0)
 				{
 					this.messageCountDownLatch.countDown();
@@ -448,7 +449,7 @@ public class MessageAndSessionPumpTests {
 
 		@Override
 		public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-			System.out.println("Session closed.-" + session.getSessionId());
+			System.out.println("Session closed.-" + session.getSessionId() + ":" + Instant.now());
 			return CompletableFuture.completedFuture(null);
 		}
 		

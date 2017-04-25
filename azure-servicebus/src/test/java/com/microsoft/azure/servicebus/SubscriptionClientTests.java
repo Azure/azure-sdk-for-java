@@ -46,8 +46,8 @@ public class SubscriptionClientTests {
 			
 		if(this.sessionfulSubscriptionClient != null)
 		{
-			TestCommons.drainAllSessions(this.sessionfulSubscriptionClient, TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder());
-			this.sessionfulSubscriptionClient.close();			
+			this.sessionfulSubscriptionClient.close();
+			TestCommons.drainAllSessions(TestUtils.getNonPartitionedSessionfulSubscriptionConnectionStringBuilder(), false);					
 		}			
 	}	
 	

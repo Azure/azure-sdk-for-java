@@ -27,8 +27,8 @@ public class QueueClientTests {
 			
 		if(this.sessionfulQueueClient != null)
 		{
-			TestCommons.drainAllSessions(this.sessionfulQueueClient, TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder());
-			this.sessionfulQueueClient.close();			
+			this.sessionfulQueueClient.close();
+			TestCommons.drainAllSessions(TestUtils.getNonPartitionedSessionfulQueueConnectionStringBuilder(), true);	
 		}			
 	}
 	
