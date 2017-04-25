@@ -1881,7 +1881,7 @@ public final class CloudFile implements ListFileItem {
      */
     @DoesServiceRequest
     public FileOutputStream openWriteExisting(AccessCondition accessCondition, FileRequestOptions options,
-            OperationContext opContext) throws StorageException {
+            OperationContext opContext) throws StorageException, URISyntaxException {
         return this.openOutputStreamInternal(null /* length */, accessCondition, options, opContext);
     }
 
