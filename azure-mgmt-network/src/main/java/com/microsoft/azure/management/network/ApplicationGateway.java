@@ -71,6 +71,7 @@ public interface ApplicationGateway extends
     /**
      * @return disabled SSL protocols
      */
+    @Beta //v1.0.0
     List<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
@@ -445,6 +446,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the definition
              */
+            @Beta //v1.0.0
             WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -452,6 +454,7 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the definition
              */
+            @Beta //v1.0.0
             WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
         }
 
@@ -892,6 +895,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
+            @Beta //v1.0.0
             Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -899,6 +903,7 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
+            @Beta //v1.0.0
             Update withDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
@@ -906,6 +911,7 @@ public interface ApplicationGateway extends
              * @param protocol an SSL protocol
              * @return the next stage of the update
              */
+            @Beta //v1.0.0
             Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -913,12 +919,14 @@ public interface ApplicationGateway extends
              * @param protocols SSL protocols
              * @return the next stage of the update
              */
+            @Beta //v1.0.0
             Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols);
 
             /**
              * Enables all SSL protocols, if previously disabled.
              * @return the next stage of the update
              */
+            @Beta //v1.0.0
             @Method
             Update withoutAnyDisabledProtocols();
         }

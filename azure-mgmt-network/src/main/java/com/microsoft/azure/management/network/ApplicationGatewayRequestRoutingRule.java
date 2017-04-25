@@ -85,7 +85,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
         /** The final stage of an application gateway request routing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
