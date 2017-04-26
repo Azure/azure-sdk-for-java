@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeManagementTest {
     private static String RG_NAME = "";
-    private static Region region = Region.fromName("westcentralus");
+    private static Region region = Region.US_EAST;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {

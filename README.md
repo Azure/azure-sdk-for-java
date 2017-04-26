@@ -2,23 +2,60 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0 beta 5). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the released stable version (1.0.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
-**1.0 beta 5** is a developer preview that supports major parts of: 
+## Feature Availability and Road Map as of Version 1.0.0 ##
 
-- Azure Virtual Machines and VM Extensions
-- Virtual Machine Scale Sets
-- Managed Disks
-- Storage
-- Networking (virtual networks, subnets, network interfaces, IP addresses, network security groups, load balancers, DNS, traffic managers and application gateways)
-- Resource Manager
-- SQL Database (databases, firewalls and elastic pools)
-- App Service (Web Apps)
-- Key Vault, Redis, CDN and Batch.
+<table>
+  <tr>
+    <th align="left">Service | feature</th>
+    <th align="left">Available as GA</th>
+    <th align="left">Available as Preview</th>
+    <th align="left">Coming soon</th>
+  </tr>
+  <tr>
+    <td>Compute</td>
+    <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
+    <td></td>
+    <td valign="top">Azure container services<br>Azure container registry</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>Storage accounts</td>
+    <td></td>
+    <td>Encryption</td>
+  </tr>
+  <tr>
+    <td>SQL Database</td>
+    <td>Databases<br>Firewalls<br>Elastic pools</td>
+    <td></td>
+    <td valign="top"></td>
+  </tr>
+  <tr>
+    <td>Networking</td>
+    <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>DNS<br>Traffic managers</td>
+    <td valign="top">Load balancers<br>Application gateways</td>
+    <td valign="top"></td>
+  </tr>
+  <tr>
+    <td>More services</td>
+    <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
+    <td valign="top">App service - Web apps<br>Functions<br>Service bus</td>
+    <td valign="top">Monitor<br>Graph RBAC<br>DocumentDB<br>Scheduler</td>
+  </tr>
+  <tr>
+    <td>Fundamentals</td>
+    <td>Authentication - core</td>
+    <td>Async methods</td>
+    <td valign="top"></td>
+  </tr>
+</table>
 
-The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and applying finishing touches to the API.
+
+> *Preview* features are marked with the @Beta annotation at the class or interface or method level in libraries. These features are subject to change. They can be modified in any way, or even removed, in the future.
+
 
 **Azure Authentication**
 
@@ -96,7 +133,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(22)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(100)
         .withDescription("Allow SSH")
         .attach()
@@ -106,7 +143,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
         .fromAnyPort()
         .toAnyAddress()
         .toPort(80)
-        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withProtocol(SecurityRuleProtocol.TCP)
         .withPriority(101)
         .withDescription("Allow HTTP")
         .attach()
@@ -142,10 +179,9 @@ You can create a Web App instance by using another `define() … create()` metho
 ```java
 WebApp webApp = azure.webApps()
     .define(appName)
-    .withNewResourceGroup(rgName)
-    .withNewAppServicePlan(planName)
     .withRegion(Region.US_WEST)
-    .withPricingTier(AppServicePricingTier.STANDARD_S1)
+    .withNewResourceGroup(rgName)
+    .withNewWindowsPlan(PricingTier.STANDARD_S1)
     .create();
 ```
 
@@ -173,7 +209,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (69+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -183,7 +219,8 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   <tr>
     <td>Virtual Machines</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machines</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines asynchronously </a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
@@ -199,15 +236,16 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   <tr>
     <td>Virtual Machines - parallel execution</td>
     <td><ul style="list-style-type:circle">
-<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
-<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel">Create multiple virtual machines with network in parallel</li>
-<li><a href="http://github.com/azure-samples/compute-java-create-virtual-machines-across-regions-in-parallel">Create multiple virtual machines across regions in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel">Create multiple virtual machines with network in parallel</li>
+<li><a href="https://github.com/azure-samples/compute-java-create-virtual-machines-across-regions-in-parallel">Create multiple virtual machines across regions in parallel</li>
 </ul></td>
   </tr>
   <tr>
     <td>Virtual Machine Scale Sets</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets (behind an Internet facing load balancer)</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets-async">Manage virtual machine scale sets (behind an Internet facing load balancer) asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-set-with-unmanaged-disks">Manage virtual machine scale sets with unmanaged disks</li>
 </ul></td>
   </tr>
@@ -215,6 +253,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td>Storage</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts">Manage storage accounts</a></li>
+<li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts-async">Manage storage accounts asynchronously</a></li>
 </ul></td>
   </tr>
   <tr>
@@ -222,6 +261,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td><ul style="list-style-type:circle">
 
 <li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network">Manage virtual network</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network-async">Manage virtual network asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-interface">Manage network interface</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-security-group">Manage network security group</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
@@ -262,23 +302,53 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-databases-across-regions">Manage SQL databases across regions</a></li>
 </ul></td>
   </tr>
-  <tr>
-    <td>Redis Cache</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
-</ul></td>
-</tr>
+
 
   <tr>
-    <td>App Service - Web Apps</td>
+    <td>App Service - Web Apps on <b>Windows</b></td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps">Manage Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-with-custom-domains">Manage Web apps with custom domains</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps">Configure deployment sources for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-async">Configure deployment sources for Web apps asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-staging-and-production-slots-for-web-apps">Manage staging and production slots for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps">Scale Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps">Manage storage connections for Web apps</a></li>
 <li><a href="https://github.com/Azure-Samples/app-service-java-manage-data-connections-for-web-apps">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-web-apps">Manage authentication for Web apps</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>App Service - Web Apps on <b>Linux</b></td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux">Manage Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-web-apps-on-linux-with-custom-domains">Manage Web apps with custom domains</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-on-linux">Configure deployment sources for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-scale-web-apps-on-linux">Scale Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-storage-connections-for-web-apps-on-linux">Manage storage connections for Web apps</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-data-connections-for-web-apps-on-linux">Manage data connections (such as SQL database and Redis cache) for Web apps</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>Functions</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-functions">Manage functions</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-functions-with-custom-domains">Manage functions with custom domains</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-configure-deployment-sources-for-functions">Configure deployment sources for functions</a></li>
+<li><a href="https://github.com/Azure-Samples/app-service-java-manage-authentication-for-functions">Manage authentication for functions</a></li>
+</ul></td>
+  </tr>
+
+  <tr>
+    <td>Service Bus</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-basic-features">Manage queues with basic features</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-publish-subscribe-with-basic-features">Manage publish-subscribe with basic features</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-with-claims-based-authorization">Manage queues and publish-subcribe with cliams based authorization</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-publish-subscribe-with-advanced-features">Manage publish-subscribe with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
+<li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-advanced-features">Manage queues with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
 </ul></td>
   </tr>
 
@@ -291,6 +361,14 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
+
+  <tr>
+    <td>Redis Cache</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
+</ul></td>
+</tr>
+
   <tr>
     <td>Key Vault</td>
     <td><ul style="list-style-type:circle">
@@ -314,15 +392,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 # Download
 
 
-**1.0 Beta 5**
+**1.0.0**
 
-If you are using released builds from 1.0 beta 5, add the following to your POM file:
+If you are using released builds from 1.0.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta5</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -335,7 +413,7 @@ If you are using released builds from 1.0 beta 5, add the following to your POM 
 
 ## Help
 
-If you are migrating your code to 1.0 beta 5, you can use these notes for [preparing your code for 1.0 beta 5 from 1.0 beta 4](./notes/prepare-for-1.0.0-beta5.md).
+If you are migrating your code to 1.0.0, you can use these notes for [preparing your code for 1.0 from 1.0 beta 5](./notes/prepare-for-1.0.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -358,13 +436,14 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
-| 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
-| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
-| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
-| 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
+| 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
+| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
+| 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
+| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
+| 1.0.0-beta1+fixes | [1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
-| 0.9.3             | [v0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
+| 0.9.3             | [0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
 
 ---
 
