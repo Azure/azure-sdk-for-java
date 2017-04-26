@@ -18,6 +18,7 @@ import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
+import com.microsoft.azure.management.network.ApplicationGatewaySslProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayTier;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
@@ -474,6 +475,60 @@ class ApplicationGatewayImpl
      // Withers (fluent)
 
     @Override
+    public ApplicationGatewayImpl withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
+        if (protocol == null) {
+            return this;
+        }
+
+        ApplicationGatewaySslPolicy policy = ensureSslPolicy();
+        if (!policy.disabledSslProtocols().contains(protocol)) {
+            policy.disabledSslProtocols().add(protocol);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols) {
+        if (protocols == null) {
+            return null;
+        }
+
+        for (ApplicationGatewaySslProtocol protocol : protocols) {
+            withDisabledSslProtocol(protocol);
+        }
+
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
+        if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
+            return this;
+        } else {
+            this.inner().sslPolicy().disabledSslProtocols().remove(protocol);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutDisabledSslProtocols(ApplicationGatewaySslProtocol...protocols) {
+        if (protocols == null) {
+            return null;
+        } else {
+            for (ApplicationGatewaySslProtocol protocol : protocols) {
+                this.withoutDisabledSslProtocol(protocol);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutAnyDisabledProtocols() {
+        this.inner().withSslPolicy(null);
+        return this;
+    }
+
+    @Override
     public ApplicationGatewayImpl withInstanceCount(int capacity) {
         if (this.inner().sku() == null) {
             this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
@@ -911,13 +966,6 @@ class ApplicationGatewayImpl
         return (ApplicationGatewayFrontendImpl) defaultPublicFrontend();
     }
 
-    /* TODO: Not possible to change any subnet/private IP settings today
-    @Override
-    public ApplicationGatewayFrontendImpl updatePrivateFrontend() {
-        return (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
-    }
-    */
-
     @Override
     public ApplicationGatewayListenerImpl updateListener(String name) {
         return (ApplicationGatewayListenerImpl) this.listeners.get(name);
@@ -975,6 +1023,15 @@ class ApplicationGatewayImpl
     }
 
     // Getters
+
+    @Override
+    public List<ApplicationGatewaySslProtocol> disabledSslProtocols() {
+        if (this.inner().sslPolicy() == null || this.inner().sslPolicy().disabledSslProtocols() == null) {
+            return new ArrayList<>();
+        } else {
+            return Collections.unmodifiableList(this.inner().sslPolicy().disabledSslProtocols());
+        }
+    }
 
     @Override
     public ApplicationGatewayFrontend defaultPrivateFrontend() {
@@ -1260,5 +1317,21 @@ class ApplicationGatewayImpl
 
         // Refresh after stop to ensure the app gateway operational state is updated
         return Observable.concat(stopObservable, refreshObservable).toCompletable();
+    }
+
+    private ApplicationGatewaySslPolicy ensureSslPolicy() {
+        ApplicationGatewaySslPolicy policy = this.inner().sslPolicy();
+        if (policy == null) {
+            policy = new ApplicationGatewaySslPolicy();
+            this.inner().withSslPolicy(policy);
+        }
+
+        List<ApplicationGatewaySslProtocol> protocols = policy.disabledSslProtocols();
+        if (protocols == null) {
+            protocols = new ArrayList<>();
+            policy.withDisabledSslProtocols(protocols);
+        }
+
+        return policy;
     }
 }
