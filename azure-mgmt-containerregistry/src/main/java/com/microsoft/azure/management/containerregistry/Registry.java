@@ -114,13 +114,13 @@ public interface Registry extends
              * Enable admin user.
              * @return the next stage of the definition
              */
-            Definition withAdminUserEnabled();
+            WithCreate withAdminUserEnabled();
 
             /**
              * Disable admin user.
              * @return the next stage of the definition
              */
-            Definition withoutAdminUserEnabled();
+            WithCreate withoutAdminUserEnabled();
         }
 
         /**

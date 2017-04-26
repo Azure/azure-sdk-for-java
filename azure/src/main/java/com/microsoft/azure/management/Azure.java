@@ -593,6 +593,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Services.
      */
+    @Beta
     public ContainerServices containerServices() {
         return computeManager.containerServices();
     }
@@ -600,6 +601,7 @@ public final class Azure {
     /**
      * @return entry point to managing Container Regsitries.
      */
+    @Beta
     public Registries containerRegistries() {
         return containerRegistryManager.containerRegistries();
     }

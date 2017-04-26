@@ -8,6 +8,7 @@ package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -17,6 +18,7 @@ import com.microsoft.rest.RestClient;
 /**
  * Entry point to Azure compute resource management.
  */
+@Beta
 public final class ContainerRegistryManager extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
     // The service managers
     private RegistriesImpl registries;
