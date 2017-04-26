@@ -757,4 +757,16 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 			this.messageHandler.notifyException(ex, phase);
 		}
 	}
+
+    @Override
+    public int getPrefetchCount() {
+        this.checkInnerReceiveCreated();
+        return this.innerReceiver.getPrefetchCount();
+    }
+
+    @Override
+    public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
+        this.checkInnerReceiveCreated();
+        this.innerReceiver.setPrefetchCount(prefetchCount);
+    }
 }

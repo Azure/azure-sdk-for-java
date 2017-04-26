@@ -84,7 +84,7 @@ public interface IMessageReceiver extends IMessageEntity, IMessageBrowser{
     
     //Collection<Instant> renewMessageLockBatch(Collection<? extends IBrokeredMessage> messages) throws InterruptedException, ServiceBusException;    
     
-    int getMessagePrefetchCount();
+    int getPrefetchCount();
     
-    void setMessagePrefetchCount(int prefetchCount) throws ServiceBusException;
+    void setPrefetchCount(int prefetchCount) throws ServiceBusException;
 }

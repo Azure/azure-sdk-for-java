@@ -444,13 +444,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 
 	@Override
-	public int getMessagePrefetchCount()
+	public int getPrefetchCount()
 	{
 		return this.messagePrefetchCount;
 	}
 
 	@Override
-	public void setMessagePrefetchCount(int prefetchCount) throws ServiceBusException
+	public void setPrefetchCount(int prefetchCount) throws ServiceBusException
 	{
 		this.messagePrefetchCount = prefetchCount;
 		if(this.isInitialized)

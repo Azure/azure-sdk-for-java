@@ -249,4 +249,14 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 	public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason,	String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
 		return this.messageAndSessionPump.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify);
 	}
+
+    @Override
+    public int getPrefetchCount() {
+        return this.messageAndSessionPump.getPrefetchCount();
+    }
+
+    @Override
+    public void setPrefetchCount(int prefetchCount) throws ServiceBusException {
+        this.messageAndSessionPump.setPrefetchCount(prefetchCount);
+    }	
 }
