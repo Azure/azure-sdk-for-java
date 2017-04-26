@@ -234,23 +234,15 @@ class RequestResponseLink extends ClientEntity{
 	
 	public CompletableFuture<Message> requestAysnc(Message requestMessage, Duration timeout)
 	{
+		this.throwIfClosed(null);
 		CompletableFuture<Message> responseFuture = new CompletableFuture<Message>();
-		
-		if(this.getIsClosingOrClosed())
-		{			
-			responseFuture.completeExceptionally(new ServiceBusException(false, "RequestResponseLink is closing or closed."));			
-		}
-		else
-		{
-			RequestResponseWorkItem workItem = new RequestResponseWorkItem(requestMessage, responseFuture, timeout);
-			String requestId = "request:" +  this.requestCounter.incrementAndGet();
-			requestMessage.setMessageId(requestId);
-			requestMessage.setReplyTo(this.replyTo);
-			this.pendingRequests.put(requestId, workItem);
-			workItem.setTimeoutTask(this.scheduleRequestTimeout(requestId, timeout));
-			this.amqpSender.sendRequest(requestMessage, false);			
-		}
-		
+		RequestResponseWorkItem workItem = new RequestResponseWorkItem(requestMessage, responseFuture, timeout);
+		String requestId = "request:" +  this.requestCounter.incrementAndGet();
+		requestMessage.setMessageId(requestId);
+		requestMessage.setReplyTo(this.replyTo);
+		this.pendingRequests.put(requestId, workItem);
+		workItem.setTimeoutTask(this.scheduleRequestTimeout(requestId, timeout));
+		this.amqpSender.sendRequest(requestMessage, false);
 		return responseFuture;
 	}
 	
