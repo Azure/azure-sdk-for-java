@@ -75,8 +75,7 @@ public final class Region {
     private final String label;
 
     /**
-     * Get an array of pre-defined regions.
-     * @return an array of pre-defined regions.
+     * @return predefined Azure regions
      */
     public static Region[] values() {
         Collection<Region> valuesCollection = VALUES_BY_NAME.values();
@@ -161,7 +160,7 @@ public final class Region {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return this.name.hashCode();
     }
 
     @Override
@@ -172,7 +171,7 @@ public final class Region {
             return true;
         } else {
             Region rhs = (Region) obj;
-            return name.equalsIgnoreCase(rhs.name);
+            return this.name.equalsIgnoreCase(rhs.name);
         }
     }
 }
