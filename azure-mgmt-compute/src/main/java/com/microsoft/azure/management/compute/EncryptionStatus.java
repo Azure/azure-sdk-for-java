@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Defines values for EncryptionStatuses.
  */
-public class EncryptionStatus {
+public final class EncryptionStatus {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, EncryptionStatus> VALUES_BY_NAME = new HashMap<>();
 

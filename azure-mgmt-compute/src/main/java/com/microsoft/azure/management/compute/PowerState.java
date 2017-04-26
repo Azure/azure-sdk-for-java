@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Possible power states of a virtual machine.
  */
-public class PowerState {
+public final class PowerState {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, PowerState> VALUES_BY_NAME = new HashMap<>();
 
