@@ -340,6 +340,7 @@
     <module>./azure-keyvault-extensions</module>
     <module>./azure-keyvault-webkey</module>
     <module>./azure-mgmt-compute</module>
+    <module>./azure-mgmt-containerregistry</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-keyvault</module>
     <module>./azure-mgmt-resources</module>

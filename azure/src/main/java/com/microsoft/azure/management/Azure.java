@@ -27,7 +27,9 @@ import com.microsoft.azure.management.compute.VirtualMachineCustomImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.ContainerServices;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.keyvault.Vaults;
@@ -66,6 +68,7 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
+import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -89,6 +92,8 @@ public final class Azure {
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     private final ServiceBusManager serviceBusManager;
+    private final ContainerRegistryManager containerRegistryManager;
+
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -311,6 +316,7 @@ public final class Azure {
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
+        this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }
@@ -582,5 +588,21 @@ public final class Azure {
      */
     public ServiceBusNamespaces serviceBusNamespaces() {
         return serviceBusManager.namespaces();
+    }
+
+    /**
+     * @return entry point to managing Container Services.
+     */
+    @Beta
+    public ContainerServices containerServices() {
+        return computeManager.containerServices();
+    }
+
+    /**
+     * @return entry point to managing Container Regsitries.
+     */
+    @Beta
+    public Registries containerRegistries() {
+        return containerRegistryManager.containerRegistries();
     }
 }

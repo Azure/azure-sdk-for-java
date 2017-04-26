@@ -163,6 +163,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.monitor',
         'args': '-FT 1',
         'modeler': 'CompositeSwagger'
+    },
+    'containerregistry': {
+        'dir': 'azure-mgmt-containerregistry',
+        'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
+        'package': 'com.microsoft.azure.management.containerregistry',
+        'args': '-FT 1',
     }
 };
 
