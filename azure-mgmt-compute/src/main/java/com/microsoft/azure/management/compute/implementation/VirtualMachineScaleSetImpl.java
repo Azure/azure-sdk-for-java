@@ -277,7 +277,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetSkuTypes sku() {
-        return new VirtualMachineScaleSetSkuTypes(this.inner().sku());
+        return VirtualMachineScaleSetSkuTypes.fromSku(this.inner().sku());
     }
 
     @Override
